@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gedi.projectmanagement.dao.WeekreportMapper" >
+  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.Weekreport" >
+    <id column="w_id" property="wId" jdbcType="VARCHAR" />
+    <result column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="w_start_time" property="wStartTime" jdbcType="DATE" />
+    <result column="w_end_time" property="wEndTime" jdbcType="DATE" />
+    <result column="a_id" property="aId" jdbcType="VARCHAR" />
+    <result column="w_work_report" property="wWorkReport" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="w_actual_proportion" property="wActualProportion" jdbcType="INTEGER" />
+    <result column="w_plan_proportion" property="wPlanProportion" jdbcType="INTEGER" />
+    <result column="w_status" property="wStatus" jdbcType="INTEGER" />
+    <result column="w_remark" property="wRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    w_id, p_id, w_start_time, w_end_time, a_id, w_work_report, user_id, w_actual_proportion, 
+    w_plan_proportion, w_status, w_remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from weekreport
+    where w_id = #{wId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from weekreport
+    where w_id = #{wId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gedi.projectmanagement.model.Weekreport" >
+    insert into weekreport (w_id, p_id, w_start_time, 
+      w_end_time, a_id, w_work_report, 
+      user_id, w_actual_proportion, w_plan_proportion, 
+      w_status, w_remark)
+    values (#{wId,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, #{wStartTime,jdbcType=DATE}, 
+      #{wEndTime,jdbcType=DATE}, #{aId,jdbcType=VARCHAR}, #{wWorkReport,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{wActualProportion,jdbcType=INTEGER}, #{wPlanProportion,jdbcType=INTEGER}, 
+      #{wStatus,jdbcType=INTEGER}, #{wRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.Weekreport" >
+    insert into weekreport
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wId != null" >
+        w_id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="wStartTime != null" >
+        w_start_time,
+      </if>
+      <if test="wEndTime != null" >
+        w_end_time,
+      </if>
+      <if test="aId != null" >
+        a_id,
+      </if>
+      <if test="wWorkReport != null" >
+        w_work_report,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="wActualProportion != null" >
+        w_actual_proportion,
+      </if>
+      <if test="wPlanProportion != null" >
+        w_plan_proportion,
+      </if>
+      <if test="wStatus != null" >
+        w_status,
+      </if>
+      <if test="wRemark != null" >
+        w_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wId != null" >
+        #{wId,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="wStartTime != null" >
+        #{wStartTime,jdbcType=DATE},
+      </if>
+      <if test="wEndTime != null" >
+        #{wEndTime,jdbcType=DATE},
+      </if>
+      <if test="aId != null" >
+        #{aId,jdbcType=VARCHAR},
+      </if>
+      <if test="wWorkReport != null" >
+        #{wWorkReport,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="wActualProportion != null" >
+        #{wActualProportion,jdbcType=INTEGER},
+      </if>
+      <if test="wPlanProportion != null" >
+        #{wPlanProportion,jdbcType=INTEGER},
+      </if>
+      <if test="wStatus != null" >
+        #{wStatus,jdbcType=INTEGER},
+      </if>
+      <if test="wRemark != null" >
+        #{wRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.Weekreport" >
+    update weekreport
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="wStartTime != null" >
+        w_start_time = #{wStartTime,jdbcType=DATE},
+      </if>
+      <if test="wEndTime != null" >
+        w_end_time = #{wEndTime,jdbcType=DATE},
+      </if>
+      <if test="aId != null" >
+        a_id = #{aId,jdbcType=VARCHAR},
+      </if>
+      <if test="wWorkReport != null" >
+        w_work_report = #{wWorkReport,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="wActualProportion != null" >
+        w_actual_proportion = #{wActualProportion,jdbcType=INTEGER},
+      </if>
+      <if test="wPlanProportion != null" >
+        w_plan_proportion = #{wPlanProportion,jdbcType=INTEGER},
+      </if>
+      <if test="wStatus != null" >
+        w_status = #{wStatus,jdbcType=INTEGER},
+      </if>
+      <if test="wRemark != null" >
+        w_remark = #{wRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where w_id = #{wId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.Weekreport" >
+    update weekreport
+    set p_id = #{pId,jdbcType=VARCHAR},
+      w_start_time = #{wStartTime,jdbcType=DATE},
+      w_end_time = #{wEndTime,jdbcType=DATE},
+      a_id = #{aId,jdbcType=VARCHAR},
+      w_work_report = #{wWorkReport,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      w_actual_proportion = #{wActualProportion,jdbcType=INTEGER},
+      w_plan_proportion = #{wPlanProportion,jdbcType=INTEGER},
+      w_status = #{wStatus,jdbcType=INTEGER},
+      w_remark = #{wRemark,jdbcType=VARCHAR}
+    where w_id = #{wId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gedi.projectmanagement.dao.ProjectPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ProjectPlan" >
+    <id column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+    <result column="p_start_time" property="pStartTime" jdbcType="DATE" />
+    <result column="p_end_time" property="pEndTime" jdbcType="DATE" />
+    <result column="p_project_phase" property="pProjectPhase" jdbcType="INTEGER" />
+    <result column="p_progress" property="pProgress" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    p_id, p_name, p_start_time, p_end_time, p_project_phase, p_progress, create_time, 
+    creater
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_plan
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from project_plan
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gedi.projectmanagement.model.ProjectPlan" >
+    insert into project_plan (p_id, p_name, p_start_time, 
+      p_end_time, p_project_phase, p_progress, 
+      create_time, creater)
+    values (#{pId,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, #{pStartTime,jdbcType=DATE}, 
+      #{pEndTime,jdbcType=DATE}, #{pProjectPhase,jdbcType=INTEGER}, #{pProgress,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ProjectPlan" >
+    insert into project_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pName != null" >
+        p_name,
+      </if>
+      <if test="pStartTime != null" >
+        p_start_time,
+      </if>
+      <if test="pEndTime != null" >
+        p_end_time,
+      </if>
+      <if test="pProjectPhase != null" >
+        p_project_phase,
+      </if>
+      <if test="pProgress != null" >
+        p_progress,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="creater != null" >
+        creater,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="pName != null" >
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pStartTime != null" >
+        #{pStartTime,jdbcType=DATE},
+      </if>
+      <if test="pEndTime != null" >
+        #{pEndTime,jdbcType=DATE},
+      </if>
+      <if test="pProjectPhase != null" >
+        #{pProjectPhase,jdbcType=INTEGER},
+      </if>
+      <if test="pProgress != null" >
+        #{pProgress,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.ProjectPlan" >
+    update project_plan
+    <set >
+      <if test="pName != null" >
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pStartTime != null" >
+        p_start_time = #{pStartTime,jdbcType=DATE},
+      </if>
+      <if test="pEndTime != null" >
+        p_end_time = #{pEndTime,jdbcType=DATE},
+      </if>
+      <if test="pProjectPhase != null" >
+        p_project_phase = #{pProjectPhase,jdbcType=INTEGER},
+      </if>
+      <if test="pProgress != null" >
+        p_progress = #{pProgress,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ProjectPlan" >
+    update project_plan
+    set p_name = #{pName,jdbcType=VARCHAR},
+      p_start_time = #{pStartTime,jdbcType=DATE},
+      p_end_time = #{pEndTime,jdbcType=DATE},
+      p_project_phase = #{pProjectPhase,jdbcType=INTEGER},
+      p_progress = #{pProgress,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creater = #{creater,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+</mapper>
