@@ -1,44 +1,40 @@
 package com.gedi.projectmanagement.model;
 
-public class User {
-    private Integer userId;
+import java.util.Date;
 
-    private String uTeleNumber;
+public class User {
+    private String userId;
+
+    private Integer uPhone;
 
     private String uName;
 
     private String uDepartment;
 
-    private String uSign;
+    private Integer uSign;
 
-    private Integer uStatus;
+    private Boolean uStatus;
 
-    public User() {
-    }
+    private Date createTime;
 
-    public User(Integer userId, String uTeleNumber, String uName, String uDepartment, String uSign, Integer uStatus) {
-        this.userId = userId;
-        this.uTeleNumber = uTeleNumber;
-        this.uName = uName;
-        this.uDepartment = uDepartment;
-        this.uSign = uSign;
-        this.uStatus = uStatus;
-    }
+    private Date updateTime;
 
-    public Integer getUserId() {
+    private String creater;
+
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public String getuTeleNumber() {
-        return uTeleNumber;
+    public Integer getuPhone() {
+        return uPhone;
     }
 
-    public void setuTeleNumber(String uTeleNumber) {
-        this.uTeleNumber = uTeleNumber;
+    public void setuPhone(Integer uPhone) {
+        this.uPhone = uPhone;
     }
 
     public String getuName() {
@@ -57,31 +53,43 @@ public class User {
         this.uDepartment = uDepartment;
     }
 
-    public String getuSign() {
+    public Integer getuSign() {
         return uSign;
     }
 
-    public void setuSign(String uSign) {
+    public void setuSign(Integer uSign) {
         this.uSign = uSign;
     }
 
-    public Integer getuStatus() {
+    public Boolean getuStatus() {
         return uStatus;
     }
 
-    public void setuStatus(Integer uStatus) {
+    public void setuStatus(Boolean uStatus) {
         this.uStatus = uStatus;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", uTeleNumber='" + uTeleNumber + '\'' +
-                ", uName='" + uName + '\'' +
-                ", uDepartment='" + uDepartment + '\'' +
-                ", uSign='" + uSign + '\'' +
-                ", uStatus=" + uStatus +
-                '}';
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getCreater() {
+        return creater;
+    }
+
+    public void setCreater(String creater) {
+        this.creater = creater;
     }
 }
