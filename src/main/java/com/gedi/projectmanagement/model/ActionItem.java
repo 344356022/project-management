@@ -15,7 +15,7 @@ public class ActionItem {
 
     private Date aAendTime;
 
-    private Integer aUserId;
+    private Integer userId;
 
     private Integer aPercentage;
 
@@ -77,12 +77,12 @@ public class ActionItem {
         this.aAendTime = aAendTime;
     }
 
-    public Integer getaUserId() {
-        return aUserId;
+    public Integer getuserId() {
+        return userId;
     }
 
-    public void setaUserId(Integer aUserId) {
-        this.aUserId = aUserId;
+    public void setuserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getaPercentage() {

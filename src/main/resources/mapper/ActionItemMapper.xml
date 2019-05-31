@@ -8,7 +8,7 @@
     <result column="a_pend_time" property="aPendTime" jdbcType="DATE" />
     <result column="a_astart_time" property="aAstartTime" jdbcType="DATE" />
     <result column="a_aend_time" property="aAendTime" jdbcType="DATE" />
-    <result column="a_user_id" property="aUserId" jdbcType="INTEGER" />
+    <result column="a_user_id" property="userId" jdbcType="INTEGER" />
     <result column="a_percentage" property="aPercentage" jdbcType="INTEGER" />
     <result column="a_state" property="aState" jdbcType="INTEGER" />
     <result column="a_is_result" property="aIsResult" jdbcType="BIT" />
@@ -38,7 +38,7 @@
       ts_id)
     values (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE}, 
       #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE}, 
-      #{aUserId,jdbcType=INTEGER}, #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER}, 
       #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{tsId,jdbcType=VARCHAR})
   </insert>
@@ -63,7 +63,7 @@
       <if test="aAendTime != null" >
         a_aend_time,
       </if>
-      <if test="aUserId != null" >
+      <if test="userId != null" >
         a_user_id,
       </if>
       <if test="aPercentage != null" >
@@ -104,8 +104,8 @@
       <if test="aAendTime != null" >
         #{aAendTime,jdbcType=DATE},
       </if>
-      <if test="aUserId != null" >
-        #{aUserId,jdbcType=INTEGER},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="aPercentage != null" >
         #{aPercentage,jdbcType=INTEGER},
@@ -145,8 +145,8 @@
       <if test="aAendTime != null" >
         a_aend_time = #{aAendTime,jdbcType=DATE},
       </if>
-      <if test="aUserId != null" >
-        a_user_id = #{aUserId,jdbcType=INTEGER},
+      <if test="userId != null" >
+        a_user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="aPercentage != null" >
         a_percentage = #{aPercentage,jdbcType=INTEGER},
@@ -176,7 +176,7 @@
       a_pend_time = #{aPendTime,jdbcType=DATE},
       a_astart_time = #{aAstartTime,jdbcType=DATE},
       a_aend_time = #{aAendTime,jdbcType=DATE},
-      a_user_id = #{aUserId,jdbcType=INTEGER},
+      a_user_id = #{userId,jdbcType=INTEGER},
       a_percentage = #{aPercentage,jdbcType=INTEGER},
       a_state = #{aState,jdbcType=INTEGER},
       a_is_result = #{aIsResult,jdbcType=BIT},
