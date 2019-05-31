@@ -1,17 +1,15 @@
-package com.gedi.projectmanagement.mapper;
+package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.User;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer userId);
+    int deleteByPrimaryKey(String userId);
 
     int insert(User record);
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(Integer userId);
+    User selectByPrimaryKey(String userId);
 
     int updateByPrimaryKeySelective(User record);
 
