@@ -1,20 +1,17 @@
-package com.gedi.projectmanagement.dao;
+package com.gedi.projectmanagement.service;
 
 import com.gedi.projectmanagement.model.Journal;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * 日志 数据层
+ * 日志 服务层
  * 
  * @author ruoyi
  * @date 2019-06-03
  */
-@Mapper
-public interface JournalMapper 
+public interface IJournalService 
 {
 	/**
      * 查询日志信息
@@ -47,23 +44,19 @@ public interface JournalMapper
      * @return 结果
      */
 	public int updateJournal(Journal journal);
-	
+		
 	/**
-     * 删除日志
+     * 删除日志信息
      * 
-     * @param rbId 日志ID
+     * @param ids 需要删除的数据ID
      * @return 结果
      */
-	public int deleteJournalById(String rbId);
-	
-	/**
-     * 批量删除日志
-     * 
-     * @param rbIds 需要删除的数据ID
-     * @return 结果
-     */
-	public int deleteJournalByIds(String[] rbIds);
+	public int deleteJournalByIds(String ids);
 
-	//返回日报列表
+	/**
+	 * 日报列表
+	 * @param map
+	 * @return
+	 */
 	List<HashMap<String, Object>> selectJournalResultList(HashMap map);
 }

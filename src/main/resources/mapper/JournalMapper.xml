@@ -1,164 +1,114 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gedi.projectmanagement.dao.JournalMapper" >
-  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.Journal" >
-    <id column="rb_id" property="rbId" jdbcType="VARCHAR" />
-    <result column="w_id" property="wId" jdbcType="VARCHAR" />
-    <result column="p_id" property="pId" jdbcType="VARCHAR" />
-    <result column="a_id" property="aId" jdbcType="VARCHAR" />
-    <result column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="finish" property="finish" jdbcType="INTEGER" />
-    <result column="finish_content" property="finishContent" jdbcType="VARCHAR" />
-    <result column="finish_process" property="finishProcess" jdbcType="DECIMAL" />
-    <result column="deliver" property="deliver" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="creater" property="creater" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    rb_id, w_id, p_id, a_id, user_id, finish, finish_content, finish_process, deliver, 
-    create_time, creater
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from journal
-    where rb_id = #{rbId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from journal
-    where rb_id = #{rbId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.Journal" >
-    insert into journal (rb_id, w_id, p_id, 
-      a_id, user_id, finish, 
-      finish_content, finish_process, deliver, 
-      create_time, creater)
-    values (#{rbId,jdbcType=VARCHAR}, #{wId,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, 
-      #{aId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{finish,jdbcType=INTEGER}, 
-      #{finishContent,jdbcType=VARCHAR}, #{finishProcess,jdbcType=DECIMAL}, #{deliver,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.Journal" >
-    insert into journal
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="rbId != null" >
-        rb_id,
-      </if>
-      <if test="wId != null" >
-        w_id,
-      </if>
-      <if test="pId != null" >
-        p_id,
-      </if>
-      <if test="aId != null" >
-        a_id,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="finish != null" >
-        finish,
-      </if>
-      <if test="finishContent != null" >
-        finish_content,
-      </if>
-      <if test="finishProcess != null" >
-        finish_process,
-      </if>
-      <if test="deliver != null" >
-        deliver,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="creater != null" >
-        creater,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="rbId != null" >
-        #{rbId,jdbcType=VARCHAR},
-      </if>
-      <if test="wId != null" >
-        #{wId,jdbcType=VARCHAR},
-      </if>
-      <if test="pId != null" >
-        #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="aId != null" >
-        #{aId,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="finish != null" >
-        #{finish,jdbcType=INTEGER},
-      </if>
-      <if test="finishContent != null" >
-        #{finishContent,jdbcType=VARCHAR},
-      </if>
-      <if test="finishProcess != null" >
-        #{finishProcess,jdbcType=DECIMAL},
-      </if>
-      <if test="deliver != null" >
-        #{deliver,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creater != null" >
-        #{creater,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.Journal" >
-    update journal
-    <set >
-      <if test="wId != null" >
-        w_id = #{wId,jdbcType=VARCHAR},
-      </if>
-      <if test="pId != null" >
-        p_id = #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="aId != null" >
-        a_id = #{aId,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="finish != null" >
-        finish = #{finish,jdbcType=INTEGER},
-      </if>
-      <if test="finishContent != null" >
-        finish_content = #{finishContent,jdbcType=VARCHAR},
-      </if>
-      <if test="finishProcess != null" >
-        finish_process = #{finishProcess,jdbcType=DECIMAL},
-      </if>
-      <if test="deliver != null" >
-        deliver = #{deliver,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creater != null" >
-        creater = #{creater,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where rb_id = #{rbId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.Journal" >
-    update journal
-    set w_id = #{wId,jdbcType=VARCHAR},
-      p_id = #{pId,jdbcType=VARCHAR},
-      a_id = #{aId,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=VARCHAR},
-      finish = #{finish,jdbcType=INTEGER},
-      finish_content = #{finishContent,jdbcType=VARCHAR},
-      finish_process = #{finishProcess,jdbcType=DECIMAL},
-      deliver = #{deliver,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      creater = #{creater,jdbcType=VARCHAR}
-    where rb_id = #{rbId,jdbcType=VARCHAR}
-  </update>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gedi.projectmanagement.dao.JournalMapper">
+    
+    <resultMap type="Journal" id="JournalResult">
+        <result property="rbId"    column="rb_id"    />
+        <result property="wId"    column="w_id"    />
+        <result property="pId"    column="p_id"    />
+        <result property="aId"    column="a_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="finish"    column="finish"    />
+        <result property="finishContent"    column="finish_content"    />
+        <result property="finishProcess"    column="finish_process"    />
+        <result property="deliver"    column="deliver"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="creater"    column="creater"    />
+    </resultMap>
+	
+	<sql id="selectJournalVo">
+        select rb_id, w_id, p_id, a_id, user_id, finish, finish_content, finish_process, deliver, create_time, creater from journal
+    </sql>
+	<select id="selectJournalResultList"  parameterType="Map" resultType="Map">
+        SELECT w.w_id,p.p_id,p.p_name,w.w_work_report,w.r_finish
+        FROM weekreport w, project_plan p
+        WHERE w.p_id = p.p_id
+         AND w.user_id = #{userId}
+        AND w.w_start_time &lt;= NOW()
+        AND w.w_end_time &gt;= NOW()
+
+    </select>
+
+    <select id="selectJournalList" parameterType="Journal" resultMap="JournalResult">
+        <include refid="selectJournalVo"/>
+        <where>  
+            <if test="rbId != null  and rbId != '' "> and rb_id = #{rbId}</if>
+             <if test="wId != null  and wId != '' "> and w_id = #{wId}</if>
+             <if test="pId != null  and pId != '' "> and p_id = #{pId}</if>
+             <if test="aId != null  and aId != '' "> and a_id = #{aId}</if>
+             <if test="userId != null  and userId != '' "> and user_id = #{userId}</if>
+             <if test="finish != null "> and finish = #{finish}</if>
+             <if test="finishContent != null  and finishContent != '' "> and finish_content = #{finishContent}</if>
+             <if test="finishProcess != null "> and finish_process = #{finishProcess}</if>
+             <if test="deliver != null  and deliver != '' "> and deliver = #{deliver}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="creater != null  and creater != '' "> and creater = #{creater}</if>
+         </where>
+    </select>
+    
+    <select id="selectJournalById" parameterType="String" resultMap="JournalResult">
+        <include refid="selectJournalVo"/>
+        where rb_id = #{rbId}
+    </select>
+        
+    <insert id="insertJournal" parameterType="Journal">
+        insert into journal
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="rbId != null  and rbId != ''  ">rb_id,</if>
+			<if test="wId != null  and wId != ''  ">w_id,</if>
+			<if test="pId != null  and pId != ''  ">p_id,</if>
+			<if test="aId != null  and aId != ''  ">a_id,</if>
+			<if test="userId != null  and userId != ''  ">user_id,</if>
+			<if test="finish != null  ">finish,</if>
+			<if test="finishContent != null  and finishContent != ''  ">finish_content,</if>
+			<if test="finishProcess != null  ">finish_process,</if>
+			<if test="deliver != null  and deliver != ''  ">deliver,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="creater != null  and creater != ''  ">creater,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="rbId != null  and rbId != ''  ">#{rbId},</if>
+			<if test="wId != null  and wId != ''  ">#{wId},</if>
+			<if test="pId != null  and pId != ''  ">#{pId},</if>
+			<if test="aId != null  and aId != ''  ">#{aId},</if>
+			<if test="userId != null  and userId != ''  ">#{userId},</if>
+			<if test="finish != null  ">#{finish},</if>
+			<if test="finishContent != null  and finishContent != ''  ">#{finishContent},</if>
+			<if test="finishProcess != null  ">#{finishProcess},</if>
+			<if test="deliver != null  and deliver != ''  ">#{deliver},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="creater != null  and creater != ''  ">#{creater},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateJournal" parameterType="Journal">
+        update journal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wId != null  and wId != ''  ">w_id = #{wId},</if>
+            <if test="pId != null  and pId != ''  ">p_id = #{pId},</if>
+            <if test="aId != null  and aId != ''  ">a_id = #{aId},</if>
+            <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
+            <if test="finish != null  ">finish = #{finish},</if>
+            <if test="finishContent != null  and finishContent != ''  ">finish_content = #{finishContent},</if>
+            <if test="finishProcess != null  ">finish_process = #{finishProcess},</if>
+            <if test="deliver != null  and deliver != ''  ">deliver = #{deliver},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="creater != null  and creater != ''  ">creater = #{creater},</if>
+        </trim>
+        where rb_id = #{rbId}
+    </update>
+
+	<delete id="deleteJournalById" parameterType="String">
+        delete from journal where rb_id = #{rbId}
+    </delete>
+	
+    <delete id="deleteJournalByIds" parameterType="String">
+        delete from journal where rb_id in 
+        <foreach item="rbId" collection="array" open="(" separator="," close=")">
+            #{rbId}
+        </foreach>
+    </delete>
+    
 </mapper>
