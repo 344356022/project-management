@@ -2,6 +2,12 @@ package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.ProjectPlan;
 
+import java.util.List;
+
+/**
+ * @author wangyanbin
+ * @description 项目总计划接口
+ */
 public interface ProjectPlanMapper {
     int deleteByPrimaryKey(String pId);
 
@@ -9,9 +15,13 @@ public interface ProjectPlanMapper {
 
     int insertSelective(ProjectPlan record);
 
-    ProjectPlan selectByPrimaryKey(String pId);
-
     int updateByPrimaryKeySelective(ProjectPlan record);
 
     int updateByPrimaryKey(ProjectPlan record);
+
+    /*
+    项目总计划列表展示
+     */
+    List<ProjectPlan> selectById();
+
 }
