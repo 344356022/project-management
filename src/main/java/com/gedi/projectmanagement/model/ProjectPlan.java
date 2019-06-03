@@ -3,6 +3,10 @@ package com.gedi.projectmanagement.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author wangyanbin
+ * @description 项目总计划实体类
+ */
 public class ProjectPlan {
     private String pId;
 

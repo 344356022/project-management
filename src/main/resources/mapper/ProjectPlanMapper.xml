@@ -15,12 +15,26 @@
     p_id, p_name, p_start_time, p_end_time, p_project_phase, p_progress, create_time, 
     creater
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
+
+
+  <!-- 根据ID查询用于项目总体计划列表展示 -->
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    p_id,
+    p_name,
+    p_start_time,
+    p_end_time,
+    p_project_phase,
+    p_progress,
+    create_time,
+    creater
     from project_plan
-    where p_id = #{pId,jdbcType=VARCHAR}
+    where p_id = #{pId}
   </select>
+
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from project_plan
     where p_id = #{pId,jdbcType=VARCHAR}

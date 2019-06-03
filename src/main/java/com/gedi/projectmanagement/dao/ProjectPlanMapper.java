@@ -1,6 +1,7 @@
 package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.ProjectPlan;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  * @author wangyanbin
  * @description 项目总计划接口
  */
+@Mapper
 public interface ProjectPlanMapper {
     int deleteByPrimaryKey(String pId);
 

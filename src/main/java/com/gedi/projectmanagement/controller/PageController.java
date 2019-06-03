@@ -9,7 +9,9 @@ public class PageController {
 
 	@RequestMapping("{page}")
 	public String page(@PathVariable("page") String page) {
+
 		return page;
 	}
+
 
 }
