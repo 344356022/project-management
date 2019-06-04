@@ -3,6 +3,7 @@ package com.gedi.projectmanagement.dao;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,9 +30,11 @@ public interface ProjectPlanMapper {
 
     /**
      * 项目计划清单展示
+     *
      * @param pId
+     * @param pProjectPhase
      * @return
      */
-    List<ProjectPlanList> selectProjectPlanListByPid(String pId);
+    List<ProjectPlanList> selectProjectPlanListByPid(@Param("pId") String pId, @Param("pProjectPhase") Integer pProjectPhase);
 
 }
