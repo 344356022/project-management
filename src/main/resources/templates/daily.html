@@ -48,12 +48,12 @@
 
         <div class="popbox">
             <p class="seach">选择日志接收人：</p>
-            <div id="change">
-                <label><input type="checkbox" name="name" value="张理想">张理想</label>
-                <label><input type="checkbox" name="name" value="张11" checked>张11</label>
-                <label><input type="checkbox" name="name" value="张22">张22</label>
-                <label><input type="checkbox" name="name" value="张33">张33</label>
-                <label><input type="checkbox" name="name" value="张44">张44</label>
+            <div id="change2">
+                <!--<label><input type="checkbox" name="name" value="张理想">张理想</label>-->
+                <!--<label><input type="checkbox" name="name" value="张11" checked>张11</label>-->
+                <!--<label><input type="checkbox" name="name" value="张22">张22</label>-->
+                <!--<label><input type="checkbox" name="name" value="张33">张33</label>-->
+                <!--<label><input type="checkbox" name="name" value="张44">张44</label>-->
             </div>
             <input type="button" value="确定" id="upload">
             <input type="button" value="取消" id="hide" onclick="hide()">
@@ -91,6 +91,12 @@
         //插入日志接收人选择项
         function checkALL() {
             $('#name_list').html('');
+            //循环接收人列表
+            for(var i=0;i<7;i++){
+                $lable=$('<label><input type="checkbox" name="name" value="'+i+'">'+i+'</label>');
+                $('#change2').append($lable);
+            }
+            //获取被选中显示到页面
             var boxes=document.getElementsByTagName('input');
             for(var i=0;i<boxes.length;i++){
                 if(boxes[i].checked==true){
