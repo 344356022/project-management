@@ -1,5 +1,8 @@
 package com.gedi.projectmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -40,6 +43,8 @@ public class ProjectPlan {
         this.pName = pName;
     }
 
+    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getpStartTime() {
         return pStartTime;
     }
@@ -48,6 +53,8 @@ public class ProjectPlan {
         this.pStartTime = pStartTime;
     }
 
+    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getpEndTime() {
         return pEndTime;
     }
@@ -72,6 +79,8 @@ public class ProjectPlan {
         this.pProgress = pProgress;
     }
 
+    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }
@@ -86,5 +95,33 @@ public class ProjectPlan {
 
     public void setCreater(String creater) {
         this.creater = creater;
+    }
+
+    public ProjectPlan() {
+    }
+
+    public ProjectPlan(String pId, String pName, Date pStartTime, Date pEndTime, Integer pProjectPhase, BigDecimal pProgress, Date createTime, String creater) {
+        this.pId = pId;
+        this.pName = pName;
+        this.pStartTime = pStartTime;
+        this.pEndTime = pEndTime;
+        this.pProjectPhase = pProjectPhase;
+        this.pProgress = pProgress;
+        this.createTime = createTime;
+        this.creater = creater;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectPlan{" +
+                "pId='" + pId + '\'' +
+                ", pName='" + pName + '\'' +
+                ", pStartTime=" + pStartTime +
+                ", pEndTime=" + pEndTime +
+                ", pProjectPhase=" + pProjectPhase +
+                ", pProgress=" + pProgress +
+                ", createTime=" + createTime +
+                ", creater='" + creater + '\'' +
+                '}';
     }
 }

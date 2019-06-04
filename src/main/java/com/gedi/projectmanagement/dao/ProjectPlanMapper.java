@@ -37,4 +37,12 @@ public interface ProjectPlanMapper {
      */
     List<ProjectPlanList> selectProjectPlanListByPidAndPprojectphase(@Param("pId") String pId, @Param("pProjectPhase") Integer pProjectPhase);
 
+    /**
+     * 根据pName模糊查询项目总体计划列表展示
+     *
+     * @param pName
+     * @return
+     */
+    List<ProjectPlan> selectBypName(String pName);
+
 }

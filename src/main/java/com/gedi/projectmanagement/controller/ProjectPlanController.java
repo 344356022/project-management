@@ -33,4 +33,10 @@ public class ProjectPlanController {
         return projectPlanService.selectProjectPlanListByPidAndPprojectphase(pId, pProjectPhase);
     }
 
+    // 根据pName模糊查询项目总体计划列表展示
+    @PostMapping(value = "/projectBypName")
+    public CodeAndMsg selectBypName(String pName) {
+        return projectPlanService.selectBypName(pName);
+    }
+
 }

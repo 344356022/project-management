@@ -32,6 +32,22 @@
     where p_id = #{pId}
   </select>
 
+    <!-- 根据pName模糊查询项目总体计划列表展示 -->
+    <select id="selectBypName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    p_id,
+    p_name,
+    p_start_time,
+    p_end_time,
+    p_project_phase,
+    p_progress,
+    create_time,
+    creater
+    from project_plan
+    where p_name LIKE '%' #{pName} '%'
+  </select>
+
+    <!-- 根据pId和pProjectPhase查询用于项目总体计划清单列表展示 -->
     <select id="selectProjectPlanListByPidAndPprojectphase" resultType="ProjectPlanList">
        SELECT
 	p.p_project_phase AS pProjectPhase,

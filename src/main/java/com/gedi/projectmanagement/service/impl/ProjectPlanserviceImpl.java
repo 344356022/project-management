@@ -1,6 +1,7 @@
 package com.gedi.projectmanagement.service.impl;
 
 import com.gedi.projectmanagement.dao.ProjectPlanMapper;
+import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
@@ -40,6 +41,16 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         List<ProjectPlanList> projectPlanLists = projectPlanMapper.selectProjectPlanListByPidAndPprojectphase(pId, pProjectPhase);
         if (projectPlanLists != null) {
             return CodeAndMsgUtil.setOK("查询成功", projectPlanLists);
+        } else {
+            return CodeAndMsgUtil.setERROR("查询失败", null);
+        }
+    }
+
+    @Override
+    public CodeAndMsg selectBypName(String pName) {
+        List<ProjectPlan> projectPlans = projectPlanMapper.selectBypName(pName);
+        if (projectPlans != null) {
+            return CodeAndMsgUtil.setOK("查询成功", projectPlans);
         } else {
             return CodeAndMsgUtil.setERROR("查询失败", null);
         }

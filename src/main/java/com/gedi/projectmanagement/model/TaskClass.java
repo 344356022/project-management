@@ -1,5 +1,7 @@
 package com.gedi.projectmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class TaskClass {
@@ -37,6 +39,7 @@ public class TaskClass {
         this.pId = pId;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }

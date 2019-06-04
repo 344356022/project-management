@@ -1,5 +1,7 @@
 package com.gedi.projectmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ActionItem {
@@ -45,6 +47,7 @@ public class ActionItem {
         this.aName = aName;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaPstartTime() {
         return aPstartTime;
     }
@@ -53,6 +56,7 @@ public class ActionItem {
         this.aPstartTime = aPstartTime;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaPendTime() {
         return aPendTime;
     }
@@ -61,6 +65,7 @@ public class ActionItem {
         this.aPendTime = aPendTime;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaAstartTime() {
         return aAstartTime;
     }
@@ -69,6 +74,7 @@ public class ActionItem {
         this.aAstartTime = aAstartTime;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaAendTime() {
         return aAendTime;
     }
@@ -117,6 +123,7 @@ public class ActionItem {
         this.creater = creater;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }
