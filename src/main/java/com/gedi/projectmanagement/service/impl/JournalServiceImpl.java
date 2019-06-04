@@ -54,5 +54,11 @@ public class JournalServiceImpl implements  IJournalService
 		return journalMapper.selectJournalResultList(map);
 	}
 
+	//日报接收人
+	@Override
+	public List<HashMap<String, Object>> selectUserList() {
+		return journalMapper.selectUserList();
+	}
+
 
 }

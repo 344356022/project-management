@@ -21,6 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="selectJournalVo">
         select rb_id, w_id, p_id, a_id, user_id, finish, finish_content, finish_process, deliver, create_time, creater from journal
     </sql>
+    <!-- 日报列表-->
 	<select id="selectJournalResultList"  parameterType="Map" resultType="Map">
         SELECT w.w_id,p.p_id,p.p_name,w.w_work_report,w.r_finish
         FROM weekreport w, project_plan p
@@ -31,6 +32,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
 
+    <!-- 日志抄送人列表-->
+    <select id="selectUserList"  resultType="Map">
+      SELECT user_id,u_phone,u_name from user where u_status=0
+    </select>
     <select id="selectJournalList" parameterType="Journal" resultMap="JournalResult">
         <include refid="selectJournalVo"/>
         <where>  
@@ -47,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="creater != null  and creater != '' "> and creater = #{creater}</if>
          </where>
     </select>
-    
+
     <select id="selectJournalById" parameterType="String" resultMap="JournalResult">
         <include refid="selectJournalVo"/>
         where rb_id = #{rbId}

@@ -56,8 +56,13 @@ public class JournalController
 				 resultMap.put("code",300);
 				 resultMap.put("msg","无数据");
 			 }
+			 map.clear();
+			 map.put("result",list);
+			List<HashMap<String,Object>> userList = journalService.selectUserList();
+			map.put("userList",userList);
+
 		}
-		resultMap.put("data",list);
+		resultMap.put("data",map);
 		return resultMap;
 	}
 

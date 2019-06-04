@@ -66,4 +66,7 @@ public interface JournalMapper
 
 	//返回日报列表
 	List<HashMap<String, Object>> selectJournalResultList(HashMap map);
+
+	//返回日报接收人
+	List<HashMap<String, Object>> selectUserList();
 }

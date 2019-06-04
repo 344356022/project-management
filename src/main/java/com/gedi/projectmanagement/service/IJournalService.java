@@ -59,4 +59,7 @@ public interface IJournalService
 	 * @return
 	 */
 	List<HashMap<String, Object>> selectJournalResultList(HashMap map);
+
+	//日报返回日志接收人
+    List<HashMap<String, Object>> selectUserList();
 }
