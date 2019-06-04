@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * @author
- * @date
+ * @author : wangyanbin
+ * @Description :
+ * @date :
  */
 @RestController
 public class ProjectPlanController {
@@ -20,8 +21,8 @@ public class ProjectPlanController {
     @Resource
     private ProjectPlanService projectPlanService;
 
-    //列表展示所有
-    @PostMapping("/listAll")
+    //列表展示所有 别改我的代码
+    @RequestMapping("/listAll")
     public CodeAndMsg selectById() {
         System.out.println(projectPlanService.selectById() + "列表展示数据：");
         return projectPlanService.selectById();

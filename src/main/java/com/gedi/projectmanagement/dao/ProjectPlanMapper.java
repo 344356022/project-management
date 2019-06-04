@@ -28,6 +28,9 @@ public interface ProjectPlanMapper {
      */
     List<ProjectPlan> selectById();
 
+
+    public void addProject(ProjectPlan projectPlan);
+
     /**
      * 项目计划清单展示
      *
@@ -44,5 +47,7 @@ public interface ProjectPlanMapper {
      * @return
      */
     List<ProjectPlan> selectBypName(String pName);
+
+
 
 }

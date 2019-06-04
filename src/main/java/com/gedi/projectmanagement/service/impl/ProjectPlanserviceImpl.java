@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @author wangyanbin
- * @D
+ * @Description :
  */
 @Service
 @Transactional
@@ -32,6 +32,20 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
             return CodeAndMsgUtil.setOK("查询成功", projectPlanMapper.selectById());
         } else {
             return CodeAndMsgUtil.setERROR("查询失败", null);
+        }
+    }
+
+    //新增项目总计划
+    @Override
+    /*public boolean addProject(ProjectPlan projectPlan) {
+        //return (projectPlanMapper.addProject(projectPlan) == 0 ? false : true);
+        return projectPlanMapper.addProject(projectPlan) == 0 ? false : true;
+    }*/
+    public void addProject(ProjectPlan projectPlan) {
+        try {
+            projectPlanMapper.addProject(projectPlan);
+        }catch (Exception e) {
+            throw e;
         }
     }
 
