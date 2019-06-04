@@ -32,7 +32,7 @@
     where p_id = #{pId}
   </select>
 
-    <select id="selectProjectPlanListByPid" resultType="ProjectPlanList">
+    <select id="selectProjectPlanListByPidAndPprojectphase" resultType="ProjectPlanList">
        SELECT
 	p.p_project_phase AS pProjectPhase,
 	t.t_name AS tName,

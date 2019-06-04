@@ -35,6 +35,6 @@ public interface ProjectPlanMapper {
      * @param pProjectPhase
      * @return
      */
-    List<ProjectPlanList> selectProjectPlanListByPid(@Param("pId") String pId, @Param("pProjectPhase") Integer pProjectPhase);
+    List<ProjectPlanList> selectProjectPlanListByPidAndPprojectphase(@Param("pId") String pId, @Param("pProjectPhase") Integer pProjectPhase);
 
 }
