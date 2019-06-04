@@ -30,4 +30,11 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         }
     }
 
+    // 查询所有用于项目总计划清单的展示
+    @Override
+    public CodeAndMsg selectProjectPlanListByPidAndPprojectphase(String pId, Integer pProjectPhase) {
+        System.out.println(projectPlanMapper.selectById() + "查询成功");
+        return null;
+    }
+
 }

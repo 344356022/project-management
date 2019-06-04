@@ -32,7 +32,7 @@
     where p_id = #{pId}
   </select>
 
-    <select id="selectProjectPlanListByPid" resultType="ProjectPlanList" parameterType="java.lang.String">
+    <select id="selectProjectPlanListByPidAndPprojectphase" resultType="ProjectPlanList">
        SELECT
 	p.p_project_phase AS pProjectPhase,
 	t.t_name AS tName,
@@ -92,7 +92,7 @@ LEFT JOIN (
 	LEFT JOIN `user` u ON pum.user_id = u.user_id
 ) AS puser ON aip.id = puser.id
 WHERE
-	p.p_id = #{pId}
+	p.p_id = #{pId} AND t.p_project_phase = #{pProjectPhase}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
