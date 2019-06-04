@@ -1,17 +1,21 @@
 package com.gedi.projectmanagement.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.gedi.projectmanagement.model.Journal;
 import com.gedi.projectmanagement.service.IJournalService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 日志 信息操作处理
@@ -30,18 +34,20 @@ public class JournalController
 
 	/**
 	 * 查询日志列表
-	 * 需要传入用户id的参数 userId
+	 * 不需要传入用户id的参数 userId会在用户进入钉钉时获取信息放在session里
 	 */
 	@GetMapping("/journal/list")
 	@ResponseBody
-	public HashMap list(String userId)
+	public HashMap list()
 	{
+		String userId = "userId";//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",400);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
 		HashMap map = new HashMap();
 		List<HashMap<String,Object>> list = null;
 		if(userId != null && !"".equals(userId)){//判断是否传入用户id 有的话把userId放到map中
+			map.put("userId",userId);
 			 list = journalService.selectJournalResultList(map);//返回日报列表数据
 			 if(list.size() > 0){
 				 resultMap.put("code",200);
@@ -58,32 +64,34 @@ public class JournalController
 	/**
 	 * 新增保存日志
 	 */
-	/*@GetMapping("/add")
-	public String add()
-	{
-	    return prefix + "/add";
-	}
-	@RequiresPermissions("system:journal:add")
-	@Log(title = "日志", businessType = BusinessType.INSERT)
-	@PostMapping("/add")
+	//@GetMapping("/journal/add")
 	@ResponseBody
-	public AjaxResult addSave(Journal journal)
+	@RequestMapping(value = "/journal/add",method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
+	public HashMap addRb(HttpServletRequest request)
 	{
-		return toAjax(journalService.insertJournal(journal));
-	}*/
+		JSONObject jsonParam = this.getJSONParam(request);
+		HashMap resultMap = new HashMap();
 
+		return resultMap;
 
-
-	/**
-	 * 修改日志
-	 */
-	@GetMapping("/edit/{rbId}")
-	public String edit(@PathVariable("rbId") String rbId, ModelMap mmap)
-	{
-		Journal journal = journalService.selectJournalById(rbId);
-		mmap.put("journal", journal);
-	    return prefix + "/edit";
 	}
-	
+
+	public JSONObject getJSONParam(HttpServletRequest request){
+		JSONObject jsonParam = null;
+		try {
+			// 获取输入流
+			BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+			// 写入数据到Stringbuilder
+			 StringBuilder sb = new StringBuilder(); String line = null;
+			 while ((line = streamReader.readLine()) != null){
+			 	sb.append(line);
+	 			}
+	 		jsonParam = JSONObject.parseObject(sb.toString()); // 直接将json信息打印出来
+			// System.out.println(jsonParam.toJSONString());
+		}catch (Exception e){
+			e.printStackTrace();
+		   }
+		return jsonParam;
+	}
 
 }
