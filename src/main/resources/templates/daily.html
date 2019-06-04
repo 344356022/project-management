@@ -9,29 +9,29 @@
 </head>
 <body>
     <div class="daily">
-       <div class="daily_list">
-           <div class="daily_title">
-               市县经营评价
-           </div>
-           <div class="daily_box">
-               <div class="daily_left">1、整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>
-               <div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>
-           </div>
-           <div class="txt">
-               <textarea >完成情况描述：</textarea>
-           </div>
-       </div>
-        <div class="daily_list">
-            <div class="daily_title">
-                95598客户诉求热点服务
-            </div>
-            <div class="daily_box">
-                <div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>
-            </div>
-            <div class="txt">
-                <textarea >完成情况描述：</textarea>
-            </div>
-        </div>
+       <!--<div class="daily_list">-->
+           <!--<div class="daily_title">-->
+               <!--市县经营评价-->
+           <!--</div>-->
+           <!--<div class="daily_box">-->
+               <!--<div class="daily_left">1、整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>-->
+               <!--<div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>-->
+           <!--</div>-->
+           <!--<div class="txt">-->
+               <!--<textarea >完成情况描述：</textarea>-->
+           <!--</div>-->
+       <!--</div>-->
+        <!--<div class="daily_list">-->
+            <!--<div class="daily_title">-->
+                <!--95598客户诉求热点服务-->
+            <!--</div>-->
+            <!--<div class="daily_box">-->
+                <!--<div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>-->
+            <!--</div>-->
+            <!--<div class="txt">-->
+                <!--<textarea >完成情况描述：</textarea>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
     <!--选择日志接收人-->
     <div class="js_box">
@@ -62,6 +62,7 @@
     <script src="/js/jquery-3.3.1.js"></script>
     <script>
         checkALL();
+        insert();
         $('#add_name').click(function () {
             show();
         })
@@ -69,7 +70,25 @@
             hide();
             checkALL();
         });
-        //插入选择项
+        //插入项目列表v
+        function insert() {
+            for(var i=0;i<4;i++){
+                $html=$('<div class="daily_list"></div>');
+                $('.daily').append($html);
+                $title=$('<div class="daily_title">'+'市县经营'+i+'</div>')
+                $html.append($title);
+                $txtBox=$('<div class="daily_box"></div>');
+                $html.append($txtBox);
+                for (var j=0;j<3;j++){
+                    $list=$('<div class="daily_left">1、整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>')
+                    $txtBox.append($list)
+                }
+                $sr=$('<div class="txt"><textarea >完成情况描述：</textarea>')
+                $html.append($sr);
+            }
+        }
+
+        //插入日志接收人选择项
         function checkALL() {
             $('#name_list').html('');
             var boxes=document.getElementsByTagName('input');
