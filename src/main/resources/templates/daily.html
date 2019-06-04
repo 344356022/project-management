@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>钉钉e应用-日报</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <script src="../static/js/jquery-3.3.1.js"></script>
+</head>
+<body>
+    <div class="daily">
+       <div class="daily_list">
+           <div class="daily_title">
+               市县经营评价
+           </div>
+           <div class="daily_box">
+               <div class="daily_left">1、整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>
+               <div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>
+           </div>
+           <div class="txt">
+               <textarea >完成情况描述：</textarea>
+           </div>
+       </div>
+        <div class="daily_list">
+            <div class="daily_title">
+                95598客户诉求热点服务
+            </div>
+            <div class="daily_box">
+                <div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>
+            </div>
+            <div class="txt">
+                <textarea >完成情况描述：</textarea>
+            </div>
+        </div>
+    </div>
+    <!--选择日志接收人-->
+    <div class="js_box">
+        <p class="add">添加日志接收人<b id="add_name">选择</b></p>
+        <div id="name_list">
+
+        </div>
+
+    </div>
+    <div class="btn">
+        提交
+    </div>
+    <div class="pop">
+
+        <div class="popbox">
+            <p class="seach">选择日志接收人：</p>
+            <div id="change">
+                <label><input type="checkbox" name="name" value="张理想">张理想</label>
+                <label><input type="checkbox" name="name" value="张11" checked>张11</label>
+                <label><input type="checkbox" name="name" value="张22">张22</label>
+                <label><input type="checkbox" name="name" value="张33">张33</label>
+                <label><input type="checkbox" name="name" value="张44">张44</label>
+            </div>
+            <input type="button" value="确定" id="upload">
+            <input type="button" value="取消" id="hide" onclick="hide()">
+        </div>
+    </div>
+    <script src="../static/js/jquery-3.3.1.js"></script>
+    <script>
+        checkALL();
+        $('#add_name').click(function () {
+            show();
+        })
+        $("#upload").click(function () {
+            hide();
+            checkALL();
+        });
+        //插入选择项
+        function checkALL() {
+            $('#name_list').html('');
+            var boxes=document.getElementsByTagName('input');
+            for(var i=0;i<boxes.length;i++){
+                if(boxes[i].checked==true){
+                   var htmlList =$('<span>'+boxes[i].value+'</span>');
+                }
+                $('#name_list').append(htmlList)
+            }
+        }
+        function show() {
+            $('.pop').show();
+        }
+        function hide() {
+            $('.pop').hide();
+        }
+    </script>
+</body>
+</html>
