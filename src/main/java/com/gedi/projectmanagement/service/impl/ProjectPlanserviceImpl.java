@@ -46,6 +46,7 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         }
     }
 
+    // 根据pName模糊查询项目总体计划列表展示
     @Override
     public CodeAndMsg selectBypName(String pName) {
         List<ProjectPlan> projectPlans = projectPlanMapper.selectBypName(pName);
