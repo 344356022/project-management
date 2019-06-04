@@ -87,15 +87,14 @@
                 $html.append($sr);
             }
         }
-
+        //循环接收人列表
+        for(var i=0;i<7;i++){
+            $lable=$('<label><input type="checkbox" name="name" value="'+i+'">'+i+'</label>');
+            $('#change2').append($lable);
+        }
         //插入日志接收人选择项
         function checkALL() {
             $('#name_list').html('');
-            //循环接收人列表
-            for(var i=0;i<7;i++){
-                $lable=$('<label><input type="checkbox" name="name" value="'+i+'">'+i+'</label>');
-                $('#change2').append($lable);
-            }
             //获取被选中显示到页面
             var boxes=document.getElementsByTagName('input');
             for(var i=0;i<boxes.length;i++){
