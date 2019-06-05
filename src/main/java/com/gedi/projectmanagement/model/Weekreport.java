@@ -1,5 +1,7 @@
 package com.gedi.projectmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Weekreport {
@@ -41,6 +43,7 @@ public class Weekreport {
         this.pId = pId;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getwStartTime() {
         return wStartTime;
     }
@@ -49,6 +52,7 @@ public class Weekreport {
         this.wStartTime = wStartTime;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getwEndTime() {
         return wEndTime;
     }

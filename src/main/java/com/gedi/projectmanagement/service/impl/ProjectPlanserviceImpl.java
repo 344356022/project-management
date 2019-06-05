@@ -1,6 +1,7 @@
 package com.gedi.projectmanagement.service.impl;
 
 import com.gedi.projectmanagement.dao.ProjectPlanMapper;
+import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
@@ -14,7 +15,7 @@ import java.util.List;
 
 /**
  * @author wangyanbin
- * @D
+ * @Description :
  */
 @Service
 @Transactional
@@ -34,12 +35,37 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         }
     }
 
+    //新增项目总计划
+    @Override
+    /*public boolean addProject(ProjectPlan projectPlan) {
+        //return (projectPlanMapper.addProject(projectPlan) == 0 ? false : true);
+        return projectPlanMapper.addProject(projectPlan) == 0 ? false : true;
+    }*/
+    public void addProject(ProjectPlan projectPlan) {
+        try {
+            projectPlanMapper.addProject(projectPlan);
+        }catch (Exception e) {
+            throw e;
+        }
+    }
+
     // 查询所有用于项目总计划清单的展示
     @Override
     public CodeAndMsg selectProjectPlanListByPidAndPprojectphase(String pId, Integer pProjectPhase) {
         List<ProjectPlanList> projectPlanLists = projectPlanMapper.selectProjectPlanListByPidAndPprojectphase(pId, pProjectPhase);
         if (projectPlanLists != null) {
             return CodeAndMsgUtil.setOK("查询成功", projectPlanLists);
+        } else {
+            return CodeAndMsgUtil.setERROR("查询失败", null);
+        }
+    }
+
+    // 根据pName模糊查询项目总体计划列表展示
+    @Override
+    public CodeAndMsg selectBypName(String pName) {
+        List<ProjectPlan> projectPlans = projectPlanMapper.selectBypName(pName);
+        if (projectPlans != null) {
+            return CodeAndMsgUtil.setOK("查询成功", projectPlans);
         } else {
             return CodeAndMsgUtil.setERROR("查询失败", null);
         }
