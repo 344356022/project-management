@@ -87,7 +87,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="creater != null  and creater != ''  ">#{creater},</if>
          </trim>
     </insert>
-	 
+
+    <!-- 批量插入日报信息-->
+    <insert id="insertJournalList" parameterType="java.util.List">
+    insert into  journal
+    (rb_id, w_id, user_id, finish, finish_content, finish_process, create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+         (
+             #{item.rbId},
+             #{item.weekId},
+             #{item.userId},
+             #{item.wcjd},
+               #{item.text},
+                #{item.wcgs},
+             NOW() )
+          </foreach>
+
+
+    </insert>
     <update id="updateJournal" parameterType="Journal">
         update journal
         <trim prefix="SET" suffixOverrides=",">

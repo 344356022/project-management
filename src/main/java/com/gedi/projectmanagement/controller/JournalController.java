@@ -2,11 +2,14 @@ package com.gedi.projectmanagement.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gedi.projectmanagement.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -70,14 +73,29 @@ public class JournalController
 	/**
 	 * 新增保存日志
 	 */
-	//@GetMapping("/journal/add")
 	@ResponseBody
-	@RequestMapping(value = "/journal/add",method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/journal/save",method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
 	public HashMap addRb(HttpServletRequest request)
-	{
+	{	HashMap resultMap = new HashMap();
 		JSONObject jsonParam = this.getJSONParam(request);
-		HashMap resultMap = new HashMap();
+      Map<String, Object>  map = ( Map<String, Object>)jsonParam;
+      List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");
+        System.err.println("--------:"+map);
+        System.err.println("--------:"+ll);
 
+        System.err.println("-----ll---:"+ll);
+		/*String result = jsonParam.getString("para");
+        result=result.substring(1,result.length()-1);
+        String [] stringArr= result.split(",");
+        List list = Arrays.asList(stringArr);*/
+      /*  for(int i=0;i<list.size();i++){
+            HashMap<String,Object> map = (HashMap) list.get(i);
+            map.put("rbId", UUIDUtil.getUUID2());
+            map.put("userId","userId");
+            System.err.println("--------:"+list.get(i));
+        }*/
+
+        int resultNum = journalService.insertJournalList(ll);
 		return resultMap;
 
 	}
@@ -93,21 +111,26 @@ public class JournalController
 			 	sb.append(line);
 	 			}
 	 		jsonParam = JSONObject.parseObject(sb.toString()); // 直接将json信息打印出来
-			// System.out.println(jsonParam.toJSONString());
+			System.out.println(jsonParam.toJSONString());
 		}catch (Exception e){
 			e.printStackTrace();
 		   }
 		return jsonParam;
 	}
 
-	@GetMapping("/journal")
-	public String list(ModelMap mmap)
+	@ResponseBody
+	@RequestMapping(value = "/journal/add",method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
+	public HashMap add(HttpServletRequest request)
 	{
-		HashMap map = new HashMap();
-		List<HashMap<String,Object>> list = null;
-		map.put("userId","userId");
-		list = journalService.selectJournalResultList(map);//返回日报列表数据
-		mmap.put("journal",list);
-		return "daily";
+		HashMap resultMap = new HashMap();
+        JSONObject jsonParam = this.getJSONParam(request);
+        Map<String, Object> map = (Map<String, Object>)jsonParam;
+        String result = jsonParam.getString("para");
+        System.err.println("-------:"+map);
+       // HashMap<String,Object> mmp = result;
+
+
+		return resultMap;
+
 	}
 }
