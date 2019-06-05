@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 //@RequestMapping("/journal")
 public class JournalController
 {
-    private String prefix = "system/journal";
-	
 	@Autowired
 	private IJournalService journalService;
 
@@ -36,11 +34,12 @@ public class JournalController
 	 * 查询日志列表
 	 * 不需要传入用户id的参数 userId会在用户进入钉钉时获取信息放在session里
 	 */
-	@GetMapping("/journal/list")
+	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list()
 	{
 		String userId = "userId";//暂时写死后续会从session获取用户信息
+		System.err.println("-------------");
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",400);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
@@ -49,6 +48,7 @@ public class JournalController
 		if(userId != null && !"".equals(userId)){//判断是否传入用户id 有的话把userId放到map中
 			map.put("userId",userId);
 			 list = journalService.selectJournalResultList(map);//返回日报列表数据
+			System.err.println("----list----"+list.size());
 			 if(list.size() > 0){
 				 resultMap.put("code",200);
 				 resultMap.put("msg","成功");
@@ -58,6 +58,7 @@ public class JournalController
 			 }
 			 map.clear();
 			 map.put("result",list);
+			 //抄送人列表
 			List<HashMap<String,Object>> userList = journalService.selectUserList();
 			map.put("userList",userList);
 
@@ -99,4 +100,14 @@ public class JournalController
 		return jsonParam;
 	}
 
+	@GetMapping("/journal")
+	public String list(ModelMap mmap)
+	{
+		HashMap map = new HashMap();
+		List<HashMap<String,Object>> list = null;
+		map.put("userId","userId");
+		list = journalService.selectJournalResultList(map);//返回日报列表数据
+		mmap.put("journal",list);
+		return "daily";
+	}
 }
