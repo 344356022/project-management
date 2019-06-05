@@ -20,6 +20,23 @@
     a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time, a_user_id, 
     a_percentage, a_state, a_is_result, creater, create_time, ts_id
   </sql>
+
+  <!-- 新增项目中的任务项列表 -->
+  <insert id="insert" parameterType="com.gedi.projectmanagement.model.ActionItem" >
+    insert into action_item (a_id, `a_ name`, a_pstart_time,
+      a_pend_time, a_astart_time, a_aend_time,
+      a_user_id, a_percentage, a_state,
+      a_is_result, creater, create_time,
+      ts_id)
+    values (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE},
+      #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE},
+      #{userId,jdbcType=INTEGER}, #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER},
+      #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{tsId,jdbcType=VARCHAR})
+  </insert>
+
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -30,18 +47,7 @@
     delete from action_item
     where a_id = #{aId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.ActionItem" >
-    insert into action_item (a_id, `a_ name`, a_pstart_time, 
-      a_pend_time, a_astart_time, a_aend_time, 
-      a_user_id, a_percentage, a_state, 
-      a_is_result, creater, create_time, 
-      ts_id)
-    values (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE}, 
-      #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE}, 
-      #{userId,jdbcType=INTEGER}, #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER}, 
-      #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{tsId,jdbcType=VARCHAR})
-  </insert>
+
   <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ActionItem" >
     insert into action_item
     <trim prefix="(" suffix=")" suffixOverrides="," >

@@ -3,7 +3,7 @@ package com.gedi.projectmanagement.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
-
+//项目任务类实体类
 public class TaskClass {
     private String tId;
 

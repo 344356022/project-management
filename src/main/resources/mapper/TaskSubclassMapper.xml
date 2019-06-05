@@ -12,6 +12,18 @@
   <sql id="Base_Column_List" >
     ts_id, ts_name, p_id, t_id, create_time, creater
   </sql>
+
+  <!-- 新增项目任务子类sql语句 -->
+  <insert id="addTaskSubclass" parameterType="com.gedi.projectmanagement.model.TaskSubclass" >
+    insert into task_subclass (ts_id, ts_name, p_id, t_id, create_time, creater)
+    values (#{tsId,jdbcType=VARCHAR}, #{tsName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR},
+      #{tId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
+  </insert>
+
+
+
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -22,14 +34,7 @@
     delete from task_subclass
     where ts_id = #{tsId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.TaskSubclass" >
-    insert into task_subclass (ts_id, ts_name, p_id, 
-      t_id, create_time, creater
-      )
-    values (#{tsId,jdbcType=VARCHAR}, #{tsName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, 
-      #{tId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}
-      )
-  </insert>
+
   <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.TaskSubclass" >
     insert into task_subclass
     <trim prefix="(" suffix=")" suffixOverrides="," >
