@@ -5,7 +5,7 @@ public class ProjectUserMedium {
 
     private String userId;
 
-    private String pId;
+    private String aId;
 
     public String getId() {
         return id;
@@ -23,11 +23,29 @@ public class ProjectUserMedium {
         this.userId = userId;
     }
 
-    public String getpId() {
-        return pId;
+    public String getaId() {
+        return aId;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setaId(String aId) {
+        this.aId = aId;
+    }
+
+    public ProjectUserMedium() {
+    }
+
+    public ProjectUserMedium(String id, String userId, String aId) {
+        this.id = id;
+        this.userId = userId;
+        this.aId = aId;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectUserMedium{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", aId='" + aId + '\'' +
+                '}';
     }
 }

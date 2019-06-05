@@ -2,10 +2,8 @@ package com.gedi.projectmanagement.controller;
 
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -16,6 +14,7 @@ import javax.annotation.Resource;
  * @date :
  */
 @RestController
+@RequestMapping("/projectPlan")
 public class ProjectPlanController {
 
     @Resource
@@ -30,8 +29,8 @@ public class ProjectPlanController {
 
     // 展示所有清单列表
     @PostMapping(value = "/projectPlanList")
-    public CodeAndMsg selectProjectPlanListByPidAndPprojectphase(String pId, Integer pProjectPhase) {
-        return projectPlanService.selectProjectPlanListByPidAndPprojectphase(pId, pProjectPhase);
+    public CodeAndMsg selectProjectPlanListByPidAndpProjectPhaseId(String pId, Integer pProjectPhaseId) {
+        return projectPlanService.selectProjectPlanListByPidAndpProjectPhaseId(pId, pProjectPhaseId);
     }
 
     // 根据pName模糊查询项目总体计划列表展示

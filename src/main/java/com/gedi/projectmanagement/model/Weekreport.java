@@ -116,4 +116,38 @@ public class Weekreport {
     public void setwRemark(String wRemark) {
         this.wRemark = wRemark;
     }
+
+    public Weekreport() {
+    }
+
+    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String aId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark) {
+        this.wId = wId;
+        this.pId = pId;
+        this.wStartTime = wStartTime;
+        this.wEndTime = wEndTime;
+        this.aId = aId;
+        this.wWorkReport = wWorkReport;
+        this.userId = userId;
+        this.wActualProportion = wActualProportion;
+        this.wPlanProportion = wPlanProportion;
+        this.wStatus = wStatus;
+        this.wRemark = wRemark;
+    }
+
+    @Override
+    public String toString() {
+        return "Weekreport{" +
+                "wId='" + wId + '\'' +
+                ", pId='" + pId + '\'' +
+                ", wStartTime=" + wStartTime +
+                ", wEndTime=" + wEndTime +
+                ", aId='" + aId + '\'' +
+                ", wWorkReport='" + wWorkReport + '\'' +
+                ", userId='" + userId + '\'' +
+                ", wActualProportion=" + wActualProportion +
+                ", wPlanProportion=" + wPlanProportion +
+                ", wStatus=" + wStatus +
+                ", wRemark='" + wRemark + '\'' +
+                '}';
+    }
 }

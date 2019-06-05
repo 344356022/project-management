@@ -7,9 +7,10 @@
     <result column="p_id" property="pId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="p_project_phase_id" property="pProjectPhaseId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    t_id, t_name, p_id, create_time, creater
+    t_id, t_name, p_id, create_time, creater, p_project_phase_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -23,9 +24,11 @@
   </delete>
   <insert id="insert" parameterType="com.gedi.projectmanagement.model.TaskClass" >
     insert into task_class (t_id, t_name, p_id, 
-      create_time, creater)
+      create_time, creater, p_project_phase_id
+      )
     values (#{tId,jdbcType=VARCHAR}, #{tName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
+      #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{pProjectPhaseId,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.TaskClass" >
     insert into task_class
@@ -45,6 +48,9 @@
       <if test="creater != null" >
         creater,
       </if>
+      <if test="pProjectPhaseId != null" >
+        p_project_phase_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="tId != null" >
@@ -61,6 +67,9 @@
       </if>
       <if test="creater != null" >
         #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="pProjectPhaseId != null" >
+        #{pProjectPhaseId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -79,6 +88,9 @@
       <if test="creater != null" >
         creater = #{creater,jdbcType=VARCHAR},
       </if>
+      <if test="pProjectPhaseId != null" >
+        p_project_phase_id = #{pProjectPhaseId,jdbcType=INTEGER},
+      </if>
     </set>
     where t_id = #{tId,jdbcType=VARCHAR}
   </update>
@@ -87,7 +99,8 @@
     set t_name = #{tName,jdbcType=VARCHAR},
       p_id = #{pId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      creater = #{creater,jdbcType=VARCHAR}
+      creater = #{creater,jdbcType=VARCHAR},
+      p_project_phase_id = #{pProjectPhaseId,jdbcType=INTEGER}
     where t_id = #{tId,jdbcType=VARCHAR}
   </update>
 </mapper>

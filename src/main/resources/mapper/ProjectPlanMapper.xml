@@ -6,13 +6,13 @@
         <result column="p_name" property="pName" jdbcType="VARCHAR"/>
         <result column="p_start_time" property="pStartTime" jdbcType="DATE"/>
         <result column="p_end_time" property="pEndTime" jdbcType="DATE"/>
-        <result column="p_project_phase" property="pProjectPhase" jdbcType="INTEGER"/>
+        <result column="p_project_phase_id" property="pProjectPhaseId" jdbcType="INTEGER"/>
         <result column="p_progress" property="pProgress" jdbcType="DECIMAL"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="creater" property="creater" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    p_id, p_name, p_start_time, p_end_time, p_project_phase, p_progress, create_time, 
+    p_id, p_name, p_start_time, p_end_time, p_project_phase_id, p_progress, create_time, 
     creater
     </sql>
 
@@ -24,7 +24,7 @@
     p_name,
     p_start_time,
     p_end_time,
-    p_project_phase,
+    p_project_phase_id,
     p_progress,
     create_time,
     creater
@@ -33,12 +33,12 @@
   </select>
 
     <!-- 新增项目总计划 -->
-    <insert id="addProject" parameterType="com.gedi.projectmanagement.model.ProjectPlan" >
+    <insert id="addProject" parameterType="com.gedi.projectmanagement.model.ProjectPlan">
         insert into project_plan (
           p_id, p_name,
           p_start_time,
           p_end_time,
-          p_project_phase,
+          p_project_phase_id,
           p_progress,
           create_time,
           creater)
@@ -47,13 +47,11 @@
           #{pName,jdbcType=VARCHAR},
           #{pStartTime,jdbcType=DATE},
           #{pEndTime,jdbcType=DATE},
-          #{pProjectPhase,jdbcType=INTEGER},
+          #{pProjectPhaseId,jdbcType=INTEGER},
           #{pProgress,jdbcType=DECIMAL},
           #{createTime,jdbcType=TIMESTAMP},
           #{creater,jdbcType=VARCHAR})
       </insert>
-
-
 
 
     <!-- 根据pName模糊查询项目总体计划列表展示 -->
@@ -63,7 +61,7 @@
     p_name,
     p_start_time,
     p_end_time,
-    p_project_phase,
+    p_project_phase_id,
     p_progress,
     create_time,
     creater
@@ -71,20 +69,20 @@
     where p_name LIKE '%' #{pName} '%'
   </select>
 
-    <!-- 根据pId和pProjectPhase查询用于项目总体计划清单列表展示 -->
-    <select id="selectProjectPlanListByPidAndPprojectphase" resultType="ProjectPlanList">
+    <!-- 根据pId和pProjectPhaseId查询用于项目总体计划清单列表展示 -->
+    <select id="selectProjectPlanListByPidAndpProjectPhaseId" resultType="ProjectPlanList">
        SELECT
-	p.p_project_phase AS pProjectPhase,
+	p.p_project_phase_id AS pProjectPhaseId,
 	t.t_name AS tName,
-	tts. NAME,
-	tsai.aname,
-	tsai.apstime,
-	tsai.apetime,
-	tsai.aastime,
-	tsai.aaetime,
-	tsai.percentage,
-	tsai.state,
-	tsai.isresult,
+	tts. NAME AS tsName,
+	tsai.aname AS aName,
+	tsai.apstime AS apsTime,
+	tsai.apetime AS apeTime,
+	tsai.aastime AS aasTime,
+	tsai.aaetime AS aaeTime,
+	tsai.percentage AS percentage,
+	tsai.state AS state,
+	tsai.isresult AS aisResult,
 	username
 FROM
 	(
@@ -118,21 +116,24 @@ LEFT JOIN (
 ) AS tsai ON tts.tsid = tsai.id
 LEFT JOIN (
 	SELECT
-		ai.a_id AS id
+		ai.a_id AS id,
+		pum.user_id AS userId
 	FROM
 		action_item AS ai
 	LEFT JOIN project_user_medium pum ON ai.a_id = pum.a_id
-) AS aip ON tsai.id = aip.id
+) AS aip ON tsai.aid = aip.id
 LEFT JOIN (
 	SELECT
 		u.u_name AS username,
-		pum.user_id AS id
+		pum.user_id AS id,
+		pum.a_id AS aId
 	FROM
 		project_user_medium pum
 	LEFT JOIN `user` u ON pum.user_id = u.user_id
-) AS puser ON aip.id = puser.id
+) AS puser ON aip.id = puser.aId
 WHERE
-	p.p_id = #{pId} AND t.p_project_phase = #{pProjectPhase}
+	t.p_id = #{pId}
+AND t.p_project_phase_id = #{pProjectPhaseId}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -141,10 +142,10 @@ WHERE
   </delete>
     <insert id="insert" parameterType="com.gedi.projectmanagement.model.ProjectPlan">
     insert into project_plan (p_id, p_name, p_start_time, 
-      p_end_time, p_project_phase, p_progress, 
+      p_end_time, p_project_phase_id, p_progress, 
       create_time, creater)
     values (#{pId,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, #{pStartTime,jdbcType=DATE}, 
-      #{pEndTime,jdbcType=DATE}, #{pProjectPhase,jdbcType=INTEGER}, #{pProgress,jdbcType=DECIMAL}, 
+      #{pEndTime,jdbcType=DATE}, #{pProjectPhaseId,jdbcType=INTEGER}, #{pProgress,jdbcType=DECIMAL}, 
       #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ProjectPlan">
@@ -162,8 +163,8 @@ WHERE
             <if test="pEndTime != null">
                 p_end_time,
             </if>
-            <if test="pProjectPhase != null">
-                p_project_phase,
+            <if test="pProjectPhaseId != null">
+                p_project_phase_id,
             </if>
             <if test="pProgress != null">
                 p_progress,
@@ -188,8 +189,8 @@ WHERE
             <if test="pEndTime != null">
                 #{pEndTime,jdbcType=DATE},
             </if>
-            <if test="pProjectPhase != null">
-                #{pProjectPhase,jdbcType=INTEGER},
+            <if test="pProjectPhaseId != null">
+                #{pProjectPhaseId,jdbcType=INTEGER},
             </if>
             <if test="pProgress != null">
                 #{pProgress,jdbcType=DECIMAL},
@@ -214,8 +215,8 @@ WHERE
             <if test="pEndTime != null">
                 p_end_time = #{pEndTime,jdbcType=DATE},
             </if>
-            <if test="pProjectPhase != null">
-                p_project_phase = #{pProjectPhase,jdbcType=INTEGER},
+            <if test="pProjectPhaseId != null">
+                p_project_phase_id = #{pProjectPhaseId,jdbcType=INTEGER},
             </if>
             <if test="pProgress != null">
                 p_progress = #{pProgress,jdbcType=DECIMAL},
@@ -234,7 +235,7 @@ WHERE
     set p_name = #{pName,jdbcType=VARCHAR},
       p_start_time = #{pStartTime,jdbcType=DATE},
       p_end_time = #{pEndTime,jdbcType=DATE},
-      p_project_phase = #{pProjectPhase,jdbcType=INTEGER},
+      p_project_phase_id = #{pProjectPhaseId,jdbcType=INTEGER},
       p_progress = #{pProgress,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       creater = #{creater,jdbcType=VARCHAR}
