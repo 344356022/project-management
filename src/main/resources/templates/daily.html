@@ -9,29 +9,6 @@
 </head>
 <body>
     <div class="daily">
-       <!--<div class="daily_list">-->
-           <!--<div class="daily_title">-->
-               <!--市县经营评价-->
-           <!--</div>-->
-           <!--<div class="daily_box">-->
-               <!--<div class="daily_left">1、整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>-->
-               <!--<div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>-->
-           <!--</div>-->
-           <!--<div class="txt">-->
-               <!--<textarea >完成情况描述：</textarea>-->
-           <!--</div>-->
-       <!--</div>-->
-        <!--<div class="daily_list">-->
-            <!--<div class="daily_title">-->
-                <!--95598客户诉求热点服务-->
-            <!--</div>-->
-            <!--<div class="daily_box">-->
-                <!--<div class="daily_left">1、整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>-->
-            <!--</div>-->
-            <!--<div class="txt">-->
-                <!--<textarea >完成情况描述：</textarea>-->
-            <!--</div>-->
-        <!--</div>-->
     </div>
     <!--选择日志接收人-->
     <div class="js_box">
@@ -41,7 +18,7 @@
         </div>
 
     </div>
-    <div class="btn">
+    <div class="btn" onclick="save()">
         提交
     </div>
     <div class="pop">
@@ -49,11 +26,6 @@
         <div class="popbox">
             <p class="seach">选择日志接收人：</p>
             <div id="change2">
-                <!--<label><input type="checkbox" name="name" value="张理想">张理想</label>-->
-                <!--<label><input type="checkbox" name="name" value="张11" checked>张11</label>-->
-                <!--<label><input type="checkbox" name="name" value="张22">张22</label>-->
-                <!--<label><input type="checkbox" name="name" value="张33">张33</label>-->
-                <!--<label><input type="checkbox" name="name" value="张44">张44</label>-->
             </div>
             <input type="button" value="确定" id="upload">
             <input type="button" value="取消" id="hide" onclick="hide()">
@@ -72,25 +44,56 @@
         });
         //插入项目列表v
         function insert() {
-            for(var i=0;i<4;i++){
-                $html=$('<div class="daily_list"></div>');
-                $('.daily').append($html);
-                $title=$('<div class="daily_title">'+'市县经营'+i+'</div>')
-                $html.append($title);
-                $txtBox=$('<div class="daily_box"></div>');
-                $html.append($txtBox);
-                for (var j=0;j<3;j++){
-                    $list=$('<div class="daily_left">1、整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档整理项目验收文档<span>完成进度(%)：<input type="text" value="0"/><br/>工时(h)：<input type="text" value="0"/></span></div>')
-                    $txtBox.append($list)
+            var curWwwPath=window.document.location.href;
+            var pathName=window.document.location.pathname;
+            var pos=curWwwPath.indexOf(pathName);
+            var localhostPaht=curWwwPath.substring(0,pos);
+            $.ajax({
+                url:localhostPaht+"/journal/list",
+                type:"post",
+                cache:false,
+                contentType:"application/json; charset=utf-8",
+                dataType:"json",
+                async:false,
+                data:null,
+                success:function(res){
+                    var i=0;
+                    var j =0;
+                    if(res.code == 200){
+                       for(var i=i;i<res.data.result.length;i++){
+                            $html=$('<div class="daily_list"></div>');
+                            $('.daily').append($html);
+                            $title=$('<div class="daily_title">'+res.data.result[i].p_name+'</div>')
+                            $html.append($title);
+                            $txtBox=$('<div class="daily_box"></div>');
+                            $html.append($txtBox);
+                            for (var j=j;j<res.data.result.length;j++){
+                                if(j > 0){
+                                    if(res.data.result[j].p_id == res.data.result[i].p_id ){
+                                        $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
+                                    }else{
+                                        i=j;
+                                        j=j;
+                                        break;
+                                    }
+                                }else{
+                                    $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
+                                }
+
+                                $txtBox.append($list);
+                                // $sr=$('<div class="txt"><textarea >完成情况描述：</textarea>');
+                              //  $txtBox.append($sr);
+                            }
+
+                        }
+                        //循环接收人列表
+                        for(var i=0;i<res.data.userList.length;i++){
+                            $lable=$('<label><input type="checkbox" id="'+res.data.userList[i].user_id+'" name="name" value="'+res.data.userList[i].u_name+'">'+res.data.userList[i].u_name+'</label>');
+                            $('#change2').append($lable);
+                        }
+                    }
                 }
-                $sr=$('<div class="txt"><textarea >完成情况描述：</textarea>')
-                $html.append($sr);
-            }
-        }
-        //循环接收人列表
-        for(var i=0;i<7;i++){
-            $lable=$('<label><input type="checkbox" name="name" value="'+i+'">'+i+'</label>');
-            $('#change2').append($lable);
+            });
         }
         //插入日志接收人选择项
         function checkALL() {
@@ -109,6 +112,10 @@
         }
         function hide() {
             $('.pop').hide();
+        }
+
+        function save() {
+           console.log($(".daily_list").find("div"));
         }
     </script>
 </body>
