@@ -96,4 +96,34 @@ public class User {
     public void setCreater(String creater) {
         this.creater = creater;
     }
+
+    public User() {
+    }
+
+    public User(String userId, Integer uPhone, String uName, String uDepartment, Integer uSign, Boolean uStatus, Date createTime, Date updateTime, String creater) {
+        this.userId = userId;
+        this.uPhone = uPhone;
+        this.uName = uName;
+        this.uDepartment = uDepartment;
+        this.uSign = uSign;
+        this.uStatus = uStatus;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.creater = creater;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", uPhone=" + uPhone +
+                ", uName='" + uName + '\'' +
+                ", uDepartment='" + uDepartment + '\'' +
+                ", uSign=" + uSign +
+                ", uStatus=" + uStatus +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", creater='" + creater + '\'' +
+                '}';
+    }
 }

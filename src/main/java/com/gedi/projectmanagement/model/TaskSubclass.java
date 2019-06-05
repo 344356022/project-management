@@ -65,4 +65,28 @@ public class TaskSubclass {
     public void setCreater(String creater) {
         this.creater = creater;
     }
+
+    public TaskSubclass() {
+    }
+
+    public TaskSubclass(String tsId, String tsName, String pId, String tId, Date createTime, String creater) {
+        this.tsId = tsId;
+        this.tsName = tsName;
+        this.pId = pId;
+        this.tId = tId;
+        this.createTime = createTime;
+        this.creater = creater;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskSubclass{" +
+                "tsId='" + tsId + '\'' +
+                ", tsName='" + tsName + '\'' +
+                ", pId='" + pId + '\'' +
+                ", tId='" + tId + '\'' +
+                ", createTime=" + createTime +
+                ", creater='" + creater + '\'' +
+                '}';
+    }
 }

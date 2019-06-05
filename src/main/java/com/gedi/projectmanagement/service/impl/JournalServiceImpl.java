@@ -60,5 +60,15 @@ public class JournalServiceImpl implements  IJournalService
 		return journalMapper.selectUserList();
 	}
 
+	/**
+	 * 批量插入日报信息
+	 * @param list
+	 * @return
+	 */
+	@Override
+	public int insertJournalList(List list) {
+		return journalMapper.insertJournalList(list);
+	}
+
 
 }

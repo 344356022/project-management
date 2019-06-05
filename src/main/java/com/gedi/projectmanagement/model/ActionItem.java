@@ -139,4 +139,42 @@ public class ActionItem {
     public void setTsId(String tsId) {
         this.tsId = tsId;
     }
+
+    public ActionItem() {
+    }
+
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, Integer userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
+        this.aId = aId;
+        this.aName = aName;
+        this.aPstartTime = aPstartTime;
+        this.aPendTime = aPendTime;
+        this.aAstartTime = aAstartTime;
+        this.aAendTime = aAendTime;
+        this.userId = userId;
+        this.aPercentage = aPercentage;
+        this.aState = aState;
+        this.aIsResult = aIsResult;
+        this.creater = creater;
+        this.createTime = createTime;
+        this.tsId = tsId;
+    }
+
+    @Override
+    public String toString() {
+        return "ActionItem{" +
+                "aId='" + aId + '\'' +
+                ", aName='" + aName + '\'' +
+                ", aPstartTime=" + aPstartTime +
+                ", aPendTime=" + aPendTime +
+                ", aAstartTime=" + aAstartTime +
+                ", aAendTime=" + aAendTime +
+                ", userId=" + userId +
+                ", aPercentage=" + aPercentage +
+                ", aState=" + aState +
+                ", aIsResult=" + aIsResult +
+                ", creater='" + creater + '\'' +
+                ", createTime=" + createTime +
+                ", tsId='" + tsId + '\'' +
+                '}';
+    }
 }

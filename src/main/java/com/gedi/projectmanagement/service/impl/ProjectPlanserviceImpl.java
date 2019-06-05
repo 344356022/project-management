@@ -6,7 +6,6 @@ import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.CodeAndMsgUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,15 +43,15 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     public void addProject(ProjectPlan projectPlan) {
         try {
             projectPlanMapper.addProject(projectPlan);
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw e;
         }
     }
 
     // 查询所有用于项目总计划清单的展示
     @Override
-    public CodeAndMsg selectProjectPlanListByPidAndPprojectphase(String pId, Integer pProjectPhase) {
-        List<ProjectPlanList> projectPlanLists = projectPlanMapper.selectProjectPlanListByPidAndPprojectphase(pId, pProjectPhase);
+    public CodeAndMsg selectProjectPlanListByPidAndpProjectPhaseId(String pId, Integer pProjectPhaseId) {
+        List<ProjectPlanList> projectPlanLists = projectPlanMapper.selectProjectPlanListByPidAndpProjectPhaseId(pId, pProjectPhaseId);
         if (projectPlanLists != null) {
             return CodeAndMsgUtil.setOK("查询成功", projectPlanLists);
         } else {

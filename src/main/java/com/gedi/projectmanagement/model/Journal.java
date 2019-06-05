@@ -116,4 +116,38 @@ public class Journal {
     public void setCreater(String creater) {
         this.creater = creater;
     }
+
+    public Journal() {
+    }
+
+    public Journal(String rbId, String wId, String pId, String aId, String userId, Integer finish, String finishContent, BigDecimal finishProcess, String deliver, Date createTime, String creater) {
+        this.rbId = rbId;
+        this.wId = wId;
+        this.pId = pId;
+        this.aId = aId;
+        this.userId = userId;
+        this.finish = finish;
+        this.finishContent = finishContent;
+        this.finishProcess = finishProcess;
+        this.deliver = deliver;
+        this.createTime = createTime;
+        this.creater = creater;
+    }
+
+    @Override
+    public String toString() {
+        return "Journal{" +
+                "rbId='" + rbId + '\'' +
+                ", wId='" + wId + '\'' +
+                ", pId='" + pId + '\'' +
+                ", aId='" + aId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", finish=" + finish +
+                ", finishContent='" + finishContent + '\'' +
+                ", finishProcess=" + finishProcess +
+                ", deliver='" + deliver + '\'' +
+                ", createTime=" + createTime +
+                ", creater='" + creater + '\'' +
+                '}';
+    }
 }

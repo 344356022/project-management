@@ -19,7 +19,7 @@ public class ProjectPlan {
 
     private Date pEndTime;
 
-    private Integer pProjectPhase;
+    private Integer pProjectPhaseId;
 
     private BigDecimal pProgress;
 
@@ -63,12 +63,12 @@ public class ProjectPlan {
         this.pEndTime = pEndTime;
     }
 
-    public Integer getpProjectPhase() {
-        return pProjectPhase;
+    public Integer getpProjectPhaseId() {
+        return pProjectPhaseId;
     }
 
-    public void setpProjectPhase(Integer pProjectPhase) {
-        this.pProjectPhase = pProjectPhase;
+    public void setpProjectPhaseId(Integer pProjectPhaseId) {
+        this.pProjectPhaseId = pProjectPhaseId;
     }
 
     public BigDecimal getpProgress() {
@@ -100,12 +100,12 @@ public class ProjectPlan {
     public ProjectPlan() {
     }
 
-    public ProjectPlan(String pId, String pName, Date pStartTime, Date pEndTime, Integer pProjectPhase, BigDecimal pProgress, Date createTime, String creater) {
+    public ProjectPlan(String pId, String pName, Date pStartTime, Date pEndTime, Integer pProjectPhaseId, BigDecimal pProgress, Date createTime, String creater) {
         this.pId = pId;
         this.pName = pName;
         this.pStartTime = pStartTime;
         this.pEndTime = pEndTime;
-        this.pProjectPhase = pProjectPhase;
+        this.pProjectPhaseId = pProjectPhaseId;
         this.pProgress = pProgress;
         this.createTime = createTime;
         this.creater = creater;
@@ -118,7 +118,7 @@ public class ProjectPlan {
                 ", pName='" + pName + '\'' +
                 ", pStartTime=" + pStartTime +
                 ", pEndTime=" + pEndTime +
-                ", pProjectPhase=" + pProjectPhase +
+                ", pProjectPhaseId=" + pProjectPhaseId +
                 ", pProgress=" + pProgress +
                 ", createTime=" + createTime +
                 ", creater='" + creater + '\'' +

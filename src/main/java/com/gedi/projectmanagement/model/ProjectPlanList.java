@@ -13,41 +13,43 @@ import java.util.Date;
  **/
 public class ProjectPlanList {
 
-    private Integer pProjectPhase;
-    private String tName;
-    private String name;
-    private String aname;
-    private Date apstime;
-    private Date apetime;
-    private Date aastime;
-    private Date aaetime;
-    private Integer percentage;
-    private Integer state;
-    private Boolean isresult;
+    private Integer pProjectPhaseId; // 项目阶段ID
+    private String tName; // 任务类名称
+    private String tsName; // 任务子类名称
+    private String aName; // 任务项名称
+    private Date apsTime; // 计划开始时间
+    private Date apeTime; // 计划结束时间
+    private Date aasTime; // 实际开始时间
+    private Date aaeTime; // 实际结束时间
+    private Integer percentage; // 完成百分比
+    private Integer state; // 状态
+    private Boolean aisResult; // 成果是否提交  0 待提交 1 已提交
+    private String username; // 负责人
 
     public ProjectPlanList() {
     }
 
-    public ProjectPlanList(Integer pProjectPhase, String tName, String name, String aname, Date apstime, Date apetime, Date aastime, Date aaetime, Integer percentage, Integer state, Boolean isresult) {
-        this.pProjectPhase = pProjectPhase;
+    public ProjectPlanList(Integer pProjectPhaseId, String tName, String tsName, String aName, Date apsTime, Date apeTime, Date aasTime, Date aaeTime, Integer percentage, Integer state, Boolean aisResult, String username) {
+        this.pProjectPhaseId = pProjectPhaseId;
         this.tName = tName;
-        this.name = name;
-        this.aname = aname;
-        this.apstime = apstime;
-        this.apetime = apetime;
-        this.aastime = aastime;
-        this.aaetime = aaetime;
+        this.tsName = tsName;
+        this.aName = aName;
+        this.apsTime = apsTime;
+        this.apeTime = apeTime;
+        this.aasTime = aasTime;
+        this.aaeTime = aaeTime;
         this.percentage = percentage;
         this.state = state;
-        this.isresult = isresult;
+        this.aisResult = aisResult;
+        this.username = username;
     }
 
-    public Integer getpProjectPhase() {
-        return pProjectPhase;
+    public Integer getpProjectPhaseId() {
+        return pProjectPhaseId;
     }
 
-    public void setpProjectPhase(Integer pProjectPhase) {
-        this.pProjectPhase = pProjectPhase;
+    public void setpProjectPhaseId(Integer pProjectPhaseId) {
+        this.pProjectPhaseId = pProjectPhaseId;
     }
 
     public String gettName() {
@@ -58,56 +60,56 @@ public class ProjectPlanList {
         this.tName = tName;
     }
 
-    public String getName() {
-        return name;
+    public String getTsName() {
+        return tsName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTsName(String tsName) {
+        this.tsName = tsName;
     }
 
-    public String getAname() {
-        return aname;
+    public String getaName() {
+        return aName;
     }
 
-    public void setAname(String aname) {
-        this.aname = aname;
-    }
-
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getApstime() {
-        return apstime;
-    }
-
-    public void setApstime(Date apstime) {
-        this.apstime = apstime;
+    public void setaName(String aName) {
+        this.aName = aName;
     }
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getApetime() {
-        return apetime;
+    public Date getApsTime() {
+        return apsTime;
     }
 
-    public void setApetime(Date apetime) {
-        this.apetime = apetime;
-    }
-
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getAastime() {
-        return aastime;
-    }
-
-    public void setAastime(Date aastime) {
-        this.aastime = aastime;
+    public void setApsTime(Date apsTime) {
+        this.apsTime = apsTime;
     }
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getAaetime() {
-        return aaetime;
+    public Date getApeTime() {
+        return apeTime;
     }
 
-    public void setAaetime(Date aaetime) {
-        this.aaetime = aaetime;
+    public void setApeTime(Date apeTime) {
+        this.apeTime = apeTime;
+    }
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    public Date getAasTime() {
+        return aasTime;
+    }
+
+    public void setAasTime(Date aasTime) {
+        this.aasTime = aasTime;
+    }
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    public Date getAaeTime() {
+        return aaeTime;
+    }
+
+    public void setAaeTime(Date aaeTime) {
+        this.aaeTime = aaeTime;
     }
 
     public Integer getPercentage() {
@@ -126,28 +128,37 @@ public class ProjectPlanList {
         this.state = state;
     }
 
-    public Boolean getIsresult() {
-        return isresult;
+    public Boolean getResult() {
+        return aisResult;
     }
 
-    public void setIsresult(Boolean isresult) {
-        this.isresult = isresult;
+    public void setResult(Boolean result) {
+        aisResult = result;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
     public String toString() {
         return "ProjectPlanList{" +
-                "pProjectPhase=" + pProjectPhase +
+                "pProjectPhaseId=" + pProjectPhaseId +
                 ", tName='" + tName + '\'' +
-                ", name='" + name + '\'' +
-                ", aname='" + aname + '\'' +
-                ", apstime=" + apstime +
-                ", apetime=" + apetime +
-                ", aastime=" + aastime +
-                ", aaetime=" + aaetime +
+                ", tsName='" + tsName + '\'' +
+                ", aName='" + aName + '\'' +
+                ", apsTime=" + apsTime +
+                ", apeTime=" + apeTime +
+                ", aasTime=" + aasTime +
+                ", aaeTime=" + aaeTime +
                 ", percentage=" + percentage +
                 ", state=" + state +
-                ", isresult=" + isresult +
+                ", aisResult=" + aisResult +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

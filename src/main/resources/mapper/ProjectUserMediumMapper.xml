@@ -4,10 +4,10 @@
   <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ProjectUserMedium" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="a_id" property="aId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, p_id
+    id, user_id, a_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -20,9 +20,9 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium" >
-    insert into project_user_medium (id, user_id, p_id
+    insert into project_user_medium (id, user_id, a_id
       )
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{aId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium" >
@@ -34,8 +34,8 @@
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="pId != null" >
-        p_id,
+      <if test="aId != null" >
+        a_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -45,8 +45,8 @@
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
-      <if test="pId != null" >
-        #{pId,jdbcType=VARCHAR},
+      <if test="aId != null" >
+        #{aId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -56,8 +56,8 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
-      <if test="pId != null" >
-        p_id = #{pId,jdbcType=VARCHAR},
+      <if test="aId != null" >
+        a_id = #{aId,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -65,7 +65,7 @@
   <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium" >
     update project_user_medium
     set user_id = #{userId,jdbcType=VARCHAR},
-      p_id = #{pId,jdbcType=VARCHAR}
+      a_id = #{aId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

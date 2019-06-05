@@ -62,4 +62,11 @@ public interface IJournalService
 
 	//日报返回日志接收人
     List<HashMap<String, Object>> selectUserList();
+
+	/**
+	 * 批量插入日报信息
+	 * @param list
+	 * @return
+	 */
+	int insertJournalList(List list);
 }
