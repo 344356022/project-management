@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gedi.projectmanagement.dao.ActionItemMapper" >
-  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ActionItem" >
-    <id column="a_id" property="aId" jdbcType="VARCHAR" />
-    <result column="a_ name" property="aName" jdbcType="VARCHAR" />
-    <result column="a_pstart_time" property="aPstartTime" jdbcType="DATE" />
-    <result column="a_pend_time" property="aPendTime" jdbcType="DATE" />
-    <result column="a_astart_time" property="aAstartTime" jdbcType="DATE" />
-    <result column="a_aend_time" property="aAendTime" jdbcType="DATE" />
-    <result column="a_user_id" property="userId" jdbcType="INTEGER" />
-    <result column="a_percentage" property="aPercentage" jdbcType="INTEGER" />
-    <result column="a_state" property="aState" jdbcType="INTEGER" />
-    <result column="a_is_result" property="aIsResult" jdbcType="BIT" />
-    <result column="creater" property="creater" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time, a_user_id, 
+<mapper namespace="com.gedi.projectmanagement.dao.ActionItemMapper">
+    <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ActionItem">
+        <id column="a_id" property="aId" jdbcType="VARCHAR"/>
+        <result column="a_ name" property="aName" jdbcType="VARCHAR"/>
+        <result column="a_pstart_time" property="aPstartTime" jdbcType="DATE"/>
+        <result column="a_pend_time" property="aPendTime" jdbcType="DATE"/>
+        <result column="a_astart_time" property="aAstartTime" jdbcType="DATE"/>
+        <result column="a_aend_time" property="aAendTime" jdbcType="DATE"/>
+        <result column="a_percentage" property="aPercentage" jdbcType="INTEGER"/>
+        <result column="a_state" property="aState" jdbcType="INTEGER"/>
+        <result column="a_is_result" property="aIsResult" jdbcType="BIT"/>
+        <result column="creater" property="creater" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="ts_id" property="tsId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time,
     a_percentage, a_state, a_is_result, creater, create_time, ts_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from action_item
-    where a_id = #{aId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from action_item
+        where a_id = #{aId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from action_item
     where a_id = #{aId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.ActionItem" >
+    <insert id="insert" parameterType="com.gedi.projectmanagement.model.ActionItem">
     insert into action_item (a_id, `a_ name`, a_pstart_time, 
-      a_pend_time, a_astart_time, a_aend_time, 
-      a_user_id, a_percentage, a_state, 
+      a_pend_time, a_astart_time, a_aend_time, a_percentage, a_state,
       a_is_result, creater, create_time, 
       ts_id)
     values (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE}, 
@@ -42,147 +40,158 @@
       #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{tsId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ActionItem" >
-    insert into action_item
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="aId != null" >
-        a_id,
-      </if>
-      <if test="aName != null" >
-        `a_ name`,
-      </if>
-      <if test="aPstartTime != null" >
-        a_pstart_time,
-      </if>
-      <if test="aPendTime != null" >
-        a_pend_time,
-      </if>
-      <if test="aAstartTime != null" >
-        a_astart_time,
-      </if>
-      <if test="aAendTime != null" >
-        a_aend_time,
-      </if>
-      <if test="userId != null" >
-        a_user_id,
-      </if>
-      <if test="aPercentage != null" >
-        a_percentage,
-      </if>
-      <if test="aState != null" >
-        a_state,
-      </if>
-      <if test="aIsResult != null" >
-        a_is_result,
-      </if>
-      <if test="creater != null" >
-        creater,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="tsId != null" >
-        ts_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="aId != null" >
-        #{aId,jdbcType=VARCHAR},
-      </if>
-      <if test="aName != null" >
-        #{aName,jdbcType=VARCHAR},
-      </if>
-      <if test="aPstartTime != null" >
-        #{aPstartTime,jdbcType=DATE},
-      </if>
-      <if test="aPendTime != null" >
-        #{aPendTime,jdbcType=DATE},
-      </if>
-      <if test="aAstartTime != null" >
-        #{aAstartTime,jdbcType=DATE},
-      </if>
-      <if test="aAendTime != null" >
-        #{aAendTime,jdbcType=DATE},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="aPercentage != null" >
-        #{aPercentage,jdbcType=INTEGER},
-      </if>
-      <if test="aState != null" >
-        #{aState,jdbcType=INTEGER},
-      </if>
-      <if test="aIsResult != null" >
-        #{aIsResult,jdbcType=BIT},
-      </if>
-      <if test="creater != null" >
-        #{creater,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="tsId != null" >
-        #{tsId,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.ActionItem" >
-    update action_item
-    <set >
-      <if test="aName != null" >
-        `a_ name` = #{aName,jdbcType=VARCHAR},
-      </if>
-      <if test="aPstartTime != null" >
-        a_pstart_time = #{aPstartTime,jdbcType=DATE},
-      </if>
-      <if test="aPendTime != null" >
-        a_pend_time = #{aPendTime,jdbcType=DATE},
-      </if>
-      <if test="aAstartTime != null" >
-        a_astart_time = #{aAstartTime,jdbcType=DATE},
-      </if>
-      <if test="aAendTime != null" >
-        a_aend_time = #{aAendTime,jdbcType=DATE},
-      </if>
-      <if test="userId != null" >
-        a_user_id = #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="aPercentage != null" >
-        a_percentage = #{aPercentage,jdbcType=INTEGER},
-      </if>
-      <if test="aState != null" >
-        a_state = #{aState,jdbcType=INTEGER},
-      </if>
-      <if test="aIsResult != null" >
-        a_is_result = #{aIsResult,jdbcType=BIT},
-      </if>
-      <if test="creater != null" >
-        creater = #{creater,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="tsId != null" >
-        ts_id = #{tsId,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where a_id = #{aId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ActionItem" >
-    update action_item
-    set `a_ name` = #{aName,jdbcType=VARCHAR},
-      a_pstart_time = #{aPstartTime,jdbcType=DATE},
-      a_pend_time = #{aPendTime,jdbcType=DATE},
-      a_astart_time = #{aAstartTime,jdbcType=DATE},
-      a_aend_time = #{aAendTime,jdbcType=DATE},
-      a_user_id = #{userId,jdbcType=INTEGER},
-      a_percentage = #{aPercentage,jdbcType=INTEGER},
-      a_state = #{aState,jdbcType=INTEGER},
-      a_is_result = #{aIsResult,jdbcType=BIT},
-      creater = #{creater,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      ts_id = #{tsId,jdbcType=VARCHAR}
-    where a_id = #{aId,jdbcType=VARCHAR}
-  </update>
+    <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ActionItem">
+        insert into action_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="aId != null">
+                a_id,
+            </if>
+            <if test="aName != null">
+                `a_ name`,
+            </if>
+            <if test="aPstartTime != null">
+                a_pstart_time,
+            </if>
+            <if test="aPendTime != null">
+                a_pend_time,
+            </if>
+            <if test="aAstartTime != null">
+                a_astart_time,
+            </if>
+            <if test="aAendTime != null">
+                a_aend_time,
+            </if>
+            <if test="aPercentage != null">
+                a_percentage,
+            </if>
+            <if test="aState != null">
+                a_state,
+            </if>
+            <if test="aIsResult != null">
+                a_is_result,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="tsId != null">
+                ts_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="aId != null">
+                #{aId,jdbcType=VARCHAR},
+            </if>
+            <if test="aName != null">
+                #{aName,jdbcType=VARCHAR},
+            </if>
+            <if test="aPstartTime != null">
+                #{aPstartTime,jdbcType=DATE},
+            </if>
+            <if test="aPendTime != null">
+                #{aPendTime,jdbcType=DATE},
+            </if>
+            <if test="aAstartTime != null">
+                #{aAstartTime,jdbcType=DATE},
+            </if>
+            <if test="aAendTime != null">
+                #{aAendTime,jdbcType=DATE},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="aPercentage != null">
+                #{aPercentage,jdbcType=INTEGER},
+            </if>
+            <if test="aState != null">
+                #{aState,jdbcType=INTEGER},
+            </if>
+            <if test="aIsResult != null">
+                #{aIsResult,jdbcType=BIT},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="tsId != null">
+                #{tsId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.ActionItem">
+        update action_item
+        <set>
+            <if test="aPstartTime != null">
+                a_pstart_time = #{aPstartTime,jdbcType=DATE},
+            </if>
+            <if test="aPendTime != null">
+                a_pend_time = #{aPendTime,jdbcType=DATE},
+            </if>
+            <if test="aAstartTime != null">
+                a_astart_time = #{aAstartTime,jdbcType=DATE},
+            </if>
+            <if test="aAendTime != null">
+                a_aend_time = #{aAendTime,jdbcType=DATE},
+            </if>
+            <if test="aPercentage != null">
+                a_percentage = #{aPercentage,jdbcType=INTEGER},
+            </if>
+            <if test="aState != null">
+                a_state = #{aState,jdbcType=INTEGER},
+            </if>
+            <if test="aIsResult != null">
+                a_is_result = #{aIsResult,jdbcType=BIT},
+            </if>
+        </set>
+        where a_id = #{aId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ActionItem">
+        update action_item
+        set `a_ name` = #{aName,jdbcType=VARCHAR},
+          a_pstart_time = #{aPstartTime,jdbcType=DATE},
+          a_pend_time = #{aPendTime,jdbcType=DATE},
+          a_astart_time = #{aAstartTime,jdbcType=DATE},
+          a_aend_time = #{aAendTime,jdbcType=DATE},
+          a_percentage = #{aPercentage,jdbcType=INTEGER},
+          a_state = #{aState,jdbcType=INTEGER},
+          a_is_result = #{aIsResult,jdbcType=BIT},
+          creater = #{creater,jdbcType=VARCHAR},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          ts_id = #{tsId,jdbcType=VARCHAR}
+        where a_id = #{aId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="batchUpdate" parameterType="com.gedi.projectmanagement.model.ActionItem">
+        <foreach collection="list" item="item" open="" close="" separator=";">
+            update action_item
+            <set>
+                <if test="item.aPstartTime != null">
+                    a_pstart_time = #{item.aPstartTime,jdbcType=DATE},
+                </if>
+                <if test="item.aPendTime != null">
+                    a_pend_time = #{item.aPendTime,jdbcType=DATE},
+                </if>
+                <if test="item.aAstartTime != null">
+                    a_astart_time = #{item.aAstartTime,jdbcType=DATE},
+                </if>
+                <if test="item.aAendTime != null">
+                    a_aend_time = #{item.aAendTime,jdbcType=DATE},
+                </if>
+                <if test="item.aPercentage != null">
+                    a_percentage = #{item.aPercentage,jdbcType=INTEGER},
+                </if>
+                <if test="item.aState != null">
+                    a_state = #{item.aState,jdbcType=INTEGER},
+                </if>
+                <if test="item.aIsResult != null">
+                    a_is_result = #{item.aIsResult,jdbcType=BIT},
+                </if>
+            </set>
+            where  a_id = #{item.aId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
 </mapper>
