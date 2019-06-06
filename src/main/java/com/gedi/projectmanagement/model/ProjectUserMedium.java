@@ -1,11 +1,11 @@
 package com.gedi.projectmanagement.model;
 
 public class ProjectUserMedium {
-    private String id;
+    private String id; // 主键ID
 
-    private String userId;
+    private String userId; // 用户ID
 
-    private String aId;
+    private String aId; // 任务项ID
 
     public String getId() {
         return id;

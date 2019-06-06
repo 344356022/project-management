@@ -11,21 +11,21 @@ import java.util.Date;
  * @description 项目总计划实体类
  */
 public class ProjectPlan {
-    private String pId;
+    private String pId; // 项目总计划表主键
 
-    private String pName;
+    private String pName; // 项目名称
 
-    private Date pStartTime;
+    private Date pStartTime; // 项目计划开始时间
 
-    private Date pEndTime;
+    private Date pEndTime; // 项目计划结束时间
 
-    private Integer pProjectPhaseId;
+    private Integer pProjectPhaseId; // 项目阶段ID
 
-    private BigDecimal pProgress;
+    private BigDecimal pProgress; // 项目总体完成进度
 
-    private Date createTime;
+    private Date createTime; // 项目创建时间
 
-    private String creater;
+    private String creater; // 项目创建人
 
     public String getpId() {
         return pId;
@@ -44,7 +44,7 @@ public class ProjectPlan {
     }
 
     //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getpStartTime() {
         return pStartTime;
     }
@@ -54,7 +54,7 @@ public class ProjectPlan {
     }
 
     //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getpEndTime() {
         return pEndTime;
     }
@@ -80,7 +80,7 @@ public class ProjectPlan {
     }
 
     //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }

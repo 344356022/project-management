@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class TaskClass {
-    private String tId;
+    private String tId; // 任务类主键ID
 
-    private String tName;
+    private String tName; // 任务类名称
 
-    private String pId;
+    private String pId; // 项目总计划表主键
 
-    private Date createTime;
+    private Date createTime; // 任务类创建时间
 
-    private String creater;
+    private String creater; // 任务类创建人
 
-    private Integer pProjectPhaseId;
+    private Integer pProjectPhaseId; // 项目阶段ID
 
     public String gettId() {
         return tId;

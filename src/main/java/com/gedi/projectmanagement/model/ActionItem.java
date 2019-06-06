@@ -1,34 +1,35 @@
 package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ActionItem {
-    private String aId;
+    private String aId; // 任务项主键ID
 
-    private String aName;
+    private String aName; // 任务项名称
 
-    private Date aPstartTime;
+    private Date aPstartTime; // 计划开始时间
 
-    private Date aPendTime;
+    private Date aPendTime; // 计划结束时间
 
-    private Date aAstartTime;
+    private Date aAstartTime; // 实际开始时间
 
-    private Date aAendTime;
+    private Date aAendTime; // 实际结束时间
 
-    private String userId;
+    private String userId; // 用户ID
 
-    private Integer aPercentage;
+    private Integer aPercentage; // 完成百分比
 
-    private Integer aState;
+    private Integer aState; // 状态 0 未开始，1 进行中，2 已完成
 
-    private Boolean aIsResult;
+    private Boolean aIsResult; // 成果是否提交  0 待提交 1 已提交
 
-    private String creater;
+    private String creater; // 任务项创建人
 
-    private Date createTime;
+    private Date createTime; // 任务项创建时间
 
-    private String tsId;
+    private String tsId; // 任务子类ID
 
     public String getaId() {
         return aId;
@@ -46,7 +47,7 @@ public class ActionItem {
         this.aName = aName;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getaPstartTime() {
         return aPstartTime;
     }
@@ -55,7 +56,7 @@ public class ActionItem {
         this.aPstartTime = aPstartTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getaPendTime() {
         return aPendTime;
     }
@@ -64,7 +65,7 @@ public class ActionItem {
         this.aPendTime = aPendTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getaAstartTime() {
         return aAstartTime;
     }
@@ -73,7 +74,7 @@ public class ActionItem {
         this.aAstartTime = aAstartTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getaAendTime() {
         return aAendTime;
     }
@@ -122,7 +123,7 @@ public class ActionItem {
         this.creater = creater;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }
