@@ -48,26 +48,27 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         }
     }
 
-    // 查询所有用于项目总计划清单的展示
+    /**
+     * 查询所有用于项目总计划清单的展示
+     *
+     * @param pId
+     * @param pProjectPhaseId
+     * @return
+     */
     @Override
-    public CodeAndMsg selectProjectPlanListByPidAndpProjectPhaseId(String pId, Integer pProjectPhaseId) {
-        List<ProjectPlanList> projectPlanLists = projectPlanMapper.selectProjectPlanListByPidAndpProjectPhaseId(pId, pProjectPhaseId);
-        if (projectPlanLists != null) {
-            return CodeAndMsgUtil.setOK("查询成功", projectPlanLists);
-        } else {
-            return CodeAndMsgUtil.setERROR("查询失败", null);
-        }
+    public List<ProjectPlanList> selectProjectPlanListByPidAndpProjectPhaseId(String pId, Integer pProjectPhaseId) {
+        return projectPlanMapper.selectProjectPlanListByPidAndpProjectPhaseId(pId, pProjectPhaseId);
     }
 
-    // 根据pName模糊查询项目总体计划列表展示
+    /**
+     * 根据pName模糊查询项目总体计划列表展示
+     *
+     * @param pName
+     * @return
+     */
     @Override
-    public CodeAndMsg selectBypName(String pName) {
-        List<ProjectPlan> projectPlans = projectPlanMapper.selectBypName(pName);
-        if (projectPlans != null) {
-            return CodeAndMsgUtil.setOK("查询成功", projectPlans);
-        } else {
-            return CodeAndMsgUtil.setERROR("查询失败", null);
-        }
+    public List<ProjectPlan> selectBypName(String pName) {
+        return projectPlanMapper.selectBypName(pName);
     }
 
 }
