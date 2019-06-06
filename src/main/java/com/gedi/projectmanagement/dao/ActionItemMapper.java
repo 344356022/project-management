@@ -2,6 +2,9 @@ package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.ActionItem;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +15,13 @@ import java.util.List;
  */
 @Mapper
 public interface ActionItemMapper {
+
+    /**
+     * 新增项目中的任务项列表
+     */
+    public void addActionItem(@Param("list")List<ActionItem> actionItem);
+
+
     int deleteByPrimaryKey(String aId);
 
     int insert(ActionItem record);
@@ -20,7 +30,7 @@ public interface ActionItemMapper {
 
     ActionItem selectByPrimaryKey(String aId);
 
-    int updateByPrimaryKeySelective(ActionItem record);
+  //  int updateByPrimaryKeySelective(ActionItem record);
 
     int updateByPrimaryKey(ActionItem record);
 

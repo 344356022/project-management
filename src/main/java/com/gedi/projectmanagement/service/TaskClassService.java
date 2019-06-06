@@ -1,8 +1,9 @@
 package com.gedi.projectmanagement.service;
 
 import com.gedi.projectmanagement.model.ActionItem;
-import com.gedi.projectmanagement.model.TaskClass;
 import com.gedi.projectmanagement.model.TaskSubclass;
+
+import java.util.List;
 
 /**
  * @ProjectName : 项目维护
@@ -17,16 +18,16 @@ public interface TaskClassService {
     /*
     新增项目中的任务类
      */
-    public void addTaskClass(TaskClass taskClass);
+    public String addTaskClass(List<ActionItem> actionItemList);
 
     /*
     新增项目中任务子类
      */
-    public void addTaskSubclass(TaskSubclass taskSubclass);
+  //  public void addTaskSubclass(TaskSubclass taskSubclass);
 
     /*
     新增项目中任务项列表
      */
-    public void addActionItem(ActionItem actionItem);
+  //  public void addActionItem(ActionItem actionItem);
 
 }

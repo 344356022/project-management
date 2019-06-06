@@ -17,28 +17,13 @@
     <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time, a_user_id,
+    a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time, a_user_id, 
     a_percentage, a_state, a_is_result, creater, create_time, ts_id
   </sql>
 
-  <!-- 新增项目中的任务项列表 -->
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.ActionItem" >
-    insert into action_item (a_id, `a_ name`, a_pstart_time,
-      a_pend_time, a_astart_time, a_aend_time,
-      a_user_id, a_percentage, a_state,
-      a_is_result, creater, create_time,
-      ts_id)
-    values (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE},
-      #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE},
-      #{userId,jdbcType=INTEGER}, #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER},
-      #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-    values (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE},
-      #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE},
-      #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER},
-      #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-      #{tsId,jdbcType=VARCHAR})
-  </insert>
-    <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ActionItem">
+    <!-- 新增项目中的任务项列表 -->
+    <insert id="addActionItem" parameterType="com.gedi.projectmanagement.model.ActionItem">
+        <foreach collection="list" item="item" open="" close="" separator=";">
         insert into action_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="aId != null">
@@ -116,49 +101,24 @@
                 #{tsId,jdbcType=VARCHAR},
             </if>
         </trim>
+        </foreach>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.ActionItem">
-        update action_item
-        <set>
-            <if test="aPstartTime != null">
-                a_pstart_time = #{aPstartTime,jdbcType=DATE},
-            </if>
-            <if test="aPendTime != null">
-                a_pend_time = #{aPendTime,jdbcType=DATE},
-            </if>
-            <if test="aAstartTime != null">
-                a_astart_time = #{aAstartTime,jdbcType=DATE},
-            </if>
-            <if test="aAendTime != null">
-                a_aend_time = #{aAendTime,jdbcType=DATE},
-            </if>
-            <if test="aPercentage != null">
-                a_percentage = #{aPercentage,jdbcType=INTEGER},
-            </if>
-            <if test="aState != null">
-                a_state = #{aState,jdbcType=INTEGER},
-            </if>
-            <if test="aIsResult != null">
-                a_is_result = #{aIsResult,jdbcType=BIT},
-            </if>
-        </set>
-        where a_id = #{aId,jdbcType=VARCHAR}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ActionItem">
-        update action_item
-        set `a_ name` = #{aName,jdbcType=VARCHAR},
-          a_pstart_time = #{aPstartTime,jdbcType=DATE},
-          a_pend_time = #{aPendTime,jdbcType=DATE},
-          a_astart_time = #{aAstartTime,jdbcType=DATE},
-          a_aend_time = #{aAendTime,jdbcType=DATE},
-          a_percentage = #{aPercentage,jdbcType=INTEGER},
-          a_state = #{aState,jdbcType=INTEGER},
-          a_is_result = #{aIsResult,jdbcType=BIT},
-          creater = #{creater,jdbcType=VARCHAR},
-          create_time = #{createTime,jdbcType=TIMESTAMP},
-          ts_id = #{tsId,jdbcType=VARCHAR}
-        where a_id = #{aId,jdbcType=VARCHAR}
-    </update>
+
+  <!--<insert id="insert" parameterType="com.gedi.projectmanagement.model.ActionItem" >
+    insert into action_item (a_id, `a_ name`, a_pstart_time,
+      a_pend_time, a_astart_time, a_aend_time,
+      a_user_id, a_percentage, a_state,
+      a_is_result, creater, create_time,
+      ts_id)
+    values
+    <foreach collection="list"  separator="," >
+     (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE},
+      #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE},
+      #{userId,jdbcType=INTEGER}, #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER},
+      #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{tsId,jdbcType=VARCHAR})
+    </foreach>
+  </insert>-->
 
     <update id="batchUpdate" parameterType="com.gedi.projectmanagement.model.ActionItem">
         <foreach collection="list" item="item" open="" close="" separator=";">
@@ -190,6 +150,48 @@
         </foreach>
     </update>
 
+    <update id="updateByPrimaryKeySelective1" parameterType="com.gedi.projectmanagement.model.ActionItem">
+        update action_item
+        <set>
+            <if test="aPstartTime != null">
+                a_pstart_time = #{aPstartTime,jdbcType=DATE},
+            </if>
+            <if test="aPendTime != null">
+                a_pend_time = #{aPendTime,jdbcType=DATE},
+            </if>
+            <if test="aAstartTime != null">
+                a_astart_time = #{aAstartTime,jdbcType=DATE},
+            </if>
+            <if test="aAendTime != null">
+                a_aend_time = #{aAendTime,jdbcType=DATE},
+            </if>
+            <if test="aPercentage != null">
+                a_percentage = #{aPercentage,jdbcType=INTEGER},
+            </if>
+            <if test="aState != null">
+                a_state = #{aState,jdbcType=INTEGER},
+            </if>
+            <if test="aIsResult != null">
+                a_is_result = #{aIsResult,jdbcType=BIT},
+            </if>
+        </set>
+        where a_id = #{aId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey1" parameterType="com.gedi.projectmanagement.model.ActionItem">
+        update action_item
+        set `a_ name` = #{aName,jdbcType=VARCHAR},
+          a_pstart_time = #{aPstartTime,jdbcType=DATE},
+          a_pend_time = #{aPendTime,jdbcType=DATE},
+          a_astart_time = #{aAstartTime,jdbcType=DATE},
+          a_aend_time = #{aAendTime,jdbcType=DATE},
+          a_percentage = #{aPercentage,jdbcType=INTEGER},
+          a_state = #{aState,jdbcType=INTEGER},
+          a_is_result = #{aIsResult,jdbcType=BIT},
+          creater = #{creater,jdbcType=VARCHAR},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          ts_id = #{tsId,jdbcType=VARCHAR}
+        where a_id = #{aId,jdbcType=VARCHAR}
+    </update>
 
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -330,20 +332,5 @@
     </set>
     where a_id = #{aId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ActionItem" >
-    update action_item
-    set `a_ name` = #{aName,jdbcType=VARCHAR},
-      a_pstart_time = #{aPstartTime,jdbcType=DATE},
-      a_pend_time = #{aPendTime,jdbcType=DATE},
-      a_astart_time = #{aAstartTime,jdbcType=DATE},
-      a_aend_time = #{aAendTime,jdbcType=DATE},
-      a_user_id = #{userId,jdbcType=INTEGER},
-      a_percentage = #{aPercentage,jdbcType=INTEGER},
-      a_state = #{aState,jdbcType=INTEGER},
-      a_is_result = #{aIsResult,jdbcType=BIT},
-      creater = #{creater,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      ts_id = #{tsId,jdbcType=VARCHAR}
-    where a_id = #{aId,jdbcType=VARCHAR}
-  </update>
+
 </mapper>

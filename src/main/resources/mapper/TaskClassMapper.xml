@@ -14,30 +14,6 @@
 
   <!-- 新增任务类 -->
   <insert id="addTaskClass" parameterType="com.gedi.projectmanagement.model.TaskClass" >
-    insert into task_class (t_id, t_name, p_id,
-    create_time, creater)
-    values (#{tId,jdbcType=VARCHAR}, #{tName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR},
-    #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
-  </insert>
-
-
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from task_class
-    where t_id = #{tId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from task_class
-    where t_id = #{tId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.TaskClass" >
-    insert into task_class (t_id, t_name, p_id, 
-      create_time, creater)
-    values (#{tId,jdbcType=VARCHAR}, #{tName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.TaskClass" >
     insert into task_class
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="tId != null" >
@@ -73,6 +49,39 @@
         #{creater,jdbcType=VARCHAR},
       </if>
     </trim>
+  </insert>
+
+
+
+
+
+
+
+
+
+
+
+  <insert id="addTaskClass1" parameterType="com.gedi.projectmanagement.model.TaskClass" >
+    insert into task_class (t_id, t_name, p_id,
+    create_time, creater)
+    values (#{tId,jdbcType=VARCHAR}, #{tName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from task_class
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from task_class
+    where t_id = #{tId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gedi.projectmanagement.model.TaskClass" >
+    insert into task_class (t_id, t_name, p_id,
+      create_time, creater)
+    values (#{tId,jdbcType=VARCHAR}, #{tName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.TaskClass" >
     update task_class
