@@ -20,37 +20,6 @@
         </foreach>
     </insert>
 
-    <delete id="deleteByAids" >
-         delete from project_user_medium where a_id in
-         <foreach item="id" collection="list" separator="," open="(" close=")" index="">
-             #{id, jdbcType=VARCHAR}
-         </foreach>
-    </delete>
-
-    <insert id="batchInsert" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-           insert into project_user_medium (userId, aId, id) values
-           <foreach collection="list" item="item" separator=",">
-               (#{item.user_id,jdbcType=VARCHAR},
-               #{item.a_id,jdbcType=VARCHAR},
-               #{item.id,jdbcType=VARCHAR})
-           </foreach>
-    </insert>
-
-
-
-
-
-
-
-    <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-        update project_user_medium
-        <set>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where a_id = #{aId,jdbcType=VARCHAR}
-    </update>
     <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
         insert into project_user_medium
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -76,21 +45,6 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-        update project_user_medium
-        <set>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where a_id = #{aId,jdbcType=VARCHAR}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-    update project_user_medium
-    set user_id = #{userId,jdbcType=VARCHAR},
-      a_id = #{aId,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
 
 
     <delete id="deleteByAids">
