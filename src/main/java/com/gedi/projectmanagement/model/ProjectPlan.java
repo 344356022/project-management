@@ -1,11 +1,7 @@
 package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author wangyanbin
@@ -16,15 +12,15 @@ public class ProjectPlan {
 
     private String pName; // 项目名称
 
-    private Date pStartTime; // 项目计划开始时间
+    private String pStartTime; // 项目计划开始时间
 
-    private Date pEndTime; // 项目计划结束时间
+    private String pEndTime; // 项目计划结束时间
 
     private Integer pProjectPhaseId; // 项目阶段ID
 
-    private BigDecimal pProgress; // 项目总体完成进度
+    private Integer pProgress; // 项目总体完成进度
 
-    private Date createTime; // 项目创建时间
+    private String createTime; // 项目创建时间
 
     private String creater; // 项目创建人
 
@@ -45,23 +41,21 @@ public class ProjectPlan {
         this.pName = pName;
     }
 
-    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    public Date getpStartTime() {
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public String getpStartTime() {
         return pStartTime;
     }
 
-    public void setpStartTime(Date pStartTime) {
+    public void setpStartTime(String pStartTime) {
         this.pStartTime = pStartTime;
     }
 
-    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    public Date getpEndTime() {
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public String getpEndTime() {
         return pEndTime;
     }
 
-    public void setpEndTime(Date pEndTime) {
+    public void setpEndTime(String pEndTime) {
         this.pEndTime = pEndTime;
     }
 
@@ -73,21 +67,20 @@ public class ProjectPlan {
         this.pProjectPhaseId = pProjectPhaseId;
     }
 
-    public BigDecimal getpProgress() {
+    public Integer getpProgress() {
         return pProgress;
     }
 
-    public void setpProgress(BigDecimal pProgress) {
+    public void setpProgress(Integer pProgress) {
         this.pProgress = pProgress;
     }
 
-    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    public Date getCreateTime() {
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -103,7 +96,7 @@ public class ProjectPlan {
     public ProjectPlan() {
     }
 
-    public ProjectPlan(String pId, String pName, Date pStartTime, Date pEndTime, Integer pProjectPhaseId, BigDecimal pProgress, Date createTime, String creater) {
+    public ProjectPlan(String pId, String pName, String pStartTime, String pEndTime, Integer pProjectPhaseId, Integer pProgress, String createTime, String creater) {
         this.pId = pId;
         this.pName = pName;
         this.pStartTime = pStartTime;

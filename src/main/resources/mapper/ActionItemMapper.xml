@@ -109,28 +109,28 @@
             update action_item
             <set>
                 <if test="item.aPstartTime != null">
-                    a_pstart_time = #{item.aPstartTime,jdbcType=DATE},
+                    a_pstart_time = #{item.aPstartTime},
                 </if>
                 <if test="item.aPendTime != null">
-                    a_pend_time = #{item.aPendTime,jdbcType=DATE},
+                    a_pend_time = #{item.aPendTime},
                 </if>
                 <if test="item.aAstartTime != null">
-                    a_astart_time = #{item.aAstartTime,jdbcType=DATE},
+                    a_astart_time = #{item.aAstartTime},
                 </if>
                 <if test="item.aAendTime != null">
-                    a_aend_time = #{item.aAendTime,jdbcType=DATE},
+                    a_aend_time = #{item.aAendTime},
                 </if>
                 <if test="item.aPercentage != null">
-                    a_percentage = #{item.aPercentage,jdbcType=INTEGER},
+                    a_percentage = #{item.aPercentage},
                 </if>
                 <if test="item.aState != null">
-                    a_state = #{item.aState,jdbcType=INTEGER},
+                    a_state = #{item.aState},
                 </if>
                 <if test="item.aIsResult != null">
-                    a_is_result = #{item.aIsResult,jdbcType=BIT},
+                    a_is_result = #{item.aIsResult}
                 </if>
             </set>
-            where a_id = #{item.aId,jdbcType=VARCHAR}
+            where a_id = #{item.aId}
         </foreach>
     </update>
 

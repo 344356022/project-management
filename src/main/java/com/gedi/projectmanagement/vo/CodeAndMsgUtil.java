@@ -14,5 +14,4 @@ public class CodeAndMsgUtil {
         return new CodeAndMsg(500, msg, null, false);
     }
 
-
 }

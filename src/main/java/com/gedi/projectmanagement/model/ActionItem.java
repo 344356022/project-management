@@ -69,6 +69,7 @@ public class ActionItem {
         this.aName = aName;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public String getaPstartTime() {
         return aPstartTime;
     }
@@ -77,6 +78,7 @@ public class ActionItem {
         this.aPstartTime = aPstartTime;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public String getaPendTime() {
         return aPendTime;
     }
@@ -85,6 +87,7 @@ public class ActionItem {
         this.aPendTime = aPendTime;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public String getaAstartTime() {
         return aAstartTime;
     }
@@ -93,6 +96,7 @@ public class ActionItem {
         this.aAstartTime = aAstartTime;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public String getaAendTime() {
         return aAendTime;
     }
@@ -149,7 +153,7 @@ public class ActionItem {
         this.taskSubclasses = taskSubclasses;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }

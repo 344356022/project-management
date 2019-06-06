@@ -7,7 +7,7 @@
         <result column="p_start_time" property="pStartTime" jdbcType="DATE"/>
         <result column="p_end_time" property="pEndTime" jdbcType="DATE"/>
         <result column="p_project_phase_id" property="pProjectPhaseId" jdbcType="INTEGER"/>
-        <result column="p_progress" property="pProgress" jdbcType="DECIMAL"/>
+        <result column="p_progress" property="pProgress" jdbcType="Integer"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="creater" property="creater" jdbcType="VARCHAR"/>
     </resultMap>
@@ -33,7 +33,7 @@
   </select>
 
     <!-- 新增项目总计划 -->
-    <insert id="addProject" parameterType="com.gedi.projectmanagement.model.ProjectPlan" >
+    <insert id="addProject" parameterType="com.gedi.projectmanagement.model.ProjectPlan">
         insert into project_plan (
           p_id, p_name,
           p_start_time,
@@ -48,12 +48,10 @@
           #{pStartTime,jdbcType=DATE},
           #{pEndTime,jdbcType=DATE},
           #{pProjectPhaseId,jdbcType=INTEGER},
-          #{pProgress,jdbcType=DECIMAL},
+          #{pProgress,jdbcType=Integer},
           #{createTime,jdbcType=TIMESTAMP},
           #{creater,jdbcType=VARCHAR})
       </insert>
-
-
 
 
     <!-- 根据pName模糊查询项目总体计划列表展示 -->
@@ -144,7 +142,7 @@ WHERE
       p_end_time, p_project_phase_id, p_progress,
       create_time, creater)
     values (#{pId,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, #{pStartTime,jdbcType=DATE}, 
-      #{pEndTime,jdbcType=DATE}, #{pProjectPhaseId,jdbcType=INTEGER}, #{pProgress,jdbcType=DECIMAL},
+      #{pEndTime,jdbcType=DATE}, #{pProjectPhaseId,jdbcType=INTEGER}, #{pProgress,jdbcType=Integer},
       #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ProjectPlan">
@@ -192,7 +190,7 @@ WHERE
                 #{pProjectPhase,jdbcType=INTEGER},
             </if>
             <if test="pProgress != null">
-                #{pProgress,jdbcType=DECIMAL},
+                #{pProgress,jdbcType=Integer},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -218,7 +216,7 @@ WHERE
                 p_project_phase_id = #{pProjectPhaseId,jdbcType=INTEGER},
             </if>
             <if test="pProgress != null">
-                p_progress = #{pProgress,jdbcType=DECIMAL},
+                p_progress = #{pProgress,jdbcType=Integer},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -235,7 +233,7 @@ WHERE
       p_start_time = #{pStartTime,jdbcType=DATE},
       p_end_time = #{pEndTime,jdbcType=DATE},
       p_project_phase_id = #{pProjectPhaseId,jdbcType=INTEGER},
-      p_progress = #{pProgress,jdbcType=DECIMAL},
+      p_progress = #{pProgress,jdbcType=Integer},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       creater = #{creater,jdbcType=VARCHAR}
     where p_id = #{pId,jdbcType=VARCHAR}

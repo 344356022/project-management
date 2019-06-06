@@ -2,7 +2,6 @@ package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
 //项目任务子类实体类
 public class TaskSubclass {
     private String tsId; // 任务子类主键ID
@@ -13,7 +12,7 @@ public class TaskSubclass {
 
     private String tId; // 任务类ID
 
-    private Date createTime; // 任务子类创建时间
+    private String createTime; // 任务子类创建时间
 
     private String creater; // 任务子类创建人
 
@@ -49,12 +48,12 @@ public class TaskSubclass {
         this.tId = tId;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    public Date getCreateTime() {
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -69,7 +68,7 @@ public class TaskSubclass {
     public TaskSubclass() {
     }
 
-    public TaskSubclass(String tsId, String tsName, String pId, String tId, Date createTime, String creater) {
+    public TaskSubclass(String tsId, String tsName, String pId, String tId, String createTime, String creater) {
         this.tsId = tsId;
         this.tsName = tsName;
         this.pId = pId;

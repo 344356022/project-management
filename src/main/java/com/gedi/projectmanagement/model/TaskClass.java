@@ -2,7 +2,6 @@ package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
 //项目任务类实体类
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class TaskClass {
 
     private String pId; // 项目总计划表主键
 
-    private Date createTime; // 任务类创建时间
+    private String createTime; // 任务类创建时间
 
     private String creater; // 任务类创建人
 
@@ -45,12 +44,12 @@ public class TaskClass {
         this.pId = pId;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getCreateTime() {
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -73,7 +72,7 @@ public class TaskClass {
     public TaskClass() {
     }
 
-    public TaskClass(String tId, String tName, String pId, Date createTime, String creater, Integer pProjectPhaseId) {
+    public TaskClass(String tId, String tName, String pId, String createTime, String creater, Integer pProjectPhaseId) {
         this.tId = tId;
         this.tName = tName;
         this.pId = pId;

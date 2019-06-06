@@ -2,7 +2,6 @@ package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
 
 public class User {
     private String userId; // 用户ID
@@ -17,9 +16,9 @@ public class User {
 
     private Boolean uStatus; // 状态 0 正常，1 删除
 
-    private Date createTime; // 用户创建时间
+    private String createTime; // 用户创建时间
 
-    private Date updateTime; // 修改时间
+    private String upStringTime; // 修改时间
 
     private String creater; // 用户创建人
 
@@ -71,22 +70,22 @@ public class User {
         this.uStatus = uStatus;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    public Date getCreateTime() {
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    public Date getUpdateTime() {
-        return updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public String getUpStringTime() {
+        return upStringTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpStringTime(String upStringTime) {
+        this.upStringTime = upStringTime;
     }
 
     public String getCreater() {
@@ -100,7 +99,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, Integer uPhone, String uName, String uDepartment, Integer uSign, Boolean uStatus, Date createTime, Date updateTime, String creater) {
+    public User(String userId, Integer uPhone, String uName, String uDepartment, Integer uSign, Boolean uStatus, String createTime, String upStringTime, String creater) {
         this.userId = userId;
         this.uPhone = uPhone;
         this.uName = uName;
@@ -108,7 +107,7 @@ public class User {
         this.uSign = uSign;
         this.uStatus = uStatus;
         this.createTime = createTime;
-        this.updateTime = updateTime;
+        this.upStringTime = upStringTime;
         this.creater = creater;
     }
 
@@ -122,7 +121,7 @@ public class User {
                 ", uSign=" + uSign +
                 ", uStatus=" + uStatus +
                 ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
+                ", upStringTime=" + upStringTime +
                 ", creater='" + creater + '\'' +
                 '}';
     }
