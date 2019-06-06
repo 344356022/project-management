@@ -10,13 +10,13 @@ public class ActionItem {
 
     private String aName; // 任务项名称
 
-    private Date aPstartTime; // 计划开始时间
+    private String aPstartTime; // 计划开始时间
 
-    private Date aPendTime; // 计划结束时间
+    private String aPendTime; // 计划结束时间
 
-    private Date aAstartTime; // 实际开始时间
+    private String aAstartTime; // 实际开始时间
 
-    private Date aAendTime; // 实际结束时间
+    private String aAendTime; // 实际结束时间
 
     private String userId; // 用户ID
 
@@ -24,13 +24,32 @@ public class ActionItem {
 
     private Integer aState; // 状态 0 未开始，1 进行中，2 已完成
 
-    private Boolean aIsResult; // 成果是否提交  0 待提交 1 已提交
+    private Integer aIsResult; // 成果是否提交  0 待提交 1 已提交
 
     private String creater; // 任务项创建人
 
     private Date createTime; // 任务项创建时间
 
     private String tsId; // 任务子类ID
+
+    public ActionItem() {
+    }
+
+    public ActionItem(String aId, String aName, String aPstartTime, String aPendTime, String aAstartTime, String aAendTime, String userId, Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
+        this.aId = aId;
+        this.aName = aName;
+        this.aPstartTime = aPstartTime;
+        this.aPendTime = aPendTime;
+        this.aAstartTime = aAstartTime;
+        this.aAendTime = aAendTime;
+        this.userId = userId;
+        this.aPercentage = aPercentage;
+        this.aState = aState;
+        this.aIsResult = aIsResult;
+        this.creater = creater;
+        this.createTime = createTime;
+        this.tsId = tsId;
+    }
 
     private List<TaskSubclass> taskSubclasses;
 
@@ -50,47 +69,43 @@ public class ActionItem {
         this.aName = aName;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getaPstartTime() {
+    public String getaPstartTime() {
         return aPstartTime;
     }
 
-    public void setaPstartTime(Date aPstartTime) {
+    public void setaPstartTime(String aPstartTime) {
         this.aPstartTime = aPstartTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getaPendTime() {
+    public String getaPendTime() {
         return aPendTime;
     }
 
-    public void setaPendTime(Date aPendTime) {
+    public void setaPendTime(String aPendTime) {
         this.aPendTime = aPendTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getaAstartTime() {
+    public String getaAstartTime() {
         return aAstartTime;
     }
 
-    public void setaAstartTime(Date aAstartTime) {
+    public void setaAstartTime(String aAstartTime) {
         this.aAstartTime = aAstartTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getaAendTime() {
+    public String getaAendTime() {
         return aAendTime;
     }
 
-    public void setaAendTime(Date aAendTime) {
+    public void setaAendTime(String aAendTime) {
         this.aAendTime = aAendTime;
     }
 
-    public Integer getuserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setuserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -110,11 +125,11 @@ public class ActionItem {
         this.aState = aState;
     }
 
-    public Boolean getaIsResult() {
+    public Integer getaIsResult() {
         return aIsResult;
     }
 
-    public void setaIsResult(Boolean aIsResult) {
+    public void setaIsResult(Integer aIsResult) {
         this.aIsResult = aIsResult;
     }
 
@@ -151,25 +166,6 @@ public class ActionItem {
         this.tsId = tsId;
     }
 
-    public ActionItem() {
-    }
-
-    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, String userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
-        this.aId = aId;
-        this.aName = aName;
-        this.aPstartTime = aPstartTime;
-        this.aPendTime = aPendTime;
-        this.aAstartTime = aAstartTime;
-        this.aAendTime = aAendTime;
-        this.userId = userId;
-        this.aPercentage = aPercentage;
-        this.aState = aState;
-        this.aIsResult = aIsResult;
-        this.creater = creater;
-        this.createTime = createTime;
-        this.tsId = tsId;
-    }
-
     @Override
     public String toString() {
         return "ActionItem{" +
@@ -179,7 +175,7 @@ public class ActionItem {
                 ", aPendTime=" + aPendTime +
                 ", aAstartTime=" + aAstartTime +
                 ", aAendTime=" + aAendTime +
-                ", userId=" + userId +
+                ", userId='" + userId + '\'' +
                 ", aPercentage=" + aPercentage +
                 ", aState=" + aState +
                 ", aIsResult=" + aIsResult +

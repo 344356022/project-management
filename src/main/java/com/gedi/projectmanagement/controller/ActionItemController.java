@@ -1,8 +1,10 @@
 package com.gedi.projectmanagement.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.gedi.projectmanagement.model.ActionItem;
 import com.gedi.projectmanagement.service.ActionItemService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,26 +29,29 @@ public class ActionItemController {
     /**
      * 项目总体计划清单的动态修改
      *
-     * @param actionItems
+     * @param items
      * @return
      */
     @PostMapping(value = "/updateActionItemList")
-    public CodeAndMsg updateActionItemList(List<ActionItem> actionItems) {
+    public CodeAndMsg updateActionItemList(String items) {
         CodeAndMsg msg = new CodeAndMsg();
-        if (actionItems.size() == 0 || actionItems == null) {
+        if (StringUtils.isEmpty(items)) {
             msg.setCode(400);
             msg.setMsg("参数为空");
             msg.setResult(false);
-        }
-        String flag = this.actionItemService.batchUpdateActionItems(actionItems);
-        if ("success".equals(flag)) {
-            msg.setCode(200);
-            msg.setMsg("修改成功");
-            msg.setResult(true);
         } else {
-            msg.setCode(401);
-            msg.setMsg("修改失败");
-            msg.setResult(false);
+            items = "[" + items + "]";
+            List<ActionItem> actionItems = JSONArray.parseArray(items, ActionItem.class);
+            String flag = this.actionItemService.batchUpdateActionItems(actionItems);
+            if ("success".equals(flag)) {
+                msg.setCode(200);
+                msg.setMsg("修改成功");
+                msg.setResult(true);
+            } else {
+                msg.setCode(401);
+                msg.setMsg("修改失败");
+                msg.setResult(false);
+            }
         }
         return msg;
     }

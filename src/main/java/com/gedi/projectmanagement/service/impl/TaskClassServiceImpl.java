@@ -55,7 +55,7 @@ public class TaskClassServiceImpl implements TaskClassService {
             ProjectUserMedium userMedium = new ProjectUserMedium();
             userMedium.setaId(UUIDUtil.getUUID2());
             userMedium.setaId(actionItem.getaId());
-            userMedium.setUserId(actionItem.getuserId());
+            userMedium.setUserId(actionItem.getUserId());
             projectUserMediumList.add(userMedium);
         }
 

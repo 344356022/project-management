@@ -76,36 +76,36 @@
             </if>
         </trim>
     </insert>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select
-        <include refid="Base_Column_List"/>
-        from project_user_medium
-        where id = #{id,jdbcType=VARCHAR}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-      delete from project_user_medium where id = #{id,jdbcType=VARCHAR}
-     </delete>
-    <insert id="insert" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-    insert into project_user_medium (id, user_id, a_id
-      )
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{aId,jdbcType=VARCHAR}
-      )
-     </insert>
-
-    <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
+    <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
         update project_user_medium
-        set user_id = #{userId,jdbcType=VARCHAR},
-          a_id = #{aId,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=VARCHAR}
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where a_id = #{aId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
+    update project_user_medium
+    set user_id = #{userId,jdbcType=VARCHAR},
+      a_id = #{aId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 
 
-    <delete id="deleteByAids1">
+    <delete id="deleteByAids">
         delete from project_user_medium where a_id in
         <foreach item="item" collection="list" separator="," open="(" close=")" index="">
-            #{item.id, jdbcType=VARCHAR}
+            #{item, jdbcType=VARCHAR}
         </foreach>
     </delete>
 
-
+    <insert id="batchInsert" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
+        insert into project_user_medium (user_id, a_id, id) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId,jdbcType=VARCHAR},
+            #{item.aId,jdbcType=VARCHAR},
+            #{item.id,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
 </mapper>
