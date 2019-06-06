@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 //项目任务子类实体类
 public class TaskSubclass {
-    private String tsId;
+    private String tsId; // 任务子类主键ID
 
-    private String tsName;
+    private String tsName; // 任务子类名称
 
-    private String pId;
+    private String pId; // 项目总计划表主键
 
-    private String tId;
+    private String tId; // 任务类ID
 
-    private Date createTime;
+    private Date createTime; // 任务子类创建时间
 
-    private String creater;
+    private String creater; // 任务子类创建人
 
     public String getTsId() {
         return tsId;
@@ -49,7 +49,7 @@ public class TaskSubclass {
         this.tId = tId;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }

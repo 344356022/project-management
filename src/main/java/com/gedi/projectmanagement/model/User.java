@@ -5,23 +5,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class User {
-    private String userId;
+    private String userId; // 用户ID
 
-    private Integer uPhone;
+    private Integer uPhone; // 用户手机号
 
-    private String uName;
+    private String uName; // 用户名称
 
-    private String uDepartment;
+    private String uDepartment; // 用户所属部门
 
-    private Integer uSign;
+    private Integer uSign; // 权限 1 超管，2 管理员，3 员工
 
-    private Boolean uStatus;
+    private Boolean uStatus; // 状态 0 正常，1 删除
 
-    private Date createTime;
+    private Date createTime; // 用户创建时间
 
-    private Date updateTime;
+    private Date updateTime; // 修改时间
 
-    private String creater;
+    private String creater; // 用户创建人
 
     public String getUserId() {
         return userId;
@@ -71,7 +71,7 @@ public class User {
         this.uStatus = uStatus;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }
@@ -80,7 +80,7 @@ public class User {
         this.createTime = createTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getUpdateTime() {
         return updateTime;
     }
