@@ -14,7 +14,7 @@ public class User {
 
     private Integer uSign; // 权限 1 超管，2 管理员，3 员工
 
-    private Boolean uStatus; // 状态 0 正常，1 删除
+    private Integer uStatus; // 状态 0 正常，1 删除
 
     private String createTime; // 用户创建时间
 
@@ -62,11 +62,11 @@ public class User {
         this.uSign = uSign;
     }
 
-    public Boolean getuStatus() {
+    public Integer getuStatus() {
         return uStatus;
     }
 
-    public void setuStatus(Boolean uStatus) {
+    public void setuStatus(Integer uStatus) {
         this.uStatus = uStatus;
     }
 
@@ -99,7 +99,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, Integer uPhone, String uName, String uDepartment, Integer uSign, Boolean uStatus, String createTime, String upStringTime, String creater) {
+    public User(String userId, Integer uPhone, String uName, String uDepartment, Integer uSign, Integer uStatus, String createTime, String upStringTime, String creater) {
         this.userId = userId;
         this.uPhone = uPhone;
         this.uName = uName;

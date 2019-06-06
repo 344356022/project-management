@@ -7,138 +7,15 @@
     <result column="u_name" property="uName" jdbcType="VARCHAR" />
     <result column="u_department" property="uDepartment" jdbcType="VARCHAR" />
     <result column="u_sign" property="uSign" jdbcType="INTEGER" />
-    <result column="u_status" property="uStatus" jdbcType="BIT" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="u_status" property="uStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="update_time" property="updateTime" jdbcType="DATE" />
     <result column="creater" property="creater" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, u_phone, u_name, u_department, u_sign, u_status, create_time, update_time, 
     creater
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from user
-    where user_id = #{userId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from user
-    where user_id = #{userId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.User" >
-    insert into user (user_id, u_phone, u_name, 
-      u_department, u_sign, u_status, 
-      create_time, update_time, creater
-      )
-    values (#{userId,jdbcType=VARCHAR}, #{uPhone,jdbcType=INTEGER}, #{uName,jdbcType=VARCHAR}, 
-      #{uDepartment,jdbcType=VARCHAR}, #{uSign,jdbcType=INTEGER}, #{uStatus,jdbcType=BIT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.User" >
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="uPhone != null" >
-        u_phone,
-      </if>
-      <if test="uName != null" >
-        u_name,
-      </if>
-      <if test="uDepartment != null" >
-        u_department,
-      </if>
-      <if test="uSign != null" >
-        u_sign,
-      </if>
-      <if test="uStatus != null" >
-        u_status,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="creater != null" >
-        creater,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="uPhone != null" >
-        #{uPhone,jdbcType=INTEGER},
-      </if>
-      <if test="uName != null" >
-        #{uName,jdbcType=VARCHAR},
-      </if>
-      <if test="uDepartment != null" >
-        #{uDepartment,jdbcType=VARCHAR},
-      </if>
-      <if test="uSign != null" >
-        #{uSign,jdbcType=INTEGER},
-      </if>
-      <if test="uStatus != null" >
-        #{uStatus,jdbcType=BIT},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creater != null" >
-        #{creater,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.User" >
-    update user
-    <set >
-      <if test="uPhone != null" >
-        u_phone = #{uPhone,jdbcType=INTEGER},
-      </if>
-      <if test="uName != null" >
-        u_name = #{uName,jdbcType=VARCHAR},
-      </if>
-      <if test="uDepartment != null" >
-        u_department = #{uDepartment,jdbcType=VARCHAR},
-      </if>
-      <if test="uSign != null" >
-        u_sign = #{uSign,jdbcType=INTEGER},
-      </if>
-      <if test="uStatus != null" >
-        u_status = #{uStatus,jdbcType=BIT},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creater != null" >
-        creater = #{creater,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where user_id = #{userId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.User" >
-    update user
-    set u_phone = #{uPhone,jdbcType=INTEGER},
-      u_name = #{uName,jdbcType=VARCHAR},
-      u_department = #{uDepartment,jdbcType=VARCHAR},
-      u_sign = #{uSign,jdbcType=INTEGER},
-      u_status = #{uStatus,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      creater = #{creater,jdbcType=VARCHAR}
-    where user_id = #{userId,jdbcType=VARCHAR}
-  </update>
 
   <!--根据部门以及标签进行查询部门普通员工-->
   <select id="selectUserBySign" resultMap="BaseResultMap">

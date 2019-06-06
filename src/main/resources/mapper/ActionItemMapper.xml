@@ -4,15 +4,15 @@
     <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ActionItem">
         <id column="a_id" property="aId" jdbcType="VARCHAR"/>
         <result column="a_ name" property="aName" jdbcType="VARCHAR"/>
-        <result column="a_pstart_time" property="aPstartTime" jdbcType="VARCHAR"/>
-        <result column="a_pend_time" property="aPendTime" jdbcType="VARCHAR"/>
-        <result column="a_astart_time" property="aAstartTime" jdbcType="VARCHAR"/>
-        <result column="a_aend_time" property="aAendTime" jdbcType="VARCHAR"/>
+        <result column="a_pstart_time" property="aPstartTime" jdbcType="DATE"/>
+        <result column="a_pend_time" property="aPendTime" jdbcType="DATE"/>
+        <result column="a_astart_time" property="aAstartTime" jdbcType="DATE"/>
+        <result column="a_aend_time" property="aAendTime" jdbcType="DATE"/>
         <result column="a_percentage" property="aPercentage" jdbcType="INTEGER"/>
         <result column="a_state" property="aState" jdbcType="INTEGER"/>
         <result column="a_is_result" property="aIsResult" jdbcType="INTEGER"/>
         <result column="creater" property="creater" jdbcType="VARCHAR"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
         <result column="ts_id" property="tsId" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -88,13 +88,13 @@
                 #{aState,jdbcType=INTEGER},
             </if>
             <if test="item.aIsResult != null">
-                #{aIsResult,jdbcType=BIT},
+                #{aIsResult,jdbcType=INTEGER},
             </if>
             <if test="item.creater != null">
                 #{creater,jdbcType=VARCHAR},
             </if>
             <if test="item.createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                #{createTime,jdbcType=DATE},
             </if>
             <if test="item.tsId != null">
                 #{tsId,jdbcType=VARCHAR},

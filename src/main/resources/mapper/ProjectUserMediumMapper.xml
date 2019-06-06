@@ -20,33 +20,6 @@
         </foreach>
     </insert>
 
-    <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-        insert into project_user_medium
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="userId != null">
-                user_id,
-            </if>
-            <if test="aId != null">
-                a_id,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=VARCHAR},
-            </if>
-            <if test="userId != null">
-                #{userId,jdbcType=VARCHAR},
-            </if>
-            <if test="aId != null">
-                #{aId,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
-
-
     <delete id="deleteByAids">
         delete from project_user_medium where a_id in
         <foreach item="item" collection="list" separator="," open="(" close=")" index="">

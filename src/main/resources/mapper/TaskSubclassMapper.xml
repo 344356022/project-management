@@ -1,122 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gedi.projectmanagement.dao.TaskSubclassMapper" >
-  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.TaskSubclass" >
-    <id column="ts_id" property="tsId" jdbcType="VARCHAR" />
-    <result column="ts_name" property="tsName" jdbcType="VARCHAR" />
-    <result column="p_id" property="pId" jdbcType="VARCHAR" />
-    <result column="t_id" property="tId" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="creater" property="creater" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.gedi.projectmanagement.dao.TaskSubclassMapper">
+    <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.TaskSubclass">
+        <id column="ts_id" property="tsId" jdbcType="VARCHAR"/>
+        <result column="ts_name" property="tsName" jdbcType="VARCHAR"/>
+        <result column="p_id" property="pId" jdbcType="VARCHAR"/>
+        <result column="t_id" property="tId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+        <result column="creater" property="creater" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     ts_id, ts_name, p_id, t_id, create_time, creater
   </sql>
 
-  <!-- 新增项目任务子类sql语句 -->
-  <insert id="addTaskSubclass" parameterType="com.gedi.projectmanagement.model.TaskSubclass" >
-    insert into task_subclass
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="tsId != null" >
-        ts_id,
-      </if>
-      <if test="tsName != null" >
-        ts_name,
-      </if>
-      <if test="pId != null" >
-        p_id,
-      </if>
-      <if test="tId != null" >
-        t_id,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="creater != null" >
-        creater,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="tsId != null" >
-        #{tsId,jdbcType=VARCHAR},
-      </if>
-      <if test="tsName != null" >
-        #{tsName,jdbcType=VARCHAR},
-      </if>
-      <if test="pId != null" >
-        #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="tId != null" >
-        #{tId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creater != null" >
-        #{creater,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+    <!-- 新增项目任务子类sql语句 -->
+    <insert id="addTaskSubclass" parameterType="com.gedi.projectmanagement.model.TaskSubclass">
+        insert into task_subclass
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tsId != null">
+                ts_id,
+            </if>
+            <if test="tsName != null">
+                ts_name,
+            </if>
+            <if test="pId != null">
+                p_id,
+            </if>
+            <if test="tId != null">
+                t_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tsId != null">
+                #{tsId,jdbcType=VARCHAR},
+            </if>
+            <if test="tsName != null">
+                #{tsName,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                #{pId,jdbcType=VARCHAR},
+            </if>
+            <if test="tId != null">
+                #{tId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=DATE},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 
-
-
-
-
-
-
-
-
-
-
-
-
-  <insert id="addTaskSubclass1" parameterType="com.gedi.projectmanagement.model.TaskSubclass" >
+    <insert id="addTaskSubclass1" parameterType="com.gedi.projectmanagement.model.TaskSubclass">
     insert into task_subclass (ts_id, ts_name, p_id, t_id, create_time, creater)
     values (#{tsId,jdbcType=VARCHAR}, #{tsName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR},
-      #{tId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
+      #{tId,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{creater,jdbcType=VARCHAR})
   </insert>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from task_subclass
-    where ts_id = #{tsId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from task_subclass
-    where ts_id = #{tsId,jdbcType=VARCHAR}
-  </delete>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.TaskSubclass" >
-    update task_subclass
-    <set >
-      <if test="tsName != null" >
-        ts_name = #{tsName,jdbcType=VARCHAR},
-      </if>
-      <if test="pId != null" >
-        p_id = #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="tId != null" >
-        t_id = #{tId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creater != null" >
-        creater = #{creater,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where ts_id = #{tsId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.TaskSubclass" >
-    update task_subclass
-    set ts_name = #{tsName,jdbcType=VARCHAR},
-      p_id = #{pId,jdbcType=VARCHAR},
-      t_id = #{tId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      creater = #{creater,jdbcType=VARCHAR}
-    where ts_id = #{tsId,jdbcType=VARCHAR}
-  </update>
 
-  <select id="queryTaskSubIdAndName" resultMap="BaseResultMap">
+    <select id="queryTaskSubIdAndName" resultMap="BaseResultMap">
 
     select ts_id,ts_name from task_subclass
 

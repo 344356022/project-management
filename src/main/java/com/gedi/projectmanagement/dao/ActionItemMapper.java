@@ -20,19 +20,6 @@ public interface ActionItemMapper {
      */
     public void addActionItem(@Param("list") List<ActionItem> actionItem);
 
-
-    int deleteByPrimaryKey(String aId);
-
-    int insert(ActionItem record);
-
-    int insertSelective(ActionItem record);
-
-    ActionItem selectByPrimaryKey(String aId);
-
-    //int updateByPrimaryKeySelective(ActionItem record);
-
-    int updateByPrimaryKey(ActionItem record);
-
     /**
      * 批量修改任务项
      *

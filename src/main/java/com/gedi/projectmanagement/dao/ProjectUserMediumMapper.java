@@ -15,13 +15,6 @@ public interface ProjectUserMediumMapper {
      */
     void addProjectUserMedium(List<ProjectUserMedium> projectUserMediumList);
 
-    int insertSelective(ProjectUserMedium record);
-
-    ProjectUserMedium selectByPrimaryKey(String id);
-
-    int updateByPrimaryKeySelective(ProjectUserMedium record);
-
-
     /**
      * 根据任务项ID集合删除 任务项-用户 关系
      *
@@ -35,4 +28,5 @@ public interface ProjectUserMediumMapper {
      * @param userMediumList 任务集合
      */
     void batchInsert(@Param("list") List<ProjectUserMedium> userMediumList);
+
 }
