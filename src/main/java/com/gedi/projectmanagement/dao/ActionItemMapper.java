@@ -20,19 +20,14 @@ public interface ActionItemMapper {
 
     ActionItem selectByPrimaryKey(String aId);
 
-    /**
-     * 项目总体计划清单的动态修改
-     *
-     * @param record
-     * @return
-     */
     int updateByPrimaryKeySelective(ActionItem record);
 
     int updateByPrimaryKey(ActionItem record);
 
     /**
      * 批量修改任务项
-     * @param actionItemList 任务项集合
+     *
+     * @param actionItems 任务项集合
      */
-    void batchUpdate(@Param("list") List<ActionItem> actionItemList);
+    void batchUpdate(@Param("list") List<ActionItem> actionItems);
 }

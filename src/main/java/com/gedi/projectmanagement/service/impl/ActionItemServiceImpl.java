@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @ClassName: ActionItemServiceImpl
- * @Description:
+ * @Description: 用于对项目管理总计划清单的修改
  * @Author: zhangshuai
  * @Date 2019/6/5 17:59
  * @Version 1.0
@@ -31,10 +31,16 @@ public class ActionItemServiceImpl implements ActionItemService {
     private ProjectUserMediumMapper projectUserMediumMapper;
 
 
+    /**
+     * 用于对项目管理总计划清单的修改
+     *
+     * @param actionItems 任务项内容集合
+     * @return
+     */
     @Override
     public String batchUpdateActionItems(List<ActionItem> actionItems) {
-        List<ProjectUserMedium>  userMediumList = new ArrayList<>();
-        List<ActionItem> actionItemList = new ArrayList<>();
+        List<ProjectUserMedium> userMediumList = new ArrayList<>();
+        //List<ActionItem> actionItemList = new ArrayList<>();
         List<String> ids = new ArrayList<>();
 
         for (ActionItem actionItem : actionItems) {
@@ -47,13 +53,14 @@ public class ActionItemServiceImpl implements ActionItemService {
             userMediumList.add(userMedium);
         }
 
-        //先查看数据库里面有没有数据，有的话，先删除再插入
+        // 先查看数据库里面有没有数据，有的话，先删除再插入
         this.projectUserMediumMapper.deleteByAids(ids);
-        //批量插入
+        // 批量插入
         this.projectUserMediumMapper.batchInsert(userMediumList);
-        //批量修改任务项
-        this.actionItemMapper.batchUpdate(actionItemList);
+        // 批量修改任务项
+        this.actionItemMapper.batchUpdate(actionItems);
 
         return "success";
     }
+
 }

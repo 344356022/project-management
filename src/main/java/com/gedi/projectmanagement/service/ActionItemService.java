@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @ClassName: ActionItemService
- * @Description:
+ * @Description: 用于对项目管理总计划清单的修改
  * @Author: zhangshuai
  * @Date 2019/6/5 17:53
  * @Version 1.0
@@ -16,6 +16,7 @@ public interface ActionItemService {
 
     /**
      * 批量修改任务项
+     *
      * @param actionItems 任务项内容集合
      * @return
      */
