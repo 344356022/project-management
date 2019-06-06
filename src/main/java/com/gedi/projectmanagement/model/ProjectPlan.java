@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wangyanbin
@@ -26,6 +27,7 @@ public class ProjectPlan {
     private Date createTime; // 项目创建时间
 
     private String creater; // 项目创建人
+
 
     public String getpId() {
         return pId;
@@ -96,6 +98,7 @@ public class ProjectPlan {
     public void setCreater(String creater) {
         this.creater = creater;
     }
+
 
     public ProjectPlan() {
     }

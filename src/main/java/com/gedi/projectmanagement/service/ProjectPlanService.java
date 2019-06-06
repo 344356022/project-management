@@ -37,4 +37,8 @@ public interface ProjectPlanService {
      */
     List<ProjectPlan> selectBypName(String pName);
 
+
+    //查询全部的项目名称；
+    CodeAndMsg selectAllProject();
+
 }

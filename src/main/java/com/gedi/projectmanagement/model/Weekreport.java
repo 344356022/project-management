@@ -3,6 +3,7 @@ package com.gedi.projectmanagement.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class Weekreport {
     private String wId;
@@ -26,6 +27,38 @@ public class Weekreport {
     private Integer wStatus;
 
     private String wRemark;
+
+    private List<ProjectPlan> projectPlans;
+
+    private List<User> users;
+
+    private List<ActionItem> actionItems;
+
+    private Integer rFinish;
+
+    public Integer getrFinish() {
+        return rFinish;
+    }
+
+    public void setrFinish(Integer rFinish) {
+        this.rFinish = rFinish;
+    }
+
+    public List<ActionItem> getActionItems() {
+        return actionItems;
+    }
+
+    public void setActionItems(List<ActionItem> actionItems) {
+        this.actionItems = actionItems;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public String getwId() {
         return wId;
@@ -117,6 +150,14 @@ public class Weekreport {
         this.wRemark = wRemark;
     }
 
+    public List<ProjectPlan> getProjectPlans() {
+        return projectPlans;
+    }
+
+    public void setProjectPlans(List<ProjectPlan> projectPlans) {
+        this.projectPlans = projectPlans;
+    }
+
     public Weekreport() {
     }
 
@@ -133,6 +174,23 @@ public class Weekreport {
         this.wStatus = wStatus;
         this.wRemark = wRemark;
     }
+
+    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String aId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer rFinish) {
+        this.wId = wId;
+        this.pId = pId;
+        this.wStartTime = wStartTime;
+        this.wEndTime = wEndTime;
+        this.aId = aId;
+        this.wWorkReport = wWorkReport;
+        this.userId = userId;
+        this.wActualProportion = wActualProportion;
+        this.wPlanProportion = wPlanProportion;
+        this.wStatus = wStatus;
+        this.wRemark = wRemark;
+        this.rFinish=rFinish;
+    }
+
+
 
     @Override
     public String toString() {

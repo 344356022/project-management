@@ -13,7 +13,53 @@
     <result column="w_plan_proportion" property="wPlanProportion" jdbcType="INTEGER" />
     <result column="w_status" property="wStatus" jdbcType="INTEGER" />
     <result column="w_remark" property="wRemark" jdbcType="VARCHAR" />
+    <result column="r_finish" property="rFinish" jdbcType="VARCHAR" />
+    <collection property="projectPlans" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.ProjectPlan">
+      <id column="p_id" property="pId" jdbcType="VARCHAR"/>
+      <result column="p_name" property="pName" jdbcType="VARCHAR"/>
+      <result column="p_start_time" property="pStartTime" jdbcType="DATE"/>
+      <result column="p_end_time" property="pEndTime" jdbcType="DATE"/>
+      <result column="p_project_phase" property="pProjectPhase" jdbcType="INTEGER"/>
+      <result column="p_progress" property="pProgress" jdbcType="DECIMAL"/>
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+      <result column="creater" property="creater" jdbcType="VARCHAR"/>
+    </collection>
+    <collection property="users" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.User">
+      <id column="user_id" property="userId" jdbcType="VARCHAR" />
+      <result column="u_phone" property="uPhone" jdbcType="INTEGER" />
+      <result column="u_name" property="uName" jdbcType="VARCHAR" />
+      <result column="u_department" property="uDepartment" jdbcType="VARCHAR" />
+      <result column="u_sign" property="uSign" jdbcType="INTEGER" />
+      <result column="u_status" property="uStatus" jdbcType="BIT" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+      <result column="creater" property="creater" jdbcType="VARCHAR" />
+    </collection>
+    <collection property="actionItems" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.ActionItem">
+      <id column="a_id" property="aId" jdbcType="VARCHAR" />
+      <result column="a_ name" property="aName" jdbcType="VARCHAR" />
+      <result column="a_pstart_time" property="aPstartTime" jdbcType="DATE" />
+      <result column="a_pend_time" property="aPendTime" jdbcType="DATE" />
+      <result column="a_astart_time" property="aAstartTime" jdbcType="DATE" />
+      <result column="a_aend_time" property="aAendTime" jdbcType="DATE" />
+      <result column="a_user_id" property="userId" jdbcType="INTEGER" />
+      <result column="a_percentage" property="aPercentage" jdbcType="INTEGER" />
+      <result column="a_state" property="aState" jdbcType="INTEGER" />
+      <result column="a_is_result" property="aIsResult" jdbcType="BIT" />
+      <result column="creater" property="creater" jdbcType="VARCHAR" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
+     <!-- <collection property="taskSubclasses" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.TaskSubclass">
+        <id column="ts_id" property="tsId" jdbcType="VARCHAR" />
+        <result column="ts_name" property="tsName" jdbcType="VARCHAR" />
+        <result column="p_id" property="pId" jdbcType="VARCHAR" />
+        <result column="t_id" property="tId" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="creater" property="creater" jdbcType="VARCHAR" />
+      </collection>-->
+    </collection>
   </resultMap>
+
   <sql id="Base_Column_List" >
     w_id, p_id, w_start_time, w_end_time, a_id, w_work_report, user_id, w_actual_proportion, 
     w_plan_proportion, w_status, w_remark
@@ -147,6 +193,7 @@
     </set>
     where w_id = #{wId,jdbcType=VARCHAR}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.Weekreport" >
     update weekreport
     set p_id = #{pId,jdbcType=VARCHAR},
@@ -161,4 +208,44 @@
       w_remark = #{wRemark,jdbcType=VARCHAR}
     where w_id = #{wId,jdbcType=VARCHAR}
   </update>
+
+  <!--//根据用户id值查询出对应分配的任务,项目名,任务项等等-->
+  <select id="selectById" resultMap="BaseResultMap">
+  select w.w_id,w.w_start_time,w.w_end_time,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,pp.p_name,u.u_name,ac.`a_ name`from
+weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.user_id=w.user_id left join project_user_medium pum on pum.a_id=w.a_id LEFT JOIN action_item
+ac on ac.a_id=pum.a_id LEFT JOIN task_subclass tu on ac.ts_id=tu.ts_id
+  </select>
+
+
+  <!-- //生成双周计划表-->
+  <insert id="addWeekReport">
+    insert into weekreport
+    (w_id,p_id,w_start_time,w_end_time,a_id,w_work_report,user_id,w_actual_proportion,w_plan_proportion,w_status,w_remark,r_finish)
+    values
+    (#{wId},#{pId},#{wStartTime},#{wEndTime},#{aId},#{wWorkReport},#{userId},#{wActualProportion},#{wPlanProportion},#{wStatus},#{wRemark},#{rFinish})
+  </insert>
+
+
+  <update id="updateWeekReportStop">
+    UPDATE weekreport SET w_status=2 where w_id=#{wId}
+  </update>
+
+  <update id="updateWeekReportAction">
+    UPDATE weekreport SET w_status=1 where w_id=#{wId}
+  </update>
+
+  <select id="selectProjectById" resultMap="BaseResultMap">
+
+    SELECT w_plan_proportion FROM weekreport WHERE w_id=#{wId}
+
+  </select>
+
+  <update id="updateActual">
+    update weekreport SET w_actual_proportion=#{valueZ} where w_id=#{wId}
+  </update>
+
+  <select id="selectByWeekReportId" resultMap="BaseResultMap">
+    SELECT w_id from weekreport where w_id=#{wId}
+  </select>
+
 </mapper>

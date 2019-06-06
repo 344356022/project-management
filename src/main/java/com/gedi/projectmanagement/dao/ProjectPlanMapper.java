@@ -48,5 +48,8 @@ public interface ProjectPlanMapper {
      */
     List<ProjectPlan> selectBypName(String pName);
 
+    //查询所有得项目名称以及ID值；
+    List<ProjectPlan> selectAllProject();
+
 
 }

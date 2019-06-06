@@ -103,4 +103,10 @@
       creater = #{creater,jdbcType=VARCHAR}
     where ts_id = #{tsId,jdbcType=VARCHAR}
   </update>
+
+  <select id="queryTaskSubIdAndName" resultMap="BaseResultMap">
+
+    select ts_id,ts_name from task_subclass
+
+  </select>
 </mapper>

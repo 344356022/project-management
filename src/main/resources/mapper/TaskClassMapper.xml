@@ -8,6 +8,14 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="creater" property="creater" jdbcType="VARCHAR" />
     <result column="p_project_phase_id" property="pProjectPhaseId" jdbcType="INTEGER" />
+    <collection property="taskSubclasses" ofType="com.gedi.projectmanagement.model.TaskSubclass">
+      <id column="ts_id" property="tsId" jdbcType="VARCHAR" />
+      <result column="ts_name" property="tsName" jdbcType="VARCHAR" />
+      <result column="p_id" property="pId" jdbcType="VARCHAR" />
+      <result column="t_id" property="tId" jdbcType="VARCHAR" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="creater" property="creater" jdbcType="VARCHAR" />
+    </collection>
   </resultMap>
   <sql id="Base_Column_List" >
     t_id, t_name, p_id, create_time, creater, p_project_phase_id

@@ -3,6 +3,7 @@ package com.gedi.projectmanagement.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class TaskClass {
     private String tId; // 任务类主键ID
@@ -16,6 +17,8 @@ public class TaskClass {
     private String creater; // 任务类创建人
 
     private Integer pProjectPhaseId; // 项目阶段ID
+
+    private List<TaskSubclass> taskSubclasses;
 
     public String gettId() {
         return tId;
@@ -64,6 +67,14 @@ public class TaskClass {
 
     public void setpProjectPhaseId(Integer pProjectPhaseId) {
         this.pProjectPhaseId = pProjectPhaseId;
+    }
+
+    public List<TaskSubclass> getTaskSubclasses() {
+        return taskSubclasses;
+    }
+
+    public void setTaskSubclasses(List<TaskSubclass> taskSubclasses) {
+        this.taskSubclasses = taskSubclasses;
     }
 
     public TaskClass() {

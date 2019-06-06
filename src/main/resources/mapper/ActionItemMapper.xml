@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gedi.projectmanagement.dao.ActionItemMapper">
-    <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ActionItem">
-        <id column="a_id" property="aId" jdbcType="VARCHAR"/>
-        <result column="a_ name" property="aName" jdbcType="VARCHAR"/>
-        <result column="a_pstart_time" property="aPstartTime" jdbcType="DATE"/>
-        <result column="a_pend_time" property="aPendTime" jdbcType="DATE"/>
-        <result column="a_astart_time" property="aAstartTime" jdbcType="DATE"/>
-        <result column="a_aend_time" property="aAendTime" jdbcType="DATE"/>
-        <result column="a_percentage" property="aPercentage" jdbcType="INTEGER"/>
-        <result column="a_state" property="aState" jdbcType="INTEGER"/>
-        <result column="a_is_result" property="aIsResult" jdbcType="BIT"/>
-        <result column="creater" property="creater" jdbcType="VARCHAR"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="ts_id" property="tsId" jdbcType="VARCHAR"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-    a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time,
+<mapper namespace="com.gedi.projectmanagement.dao.ActionItemMapper" >
+  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ActionItem" >
+    <id column="a_id" property="aId" jdbcType="VARCHAR" />
+    <result column="a_ name" property="aName" jdbcType="VARCHAR" />
+    <result column="a_pstart_time" property="aPstartTime" jdbcType="DATE" />
+    <result column="a_pend_time" property="aPendTime" jdbcType="DATE" />
+    <result column="a_astart_time" property="aAstartTime" jdbcType="DATE" />
+    <result column="a_aend_time" property="aAendTime" jdbcType="DATE" />
+    <result column="a_user_id" property="userId" jdbcType="INTEGER" />
+    <result column="a_percentage" property="aPercentage" jdbcType="INTEGER" />
+    <result column="a_state" property="aState" jdbcType="INTEGER" />
+    <result column="a_is_result" property="aIsResult" jdbcType="BIT" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
+    <collection property="taskSubclasses" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.TaskSubclass">
+      <id column="ts_id" property="tsId" jdbcType="VARCHAR" />
+      <result column="ts_name" property="tsName" jdbcType="VARCHAR" />
+      <result column="p_id" property="pId" jdbcType="VARCHAR" />
+      <result column="t_id" property="tId" jdbcType="VARCHAR" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="creater" property="creater" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time, a_user_id, 
     a_percentage, a_state, a_is_result, creater, create_time, ts_id
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">

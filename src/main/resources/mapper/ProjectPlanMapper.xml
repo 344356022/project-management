@@ -241,4 +241,10 @@ AND t.p_project_phase_id = #{pProjectPhaseId}
       creater = #{creater,jdbcType=VARCHAR}
     where p_id = #{pId,jdbcType=VARCHAR}
   </update>
+
+    <!--查询所有得项目名称以及ID值-->
+    <select id="selectAllProject" resultMap="BaseResultMap">
+        SELECT p_name,p_id from project_plan
+    </select>
+
 </mapper>

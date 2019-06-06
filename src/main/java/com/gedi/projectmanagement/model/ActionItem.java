@@ -3,6 +3,7 @@ package com.gedi.projectmanagement.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class ActionItem {
     private String aId; // 任务项主键ID
@@ -31,6 +32,8 @@ public class ActionItem {
 
     private String tsId; // 任务子类ID
 
+    private List<TaskSubclass> taskSubclasses;
+
     public String getaId() {
         return aId;
     }
@@ -47,7 +50,7 @@ public class ActionItem {
         this.aName = aName;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaPstartTime() {
         return aPstartTime;
     }
@@ -56,7 +59,7 @@ public class ActionItem {
         this.aPstartTime = aPstartTime;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaPendTime() {
         return aPendTime;
     }
@@ -65,7 +68,7 @@ public class ActionItem {
         this.aPendTime = aPendTime;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaAstartTime() {
         return aAstartTime;
     }
@@ -74,7 +77,7 @@ public class ActionItem {
         this.aAstartTime = aAstartTime;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getaAendTime() {
         return aAendTime;
     }
@@ -83,11 +86,11 @@ public class ActionItem {
         this.aAendTime = aAendTime;
     }
 
-    public String getuserId() {
+    public Integer getuserId() {
         return userId;
     }
 
-    public void setuserId(String userId) {
+    public void setuserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -123,7 +126,15 @@ public class ActionItem {
         this.creater = creater;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    public List<TaskSubclass> getTaskSubclasses() {
+        return taskSubclasses;
+    }
+
+    public void setTaskSubclasses(List<TaskSubclass> taskSubclasses) {
+        this.taskSubclasses = taskSubclasses;
+    }
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }
@@ -143,7 +154,7 @@ public class ActionItem {
     public ActionItem() {
     }
 
-    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, String userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, Integer userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
         this.aId = aId;
         this.aName = aName;
         this.aPstartTime = aPstartTime;

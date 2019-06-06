@@ -33,9 +33,6 @@ public class IndexController {
     }
 
 
-    /*@Autowired
-    private CmfzAdminService cmfzAdminService;*/
-
     /**
      * 钉钉用户登录，显示当前登录用户的userId和名称
      *

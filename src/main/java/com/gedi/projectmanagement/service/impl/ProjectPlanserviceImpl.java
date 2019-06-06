@@ -71,4 +71,17 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         return projectPlanMapper.selectBypName(pName);
     }
 
+    @Override
+    public CodeAndMsg selectAllProject() {
+
+        if(projectPlanMapper.selectAllProject().size()!=0){
+
+            return CodeAndMsgUtil.setOK("msg",projectPlanMapper.selectAllProject());
+
+        }else{
+            return CodeAndMsgUtil.setERROR("msg",null);
+        }
+
+    }
+
 }
