@@ -210,7 +210,7 @@
   </update>
 
   <!--//根据用户id值查询出对应分配的任务,项目名,任务项等等-->
-  <select id="selectById" resultMap="BaseResultMap">
+  <select id="selectWeekReportDetial" resultMap="BaseResultMap">
   select w.w_id,w.w_start_time,w.w_end_time,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,pp.p_name,u.u_name,ac.`a_ name`from
 weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.user_id=w.user_id left join project_user_medium pum on pum.a_id=w.a_id LEFT JOIN action_item
 ac on ac.a_id=pum.a_id LEFT JOIN task_subclass tu on ac.ts_id=tu.ts_id
@@ -220,9 +220,85 @@ ac on ac.a_id=pum.a_id LEFT JOIN task_subclass tu on ac.ts_id=tu.ts_id
   <!-- //生成双周计划表-->
   <insert id="addWeekReport">
     insert into weekreport
-    (w_id,p_id,w_start_time,w_end_time,a_id,w_work_report,user_id,w_actual_proportion,w_plan_proportion,w_status,w_remark,r_finish)
+    (w_id,p_id,w_start_time,w_end_time,a_id,w_work_report,user_id,w_actual_proportion,w_plan_proportion,w_status,w_remark)
     values
-    (#{wId},#{pId},#{wStartTime},#{wEndTime},#{aId},#{wWorkReport},#{userId},#{wActualProportion},#{wPlanProportion},#{wStatus},#{wRemark},#{rFinish})
+    (#{wId},#{pId},#{wStartTime},#{wEndTime},#{aId},#{wWorkReport},#{userId},#{wActualProportion},#{wPlanProportion},#{wStatus},#{wRemark})
+
+    <foreach collection="list" item="weekreports" open="" close="" separator=";">
+      insert into weekreport
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="wId != null">
+          w_id,
+        </if>
+        <if test="pId != null">
+          p_id,
+        </if>
+        <if test="wStartTime != null">
+          w_start_time,
+        </if>
+        <if test="wEndTime != null">
+          w_end_time,
+        </if>
+        <if test="aId != null">
+          a_id,
+        </if>
+        <if test="wWorkReport != null">
+          w_work_report,
+        </if>
+        <if test="userId != null">
+          user_id,
+        </if>
+        <if test="wActualProportion != null">
+          w_actual_proportion,
+        </if>
+        <if test="wPlanProportion != null">
+          w_plan_proportion,
+        </if>
+        <if test="wStatus != null">
+          w_status,
+        </if>
+        <if test="wRemark != null">
+          w_remark,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="wId != null">
+          #{aId,jdbcType=VARCHAR},
+        </if>
+        <if test="pId != null">
+          #{pId,jdbcType=VARCHAR},
+        </if>
+        <if test="wStartTime != null">
+          #{wStartTime,jdbcType=DATE},
+        </if>
+        <if test="wEndTime != null">
+          #{wEndTime,jdbcType=DATE},
+        </if>
+        <if test="aId != null">
+          #{aId,jdbcType=VARCHAR},
+        </if>
+        <if test="wWorkReport != null">
+          #{wWorkReport,jdbcType=VARCHAR},
+        </if>
+        <if test="userId != null">
+          #{userId,jdbcType=VARCHAR},
+        </if>
+        <if test="wActualProportion != null">
+          #{wActualProportion,jdbcType=INTEGER},
+        </if>
+        <if test="wPlanProportion != null">
+          #{wPlanProportion,jdbcType=INTEGER},
+        </if>
+        <if test="wStatus != null">
+          #{wStatus,jdbcType=INTEGER},
+        </if>
+        <if test="wRemark != null">
+          #{wRemark,jdbcType=VARCHAR},
+        </if>
+      </trim>
+    </foreach>
+
+
   </insert>
 
 
