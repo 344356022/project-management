@@ -1,7 +1,6 @@
 package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 //项目任务项实体类
 public class ActionItem {
@@ -17,7 +16,7 @@ public class ActionItem {
 
     private Date aAendTime;
 
-    private Integer userId;
+    private String userId;
 
     private Integer aPercentage;
 
@@ -83,11 +82,11 @@ public class ActionItem {
         this.aAendTime = aAendTime;
     }
 
-    public Integer getuserId() {
+    public String getuserId() {
         return userId;
     }
 
-    public void setuserId(Integer userId) {
+    public void setuserId(String userId) {
         this.userId = userId;
     }
 
@@ -143,7 +142,7 @@ public class ActionItem {
     public ActionItem() {
     }
 
-    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, Integer userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, String userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
         this.aId = aId;
         this.aName = aName;
         this.aPstartTime = aPstartTime;
