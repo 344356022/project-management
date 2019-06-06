@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @ClassName: ActionItemController
- * @Description:
+ * @Description: 用于对项目管理总计划清单的修改
  * @Author: zhangshuai
  * @Date 2019/6/5 18:06
  * @Version 1.0
@@ -24,21 +24,26 @@ public class ActionItemController {
     @Resource
     private ActionItemService actionItemService;
 
-    // 项目总体计划清单的动态修改
+    /**
+     * 项目总体计划清单的动态修改
+     *
+     * @param actionItems
+     * @return
+     */
     @PostMapping(value = "/updateActionItemList")
     public CodeAndMsg updateActionItemList(List<ActionItem> actionItems) {
         CodeAndMsg msg = new CodeAndMsg();
-        if(actionItems.size() == 0 || actionItems == null){
+        if (actionItems.size() == 0 || actionItems == null) {
             msg.setCode(400);
             msg.setMsg("参数为空");
             msg.setResult(false);
         }
         String flag = this.actionItemService.batchUpdateActionItems(actionItems);
-        if("success".equals(flag)){
+        if ("success".equals(flag)) {
             msg.setCode(200);
             msg.setMsg("修改成功");
             msg.setResult(true);
-        }else{
+        } else {
             msg.setCode(401);
             msg.setMsg("修改失败");
             msg.setResult(false);
