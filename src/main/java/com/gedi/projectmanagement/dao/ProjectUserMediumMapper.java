@@ -10,7 +10,10 @@ import java.util.List;
 public interface ProjectUserMediumMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(ProjectUserMedium record);
+    /*
+    新增任务项与人物的关系
+     */
+    void addProjectUserMedium(List<ProjectUserMedium> projectUserMediumList);
 
     int insertSelective(ProjectUserMedium record);
 
@@ -18,7 +21,6 @@ public interface ProjectUserMediumMapper {
 
     int updateByPrimaryKeySelective(ProjectUserMedium record);
 
-    int updateByPrimaryKey(ProjectUserMedium record);
 
     /**
      * 根据任务项ID集合删除 任务项-用户 关系

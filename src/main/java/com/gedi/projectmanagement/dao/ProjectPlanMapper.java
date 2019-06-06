@@ -13,27 +13,20 @@ import java.util.List;
  */
 @Mapper
 public interface ProjectPlanMapper {
-    int deleteByPrimaryKey(String pId);
-
-    int insert(ProjectPlan record);
-
-    int insertSelective(ProjectPlan record);
-
-    int updateByPrimaryKeySelective(ProjectPlan record);
-
-    int updateByPrimaryKey(ProjectPlan record);
 
     /*
     项目总计划列表展示
      */
-    List<ProjectPlan> selectById();
+    List<ProjectPlan> selectById(String pid);
 
-
-    public void addProject(ProjectPlan projectPlan);
+    /*
+    新增项目总计划
+     */
+    public int addProject(ProjectPlan projectPlan);
+    //public void addProject(ProjectPlan projectPlan);
 
     /**
      * 项目计划清单展示
-     *
      * @param pId
      * @param pProjectPhaseId
      * @return
@@ -42,7 +35,6 @@ public interface ProjectPlanMapper {
 
     /**
      * 根据pName模糊查询项目总体计划列表展示
-     *
      * @param pName
      * @return
      */

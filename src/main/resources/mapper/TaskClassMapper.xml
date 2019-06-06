@@ -18,27 +18,11 @@
     </collection>
   </resultMap>
   <sql id="Base_Column_List" >
-    t_id, t_name, p_id, create_time, creater, p_project_phase_id
+    t_id, t_name, p_id, create_time, creater
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from task_class
-    where t_id = #{tId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from task_class
-    where t_id = #{tId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.TaskClass" >
-    insert into task_class (t_id, t_name, p_id, 
-      create_time, creater, p_project_phase_id
-      )
-    values (#{tId,jdbcType=VARCHAR}, #{tName,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{pProjectPhaseId,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.TaskClass" >
+
+  <!-- 新增任务类 -->
+  <insert id="addTaskClass" parameterType="com.gedi.projectmanagement.model.TaskClass" >
     insert into task_class
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="tId != null" >
@@ -107,8 +91,7 @@
     set t_name = #{tName,jdbcType=VARCHAR},
       p_id = #{pId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      creater = #{creater,jdbcType=VARCHAR},
-      p_project_phase_id = #{pProjectPhaseId,jdbcType=INTEGER}
+      creater = #{creater,jdbcType=VARCHAR}
     where t_id = #{tId,jdbcType=VARCHAR}
   </update>
 </mapper>

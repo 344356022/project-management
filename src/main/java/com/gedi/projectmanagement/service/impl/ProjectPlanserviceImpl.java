@@ -25,10 +25,11 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
 
     //查询所有用于列表展示
     @Override
-    public CodeAndMsg selectById() {
-        System.out.println(projectPlanMapper.selectById() + "查询成功");
-        if (projectPlanMapper.selectById() != null) {
-            return CodeAndMsgUtil.setOK("查询成功", projectPlanMapper.selectById());
+    public CodeAndMsg selectById(String pid) {
+       // System.out.println(projectPlanMapper.selectById() + "查询成功");
+        List<ProjectPlan> projectPlans = projectPlanMapper.selectById(pid);
+        if (projectPlans != null) {
+            return CodeAndMsgUtil.setOK("查询成功", projectPlans);
         } else {
             return CodeAndMsgUtil.setERROR("查询失败", null);
         }
@@ -36,17 +37,17 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
 
     //新增项目总计划
     @Override
-    /*public boolean addProject(ProjectPlan projectPlan) {
+    public boolean addProject(ProjectPlan projectPlan) {
         //return (projectPlanMapper.addProject(projectPlan) == 0 ? false : true);
         return projectPlanMapper.addProject(projectPlan) == 0 ? false : true;
-    }*/
-    public void addProject(ProjectPlan projectPlan) {
+    }
+    /*public void addProject(ProjectPlan projectPlan) {
         try {
             projectPlanMapper.addProject(projectPlan);
         } catch (Exception e) {
             throw e;
         }
-    }
+    }*/
 
     /**
      * 查询所有用于项目总计划清单的展示

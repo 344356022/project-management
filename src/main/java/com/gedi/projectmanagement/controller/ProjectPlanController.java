@@ -12,9 +12,12 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @author : wangyanbin
- * @Description :
- * @date :
+ * @ProjectName : ProjectPlanController
+ * @Package : com.gedi.projectmanagement.controller
+ * @Description : 项目总计划页面
+ * @Author : wangyanbin
+ * @Date : 2019/5/31 0005 上午 4:47
+ * @Version : 1.0
  */
 @RestController
 @RequestMapping("/projectPlan")
@@ -23,11 +26,11 @@ public class ProjectPlanController {
     @Resource
     private ProjectPlanService projectPlanService;
 
-    //列表展示所有 别改我的代码
+    //列表展示所有
     @RequestMapping("/listAll")
-    public CodeAndMsg selectById() {
-        System.out.println(projectPlanService.selectById() + "列表展示数据：");
-        return projectPlanService.selectById();
+    public CodeAndMsg selectById(String pid) {
+      //  System.out.println(projectPlanService.selectById() + "列表展示数据：");
+        return projectPlanService.selectById(pid);
     }
 
     /**

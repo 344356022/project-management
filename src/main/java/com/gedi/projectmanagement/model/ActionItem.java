@@ -154,7 +154,7 @@ public class ActionItem {
     public ActionItem() {
     }
 
-    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, Integer userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, String userId, Integer aPercentage, Integer aState, Boolean aIsResult, String creater, Date createTime, String tsId) {
         this.aId = aId;
         this.aName = aName;
         this.aPstartTime = aPstartTime;
