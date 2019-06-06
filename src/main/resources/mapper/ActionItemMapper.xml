@@ -35,8 +35,8 @@
       a_is_result, creater, create_time, 
       ts_id)
     values (#{aId,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, #{aPstartTime,jdbcType=DATE}, 
-      #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE}, 
-      #{userId,jdbcType=INTEGER}, #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER}, 
+      #{aPendTime,jdbcType=DATE}, #{aAstartTime,jdbcType=DATE}, #{aAendTime,jdbcType=DATE},
+      #{aPercentage,jdbcType=INTEGER}, #{aState,jdbcType=INTEGER},
       #{aIsResult,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{tsId,jdbcType=VARCHAR})
   </insert>
@@ -98,9 +98,6 @@
             </if>
             <if test="aAendTime != null">
                 #{aAendTime,jdbcType=DATE},
-            </if>
-            <if test="userId != null">
-                #{userId,jdbcType=INTEGER},
             </if>
             <if test="aPercentage != null">
                 #{aPercentage,jdbcType=INTEGER},
@@ -191,7 +188,7 @@
                     a_is_result = #{item.aIsResult,jdbcType=BIT},
                 </if>
             </set>
-            where  a_id = #{item.aId,jdbcType=VARCHAR}
+            where a_id = #{item.aId,jdbcType=VARCHAR}
         </foreach>
     </update>
 </mapper>
