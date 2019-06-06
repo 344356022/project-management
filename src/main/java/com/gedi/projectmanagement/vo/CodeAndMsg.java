@@ -1,8 +1,9 @@
 package com.gedi.projectmanagement.vo;
 
-public class CodeAndMsg{
+public class CodeAndMsg {
     private int code;
     private String msg;
+    private Boolean result; //true 成功, false 失败
 
     public int getCode() {
         return code;
@@ -33,9 +34,18 @@ public class CodeAndMsg{
     public CodeAndMsg() {
     }
 
-    public CodeAndMsg(int code, String msg, Object data) {
+    public Boolean getResult() {
+        return result;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
+
+    public CodeAndMsg(int code, String msg, Object data, Boolean result) {
         this.code = code;
         this.msg = msg;
         this.data = data;
+        this.result = result;
     }
 }
