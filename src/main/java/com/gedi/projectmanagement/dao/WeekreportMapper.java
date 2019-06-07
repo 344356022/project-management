@@ -21,10 +21,10 @@ public interface WeekreportMapper {
     int updateByPrimaryKey(Weekreport record);
 
     //展示双周计划表得所有具体内容
-    List<Weekreport> selectById();
+    List<Weekreport> selectWeekReportDetial();
 
-    //生成双周计划表
-    void  addWeekReport(Weekreport weekreport);
+    //批量添加双周计划表的
+    void  addWeekReport(@Param("list") List<Weekreport> weekreports);
 
     //修改WeekReport的进行状态修改为暂停状态
     void updateWeekReportStop(String wId);
