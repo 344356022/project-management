@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Weekreport {
+
     private String wId;
 
     private String pId;
