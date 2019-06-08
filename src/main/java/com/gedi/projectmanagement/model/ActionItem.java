@@ -51,6 +51,26 @@ public class ActionItem {
         this.tsId = tsId;
     }
 
+    public ActionItem(String aId, String aName, String aPstartTime, String aPendTime, String aAstartTime, String aAendTime,Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
+        this.aId = aId;
+        this.aName = aName;
+        this.aPstartTime = aPstartTime;
+        this.aPendTime = aPendTime;
+        this.aAstartTime = aAstartTime;
+        this.aAendTime = aAendTime;
+        this.userId = userId;
+        this.aPercentage = aPercentage;
+        this.aState = aState;
+        this.aIsResult = aIsResult;
+        this.creater = creater;
+        this.createTime = createTime;
+        this.tsId = tsId;
+    }
+
+
+
+
+
     private List<TaskSubclass> taskSubclasses;
 
     public String getaId() {

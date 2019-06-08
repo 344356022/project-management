@@ -18,7 +18,7 @@ public interface TaskClassService {
     /*
     新增项目中的任务类
      */
-    public String addTaskClass(List<ActionItem> actionItemList);
+    public String addTaskClass(List<ActionItem> actionItems);
 
     /*
     新增项目中任务子类

@@ -12,10 +12,10 @@
 
     <!-- 新增任务项与人物的关系 -->
     <insert id="addProjectUserMedium" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-        insert into project_user_medium (userId, aId, id) values
+        insert into project_user_medium (user_id, a_id, id) values
         <foreach collection="list" item="item" separator=",">
-            (#{item.user_id,jdbcType=VARCHAR},
-            #{item.a_id,jdbcType=VARCHAR},
+            (#{item.userId,jdbcType=VARCHAR},
+            #{item.aId,jdbcType=VARCHAR},
             #{item.id,jdbcType=VARCHAR})
         </foreach>
     </insert>

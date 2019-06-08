@@ -45,15 +45,15 @@ public class TaskClassServiceImpl implements TaskClassService {
      * @param : taskClass  taskSubclass  actionItem
      */
     @Override
-    public String addTaskClass(List<ActionItem> actionItemList) {
+    public String addTaskClass(List<ActionItem> actionItems) {
         List<ProjectUserMedium>  projectUserMediumList = new ArrayList<>();
-        List<ActionItem> actionItems = new ArrayList<>();
+       // List<ActionItem> actionItems = new ArrayList<>();
         List<String> ids = new ArrayList<>();
 
         for (ActionItem actionItem : actionItems) {
             ids.add(actionItem.getaId());
             ProjectUserMedium userMedium = new ProjectUserMedium();
-            userMedium.setaId(UUIDUtil.getUUID2());
+            userMedium.setId(UUIDUtil.getUUID2());
             userMedium.setaId(actionItem.getaId());
             userMedium.setUserId(actionItem.getUserId());
             projectUserMediumList.add(userMedium);
@@ -61,9 +61,9 @@ public class TaskClassServiceImpl implements TaskClassService {
 
         //插入中间表数据
         projectUserMediumMapper.addProjectUserMedium(projectUserMediumList);
-
+        System.out.println("comcmocmocmocmcmco");
         //插入任务项列表数据
-        actionItemMapper.addActionItem(actionItemList);
+        actionItemMapper.addActionItem(actionItems);
         return "success";
     }
 
