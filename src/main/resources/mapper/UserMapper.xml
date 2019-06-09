@@ -3,7 +3,7 @@
 <mapper namespace="com.gedi.projectmanagement.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.User" >
     <id column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="u_phone" property="uPhone" jdbcType="INTEGER" />
+    <result column="u_phone" property="uPhone" jdbcType="VARCHAR" />
     <result column="u_name" property="uName" jdbcType="VARCHAR" />
     <result column="u_department" property="uDepartment" jdbcType="VARCHAR" />
     <result column="u_sign" property="uSign" jdbcType="INTEGER" />
@@ -21,6 +21,23 @@
   <select id="selectUserBySign" resultMap="BaseResultMap">
     select u_name,user_id from user where u_sign=3 and u_department=#{department}
   </select>
+
+  <!--通过调用钉钉第三方接口，获取部门下的所有员工信息，批量增添到自己的数据库中进行储存-->
+  <insert id="insertManyUserMessage">
+    insert into user (user_id,u_phone,u_name,u_department) VALUES
+    <foreach collection="list" item="item" separator=",">
+      (#{item.userId},#{item.uPhone},#{item.uName},#{item.uDepartment})
+    </foreach>
+  </insert>
+
+
+  <select id="selectAllUserId" resultMap="BaseResultMap">
+    select user_id from user
+  </select>
+
+  <delete id="deleteAllUserMessage">
+    DELETE from USER
+  </delete>
 
 
 </mapper>
