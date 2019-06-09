@@ -42,8 +42,8 @@ public class WeekReportController {
 
 
     //查询双周计划表展示具体的内容以及完成的占比；
-    @GetMapping("queryProjectNameByUserId")
-    public CodeAndMsg queryProjectNameByUserId() {
+    @GetMapping("selectWeekReportDetial")
+    public CodeAndMsg selectWeekReportDetial() {
         return weekReportService.selectWeekReportDetial();
     }
 
