@@ -7,7 +7,7 @@ import java.util.Date;
 public class User {
     private String userId; // 用户ID
 
-    private Integer uPhone; // 用户手机号
+    private String uPhone; // 用户手机号
 
     private String uName; // 用户名称
 
@@ -31,11 +31,11 @@ public class User {
         this.userId = userId;
     }
 
-    public Integer getuPhone() {
+    public String getuPhone() {
         return uPhone;
     }
 
-    public void setuPhone(Integer uPhone) {
+    public void setuPhone(String uPhone) {
         this.uPhone = uPhone;
     }
 
@@ -100,7 +100,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, Integer uPhone, String uName, String uDepartment, Integer uSign, Integer uStatus, String createTime, String upStringTime, String creater) {
+    public User(String userId, String uPhone, String uName, String uDepartment, Integer uSign, Integer uStatus, String createTime, String upStringTime, String creater) {
         this.userId = userId;
         this.uPhone = uPhone;
         this.uName = uName;
@@ -112,6 +112,12 @@ public class User {
         this.creater = creater;
     }
 
+    public User(String userId, String uPhone, String uName, String uDepartment) {
+        this.userId = userId;
+        this.uPhone = uPhone;
+        this.uName = uName;
+        this.uDepartment = uDepartment;
+    }
     @Override
     public String toString() {
         return "User{" +
