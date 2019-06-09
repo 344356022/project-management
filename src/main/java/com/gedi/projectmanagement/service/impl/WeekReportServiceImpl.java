@@ -50,6 +50,10 @@ public class WeekReportServiceImpl implements WeekReportService {
 
     @Override
     public String addWeekReport(List<Weekreport> weekreports) {
+
+        for (Weekreport weekreport : weekreports) {
+            weekreport.setwId(UUIDUtil.getUUID2());
+        }
             weekreportMapper.addWeekReport(weekreports);
             return "success";
 
