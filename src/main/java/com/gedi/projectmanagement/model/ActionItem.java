@@ -10,13 +10,13 @@ public class ActionItem {
 
     private String aName; // 任务项名称
 
-    private String aPstartTime; // 计划开始时间
+    private Date aPstartTime; // 计划开始时间
 
-    private String aPendTime; // 计划结束时间
+    private Date aPendTime; // 计划结束时间
 
-    private String aAstartTime; // 实际开始时间
+    private Date aAstartTime; // 实际开始时间
 
-    private String aAendTime; // 实际结束时间
+    private Date aAendTime; // 实际结束时间
 
     private String userId; // 用户ID
 
@@ -35,7 +35,7 @@ public class ActionItem {
     public ActionItem() {
     }
 
-    public ActionItem(String aId, String aName, String aPstartTime, String aPendTime, String aAstartTime, String aAendTime, String userId, Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, String userId, Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
         this.aId = aId;
         this.aName = aName;
         this.aPstartTime = aPstartTime;
@@ -51,7 +51,7 @@ public class ActionItem {
         this.tsId = tsId;
     }
 
-    public ActionItem(String aId, String aName, String aPstartTime, String aPendTime, String aAstartTime, String aAendTime,Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime,Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
         this.aId = aId;
         this.aName = aName;
         this.aPstartTime = aPstartTime;
@@ -90,38 +90,38 @@ public class ActionItem {
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    public String getaPstartTime() {
+    public Date getaPstartTime() {
         return aPstartTime;
     }
 
-    public void setaPstartTime(String aPstartTime) {
+    public void setaPstartTime(Date aPstartTime) {
         this.aPstartTime = aPstartTime;
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    public String getaPendTime() {
+    public Date getaPendTime() {
         return aPendTime;
     }
 
-    public void setaPendTime(String aPendTime) {
+    public void setaPendTime(Date aPendTime) {
         this.aPendTime = aPendTime;
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    public String getaAstartTime() {
+    public Date getaAstartTime() {
         return aAstartTime;
     }
 
-    public void setaAstartTime(String aAstartTime) {
+    public void setaAstartTime(Date aAstartTime) {
         this.aAstartTime = aAstartTime;
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    public String getaAendTime() {
+    public Date getaAendTime() {
         return aAendTime;
     }
 
-    public void setaAendTime(String aAendTime) {
+    public void setaAendTime(Date aAendTime) {
         this.aAendTime = aAendTime;
     }
 

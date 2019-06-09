@@ -20,10 +20,21 @@
     a_percentage, a_state, a_is_result, creater, create_time, ts_id
   </sql>
 
+    <insert id="addActionItem1" parameterType="com.gedi.projectmanagement.model.ActionItem">
+      insert into action_item(a_id, `a_ name`, a_pstart_time, a_pend_time,
+      a_astart_time, a_aend_time, a_percentage, a_state, a_is_result,
+      creater, create_time, ts_id)
+        <foreach collection="list" item="item" open="" close="" separator=";">
+      values(${item.aId},${item.aName},${item.aPstartTime},#{item.aPendTime},
+      ${item.aAstartTime},${item.aAendTime},${item.aPercentage},${item.aState},
+            ${item.aIsResult},${item.creater},now(),${item.tsId})
+        </foreach>
+    </insert>
+
     <!-- 新增项目中的任务项列表 -->
     <insert id="addActionItem" parameterType="com.gedi.projectmanagement.model.ActionItem">
-        <foreach collection="list" item="item" open="" close="" separator=";">
         insert into action_item
+        <foreach collection="list" item="item" open="" close="" separator=";">
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="item.aId != null">
                 a_id,
@@ -64,40 +75,40 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="item.aId != null">
-                #{aId,jdbcType=VARCHAR},
+                #{item.aId,jdbcType=VARCHAR},
             </if>
             <if test="item.aName != null">
-                #{aName,jdbcType=VARCHAR},
+                #{item.aName,jdbcType=VARCHAR},
             </if>
             <if test="item.aPstartTime != null">
-                #{aPstartTime,jdbcType=DATE},
+                #{item.aPstartTime,jdbcType=DATE},
             </if>
             <if test="item.aPendTime != null">
-                #{aPendTime,jdbcType=DATE},
+                #{item.aPendTime,jdbcType=DATE},
             </if>
             <if test="item.aAstartTime != null">
-                #{aAstartTime,jdbcType=DATE},
+                #{item.aAstartTime,jdbcType=DATE},
             </if>
             <if test="item.aAendTime != null">
-                #{aAendTime,jdbcType=DATE},
+                #{item.aAendTime,jdbcType=DATE},
             </if>
             <if test="item.aPercentage != null">
-                #{aPercentage,jdbcType=INTEGER},
+                #{item.aPercentage,jdbcType=INTEGER},
             </if>
             <if test="item.aState != null">
-                #{aState,jdbcType=INTEGER},
+                #{item.aState,jdbcType=INTEGER},
             </if>
             <if test="item.aIsResult != null">
-                #{aIsResult,jdbcType=BIT},
+                #{item.aIsResult,jdbcType=BIT},
             </if>
             <if test="item.creater != null">
-                #{creater,jdbcType=VARCHAR},
+                #{item.creater,jdbcType=VARCHAR},
             </if>
             <if test="item.createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                #{item.createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="item.tsId != null">
-                #{tsId,jdbcType=VARCHAR},
+                #{item.tsId,jdbcType=VARCHAR},
             </if>
         </trim>
         </foreach>

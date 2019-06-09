@@ -18,7 +18,7 @@ public interface ActionItemMapper {
     /**
      * 新增项目中的任务项列表
      */
-    public void addActionItem(@Param("list") List<ActionItem> actionItems);
+    public void addActionItem(@Param("list") List<ActionItem>  actionItems);
 
     /**
      * 批量修改任务项

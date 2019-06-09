@@ -28,10 +28,10 @@ import java.util.List;
 @Transactional
 public class TaskClassServiceImpl implements TaskClassService {
 
-    //@Resource
+    @Resource
     private TaskClassMapper taskClassMapper;
 
-    //@Resource
+    @Resource
     private TaskSubclassMapper taskSubclassMapper;
 
     @Resource
