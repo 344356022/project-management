@@ -15,7 +15,7 @@ public class Weekreport {
 
     private Date wEndTime;
 
-    private String aId;
+    private String tsId;
 
     private String wWorkReport;
 
@@ -37,8 +37,20 @@ public class Weekreport {
 
     private Integer rFinish;
 
+    private List<RecordTime> recordTimes;
+
+    private List<TaskSubclass> taskSubclasses;
+
     public Integer getrFinish() {
         return rFinish;
+    }
+
+    public List<TaskSubclass> getTaskSubclasses() {
+        return taskSubclasses;
+    }
+
+    public void setTaskSubclasses(List<TaskSubclass> taskSubclasses) {
+        this.taskSubclasses = taskSubclasses;
     }
 
     public void setrFinish(Integer rFinish) {
@@ -47,6 +59,22 @@ public class Weekreport {
 
     public List<ActionItem> getActionItems() {
         return actionItems;
+    }
+
+    public String getTsId() {
+        return tsId;
+    }
+
+    public void setTsId(String tsId) {
+        this.tsId = tsId;
+    }
+
+    public List<RecordTime> getRecordTimes() {
+        return recordTimes;
+    }
+
+    public void setRecordTimes(List<RecordTime> recordTimes) {
+        this.recordTimes = recordTimes;
     }
 
     public void setActionItems(List<ActionItem> actionItems) {
@@ -93,14 +121,6 @@ public class Weekreport {
 
     public void setwEndTime(Date wEndTime) {
         this.wEndTime = wEndTime;
-    }
-
-    public String getaId() {
-        return aId;
-    }
-
-    public void setaId(String aId) {
-        this.aId = aId;
     }
 
     public String getwWorkReport() {
@@ -162,12 +182,12 @@ public class Weekreport {
     public Weekreport() {
     }
 
-    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String aId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark) {
+    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark) {
         this.wId = wId;
         this.pId = pId;
         this.wStartTime = wStartTime;
         this.wEndTime = wEndTime;
-        this.aId = aId;
+        this.tsId = tsId;
         this.wWorkReport = wWorkReport;
         this.userId = userId;
         this.wActualProportion = wActualProportion;
@@ -176,12 +196,12 @@ public class Weekreport {
         this.wRemark = wRemark;
     }
 
-    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String aId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer rFinish) {
+    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer rFinish) {
         this.wId = wId;
         this.pId = pId;
         this.wStartTime = wStartTime;
         this.wEndTime = wEndTime;
-        this.aId = aId;
+        this.tsId = tsId;
         this.wWorkReport = wWorkReport;
         this.userId = userId;
         this.wActualProportion = wActualProportion;
@@ -191,8 +211,6 @@ public class Weekreport {
         this.rFinish=rFinish;
     }
 
-
-
     @Override
     public String toString() {
         return "Weekreport{" +
@@ -200,13 +218,17 @@ public class Weekreport {
                 ", pId='" + pId + '\'' +
                 ", wStartTime=" + wStartTime +
                 ", wEndTime=" + wEndTime +
-                ", aId='" + aId + '\'' +
+                ", tsId='" + tsId + '\'' +
                 ", wWorkReport='" + wWorkReport + '\'' +
                 ", userId='" + userId + '\'' +
                 ", wActualProportion=" + wActualProportion +
                 ", wPlanProportion=" + wPlanProportion +
                 ", wStatus=" + wStatus +
                 ", wRemark='" + wRemark + '\'' +
+                ", projectPlans=" + projectPlans +
+                ", users=" + users +
+                ", actionItems=" + actionItems +
+                ", rFinish=" + rFinish +
                 '}';
     }
 }
