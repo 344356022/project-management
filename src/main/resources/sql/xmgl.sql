@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50018
 File Encoding         : 65001
 
-Date: 2019-06-06 19:32:17
+Date: 2019-06-10 16:57:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,8 +27,8 @@ CREATE TABLE `action_item` (
   `a_astart_time` date default NULL COMMENT '实际开始时间',
   `a_aend_time` date default NULL COMMENT '实际结束时间',
   `a_percentage` int(11) default NULL COMMENT '完成百分比',
-  `a_state` int(5) default NULL COMMENT '状态 0 未开始，1 进行中，2 已完成',
-  `a_is_result` int(5) default NULL COMMENT '成果是否提交  0 待提交，1 已提交',
+  `a_state` int(5) default NULL COMMENT '状态  01-未开始、02-进行中、03-已完成',
+  `a_is_result` int(5) default NULL COMMENT '成果是否提交  01待提交、02已提交',
   `creater` varchar(20) collate utf8_unicode_ci default NULL COMMENT '任务项创建人',
   `create_time` date default NULL COMMENT '任务项创建时间',
   `ts_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '任务子类ID',
@@ -41,10 +41,8 @@ CREATE TABLE `action_item` (
 INSERT INTO `action_item` VALUES ('00d440ce38b3486dab9d44a1701cd125', '汇总指标梳理过程问题', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '70d1de0d950b4fcd938a561e4dd922c6');
 INSERT INTO `action_item` VALUES ('02883c237e4f4797a7155d96619ddfad', '生产环境发布', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'aec72143696949d6a23798d8fffe7949');
 INSERT INTO `action_item` VALUES ('0d99f974e9704399b50e839993092256', '前后端开发（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
-INSERT INTO `action_item` VALUES ('1', '测试1', '1994-12-31', '1994-12-31', '1994-12-31', '1994-12-31', '50', '2', '0', '张帅', '2019-06-06', '1');
 INSERT INTO `action_item` VALUES ('114e3c85dfdd4d2d9f61358864482f96', '系统功能测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7710719964d34bdb8562e89d19f18428');
-INSERT INTO `action_item` VALUES ('1da86c4bcd4b449ab1b7ef6504549832', '评审数据链路流转方案', '1994-12-31', '1994-12-31', '1994-12-31', '1994-12-31', '50', '2', '0', '张帅', '2019-06-05', '2e0ce4f866dc459b9a495330c1885d22');
-INSERT INTO `action_item` VALUES ('2', '测试2', '1994-12-31', '1994-12-31', '1994-12-31', '1994-12-31', '50', '2', '0', '张帅', '2019-06-06', '2');
+INSERT INTO `action_item` VALUES ('1da86c4bcd4b449ab1b7ef6504549832', '评审数据链路流转方案', '1994-12-31', '1994-12-31', '1994-12-31', '1994-12-31', '50', '1', '1', '张帅', '2019-06-05', '2e0ce4f866dc459b9a495330c1885d22');
 INSERT INTO `action_item` VALUES ('21f7b679ae29402984b1ed58f04e4eca', '需求调研及梳理', '2019-03-15', '2019-03-22', '2019-03-15', '2019-06-05', '100', '1', '1', '王炎彬', '2019-05-31', '437f8f5df86345ce9659af33c31a054f');
 INSERT INTO `action_item` VALUES ('26182818ebb34c6ebd459eee565ff66c', '数据库设置', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
 INSERT INTO `action_item` VALUES ('2a1d884c4fc94dbf992922add5247fcb', '前后端联调（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
@@ -121,7 +119,7 @@ CREATE TABLE `project_plan` (
   `p_name` varchar(255) collate utf8_unicode_ci default NULL COMMENT '项目名称',
   `p_start_time` date default NULL COMMENT '项目计划开始时间',
   `p_end_time` date default NULL COMMENT '项目计划结束时间',
-  `p_project_phase_id` int(10) default NULL COMMENT '项目阶段ID',
+  `p_project_phase_id` int(10) default NULL COMMENT '项目阶段ID 01-需求分析、02-数据处理、03-系统开发',
   `p_progress` int(10) default NULL COMMENT '项目总体完成进度',
   `create_time` date default NULL COMMENT '项目创建时间',
   `creater` varchar(20) collate utf8_unicode_ci default NULL COMMENT '项目创建人',
@@ -174,7 +172,6 @@ INSERT INTO `project_user_medium` VALUES ('833e577dc6854138971afd720610455c', '0
 INSERT INTO `project_user_medium` VALUES ('834f747c395d4ed8a0732ef082128be6', 'ac68801e62ed4ed1a26d1f4ed807be4a', '60d9d091ad374aaa86854d98313a03c7');
 INSERT INTO `project_user_medium` VALUES ('84ce781d454c4814b28e2d78983936dd', 'f9dd3e12f01344b5be057f4a2a8542a2', '21f7b679ae29402984b1ed58f04e4eca');
 INSERT INTO `project_user_medium` VALUES ('857ba3153fdc4394a5642ed9bcdde68f', 'f9dd3e12f01344b5be057f4a2a8542a2', 'd6f05985c5c744bf9b40fdb0f7994ddd');
-INSERT INTO `project_user_medium` VALUES ('87dc7c8366c54cdcad61c677cfdeb4f7', '2', '2');
 INSERT INTO `project_user_medium` VALUES ('89dba21f66374b3ab68b7bb386beff5f', 'f9dd3e12f01344b5be057f4a2a8542a2', '483da0e9776347568b0ace9b700e184f');
 INSERT INTO `project_user_medium` VALUES ('970934531a87457b8f2ad5d760712018', 'ac68801e62ed4ed1a26d1f4ed807be4a', '4737d22a3e3d4993b26f6af9cb40783b');
 INSERT INTO `project_user_medium` VALUES ('9cad08006c924b0b8bb4909c5d73089f', 'f9dd3e12f01344b5be057f4a2a8542a2', 'a4fe9590438543f38182bbc281a9a961');
@@ -182,7 +179,6 @@ INSERT INTO `project_user_medium` VALUES ('a053a89b40eb48a0b3559c0ba46655bf', 'f
 INSERT INTO `project_user_medium` VALUES ('a0fd9db234594b7f8d5fddb6d4155745', 'f9dd3e12f01344b5be057f4a2a8542a2', '79355b6de24e4d1eb9860a1c43502df7');
 INSERT INTO `project_user_medium` VALUES ('a2519efd0bb349bebc8c4593ab4d5272', 'ac68801e62ed4ed1a26d1f4ed807be4a', '88a294364fec448587e08fcf0cd3d89a');
 INSERT INTO `project_user_medium` VALUES ('a50cc92b2dc7490da15a82a3a439c9a4', 'c02c4a1899ba4b50808c525ef42b6a48', '2cf15e17b8184ae792868a17184826ca');
-INSERT INTO `project_user_medium` VALUES ('a82c9ef7721048cf90f1691a7484303e', '2', '1');
 INSERT INTO `project_user_medium` VALUES ('a9ffd7c85f994ae3a922ce5bfc73a7e0', 'f9dd3e12f01344b5be057f4a2a8542a2', '73ddc58bc9984bc994e7ed9a716b7ec4');
 INSERT INTO `project_user_medium` VALUES ('abc9fb89dd6d49218e6793298d413847', 'ac68801e62ed4ed1a26d1f4ed807be4a', '91a140a700d248d887909ae9ac19b743');
 INSERT INTO `project_user_medium` VALUES ('ad55ed70902444f98f224ea754b7913f', '6515522b010b400da4b872f65a3434b3', '5131b979438b4ad7b877d5b67de61f04');
@@ -210,28 +206,29 @@ CREATE TABLE `task_class` (
   `p_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '项目总计划表主键',
   `create_time` date default NULL COMMENT '任务类创建时间',
   `creater` varchar(20) collate utf8_unicode_ci default NULL COMMENT '任务类创建人',
-  `p_project_phase_id` int(20) default NULL COMMENT '项目阶段ID',
+  `p_project_phase_id` int(20) default NULL COMMENT '项目阶段ID 01-需求分析、02-数据处理、03-系统开发',
+  `sort_id` int(10) default NULL COMMENT '用于排序的ID',
   PRIMARY KEY  (`t_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of task_class
 -- ----------------------------
-INSERT INTO `task_class` VALUES ('19c179bbe8cd4603a5a7f541f1e59bc2', '数据库最终结果表结构设计', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('233b6818b2ce44929dc316ff5166611d', '指标数验证、数据质量稽核', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('2c5a968a89994633b7cc251359acc313', '数据验证', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('2d6b10e2ca2e486ca3dfa8bc367e3cb1', '指标明细编制', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('38c0d1f18426483cbb72c7d5b6517156', '数据接入方案确认、数据库设计', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('876752c7d0a2480f946bac785aa0a4d8', '数据链路设计及线上数据流转', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('8ed7eabb4e4841c4ab39a1fb4d9a8669', '系统上线', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-05-31', '王炎彬', '1');
-INSERT INTO `task_class` VALUES ('aaba14e91e434f5e8f4ed017f579cbc4', '系统上线', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '3');
-INSERT INTO `task_class` VALUES ('b464e2c7e9bb43f485c481f71d3029ac', '原型设计', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-05-31', '王炎彬', '1');
-INSERT INTO `task_class` VALUES ('caa0db31b8ef4661ba070bc4e6d9e215', '系统开发', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '3');
-INSERT INTO `task_class` VALUES ('d5b5655a246c43fe8bdf5eb657aae7d8', '数据库开发', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('dd4cb202818747a08dd60d6e9c635eb9', '项目验收', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-03', '张帅', '1');
-INSERT INTO `task_class` VALUES ('e8362f9a69ce4ab297eb47aa672bb917', '指标数据需求调研及确定', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2');
-INSERT INTO `task_class` VALUES ('efa9de57ccab4358bc18d0a7bd43f99a', '需求分析', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-05-31', '王炎彬', '1');
-INSERT INTO `task_class` VALUES ('fe18f44faa7d41b9936329fb7dbd9ac3', '系统测试', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '3');
+INSERT INTO `task_class` VALUES ('19c179bbe8cd4603a5a7f541f1e59bc2', '数据库最终结果表结构设计', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '7');
+INSERT INTO `task_class` VALUES ('233b6818b2ce44929dc316ff5166611d', '指标数验证、数据质量稽核', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '11');
+INSERT INTO `task_class` VALUES ('2c5a968a89994633b7cc251359acc313', '数据验证', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '8');
+INSERT INTO `task_class` VALUES ('2d6b10e2ca2e486ca3dfa8bc367e3cb1', '指标明细编制', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '6');
+INSERT INTO `task_class` VALUES ('38c0d1f18426483cbb72c7d5b6517156', '数据接入方案确认、数据库设计', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '9');
+INSERT INTO `task_class` VALUES ('876752c7d0a2480f946bac785aa0a4d8', '数据链路设计及线上数据流转', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '12');
+INSERT INTO `task_class` VALUES ('8ed7eabb4e4841c4ab39a1fb4d9a8669', '系统上线', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-05-31', '王炎彬', '1', '3');
+INSERT INTO `task_class` VALUES ('aaba14e91e434f5e8f4ed017f579cbc4', '系统上线', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '3', '15');
+INSERT INTO `task_class` VALUES ('b464e2c7e9bb43f485c481f71d3029ac', '原型设计', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-05-31', '王炎彬', '1', '2');
+INSERT INTO `task_class` VALUES ('caa0db31b8ef4661ba070bc4e6d9e215', '系统开发', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '3', '13');
+INSERT INTO `task_class` VALUES ('d5b5655a246c43fe8bdf5eb657aae7d8', '数据库开发', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '10');
+INSERT INTO `task_class` VALUES ('dd4cb202818747a08dd60d6e9c635eb9', '项目验收', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-03', '张帅', '1', '4');
+INSERT INTO `task_class` VALUES ('e8362f9a69ce4ab297eb47aa672bb917', '指标数据需求调研及确定', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '2', '5');
+INSERT INTO `task_class` VALUES ('efa9de57ccab4358bc18d0a7bd43f99a', '需求分析', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-05-31', '王炎彬', '1', '1');
+INSERT INTO `task_class` VALUES ('fe18f44faa7d41b9936329fb7dbd9ac3', '系统测试', 'e6b0fda2b9a34d34aaa32e797adb2008', '2019-06-04', '张帅', '3', '14');
 
 -- ----------------------------
 -- Table structure for task_subclass
