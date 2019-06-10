@@ -2,6 +2,7 @@ package com.gedi.projectmanagement.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -75,27 +76,37 @@ public class JournalController
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/journal/save",method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
-	public HashMap addRb(HttpServletRequest request)
-	{	HashMap resultMap = new HashMap();
+	public HashMap addRb(HttpServletRequest request){
+		HashMap resultMap = new HashMap();
+		resultMap.put("code",500);
+		resultMap.put("msg","失败");
 		JSONObject jsonParam = this.getJSONParam(request);
       Map<String, Object>  map = ( Map<String, Object>)jsonParam;
       List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");
-        System.err.println("--------:"+map);
-        System.err.println("--------:"+ll);
+		for (Object ob: ll) {
+			Map mp = (Map) ob;
+			mp.put("userId","userId");//用户id暂时写死之后从session里取或者前台传递
+			mp.put("rbId",UUIDUtil.getUUID2());//日报主键UUID
+			//String content = new String((mp.get("text").toString().getBytes("ISO_8859_1")),"GBK");
+			//mp.put("text",new String(content.getBytes("UTF-8")));
+			String content =mp.get("text").toString();
+			mp.put("text",content);
+			System.err.println("---content-----:"+content);
+			System.err.println("---ob-----:"+mp);
+		}
+		try {
+			int resultNum = journalService.insertJournalList(ll);//批量插入日报
+			if(resultNum > 0){
+				resultMap.put("code",200);
+				resultMap.put("msg","插入成功");
+			}else {
+				resultMap.put("code",500);
+				resultMap.put("msg","失败");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        System.err.println("-----ll---:"+ll);
-		/*String result = jsonParam.getString("para");
-        result=result.substring(1,result.length()-1);
-        String [] stringArr= result.split(",");
-        List list = Arrays.asList(stringArr);*/
-      /*  for(int i=0;i<list.size();i++){
-            HashMap<String,Object> map = (HashMap) list.get(i);
-            map.put("rbId", UUIDUtil.getUUID2());
-            map.put("userId","userId");
-            System.err.println("--------:"+list.get(i));
-        }*/
-
-        int resultNum = journalService.insertJournalList(ll);
 		return resultMap;
 
 	}

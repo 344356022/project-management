@@ -119,37 +119,18 @@
            var item = [];
            var i = 1;
             $(".daily_left").each(function(){
-               // var myMap=new Map();
                 var wcjd=$(this).children("span").children("input").eq(0).val();
                 var wcgs=$(this).children("span").children("input").eq(1).val();
                 var  weekId= $(this).attr("id");
                 var text=$(this).children("div").children("textarea").val();
                 var param = {
-                    rbId:"uuuossljdjl"+i,
                     wcjd:wcjd,
-                    userId:"userId",
                     wcgs:wcgs,
                     weekId:weekId,
                     text:text
                 };
                 i++;
                 item.push(param);
-            /*    $.ajax({
-                    url:localhostPaht+"/journal/add",
-                    type:"post",
-                    cache:false,
-                    contentType:"application/json; charset=utf-8",
-                    dataType:"json",
-                    async:false,
-                    data:JSON.stringify({para: param}),
-                    success:function(res){
-                        if(res.code == 200){
-
-
-                        }
-                    }
-                });*/
-
             });
             $.ajax({
                 url:localhostPaht+"/journal/save",
@@ -161,7 +142,7 @@
                 data:JSON.stringify({para: item}),
                 success:function(res){
                     if(res.code == 200){
-
+                        alert(res.msg);
 
                     }
                 }
