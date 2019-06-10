@@ -20,17 +20,6 @@
     a_percentage, a_state, a_is_result, creater, create_time, ts_id
   </sql>
 
-    <insert id="addActionItem1" parameterType="com.gedi.projectmanagement.model.ActionItem">
-      insert into action_item(a_id, `a_ name`, a_pstart_time, a_pend_time,
-      a_astart_time, a_aend_time, a_percentage, a_state, a_is_result,
-      creater, create_time, ts_id)
-        <foreach collection="list" item="item" open="" close="" separator=";">
-      values(${item.aId},${item.aName},${item.aPstartTime},#{item.aPendTime},
-      ${item.aAstartTime},${item.aAendTime},${item.aPercentage},${item.aState},
-            ${item.aIsResult},${item.creater},now(),${item.tsId})
-        </foreach>
-    </insert>
-
     <!-- 新增项目中的任务项列表 -->
     <insert id="addActionItem" parameterType="com.gedi.projectmanagement.model.ActionItem">
         insert into action_item

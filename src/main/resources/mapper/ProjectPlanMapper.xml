@@ -34,23 +34,25 @@
 
     <!-- 新增项目总计划 -->
     <insert id="addProject" parameterType="com.gedi.projectmanagement.model.ProjectPlan">
-        insert into project_plan (
-          p_id, p_name,
+        insert into project_plan
+        ( p_id, p_name,
           p_start_time,
           p_end_time,
           p_project_phase_id,
           p_progress,
           create_time,
           creater)
-        values (
-          #{pId,jdbcType=VARCHAR},
-          #{pName,jdbcType=VARCHAR},
-          #{pStartTime,jdbcType=DATE},
-          #{pEndTime,jdbcType=DATE},
-          #{pProjectPhaseId,jdbcType=INTEGER},
-          #{pProgress,jdbcType=INTEGER},
-          #{createTime,jdbcType=DATE},
-          #{creater,jdbcType=VARCHAR})
+        values
+        <foreach collection="list" item="item" open="" close="" separator=";">
+        ( #{item.pId,jdbcType=VARCHAR},
+          #{item.pName,jdbcType=VARCHAR},
+          #{item.pStartTime,jdbcType=DATE},
+          #{item.pEndTime,jdbcType=DATE},
+          #{item.pProjectPhaseId,jdbcType=INTEGER},
+          #{item.pProgress,jdbcType=INTEGER},
+          #{item.createTime,jdbcType=DATE},
+          #{item.creater,jdbcType=VARCHAR})
+        </foreach>
       </insert>
 
 
@@ -83,7 +85,8 @@
 	tsai.percentage AS percentage,
 	tsai.state AS state,
 	tsai.isresult AS isResult,
-	username
+	username,
+	t.sort_id AS sortId
 FROM
 	(
 		project_plan AS p
@@ -133,6 +136,7 @@ LEFT JOIN (
 ) AS puser ON aip.id = puser.aId
 WHERE
 	p.p_id = #{pId} AND t.p_project_phase_id = #{pProjectPhaseId}
+	ORDER BY sortId ASC
     </select>
 
     <!--查询所有得项目名称以及ID值-->
