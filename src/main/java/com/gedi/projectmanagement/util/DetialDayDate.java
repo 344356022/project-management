@@ -2,10 +2,7 @@ package com.gedi.projectmanagement.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: renpu
@@ -70,6 +67,58 @@ public class DetialDayDate {
             }
         }
         return datas;
+    }
+
+
+    public static Map<String, String> getNextWeek(String queryDate) throws ParseException{
+
+        Map<String, String> dateMap = new HashMap<String,String>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar cal1 = Calendar.getInstance();
+
+        Calendar cal2 =Calendar.getInstance();
+
+        cal1.setTime(sdf.parse(queryDate));
+
+        cal2.setTime(sdf.parse(queryDate));
+
+        int dayWeek = cal1.get(Calendar.DAY_OF_WEEK);// 获得当前日期是一个星期的第几天
+
+        if(dayWeek == 1){
+            cal2.add(Calendar.DAY_OF_MONTH, 5);
+        } else {
+            cal2.add(Calendar.DAY_OF_MONTH, 1-dayWeek+14);
+        }
+
+        // 下周 周五日期
+
+        String endDateNext  = sdf.format(cal2.getTime());
+
+        dateMap.put("endDateNext", endDateNext);
+
+        return dateMap;
+    }
+
+
+
+    //获取连续十二天每天所对应的具体日期；
+    public static List<String> getTweleveDayDate(){
+        Date date1=new Date();
+        String date= new SimpleDateFormat("yyyy-MM-dd").format(date1);
+        Date da=null;
+        //获取当前日期所在的周的下周周五
+        Map<String, String> dateMap = null;
+        try {
+            SimpleDateFormat  sdf=new SimpleDateFormat("yyyy-MM-dd");
+            dateMap =getNextWeek(date);
+            String s = dateMap.get("endDateNext");
+            da= sdf.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return findDates(date1, da);
     }
 
 }
