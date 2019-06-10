@@ -16,6 +16,9 @@ public class ProjectPlanList {
 
     private Integer pProjectPhaseId; // 项目阶段ID
     private String tName; // 任务类名称
+    private String tId; // 任务类ID
+    private String tsId; // 任务子类ID
+    private String aId; // 任务项ID
     private String tsName; // 任务子类名称
     private String aName; // 任务项名称
     private Date apsTime; // 计划开始时间
@@ -30,9 +33,12 @@ public class ProjectPlanList {
     public ProjectPlanList() {
     }
 
-    public ProjectPlanList(Integer pProjectPhaseId, String tName, String tsName, String aName, Date apsTime, Date apeTime, Date aasTime, Date aaeTime, Integer percentage, Integer state, Integer isResult, String username) {
+    public ProjectPlanList(Integer pProjectPhaseId, String tName, String tId, String tsId, String aId, String tsName, String aName, Date apsTime, Date apeTime, Date aasTime, Date aaeTime, Integer percentage, Integer state, Integer isResult, String username) {
         this.pProjectPhaseId = pProjectPhaseId;
         this.tName = tName;
+        this.tId = tId;
+        this.tsId = tsId;
+        this.aId = aId;
         this.tsName = tsName;
         this.aName = aName;
         this.apsTime = apsTime;
@@ -59,6 +65,30 @@ public class ProjectPlanList {
 
     public void settName(String tName) {
         this.tName = tName;
+    }
+
+    public String gettId() {
+        return tId;
+    }
+
+    public void settId(String tId) {
+        this.tId = tId;
+    }
+
+    public String getTsId() {
+        return tsId;
+    }
+
+    public void setTsId(String tsId) {
+        this.tsId = tsId;
+    }
+
+    public String getaId() {
+        return aId;
+    }
+
+    public void setaId(String aId) {
+        this.aId = aId;
     }
 
     public String getTsName() {
@@ -129,12 +159,12 @@ public class ProjectPlanList {
         this.state = state;
     }
 
-    public Integer getResult() {
+    public Integer getIsResult() {
         return isResult;
     }
 
-    public void setResult(Integer result) {
-        isResult = result;
+    public void setIsResult(Integer isResult) {
+        this.isResult = isResult;
     }
 
     public String getUsername() {
@@ -150,6 +180,9 @@ public class ProjectPlanList {
         return "ProjectPlanList{" +
                 "pProjectPhaseId=" + pProjectPhaseId +
                 ", tName='" + tName + '\'' +
+                ", tId='" + tId + '\'' +
+                ", tsId='" + tsId + '\'' +
+                ", aId='" + aId + '\'' +
                 ", tsName='" + tsName + '\'' +
                 ", aName='" + aName + '\'' +
                 ", apsTime=" + apsTime +

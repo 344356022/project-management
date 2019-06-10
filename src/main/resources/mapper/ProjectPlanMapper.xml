@@ -69,12 +69,16 @@
     creater
     from project_plan
     where p_name LIKE '%' #{pName} '%'
+    ORDER BY p_start_time ASC
   </select>
 
     <!-- 根据pId和pProjectPhase查询用于项目总体计划清单列表展示 -->
     <select id="selectProjectPlanListByPidAndpProjectPhaseId" resultType="ProjectPlanList">
        SELECT
 	p.p_project_phase_id AS pProjectPhaseId,
+	t.t_id AS tId,
+	tts.tsid AS tsId,
+	tsai.aid AS aId,
 	t.t_name AS tName,
 	tts. NAME AS tsName,
 	tsai.aname AS aName,
