@@ -19,4 +19,7 @@ public interface UserService {
 
     //删除表里的所有数据
     void deleteAllUserMessage();
+
+    //手动进行维护用户数据；
+    CodeAndMsg updateUserMessage();
 }
