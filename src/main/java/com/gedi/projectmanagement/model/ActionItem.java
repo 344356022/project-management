@@ -22,9 +22,9 @@ public class ActionItem {
 
     private Integer aPercentage; // 完成百分比
 
-    private Integer aState; // 状态 0 未开始，1 进行中，2 已完成
+    private Integer aState; // 状态  01-未开始、02-进行中、03-已完成
 
-    private Integer aIsResult; // 成果是否提交  0 待提交 1 已提交
+    private Integer aIsResult; // 成果是否提交  01待提交、02已提交
 
     private String creater; // 任务项创建人
 

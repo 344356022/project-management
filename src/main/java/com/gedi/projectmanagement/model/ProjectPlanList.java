@@ -23,8 +23,8 @@ public class ProjectPlanList {
     private Date aasTime; // 实际开始时间
     private Date aaeTime; // 实际结束时间
     private Integer percentage; // 完成百分比
-    private Integer state; // 状态
-    private Integer isResult; // 成果是否提交  0 待提交 1 已提交
+    private Integer state; // 状态  01-未开始、02-进行中、03-已完成
+    private Integer isResult; // 成果是否提交  01待提交、02已提交
     private String username; // 负责人
 
     public ProjectPlanList() {

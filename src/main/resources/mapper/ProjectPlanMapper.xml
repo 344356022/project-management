@@ -83,7 +83,8 @@
 	tsai.percentage AS percentage,
 	tsai.state AS state,
 	tsai.isresult AS isResult,
-	username
+	username,
+	t.sort_id AS sortId
 FROM
 	(
 		project_plan AS p
@@ -133,6 +134,7 @@ LEFT JOIN (
 ) AS puser ON aip.id = puser.aId
 WHERE
 	p.p_id = #{pId} AND t.p_project_phase_id = #{pProjectPhaseId}
+	ORDER BY sortId ASC
     </select>
 
     <!--查询所有得项目名称以及ID值-->
