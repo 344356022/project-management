@@ -1,0 +1,36 @@
+
+body{
+    list-style: none;
+    margin:0;
+    padding: 0;
+}
+#idbody{
+    padding: 20px;
+}
+.tables ul{
+    margin-right:20%;
+    overflow: hidden;
+}
+.tables ul>li{
+    cursor: pointer;
+    margin-bottom:5px;
+    box-sizing: border-box;
+    list-style: none;
+    float: left;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border: 1px solid gray;
+    margin-left: 5px;
+}
+
+.el-table td, .el-table th{
+    padding: 10px;
+}
+
+.clickIndex{
+    background:#409EFF;
+    color:white;
+    border:1px solid #409EFF;
+}
