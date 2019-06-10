@@ -6,7 +6,7 @@
     <result column="p_id" property="pId" jdbcType="VARCHAR" />
     <result column="w_start_time" property="wStartTime" jdbcType="DATE" />
     <result column="w_end_time" property="wEndTime" jdbcType="DATE" />
-    <result column="a_id" property="aId" jdbcType="VARCHAR" />
+    <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
     <result column="w_work_report" property="wWorkReport" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="w_actual_proportion" property="wActualProportion" jdbcType="INTEGER" />
@@ -35,28 +35,18 @@
       <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
       <result column="creater" property="creater" jdbcType="VARCHAR" />
     </collection>
-    <collection property="actionItems" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.ActionItem">
-      <id column="a_id" property="aId" jdbcType="VARCHAR" />
-      <result column="a_ name" property="aName" jdbcType="VARCHAR" />
-      <result column="a_pstart_time" property="aPstartTime" jdbcType="DATE" />
-      <result column="a_pend_time" property="aPendTime" jdbcType="DATE" />
-      <result column="a_astart_time" property="aAstartTime" jdbcType="DATE" />
-      <result column="a_aend_time" property="aAendTime" jdbcType="DATE" />
-      <result column="a_user_id" property="userId" jdbcType="INTEGER" />
-      <result column="a_percentage" property="aPercentage" jdbcType="INTEGER" />
-      <result column="a_state" property="aState" jdbcType="INTEGER" />
-      <result column="a_is_result" property="aIsResult" jdbcType="BIT" />
-      <result column="creater" property="creater" jdbcType="VARCHAR" />
-      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-      <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
-     <!-- <collection property="taskSubclasses" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.TaskSubclass">
+      <collection property="taskSubclasses" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.TaskSubclass">
         <id column="ts_id" property="tsId" jdbcType="VARCHAR" />
         <result column="ts_name" property="tsName" jdbcType="VARCHAR" />
         <result column="p_id" property="pId" jdbcType="VARCHAR" />
         <result column="t_id" property="tId" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="creater" property="creater" jdbcType="VARCHAR" />
-      </collection>-->
+      </collection>
+    <collection property="recordTimes" ofType="com.gedi.projectmanagement.model.RecordTime" javaType="java.util.List">
+      <id column="time_id" property="timeId" jdbcType="VARCHAR" />
+      <result column="detial_day_date" property="detialDayDate" jdbcType="VARCHAR" />
+      <result column="w_id" property="wId" jdbcType="VARCHAR" />
     </collection>
   </resultMap>
 
@@ -211,9 +201,8 @@
 
   <!--查询双周计划表里的详细内容进行展示-->
   <select id="selectWeekReportDetial" resultMap="BaseResultMap">
-  select w.w_id,w.w_start_time,w.w_end_time,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,pp.p_name,u.u_name,ac.`a_ name`from
-weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.user_id=w.user_id left join project_user_medium pum on pum.a_id=w.a_id LEFT JOIN action_item
-ac on ac.a_id=pum.a_id LEFT JOIN task_subclass tu on ac.ts_id=tu.ts_id
+  select w.w_id,w.w_start_time,w.w_end_time,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,pp.p_name,u.u_name,tu.ts_name from
+weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.user_id=w.user_id  LEFT JOIN task_subclass tu on w.ts_id=tu.ts_id left join record_time rt on rt.w_id=w.w_id
   </select>
 
 
