@@ -10,7 +10,7 @@
     id, user_id, a_id
     </sql>
 
-    <!-- 新增任务项与人物的关系 -->
+    <!-- 添加任务列表时，新增任务项与人物的关系 -->
     <insert id="addProjectUserMedium" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
         insert into project_user_medium (user_id, a_id, id) values
         <foreach collection="list" item="item" separator=",">

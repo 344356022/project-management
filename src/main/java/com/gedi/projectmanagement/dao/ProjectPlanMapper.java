@@ -2,6 +2,7 @@ package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
+import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,8 +23,9 @@ public interface ProjectPlanMapper {
     /*
     新增项目总计划
      */
-    public int addProject(ProjectPlan projectPlan);
+//    public int addProject(ProjectPlan projectPlan);
     //public void addProject(ProjectPlan projectPlan);
+    public void addProject(@Param("list") List<ProjectPlan> projectPlans);
 
     /**
      * 项目计划清单展示

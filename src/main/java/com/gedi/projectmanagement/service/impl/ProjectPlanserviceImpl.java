@@ -35,19 +35,25 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         }
     }
 
+
     //新增项目总计划
-    @Override
+    /*@Override
     public boolean addProject(ProjectPlan projectPlan) {
         //return (projectPlanMapper.addProject(projectPlan) == 0 ? false : true);
         return projectPlanMapper.addProject(projectPlan) == 0 ? false : true;
-    }
-    /*public void addProject(ProjectPlan projectPlan) {
-        try {
-            projectPlanMapper.addProject(projectPlan);
-        } catch (Exception e) {
-            throw e;
-        }
     }*/
+    /*public void addProject(ProjectPlan projectPlan) {
+            try {
+                projectPlanMapper.addProject(projectPlan);
+            } catch (Exception e) {
+                throw e;
+            }
+        }*/
+   @Override
+    public String addProject(List<ProjectPlan> projectPlans) {
+         projectPlanMapper.addProject(projectPlans);
+         return "success";
+    }
 
     /**
      * 查询所有用于项目总计划清单的展示
