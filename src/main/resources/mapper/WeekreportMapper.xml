@@ -208,11 +208,11 @@ weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.u
 
   <!--批量添加双周计划表的-->
   <insert id="addWeekReport">
-      insert into weekreport (w_id,p_id,w_start_time,w_end_time,a_id,w_work_report,user_id,
+      insert into weekreport (w_id,p_id,w_start_time,w_end_time,ts_id,w_work_report,user_id,
     w_actual_proportion,w_plan_proportion,w_status,w_remark)
     values
       <foreach collection="list" item="item" separator=",">
-          (#{item.wId},#{item.pId},#{item.wStartTime},#{item.wEndTime},#{item.aId},
+          (#{item.wId},#{item.pId},#{item.wStartTime},#{item.wEndTime},#{item.tsId},
         #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},
         #{item.wStatus},#{item.wRemark})
       </foreach>
