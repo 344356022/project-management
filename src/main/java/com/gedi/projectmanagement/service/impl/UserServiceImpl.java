@@ -31,10 +31,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public CodeAndMsg selectUserBySign(String department) {
 
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
         if(userMapper.selectUserBySign(department).size()!=0&&userMapper.selectUserBySign(department)!=null){
-            return CodeAndMsgUtil.setOK("查询成功",userMapper.selectUserBySign(department));
+            codeAndMsg.setMsg("查询成功");
+            codeAndMsg.setCode(200);
+            codeAndMsg.setResult(true);
+            codeAndMsg.setData(userMapper.selectUserBySign(department));
+            return codeAndMsg;
         }else{
-            return CodeAndMsgUtil.setERROR("查询失败",null);
+            codeAndMsg.setCode(400);
+            codeAndMsg.setResult(false);
+            codeAndMsg.setMsg("查询失败");
+            return codeAndMsg;
         }
     }
 
