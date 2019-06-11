@@ -1,19 +1,19 @@
 package com.gedi.projectmanagement.service.impl;
 
+import com.gedi.projectmanagement.dao.RecordTimeMapper;
 import com.gedi.projectmanagement.dao.WeekreportMapper;
+import com.gedi.projectmanagement.model.RecordTime;
 import com.gedi.projectmanagement.model.Weekreport;
 
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
-import com.gedi.projectmanagement.vo.CodeAndMsgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: renpu
@@ -27,6 +27,9 @@ public class WeekReportServiceImpl implements WeekReportService {
 
     @Autowired
     private WeekreportMapper weekreportMapper;
+
+    @Autowired
+    private RecordTimeMapper recordTimeMapper;
 
     @Override
     public CodeAndMsg selectWeekReportDetial() {
@@ -49,10 +52,16 @@ public class WeekReportServiceImpl implements WeekReportService {
 
 
     @Override
-    public String addWeekReport(List<Weekreport> weekreports) {
+    public String addWeekReport(List<Weekreport> weekreports, List<RecordTime> times) {
 
         for (Weekreport weekreport : weekreports) {
             weekreport.setwId(UUIDUtil.getUUID2());
+
+            for (RecordTime recordTime : times) {
+                recordTime.setTimeId(UUIDUtil.getUUID2());
+                recordTime.setwId(weekreport.getwId());
+            }
+            recordTimeMapper.saveMoreDetialDayDate(times);
         }
             weekreportMapper.addWeekReport(weekreports);
             return "success";
