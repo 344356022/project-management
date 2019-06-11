@@ -51,7 +51,7 @@ public class MaintenanceProjectController {
     @RequestMapping("/listAll")
     public CodeAndMsg selectById(String pid) {
 
-        return projectPlanService.selectById(pid);
+        return projectPlanService.selectById();
     }
 
     /**

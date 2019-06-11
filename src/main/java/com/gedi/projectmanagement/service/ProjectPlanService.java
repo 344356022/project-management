@@ -15,7 +15,7 @@ import java.util.List;
 public interface ProjectPlanService {
 
     //查询所有用于项目总计划列表展示
-    CodeAndMsg selectById(String pid);
+    CodeAndMsg selectById();
 
     //新增项目总计划
    // public boolean addProject(ProjectPlan projectPlan);

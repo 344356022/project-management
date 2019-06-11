@@ -18,7 +18,7 @@ public interface ProjectPlanMapper {
     /*
     项目总计划列表展示
      */
-    List<ProjectPlan> selectById(String pid);
+    List<ProjectPlan> selectById();
 
     /*
     新增项目总计划
@@ -29,6 +29,7 @@ public interface ProjectPlanMapper {
 
     /**
      * 项目计划清单展示
+     *
      * @param pId
      * @param pProjectPhaseId
      * @return
@@ -37,10 +38,11 @@ public interface ProjectPlanMapper {
 
     /**
      * 根据pName模糊查询项目总体计划列表展示
+     *
      * @param pName
      * @return
      */
-    List<ProjectPlan> selectBypName(String pName);
+    List<ProjectPlan> selectBypName(@Param("pName") String pName);
 
     //查询所有得项目名称以及ID值；
     List<ProjectPlan> selectAllProject();

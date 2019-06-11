@@ -1,5 +1,5 @@
 body{
-    background:#f7f7f7;
+
 }
 *{
     margin: 0;
@@ -28,7 +28,7 @@ body{
 
 }
 /*.daily_left:first-child{*/
-    /*padding-top:3px;*/
+/*padding-top:3px;*/
 /*}*/
 .daily_left:last-child{
     border:none;
@@ -112,3 +112,52 @@ body{
     margin-bottom: 10px;
 }
 .pop{}
+/**/
+.totle_list{
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #fff;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.totle_list p{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+
+}
+.totle_list span{
+    width: 50%;
+    display: inline-block;
+    float: left;
+    color: #666;
+    margin-bottom: 2px;
+}
+.select {
+    padding: 10px;
+    background: #fff;
+    margin-bottom: 10px;
+}
+.select input[type=text]{
+    width: 70%;
+    height: 23px;
+    border: 1px solid #999;
+    margin-top: 10px;
+}
+.select input[type=button]{
+    width: 26%;
+    float: right;
+    height: 25px;
+    margin-top: 10px;
+}
+
+/*项目总体计划清单*/
+#project_table{
+    background: #ffffff;
+}
+.idbody_title{
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+}
