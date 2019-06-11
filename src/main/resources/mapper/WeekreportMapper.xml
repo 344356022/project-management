@@ -201,8 +201,10 @@
 
   <!--查询双周计划表里的详细内容进行展示-->
   <select id="selectWeekReportDetial" resultMap="BaseResultMap">
-  select w.w_id,w.w_start_time,w.w_end_time,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,pp.p_name,u.u_name,tu.ts_name from
+
+  select w.w_id,w.w_start_time,w.w_end_time,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,pp.p_name,u.u_name,tu.ts_name,rt.detial_day_date from
 weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.user_id=w.user_id  LEFT JOIN task_subclass tu on w.ts_id=tu.ts_id left join record_time rt on rt.w_id=w.w_id
+
   </select>
 
 
