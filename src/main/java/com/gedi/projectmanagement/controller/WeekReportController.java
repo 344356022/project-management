@@ -1,10 +1,7 @@
 package com.gedi.projectmanagement.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.gedi.projectmanagement.model.ActionItem;
-import com.gedi.projectmanagement.model.ProjectPlan;
-import com.gedi.projectmanagement.model.User;
-import com.gedi.projectmanagement.model.Weekreport;
+import com.gedi.projectmanagement.model.*;
 
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
@@ -57,16 +54,18 @@ public class WeekReportController {
 
     //将周计划设定的具体内容进行保存；
     @PostMapping(value = "createMoreWeekReport", produces = "application/json;charset=UTF-8")
-    public CodeAndMsg addWeekReport(String weekreports) {
+    public CodeAndMsg addWeekReport(String weekreports,String timesList) {
         CodeAndMsg msg = new CodeAndMsg();
-        if (StringUtils.isEmpty(weekreports)) {
+        if (StringUtils.isEmpty(weekreports)&&StringUtils.isEmpty(timesList)) {
             msg.setCode(400);
             msg.setMsg("参数为空");
             msg.setResult(false);
         } else {
             weekreports = "[" + weekreports + "]";
+            timesList="[" + timesList + "]";
             List<Weekreport> weekreportse = JSONArray.parseArray(weekreports, Weekreport.class);
-            String flag = weekReportService.addWeekReport(weekreportse);
+            List<RecordTime> times=JSONArray.parseArray(timesList,RecordTime.class);
+            String flag = weekReportService.addWeekReport(weekreportse,times);
             if ("success".equals(flag)) {
                 msg.setCode(200);
                 msg.setMsg("保存成功");
@@ -137,6 +136,12 @@ public class WeekReportController {
     @RequestMapping("selectProjectPlanIdAndName")
     public CodeAndMsg selectProjectPlanIdAndName(){
         return projectPlanService.selectAllProject();
+    }
+
+    //根据部门标记进行获取部门下所对应的所有员工以及ID值
+    @GetMapping("selectUserByDepartment")
+    public CodeAndMsg selectUserByDepartment(String department){
+        return userService.selectUserBySign(department);
     }
 
 
