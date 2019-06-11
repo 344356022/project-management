@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserMapper {
 
     //根据部门以及标签进行查询部门普通员工
-    List<User> selectUserBySign(String department);
+    List<User> selectUserBySign();
 
     //通过调用钉钉第三方接口，获取部门下的所有员工信息，批量增添到自己的数据库中进行储存；
     void insertManyUserMessage(@Param("list") List<User> list);
