@@ -29,14 +29,14 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public CodeAndMsg selectUserBySign(String department) {
+    public CodeAndMsg selectUserBySign() {
 
         CodeAndMsg codeAndMsg=new CodeAndMsg();
-        if(userMapper.selectUserBySign(department).size()!=0&&userMapper.selectUserBySign(department)!=null){
+        if(userMapper.selectUserBySign().size()!=0&&userMapper.selectUserBySign()!=null){
             codeAndMsg.setMsg("查询成功");
             codeAndMsg.setCode(200);
             codeAndMsg.setResult(true);
-            codeAndMsg.setData(userMapper.selectUserBySign(department));
+            codeAndMsg.setData(userMapper.selectUserBySign());
             return codeAndMsg;
         }else{
             codeAndMsg.setCode(400);
