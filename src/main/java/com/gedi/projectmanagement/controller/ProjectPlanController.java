@@ -4,6 +4,7 @@ import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,9 +29,9 @@ public class ProjectPlanController {
 
     //列表展示所有
     @RequestMapping("/listAll")
-    public CodeAndMsg selectById(String pid) {
-      //  System.out.println(projectPlanService.selectById() + "列表展示数据：");
-        return projectPlanService.selectById(pid);
+    public CodeAndMsg selectById() {
+        //  System.out.println(projectPlanService.selectById() + "列表展示数据：");
+        return projectPlanService.selectById();
     }
 
     /**
@@ -66,6 +67,11 @@ public class ProjectPlanController {
     @PostMapping(value = "/projectBypName")
     public CodeAndMsg selectBypName(String pName) {
         CodeAndMsg msg = new CodeAndMsg();
+        if (StringUtils.isEmpty(pName)) {
+            msg.setCode(401);
+            msg.setMsg("pName参数值为空,查询失败");
+            msg.setResult(false);
+        }
         List<ProjectPlan> projectPlans = projectPlanService.selectBypName(pName);
         if (projectPlans != null) {
             msg.setCode(200);

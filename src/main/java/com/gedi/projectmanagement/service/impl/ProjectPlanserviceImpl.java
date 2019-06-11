@@ -25,9 +25,9 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
 
     //查询所有用于列表展示
     @Override
-    public CodeAndMsg selectById(String pid) {
+    public CodeAndMsg selectById() {
        // System.out.println(projectPlanMapper.selectById() + "查询成功");
-        List<ProjectPlan> projectPlans = projectPlanMapper.selectById(pid);
+        List<ProjectPlan> projectPlans = projectPlanMapper.selectById();
         if (projectPlans != null) {
             return CodeAndMsgUtil.setOK("查询成功", projectPlans);
         } else {
