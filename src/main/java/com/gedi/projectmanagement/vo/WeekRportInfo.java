@@ -1,7 +1,6 @@
 package com.gedi.projectmanagement.vo;
 
 import com.gedi.projectmanagement.model.RecordTime;
-import lombok.Data;
 
 import java.util.List;
 
@@ -11,7 +10,6 @@ import java.util.List;
  * @Description:
  */
 
-@Data
 public class WeekRportInfo {
 
     private String wWorkReport;
