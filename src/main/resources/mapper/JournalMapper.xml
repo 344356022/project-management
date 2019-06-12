@@ -91,13 +91,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 批量插入日报信息-->
     <insert id="insertJournalList" parameterType="java.util.List">
     insert into  journal
-    (rb_id, w_id, user_id, finish, finish_content, finish_process, create_time)
+    (rb_id, w_id, user_id,deliver, finish, finish_content, finish_process, create_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
          (
              #{item.rbId},
              #{item.weekId},
              #{item.userId},
+            #{item.deliver},
              #{item.wcjd},
               #{item.text},
               #{item.wcgs},

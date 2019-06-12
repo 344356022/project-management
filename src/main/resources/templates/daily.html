@@ -70,14 +70,14 @@
                             for (var j=j1;j<res.data.result.length;j++){
                                 if(j > i){
                                     if(res.data.result[j].p_id == res.data.result[i].p_id ){
-                                        $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
+                                        $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input class="jinDu" type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input class="gongShi" type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
                                     }else{
                                         i1=j;
                                         j1=j;
                                         break;
                                     }
                                 }else{
-                                    $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
+                                    $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input class="jinDu" type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input class="gongShi" type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
                                 }
 
                                 $txtBox.append($list);
@@ -85,10 +85,12 @@
 
                         }
                         //循环接收人列表
-                        for(var i=0;i<res.data.userList.length;i++){
-                            $lable=$('<label><input type="checkbox" id="'+res.data.userList[i].user_id+'" name="name" value="'+res.data.userList[i].u_name+'">'+res.data.userList[i].u_name+'</label>');
+                        for(var i=0;i<res.data.userList.length;i++) {
+                            $lable = $('<label><input type="checkbox" id="' + res.data.userList[i].user_id + '" name="name" value="' + res.data.userList[i].u_name + '">' + res.data.userList[i].u_name + '</label>');
                             $('#change2').append($lable);
-                        }
+                        };
+
+                       // for(var i=0;i<)
                     }
                 }
             });
@@ -113,6 +115,26 @@
         }
 //提交数据
         function save() {
+            //意思是选择被选中的checkbox的id
+            var temp=0;
+            var deliver;
+            $.each($('input:checkbox:checked'),function(){//遍历选择的抄送人获取抄送人id
+                if( temp > 0 &&(temp+1) == $('input[type=checkbox]:checked').length){
+                    deliver=deliver+$(this).attr("id");
+                }else{
+                    if(temp == 0){
+                        if((temp+1) == $('input[type=checkbox]:checked').length){
+                            deliver=$(this).attr("id");
+                        }else{
+                            deliver=$(this).attr("id")+",";
+                        }
+                    }else{
+                        deliver=deliver +$(this).attr("id")+",";
+                    }
+
+                }
+                temp+=1;
+            });
            var arr=$(".daily_left").length;
            var item = [];
            var i = 1;
@@ -125,6 +147,7 @@
                     wcjd:wcjd,
                     wcgs:wcgs,
                     weekId:weekId,
+                    deliver:deliver,
                     text:text
                 };
                 i++;
