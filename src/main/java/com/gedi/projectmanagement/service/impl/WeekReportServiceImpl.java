@@ -8,6 +8,7 @@ import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
+import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,18 +53,32 @@ public class WeekReportServiceImpl implements WeekReportService {
 
 
     @Override
-    public String addWeekReport(List<Weekreport> weekreports, List<RecordTime> times) {
+    public String addWeekReport(List<WeekRportInfo> weekreports) {
 
-        for (Weekreport weekreport : weekreports) {
-            weekreport.setwId(UUIDUtil.getUUID2());
+        List<Weekreport> weekreports1=new ArrayList<>();
 
-            for (RecordTime recordTime : times) {
+        for (WeekRportInfo weekreport : weekreports) {
+            Weekreport weekreport1=new Weekreport();
+            weekreport1.setwId(UUIDUtil.getUUID2());
+            weekreport1.setpId(weekreport.getpId());
+            weekreport1.setUserId(weekreport.getUserId());
+            weekreport1.setTsId(weekreport.getTsId());
+            weekreport1.setwStatus(weekreport.getwStatus());
+            weekreport1.setwActualProportion(weekreport.getwActualProportion());
+            weekreport1.setwPlanProportion(weekreport.getwActualProportion());
+            weekreport1.setwRemark(weekreport.getwRemark());
+            weekreport1.setwType(weekreport.getwType());
+            weekreport1.setwWorkReport(weekreport.getwWorkReport());
+            weekreports1.add(weekreport1);
+            List<RecordTime> dataList = weekreport.getDataList();
+            for (RecordTime recordTime : dataList) {
                 recordTime.setTimeId(UUIDUtil.getUUID2());
-                recordTime.setwId(weekreport.getwId());
+                recordTime.setwId(weekreport1.getwId());
+
             }
-            recordTimeMapper.saveMoreDetialDayDate(times);
+            recordTimeMapper.saveMoreDetialDayDate(dataList);
         }
-            weekreportMapper.addWeekReport(weekreports);
+            weekreportMapper.addWeekReport(weekreports1);
             return "success";
 
     }
