@@ -1,10 +1,10 @@
 package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-
 public class Weekreport {
 
     private String wId;
@@ -40,6 +40,16 @@ public class Weekreport {
     private List<RecordTime> recordTimes;
 
     private List<TaskSubclass> taskSubclasses;
+
+    private Integer wType;
+
+    public Integer getwType() {
+        return wType;
+    }
+
+    public void setwType(Integer wType) {
+        this.wType = wType;
+    }
 
     public Integer getrFinish() {
         return rFinish;
@@ -182,11 +192,9 @@ public class Weekreport {
     public Weekreport() {
     }
 
-    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark) {
+    public Weekreport(String wId, String pId, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer wType) {
         this.wId = wId;
         this.pId = pId;
-        this.wStartTime = wStartTime;
-        this.wEndTime = wEndTime;
         this.tsId = tsId;
         this.wWorkReport = wWorkReport;
         this.userId = userId;
@@ -194,13 +202,12 @@ public class Weekreport {
         this.wPlanProportion = wPlanProportion;
         this.wStatus = wStatus;
         this.wRemark = wRemark;
+        this.wType=wType;
     }
 
-    public Weekreport(String wId, String pId, Date wStartTime, Date wEndTime, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer rFinish) {
+    public Weekreport(String wId, String pId, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer rFinish,Integer wType) {
         this.wId = wId;
         this.pId = pId;
-        this.wStartTime = wStartTime;
-        this.wEndTime = wEndTime;
         this.tsId = tsId;
         this.wWorkReport = wWorkReport;
         this.userId = userId;
@@ -209,6 +216,8 @@ public class Weekreport {
         this.wStatus = wStatus;
         this.wRemark = wRemark;
         this.rFinish=rFinish;
+        this.wType=wType;
+
     }
 
     @Override
@@ -229,6 +238,9 @@ public class Weekreport {
                 ", users=" + users +
                 ", actionItems=" + actionItems +
                 ", rFinish=" + rFinish +
+                ", recordTimes=" + recordTimes +
+                ", taskSubclasses=" + taskSubclasses +
+                ", wType=" + wType +
                 '}';
     }
 }
