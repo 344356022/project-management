@@ -4,6 +4,7 @@ import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.RecordTime;
 import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
+import com.gedi.projectmanagement.vo.WeekRportInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public interface WeekReportService {
     CodeAndMsg selectWeekReportDetial();
 
     //批量添加新的WeekReport对象；
-    String  addWeekReport(List<Weekreport> weekreports,List<RecordTime> times);
+    String  addWeekReport(List<WeekRportInfo> weekreports);
 
     //修改WeekReport的进行状态修改为暂停状态
     CodeAndMsg updateWeekReportStop(String wId);
