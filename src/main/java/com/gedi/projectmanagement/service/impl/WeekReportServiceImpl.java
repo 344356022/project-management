@@ -159,7 +159,7 @@ public class WeekReportServiceImpl implements WeekReportService {
             //通过日报员工的完成进度占比，计算出实际占总工作的占比
             amount= (int) (actual * valueZ);
 
-            weekreportMapper.updateActual(wId,amount);
+            weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
             codeAndMsg.setCode(200);
             codeAndMsg.setMsg("修改状态成功");
             codeAndMsg.setResult(true);

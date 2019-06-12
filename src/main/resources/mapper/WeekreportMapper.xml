@@ -235,9 +235,9 @@ weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.u
     SELECT w_plan_proportion FROM weekreport WHERE w_id=#{wId}
   </select>
 
-  <!--根据日报中所填写的值，通过计算进行修改双周及计划表实际占比的数值-->
+  <!--根据日报中所填写的值，通过计算进行修改双周及计划表实际占比的数值 20190612 zpl 添加一个传入参数：rFinish 日报完成进度-->
   <update id="updateActual">
-    update weekreport SET w_actual_proportion=#{valueZ} where w_id=#{wId}
+    update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish}  where w_id=#{wId}
   </update>
 
   <!--查询wId值是否存在-->

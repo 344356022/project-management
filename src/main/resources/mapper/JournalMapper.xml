@@ -99,8 +99,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              #{item.weekId},
              #{item.userId},
              #{item.wcjd},
-               #{item.text},
-                #{item.wcgs},
+              #{item.text},
+              #{item.wcgs},
              NOW() )
           </foreach>
 

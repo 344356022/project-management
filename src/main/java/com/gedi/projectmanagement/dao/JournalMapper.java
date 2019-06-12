@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 日志 数据层
  * 
- * @author ruoyi
+ * @author zpl
  * @date 2019-06-03
  */
 @Mapper
@@ -64,10 +64,17 @@ public interface JournalMapper
      */
 	public int deleteJournalByIds(String[] rbIds);
 
-	//返回日报列表
+	/**
+	 * 返回日报列表
+	 * @param map 需要用户信息
+	 * @return
+	 */
 	List<HashMap<String, Object>> selectJournalResultList(HashMap map);
 
-	//返回日报接收人
+	/**
+	 * 返回日报接收人列表
+	 * @return
+	 */
 	List<HashMap<String, Object>> selectUserList();
 
 	/**

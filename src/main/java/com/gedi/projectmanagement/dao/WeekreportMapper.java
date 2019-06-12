@@ -35,8 +35,8 @@ public interface WeekreportMapper {
     //根据相应的Id值，去查询所对应的项目里的计划百分比；
     Weekreport selectProjectById(String wId);
 
-    //修改动态修改实际占比值
-    void updateActual(@Param("wId") String wId, @Param("valueZ") int valueZ);
+    //修改动态修改实际占比值 20190612 zpl 添加一个传入参数rFinish
+    void updateActual(@Param("wId") String wId, @Param("valueZ") int valueZ,@Param("rFinish") int rFinish);
 
     //查询weekReport的id是否存在
     Weekreport selectByWeekReportId(String wId);

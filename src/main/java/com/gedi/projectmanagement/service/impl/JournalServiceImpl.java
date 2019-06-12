@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 /**
  * 日志 服务层实现
  * 
- * @author ruoyi
+ * @author zpl
  * @date 2019-06-03
  */
 @Service
@@ -54,7 +54,11 @@ public class JournalServiceImpl implements  IJournalService
 		return journalMapper.selectJournalResultList(map);
 	}
 
-	//日报接收人
+	/**
+	 *
+	 * 日报接收人
+	 * @return List<HashMap<String, Object>>
+	 */
 	@Override
 	public List<HashMap<String, Object>> selectUserList() {
 		return journalMapper.selectUserList();
