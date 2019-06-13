@@ -5,95 +5,102 @@
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>钉钉e应用-日报</title>
     <link rel="stylesheet" type="text/css" href="/css/index.css">
-    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="./js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="./element_ui/index.css">
+    <link rel="stylesheet" href="./element_ui/iconfont/iconfont.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./element_ui/vue.js" type="text/javascript"></script>
+    <script src="./element_ui/index.js" type="text/javascript"></script>
+    <script src="./element_ui/vuex.js" type="text/javascript"></script>
+    <script src="./element_ui/store.js" type="text/javascript"></script>
+    <script src="./element_ui/vue-resource.js" type="text/javascript"></script>
+    <script src="./element_ui/vue-router.js" type="text/javascript"></script>
 </head>
 <body>
-    <div class="daily">
-    </div>
-    <!--选择日志接收人-->
-    <div class="js_box">
-        <p class="add">添加日志接收人<b id="add_name">选择</b></p>
-        <div id="name_list">
 
+    <div id="idbody">
+        <div class="daily">
+            <ul class="dailyList">
+                <li v-for="(items,index) in dailyList">
+                    <span class="dailyList-title" v-text="items.p_name"></span>
+                </li>
+            </ul>
         </div>
+        <!--选择日志接收人-->
+        <div class="js_box">
+            <p class="add">添加日志接收人<b id="add_name">选择</b></p>
+            <div id="name_list">
 
-    </div>
-    <div class="btn" onclick="save()">
-        提交
-    </div>
-    <div class="pop">
-
-        <div class="popbox">
-            <p class="seach">选择日志接收人：</p>
-            <div id="change2">
             </div>
-            <input type="button" value="确定" id="upload">
-            <input type="button" value="取消" id="hide" onclick="hide()">
+
+        </div>
+        <div class="btn" onclick="save()">
+            提交
+        </div>
+        <div class="pop">
+
+            <div class="popbox">
+                <p class="seach">选择日志接收人：</p>
+                <div id="change2">
+                </div>
+                <input type="button" value="确定" id="upload">
+                <input type="button" value="取消" id="hide" onclick="hide()">
+            </div>
         </div>
     </div>
-    <script src="/js/jquery-3.3.1.js"></script>
+
     <script>
         var curWwwPath=window.document.location.href;
         var pathName=window.document.location.pathname;
         var pos=curWwwPath.indexOf(pathName);
         var localhostPaht=curWwwPath.substring(0,pos);
-        checkALL();
-        insert();
-        $('#add_name').click(function () {
-            show();
-        })
-        $("#upload").click(function () {
-            hide();
-            checkALL();
+        var myHome = new Vue({
+            el:"#idbody",
+            data:{
+                //日报列表信息
+                dailyList:[],
+            },
+            mounted:function(){
+                var _this=this;
+                _this.getDailyList();
+            },
+            methods:{
+                //获取日报列表信息函数
+                getDailyList:function(){
+                    var _this=this;
+                    $.ajax({
+                        url:localhostPaht+"/journal/list",
+                        type:"post",
+                        cache:false,
+                        contentType:"application/json; charset=utf-8",
+                        dataType:"json",
+                        async:false,
+                        data:null,
+                        success:function(res){
+                            if(res.code == 200){
+                                _this.dailyList=res.data.result;
+                                console.log(_this.dailyList)
+                            }else{
+                                _this.$message({
+                                    type:"error",
+                                    message:"没有日报信息",
+                                })
+                            }
+                        }
+                    });
+                },
+            },
+            updated:function(){
+                var _this=this;
+
+            },
         });
+    </script>
+    <script>
+
         //插入项目列表v
         function insert() {
-            $.ajax({
-                url:localhostPaht+"/journal/list",
-                type:"post",
-                cache:false,
-                contentType:"application/json; charset=utf-8",
-                dataType:"json",
-                async:false,
-                data:null,
-                success:function(res){
-                    var i1=0;
-                    var j1 =0;
-                    if(res.code == 200){
-                       for(var i=i1;i<res.data.result.length;i++){
-                            $html=$('<div class="daily_list"></div>');
-                            $('.daily').append($html);
-                            $title=$('<div class="daily_title">'+res.data.result[i].p_name+'</div>')
-                            $html.append($title);
-                            $txtBox=$('<div class="daily_box"></div>');
-                            $html.append($txtBox);
-                            for (var j=j1;j<res.data.result.length;j++){
-                                if(j > i){
-                                    if(res.data.result[j].p_id == res.data.result[i].p_id ){
-                                        $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input class="jinDu" type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input class="gongShi" type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
-                                    }else{
-                                        i1=j;
-                                        j1=j;
-                                        break;
-                                    }
-                                }else{
-                                    $list=$('<div id="'+res.data.result[j].w_id+'" class="daily_left">'+res.data.result[j].w_work_report+'<span>完成进度(%)：<input class="jinDu" type="text" value="'+res.data.result[j].r_finish+'"/><br/>工时(h)：<input class="gongShi" type="text" value="0"/></span><div class="txt"><textarea >完成情况描述：</textarea></div></div>')
-                                }
 
-                                $txtBox.append($list);
-                            }
-
-                        }
-                        //循环接收人列表
-                        for(var i=0;i<res.data.userList.length;i++) {
-                            $lable = $('<label><input type="checkbox" id="' + res.data.userList[i].user_id + '" name="name" value="' + res.data.userList[i].u_name + '">' + res.data.userList[i].u_name + '</label>');
-                            $('#change2').append($lable);
-                        };
-
-                       // for(var i=0;i<)
-                    }
-                }
-            });
         }
         //插入日志接收人选择项
         function checkALL() {
