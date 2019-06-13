@@ -33,26 +33,20 @@
   </select>
 
     <!-- 新增项目总计划 -->
-    <insert id="addProject" parameterType="com.gedi.projectmanagement.model.ProjectPlan">
+    <insert id="addProject">
         insert into project_plan
-        ( p_id, p_name,
+        (p_id, p_name,
         p_start_time,
         p_end_time,
         p_project_phase_id,
-        p_progress,
-        create_time,
-        creater)
+        p_progress)
         values
-        <foreach collection="list" item="item" open="" close="" separator=";">
-            ( #{item.pId,jdbcType=VARCHAR},
-            #{item.pName,jdbcType=VARCHAR},
-            #{item.pStartTime,jdbcType=DATE},
-            #{item.pEndTime,jdbcType=DATE},
-            #{item.pProjectPhaseId,jdbcType=INTEGER},
-            #{item.pProgress,jdbcType=INTEGER},
-            #{item.createTime,jdbcType=DATE},
-            #{item.creater,jdbcType=VARCHAR})
-        </foreach>
+            (#{pId,jdbcType=VARCHAR},
+            #{pName,jdbcType=VARCHAR},
+            #{pStartTime,jdbcType=DATE},
+            #{pEndTime,jdbcType=DATE},
+            #{pProjectPhaseId,jdbcType=INTEGER},
+            #{pProgress,jdbcType=INTEGER})
     </insert>
 
 
@@ -68,7 +62,7 @@
         create_time,
         creater
         from project_plan
-        where 1 = 1
+        where 1=1
         <if test="pName != null or pName != ''">
             and p_name LIKE '%' #{pName} '%'
         </if>
@@ -77,73 +71,74 @@
 
     <!-- 根据pId和pProjectPhase查询用于项目总体计划清单列表展示 -->
     <select id="selectProjectPlanListByPidAndpProjectPhaseId" resultType="ProjectPlanList">
-       SELECT
-	p.p_project_phase_id AS pProjectPhaseId,
-	t.t_id AS tId,
-	tts.tsid AS tsId,
-	tsai.aid AS aId,
-	t.t_name AS tName,
-	tts. NAME AS tsName,
-	tsai.aname AS aName,
-	tsai.apstime AS apsTime,
-	tsai.apetime AS apeTime,
-	tsai.aastime AS aasTime,
-	tsai.aaetime AS aaeTime,
-	tsai.percentage AS percentage,
-	tsai.state AS state,
-	tsai.isresult AS isResult,
-	username,
-	t.sort_id AS sortId
-FROM
-	(
-		project_plan AS p
-		LEFT JOIN task_class AS t ON p.p_id = t.p_id
-	)
-LEFT JOIN (
-	SELECT
-		t.t_id AS id,
-		ts.ts_name AS NAME,
-		ts.ts_id AS tsid
-	FROM
-		task_class AS t
-	LEFT JOIN task_subclass AS ts ON t.t_id = ts.t_id
-) AS tts ON t.t_id = tts.id
-LEFT JOIN (
-	SELECT
-		ts.ts_id AS id,
-		ai.`a_ name` AS aname,
-		ai.a_pstart_time AS apstime,
-		ai.a_pend_time AS apetime,
-		ai.a_astart_time AS aastime,
-		ai.a_aend_time AS aaetime,
-		ai.a_percentage AS percentage,
-		ai.a_state AS state,
-		ai.a_is_result AS isresult,
-		ai.a_id AS aid
-	FROM
-		task_subclass AS ts
-	LEFT JOIN action_item AS ai ON ts.ts_id = ai.ts_id
-) AS tsai ON tts.tsid = tsai.id
-LEFT JOIN (
-	SELECT
-		ai.a_id AS id,
-		pum.user_id AS userId
-	FROM
-		action_item AS ai
-	LEFT JOIN project_user_medium pum ON ai.a_id = pum.a_id
-) AS aip ON tsai.aid = aip.id
-LEFT JOIN (
-	SELECT
-		u.u_name AS username,
-		pum.user_id AS id,
-		pum.a_id AS aId
-	FROM
-		project_user_medium pum
-	LEFT JOIN `user` u ON pum.user_id = u.user_id
-) AS puser ON aip.id = puser.aId
-WHERE
-	p.p_id = #{pId} AND t.p_project_phase_id = #{pProjectPhaseId}
-	ORDER BY sortId ASC
+        SELECT
+          tps.pProjectPhaseId,
+            tps.tName,
+            tps.tId,
+            tps.tsId,
+            tps.tsName,
+            tps.aName,
+            tps.sortId,
+          tt.a_id AS aId,
+          tt.a_pstart_time AS apsTime,
+            tt.a_pend_time AS apeTime,
+            tt.a_astart_time AS aasTime,
+            tt.a_aend_time AS aaeTime,
+            tt.a_percentage AS percentage,
+            tt.a_state AS state,
+            tt.a_is_result AS isResult,
+            tt.p_id AS pId
+        from (
+            SELECT DISTINCT
+                tc.p_project_phase_id AS pProjectPhaseId,
+                tc.t_name AS tName,
+                tc.t_id AS tId,
+                ts.ts_id AS tsId,
+                ts.ts_name AS tsName,
+                ta.aName AS aName,
+                tc.sort_id AS sortId
+            FROM task_class tc
+            /*tps.pProjectPhaseId,
+            tps.tName,
+            tps.tsName,
+            tps.aName,
+            tps.sortId,
+            tt.a_id AS aId,
+            tt.a_pstart_time AS apsTime,
+            tt.a_pend_time AS apeTime,
+            tt.a_astart_time AS aasTime,
+            tt.a_aend_time AS aaeTime,
+            tt.a_percentage AS percentage,
+            tt.a_state AS state,
+            tt.a_is_result AS isResult,
+            tt.p_id AS pId
+        from (
+            SELECT DISTINCT
+                tc.p_project_phase_id AS pProjectPhaseId,
+                tc.t_name AS tName,
+                ts.ts_name AS tsName,
+                ta.aName AS aName,
+                tc.sort_id AS sortId
+            FROM task_class tc*/
+
+            LEFT JOIN task_subclass ts ON ts.t_id = tc.t_id
+            LEFT JOIN action_item ai ON ts.ts_id = ai.ts_id
+            LEFT JOIN (
+                SELECT a.a_id,a.a_name from action_item a
+                LEFT JOIN project_plan p ON a.p_id = p.p_id
+                where a.p_id =#{pId} and a.p_project_phase_id =#{pProjectPhaseId}
+            )tp on ai.a_name = tp.a_name and ai.p_id =#{pId}
+            LEFT JOIN (
+                SELECT a.a_name AS aName,a.ts_id,a.p_project_phase_id from action_item a
+            )ta on ta.ts_id = ts.ts_id
+           where ta.p_project_phase_id = #{pProjectPhaseId}
+        )tps
+        LEFT JOIN (
+            SELECT a.* from action_item a
+            LEFT JOIN project_plan p ON a.p_id = p.p_id
+            where a.p_id =#{pId} and a.p_project_phase_id =#{pProjectPhaseId}
+        )tt on tps.aName = tt.a_name and tt.p_id =#{pId}
+        order by tps.sortId ASC
     </select>
 
     <!--查询所有得项目名称以及ID值-->
@@ -151,4 +146,9 @@ WHERE
         SELECT p_name,p_id from project_plan
     </select>
 
+    <update id="updateBypId">
+        update project_plan
+        set p_project_phase_id = #{projectPlan.pProjectPhaseId}
+        where p_id = #{projectPlan.pId}
+    </update>
 </mapper>

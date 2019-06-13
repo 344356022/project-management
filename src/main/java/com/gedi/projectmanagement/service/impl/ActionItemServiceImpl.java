@@ -40,7 +40,6 @@ public class ActionItemServiceImpl implements ActionItemService {
     @Override
     public String batchUpdateActionItems(List<ActionItem> actionItems) {
         List<ProjectUserMedium> userMediumList = new ArrayList<>();
-        //List<ActionItem> actionItemList = new ArrayList<>();
         List<String> ids = new ArrayList<>();
 
         for (ActionItem actionItem : actionItems) {

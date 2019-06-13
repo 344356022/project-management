@@ -1,11 +1,17 @@
 package com.gedi.projectmanagement.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.model.ActionItem;
+import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ActionItemService;
+import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +32,9 @@ public class ActionItemController {
     @Resource
     private ActionItemService actionItemService;
 
+    @Resource
+    private UserService userService;
+
     /**
      * 项目总体计划清单的动态修改
      *
@@ -33,14 +42,15 @@ public class ActionItemController {
      * @return
      */
     @PostMapping(value = "/updateActionItemList")
-    public CodeAndMsg updateActionItemList(String items) {
+    public CodeAndMsg updateActionItemList(@RequestBody String items) {
         CodeAndMsg msg = new CodeAndMsg();
         if (StringUtils.isEmpty(items)) {
             msg.setCode(400);
             msg.setMsg("参数为空");
             msg.setResult(false);
         } else {
-            items = "[" + items + "]";
+            JSONObject jsonObject = JSON.parseObject(items);
+            items = jsonObject.getString("items");
             List<ActionItem> actionItems = JSONArray.parseArray(items, ActionItem.class);
             String flag = this.actionItemService.batchUpdateActionItems(actionItems);
             if ("success".equals(flag)) {
@@ -52,6 +62,23 @@ public class ActionItemController {
                 msg.setMsg("修改失败");
                 msg.setResult(false);
             }
+        }
+        return msg;
+    }
+
+    @PostMapping(value = "/getNameByUserId")
+    public CodeAndMsg getNameByUserId(String userId) {
+        CodeAndMsg msg = new CodeAndMsg();
+        String userName = userService.selectNameByUserId(userId);
+        if (userName != null) {
+            msg.setCode(200);
+            msg.setMsg("查询成功");
+            msg.setResult(true);
+            msg.setData(userName);
+        } else {
+            msg.setCode(401);
+            msg.setMsg("查询失败");
+            msg.setResult(false);
         }
         return msg;
     }

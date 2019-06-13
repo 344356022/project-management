@@ -4,6 +4,7 @@ import com.gedi.projectmanagement.dao.ProjectPlanMapper;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.service.ProjectPlanService;
+import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.CodeAndMsgUtil;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     //查询所有用于列表展示
     @Override
     public CodeAndMsg selectById() {
-       // System.out.println(projectPlanMapper.selectById() + "查询成功");
+        // System.out.println(projectPlanMapper.selectById() + "查询成功");
         List<ProjectPlan> projectPlans = projectPlanMapper.selectById();
         if (projectPlans != null) {
             return CodeAndMsgUtil.setOK("查询成功", projectPlans);
@@ -49,10 +50,12 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
                 throw e;
             }
         }*/
-   @Override
-    public String addProject(List<ProjectPlan> projectPlans) {
-         projectPlanMapper.addProject(projectPlans);
-         return "success";
+    @Override
+    public String addProject(ProjectPlan projectPlan) {
+        projectPlan.setpId(UUIDUtil.getUUID2());
+        projectPlan.setpProjectPhaseId(1);
+        projectPlanMapper.addProject(projectPlan);
+        return "success";
     }
 
     /**
@@ -81,12 +84,12 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     @Override
     public CodeAndMsg selectAllProject() {
 
-        if(projectPlanMapper.selectAllProject().size()!=0){
+        if (projectPlanMapper.selectAllProject().size() != 0) {
 
-            return CodeAndMsgUtil.setOK("msg",projectPlanMapper.selectAllProject());
+            return CodeAndMsgUtil.setOK("msg", projectPlanMapper.selectAllProject());
 
-        }else{
-            return CodeAndMsgUtil.setERROR("msg",null);
+        } else {
+            return CodeAndMsgUtil.setERROR("msg", null);
         }
 
     }

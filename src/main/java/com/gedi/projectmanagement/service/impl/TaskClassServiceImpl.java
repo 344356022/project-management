@@ -1,11 +1,7 @@
 package com.gedi.projectmanagement.service.impl;
 
-import com.gedi.projectmanagement.dao.ActionItemMapper;
-import com.gedi.projectmanagement.dao.ProjectUserMediumMapper;
-import com.gedi.projectmanagement.dao.TaskClassMapper;
-import com.gedi.projectmanagement.dao.TaskSubclassMapper;
-import com.gedi.projectmanagement.model.ActionItem;
-import com.gedi.projectmanagement.model.ProjectUserMedium;
+import com.gedi.projectmanagement.dao.*;
+import com.gedi.projectmanagement.model.*;
 import com.gedi.projectmanagement.service.TaskClassService;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +36,9 @@ public class TaskClassServiceImpl implements TaskClassService {
     @Resource
     private ProjectUserMediumMapper projectUserMediumMapper;
 
+    @Resource
+    private ProjectPlanMapper projectPlanMapper;
+
     /**
      * @Description : 新增项目任务类
      * @param : taskClass  taskSubclass  actionItem
@@ -49,9 +48,10 @@ public class TaskClassServiceImpl implements TaskClassService {
         List<ProjectUserMedium>  projectUserMediumList = new ArrayList<>();
        // List<ActionItem> actionItems = new ArrayList<>();
         List<String> ids = new ArrayList<>();
+        ProjectPlan projectPlan = new ProjectPlan();
 
         for (ActionItem actionItem : actionItems) {
-            ids.add(actionItem.getaId());
+            actionItem.setaId(UUIDUtil.getUUID2());
             ProjectUserMedium userMedium = new ProjectUserMedium();
             userMedium.setId(UUIDUtil.getUUID2());
             userMedium.setaId(actionItem.getaId());
@@ -61,9 +61,24 @@ public class TaskClassServiceImpl implements TaskClassService {
 
         //插入中间表数据
         projectUserMediumMapper.addProjectUserMedium(projectUserMediumList);
-        System.out.println("comcmocmocmocmcmco");
+        //添加任务类
+       // taskClassMapper.addTaskClass(taskClass);
+
+        //添加任务子类
+       // taskSubclassMapper.addTaskSubclass(taskSubclass);
+
         //插入任务项列表数据
         actionItemMapper.addActionItem(actionItems);
+
+        //修改项目阶段
+        if(actionItems.size() > 0 && actionItems != null){
+            projectPlan.setpProjectPhaseId(actionItems.get(0).getpProjectPhaseId());
+            projectPlan.setpId(actionItems.get(0).getpId());
+
+            this.projectPlanMapper.updateBypId(projectPlan);
+        }
+
+
         return "success";
     }
 

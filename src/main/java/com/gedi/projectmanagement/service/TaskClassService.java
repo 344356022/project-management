@@ -1,6 +1,7 @@
 package com.gedi.projectmanagement.service;
 
 import com.gedi.projectmanagement.model.ActionItem;
+import com.gedi.projectmanagement.model.TaskClass;
 import com.gedi.projectmanagement.model.TaskSubclass;
 
 import java.util.List;

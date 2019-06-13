@@ -22,4 +22,12 @@ public interface UserService {
 
     //手动进行维护用户数据；
     CodeAndMsg updateUserMessage();
+
+    /**
+     * 根据用户ID查询用户名称
+     *
+     * @param userId
+     * @return
+     */
+    String selectNameByUserId(String userId);
 }

@@ -16,10 +16,7 @@ import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -65,29 +62,26 @@ public class MaintenanceProjectController {
         boolean b = projectPlanService.addProject(projectPlan);
         response.getWriter().print(b);
     }*/
-   @PostMapping("/addProject")
-        public CodeAndMsg addProject1(String items) {
-            CodeAndMsg msg = new CodeAndMsg();
-            if (null == items) {
-                msg.setCode(400);
-                msg.setMsg("参数不能为空");
-                msg.setResult(false);
+    @PostMapping("/addProject")
+    public CodeAndMsg addProject1(@RequestBody ProjectPlan projectPlan) {
+        CodeAndMsg msg = new CodeAndMsg();
+        if (null == projectPlan) {
+            msg.setCode(400);
+            msg.setMsg("参数不能为空");
+            msg.setResult(false);
+        } else {
+            String flag = this.projectPlanService.addProject(projectPlan);
+            if ("success".equals(flag)) {
+                msg.setCode(200);
+                msg.setMsg("新增成功");
+                msg.setResult(true);
             } else {
-                items = "[" + items + "]";
-                List<ProjectPlan> projectPlans = JSONArray.parseArray(items, ProjectPlan.class);
-                this.projectPlanService.addProject(projectPlans);
-               // System.out.println("进来了啊");
-                if ("success".equals( projectPlans)) {
-                    msg.setCode(401);
-                    msg.setMsg("新增失败");
-                    msg.setResult(false);
-                } else {
-                    msg.setCode(200);
-                    msg.setMsg("新增成功");
-                    msg.setResult(true);
-                }
+                msg.setCode(401);
+                msg.setMsg("新增失败");
+                msg.setResult(false);
             }
-            return msg;
+        }
+        return msg;
     }
 
     /**
@@ -96,14 +90,15 @@ public class MaintenanceProjectController {
      * @Description : 添加新的项目总计划新增项目中的任务类和任务子类列表
      */
     @PostMapping("/addProjectList")
-    public CodeAndMsg addTaskSubclass(String items) {
+    public CodeAndMsg addTaskSubclass(@RequestBody String items) {
         CodeAndMsg msg = new CodeAndMsg();
         if (null == items) {
             msg.setCode(400);
             msg.setMsg("参数不能为空");
             msg.setResult(false);
         } else {
-            items = "[" + items + "]";
+            JSONObject jsonObject = JSON.parseObject(items);
+            items = jsonObject.getString("items");
             List<ActionItem> actionItems = JSONArray.parseArray(items, ActionItem.class);
             String flag = this.taskClassService.addTaskClass(actionItems);
             if ("success".equals(flag)) {

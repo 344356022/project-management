@@ -21,4 +21,12 @@ public interface UserMapper {
     //删除表里的所有数据
     void deleteAllUserMessage();
 
+    /**
+     * 根据用户ID查询用户名称
+     *
+     * @param userId
+     * @return
+     */
+    String selectNameByUserId(String userId);
+
 }

@@ -29,11 +29,13 @@ public class ProjectPlanList {
     private Integer state; // 状态  01-未开始、02-进行中、03-已完成
     private Integer isResult; // 成果是否提交  01待提交、02已提交
     private String username; // 负责人
+    private String userId; // 负责人ID
+    private String pId; // 项目总计划表ID
 
     public ProjectPlanList() {
     }
 
-    public ProjectPlanList(Integer pProjectPhaseId, String tName, String tId, String tsId, String aId, String tsName, String aName, Date apsTime, Date apeTime, Date aasTime, Date aaeTime, Integer percentage, Integer state, Integer isResult, String username) {
+    public ProjectPlanList(Integer pProjectPhaseId, String tName, String tId, String tsId, String aId, String tsName, String aName, Date apsTime, Date apeTime, Date aasTime, Date aaeTime, Integer percentage, Integer state, Integer isResult, String username, String userId, String pId) {
         this.pProjectPhaseId = pProjectPhaseId;
         this.tName = tName;
         this.tId = tId;
@@ -49,6 +51,8 @@ public class ProjectPlanList {
         this.state = state;
         this.isResult = isResult;
         this.username = username;
+        this.userId = userId;
+        this.pId = pId;
     }
 
     public Integer getpProjectPhaseId() {
@@ -175,6 +179,22 @@ public class ProjectPlanList {
         this.username = username;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getpId() {
+        return pId;
+    }
+
+    public void setpId(String pId) {
+        this.pId = pId;
+    }
+
     @Override
     public String toString() {
         return "ProjectPlanList{" +
@@ -193,6 +213,8 @@ public class ProjectPlanList {
                 ", state=" + state +
                 ", isResult=" + isResult +
                 ", username='" + username + '\'' +
+                ", userId='" + userId + '\'' +
+                ", pId='" + pId + '\'' +
                 '}';
     }
 }

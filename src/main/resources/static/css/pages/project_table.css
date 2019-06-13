@@ -1,36 +1,71 @@
-
-body{
-    list-style: none;
-    margin:0;
+html {
+    font-size: 625%; /*100 ÷ 16 × 100% = 625%*/
+}
+*{
+    margin: 0;
     padding: 0;
+    font-size: 0.12rem;
 }
-#idbody{
-    padding: 20px;
-}
-.tables ul{
-    margin-right:20%;
+
+
+/**/
+.totle_list{
+    padding: 0.1rem;
+    background: #fff;
     overflow: hidden;
-}
-.tables ul>li{
     cursor: pointer;
-    margin-bottom:5px;
-    box-sizing: border-box;
-    list-style: none;
+}
+
+.totle_list p{
+    font-size: 0.14rem;
+    font-weight: bold;
+    margin-bottom: 0.05rem;
+
+}
+.totle_list span{
+    width: 50%;
+    display: inline-block;
     float: left;
-    width: 20px;
-    height: 20px;
+    color: #666;
+    margin-bottom: 0.04rem;
+}
+.select {
     text-align: center;
-    line-height: 20px;
-    border: 1px solid gray;
-    margin-left: 5px;
+    padding: 0.06rem;
+    background: #e9ebed;
+}
+.el-input{
+    font-size: 0.12rem !important;
+}
+.el-input__inner{
+    height: 0.3rem !important;
+    line-height: 0.3rem !important;
+}
+.el-input-group__append, .el-input-group__prepend{
+    padding: 0 0.1rem !important;
 }
 
-.el-table td, .el-table th{
-    padding: 10px;
+
+/*项目总体计划清单*/
+#project_table{
+    background: #ffffff;
+}
+.idbody_title{
+    padding:0.06rem;
+    text-align: center;
+    line-height: 0.3rem;
+    font-size: 0.12rem;
+    background: #e9ebed;
 }
 
-.clickIndex{
-    background:#409EFF;
-    color:white;
-    border:1px solid #409EFF;
+.left select{
+    height: 0.3rem;
+    border: 1px solid #DCDFE6;
+    border-radius: 4px;
+}
+.option{
+    height: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
