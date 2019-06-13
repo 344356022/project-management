@@ -1,11 +1,13 @@
 package com.gedi.projectmanagement.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,23 +67,26 @@ public class ProjectPlanController {
      * @return
      */
     @PostMapping(value = "/projectBypName")
-    public CodeAndMsg selectBypName(String pName) {
+    public CodeAndMsg selectBypName(@RequestBody String pName) {
         CodeAndMsg msg = new CodeAndMsg();
-        if (StringUtils.isEmpty(pName)) {
+        JSONObject jsonObject = JSON.parseObject(pName);
+        pName = jsonObject.getString("pName");
+        if (null == pName || "" == pName) {
             msg.setCode(401);
             msg.setMsg("pName参数值为空,查询失败");
             msg.setResult(false);
-        }
-        List<ProjectPlan> projectPlans = projectPlanService.selectBypName(pName);
-        if (projectPlans != null) {
-            msg.setCode(200);
-            msg.setMsg("查询成功");
-            msg.setResult(true);
-            msg.setData(projectPlans);
         } else {
-            msg.setCode(401);
-            msg.setMsg("查询失败");
-            msg.setResult(false);
+            List<ProjectPlan> projectPlans = projectPlanService.selectBypName(pName);
+            if (projectPlans != null) {
+                msg.setCode(200);
+                msg.setMsg("查询成功");
+                msg.setResult(true);
+                msg.setData(projectPlans);
+            } else {
+                msg.setCode(401);
+                msg.setMsg("查询失败");
+                msg.setResult(false);
+            }
         }
         return msg;
     }

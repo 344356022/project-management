@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,37 +26,29 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Override
     public CodeAndMsg selectUserBySign() {
 
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
-        if(userMapper.selectUserBySign().size()!=0&&userMapper.selectUserBySign()!=null){
-            codeAndMsg.setMsg("查询成功");
-            codeAndMsg.setCode(200);
-            codeAndMsg.setResult(true);
-            codeAndMsg.setData(userMapper.selectUserBySign());
-            return codeAndMsg;
-        }else{
-            codeAndMsg.setCode(400);
-            codeAndMsg.setResult(false);
-            codeAndMsg.setMsg("查询失败");
-            return codeAndMsg;
+        if (userMapper.selectUserBySign().size() != 0 && userMapper.selectUserBySign() != null) {
+            return CodeAndMsgUtil.setOK("查询成功", userMapper.selectUserBySign());
+        } else {
+            return CodeAndMsgUtil.setERROR("查询失败", null);
         }
     }
 
     @Override
     public CodeAndMsg insertManyUserMessage(List<User> list) {
 
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
-        if(list.size()!=0){
+        CodeAndMsg codeAndMsg = new CodeAndMsg();
+        if (list.size() != 0) {
             userMapper.insertManyUserMessage(list);
             codeAndMsg.setMsg("添加成功");
             codeAndMsg.setResult(true);
             codeAndMsg.setCode(200);
-        }else {
+        } else {
             codeAndMsg.setCode(400);
             codeAndMsg.setResult(false);
             codeAndMsg.setMsg("添加失败");
@@ -76,8 +69,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public CodeAndMsg updateUserMessage() {
 
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
-        try{
+        CodeAndMsg codeAndMsg = new CodeAndMsg();
+        try {
             //每次批量增添的数据都需要进行对库表之前存在的数据进行清空
             userMapper.deleteAllUserMessage();
 
@@ -149,12 +142,17 @@ public class UserServiceImpl implements UserService {
             codeAndMsg.setMsg("更新用户信息成功");
             codeAndMsg.setCode(200);
             codeAndMsg.setResult(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             codeAndMsg.setMsg("更新用户信息失败");
             codeAndMsg.setCode(400);
             codeAndMsg.setResult(false);
         }
 
         return codeAndMsg;
+    }
+
+    @Override
+    public String selectNameByUserId(String userId) {
+        return userMapper.selectNameByUserId(userId);
     }
 }

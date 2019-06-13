@@ -3,7 +3,7 @@
 <mapper namespace="com.gedi.projectmanagement.dao.ActionItemMapper">
     <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.ActionItem">
         <id column="a_id" property="aId" jdbcType="VARCHAR"/>
-        <result column="a_ name" property="aName" jdbcType="VARCHAR"/>
+        <result column="a_name" property="aName" jdbcType="VARCHAR"/>
         <result column="a_pstart_time" property="aPstartTime" jdbcType="VARCHAR"/>
         <result column="a_pend_time" property="aPendTime" jdbcType="VARCHAR"/>
         <result column="a_astart_time" property="aAstartTime" jdbcType="VARCHAR"/>
@@ -16,89 +16,68 @@
         <result column="ts_id" property="tsId" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    a_id, `a_ name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time,
+    a_id, `a_name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time,
     a_percentage, a_state, a_is_result, creater, create_time, ts_id
   </sql>
 
     <!-- 新增项目中的任务项列表 -->
     <insert id="addActionItem" parameterType="com.gedi.projectmanagement.model.ActionItem">
         insert into action_item
-        <foreach collection="list" item="item" open="" close="" separator=";">
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="item.aId != null">
+       (
                 a_id,
-            </if>
-            <if test="item.aName != null">
-                `a_ name`,
-            </if>
-            <if test="item.aPstartTime != null">
+
+                `a_name`,
+
                 a_pstart_time,
-            </if>
-            <if test="item.aPendTime != null">
+
                 a_pend_time,
-            </if>
-            <if test="item.aAstartTime != null">
+
                 a_astart_time,
-            </if>
-            <if test="item.aAendTime != null">
+
                 a_aend_time,
-            </if>
-            <if test="item.aPercentage != null">
+
                 a_percentage,
-            </if>
-            <if test="item.aState != null">
+
                 a_state,
-            </if>
-            <if test="item.aIsResult != null">
+
                 a_is_result,
-            </if>
-            <if test="item.creater != null">
+
                 creater,
-            </if>
-            <if test="item.createTime != null">
+
                 create_time,
-            </if>
-            <if test="item.tsId != null">
-                ts_id,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="item.aId != null">
+
+                ts_id,p_id)
+
+        values
+        <foreach collection="list" item="item" open="" close="" separator=",">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
                 #{item.aId,jdbcType=VARCHAR},
-            </if>
-            <if test="item.aName != null">
+
                 #{item.aName,jdbcType=VARCHAR},
-            </if>
-            <if test="item.aPstartTime != null">
+
                 #{item.aPstartTime,jdbcType=DATE},
-            </if>
-            <if test="item.aPendTime != null">
+
                 #{item.aPendTime,jdbcType=DATE},
-            </if>
-            <if test="item.aAstartTime != null">
+
                 #{item.aAstartTime,jdbcType=DATE},
-            </if>
-            <if test="item.aAendTime != null">
+
                 #{item.aAendTime,jdbcType=DATE},
-            </if>
-            <if test="item.aPercentage != null">
+
                 #{item.aPercentage,jdbcType=INTEGER},
-            </if>
-            <if test="item.aState != null">
+
                 #{item.aState,jdbcType=INTEGER},
-            </if>
-            <if test="item.aIsResult != null">
+
                 #{item.aIsResult,jdbcType=BIT},
-            </if>
-            <if test="item.creater != null">
+
                 #{item.creater,jdbcType=VARCHAR},
-            </if>
-            <if test="item.createTime != null">
+
                 #{item.createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="item.tsId != null">
+
                 #{item.tsId,jdbcType=VARCHAR},
-            </if>
+
+                #{item.pId,jdbcType=VARCHAR},
+
         </trim>
         </foreach>
     </insert>

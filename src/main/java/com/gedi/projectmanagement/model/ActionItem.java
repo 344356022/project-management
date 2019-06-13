@@ -32,10 +32,14 @@ public class ActionItem {
 
     private String tsId; // 任务子类ID
 
+    private String pId; // 项目总计划表sID
+
+    private Integer pProjectPhaseId; // 项目阶段ID 1-需求分析、2-数据处理、3-系统开发
+
     public ActionItem() {
     }
 
-    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, String userId, Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime, String userId, Integer pProjectPhaseId,Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId, String pId) {
         this.aId = aId;
         this.aName = aName;
         this.aPstartTime = aPstartTime;
@@ -43,28 +47,31 @@ public class ActionItem {
         this.aAstartTime = aAstartTime;
         this.aAendTime = aAendTime;
         this.userId = userId;
+        this.pProjectPhaseId = pProjectPhaseId;
         this.aPercentage = aPercentage;
         this.aState = aState;
         this.aIsResult = aIsResult;
         this.creater = creater;
         this.createTime = createTime;
         this.tsId = tsId;
+        this.pId = pId;
     }
 
-    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime,Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId) {
+    public ActionItem(String aId, String aName, Date aPstartTime, Date aPendTime, Date aAstartTime, Date aAendTime,Integer pProjectPhaseId,Integer aPercentage, Integer aState, Integer aIsResult, String creater, Date createTime, String tsId,String pId) {
         this.aId = aId;
         this.aName = aName;
         this.aPstartTime = aPstartTime;
         this.aPendTime = aPendTime;
         this.aAstartTime = aAstartTime;
         this.aAendTime = aAendTime;
-        this.userId = userId;
+        this.pProjectPhaseId = pProjectPhaseId;
         this.aPercentage = aPercentage;
         this.aState = aState;
         this.aIsResult = aIsResult;
         this.creater = creater;
         this.createTime = createTime;
         this.tsId = tsId;
+        this.pId = pId;
     }
 
 
@@ -190,6 +197,22 @@ public class ActionItem {
         this.tsId = tsId;
     }
 
+    public String getpId() {
+        return pId;
+    }
+
+    public void setpId(String pId) {
+        this.pId = pId;
+    }
+
+    public Integer getpProjectPhaseId() {
+        return pProjectPhaseId;
+    }
+
+    public void setpProjectPhaseId(Integer pProjectPhaseId) {
+        this.pProjectPhaseId = pProjectPhaseId;
+    }
+
     @Override
     public String toString() {
         return "ActionItem{" +
@@ -200,12 +223,14 @@ public class ActionItem {
                 ", aAstartTime=" + aAstartTime +
                 ", aAendTime=" + aAendTime +
                 ", userId='" + userId + '\'' +
+                ", pProjectPhaseId=" + pProjectPhaseId +
                 ", aPercentage=" + aPercentage +
                 ", aState=" + aState +
                 ", aIsResult=" + aIsResult +
                 ", creater='" + creater + '\'' +
                 ", createTime=" + createTime +
                 ", tsId='" + tsId + '\'' +
+                ", pId='" + pId + '\'' +
                 '}';
     }
 }

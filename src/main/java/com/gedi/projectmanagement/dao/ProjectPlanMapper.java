@@ -25,7 +25,7 @@ public interface ProjectPlanMapper {
      */
 //    public int addProject(ProjectPlan projectPlan);
     //public void addProject(ProjectPlan projectPlan);
-    public void addProject(@Param("list") List<ProjectPlan> projectPlans);
+    public void addProject(ProjectPlan projectPlan);
 
     /**
      * 项目计划清单展示
@@ -47,5 +47,11 @@ public interface ProjectPlanMapper {
     //查询所有得项目名称以及ID值；
     List<ProjectPlan> selectAllProject();
 
+
+    /**
+     * 根据项目ID 更新项目进度
+     * @param projectPlan
+     */
+    void updateBypId(@Param("projectPlan") ProjectPlan projectPlan);
 
 }
