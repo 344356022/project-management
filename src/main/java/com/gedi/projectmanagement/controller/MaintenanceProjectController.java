@@ -56,12 +56,6 @@ public class MaintenanceProjectController {
      * @return
      * @Description : 添加新的项目总计划
      */
-   /* @PostMapping("/addProject")
-    public void addProject(ProjectPlan projectPlan, HttpServletResponse response) throws IOException {
-
-        boolean b = projectPlanService.addProject(projectPlan);
-        response.getWriter().print(b);
-    }*/
     @PostMapping("/addProject")
     public CodeAndMsg addProject1(@RequestBody ProjectPlan projectPlan) {
         CodeAndMsg msg = new CodeAndMsg();
