@@ -27,7 +27,6 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     //查询所有用于列表展示
     @Override
     public CodeAndMsg selectById() {
-        // System.out.println(projectPlanMapper.selectById() + "查询成功");
         List<ProjectPlan> projectPlans = projectPlanMapper.selectById();
         if (projectPlans != null) {
             return CodeAndMsgUtil.setOK("查询成功", projectPlans);
@@ -38,18 +37,6 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
 
 
     //新增项目总计划
-    /*@Override
-    public boolean addProject(ProjectPlan projectPlan) {
-        //return (projectPlanMapper.addProject(projectPlan) == 0 ? false : true);
-        return projectPlanMapper.addProject(projectPlan) == 0 ? false : true;
-    }*/
-    /*public void addProject(ProjectPlan projectPlan) {
-            try {
-                projectPlanMapper.addProject(projectPlan);
-            } catch (Exception e) {
-                throw e;
-            }
-        }*/
     @Override
     public String addProject(ProjectPlan projectPlan) {
         projectPlan.setpId(UUIDUtil.getUUID2());
@@ -85,9 +72,7 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     public CodeAndMsg selectAllProject() {
 
         if (projectPlanMapper.selectAllProject().size() != 0) {
-
             return CodeAndMsgUtil.setOK("msg", projectPlanMapper.selectAllProject());
-
         } else {
             return CodeAndMsgUtil.setERROR("msg", null);
         }

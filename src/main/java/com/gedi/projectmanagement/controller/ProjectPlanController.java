@@ -32,7 +32,7 @@ public class ProjectPlanController {
     //列表展示所有
     @RequestMapping("/listAll")
     public CodeAndMsg selectById() {
-        //  System.out.println(projectPlanService.selectById() + "列表展示数据：");
+
         return projectPlanService.selectById();
     }
 
