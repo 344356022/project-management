@@ -205,7 +205,7 @@
                   <el-button size="small" type="primary" @click="trueEvent('form')">确 定</el-button>
               </span>
         </el-dialog>
-        <div class="submits" :style="{color:isClickBtnColor1}" @click="addList">新增项目列表</div>
+        <div class="submits" v-if="shows" :style="{color:isClickBtnColor1}" @click="addList" v-text="buttonsName"></div>
     </div>
 
     <div id="project_table" v-else-if="!shows">
@@ -356,7 +356,7 @@
             </el-table>
         </div>
 
-        <div class="submits" :style="{color:isClickBtnColor}" @click="submit">提交</div>
+        <div class="submits" v-if="!shows" :style="{color:isClickBtnColor}" @click="submit" v-text="buttonsName"></div>
     </div>
 </div>
 
@@ -393,6 +393,8 @@
     var myHome = new Vue({
         el:"#idbody",
         data:{
+            buttonsName:"新增项目计划",
+
             pProjectPhaseIds:0,
             //弹出层
             dialogVisible:false,
@@ -630,8 +632,9 @@
             //点击列表信息
             listClick:function (items) {
                 var _this=this;
-
+                _this.buttonsName="提交";
                 _this.shows=false;
+                _this.isClickBtnColor="#000000";
 
                 if(items.pProjectPhaseId=="需求分析"){
                     items.pProjectPhaseId="1";
@@ -660,13 +663,21 @@
                     type:"POST",
                     dataType:"json",
                     success:function(res){
-                        if (res.data.length<=0){
-                            _this.showEditOrSubmit=2;
-                            _this.tableData=_this["tableData"+params.pProjectPhaseId];
-                        } else{
-                            _this.showEditOrSubmit=1;
-                            _this.tableData=res.data;
-                        };
+                         _this.showEditOrSubmit=1;
+                        for (var i=0;i<res.data.length;i++){
+                            var items=res.data[i];
+                            if (items.aaeTime!=null||items.aasTime!=null||items.apeTime!=null||items.apsTime!=null||items.isResult!=null||items.percentage!=null||items.state!=null||items.username!=null||items.userId!=null) {
+                                _this.showEditOrSubmit=2;
+                                //break;
+                            }
+                          /*  else{
+                                _this.showEditOrSubmit=1;
+                                break;
+                            };*/
+                        } 
+
+                        _this.tableData=res.data;
+
 
                     }
                 });
@@ -696,6 +707,8 @@
                     var items=_this.tableData[i];
                     var objss={
                         aId: items.aId,
+                        aName:items.aName,
+                        tsId:items.tsId,
                         aPstartTime: items.apsTime,
                         aPendTime: items.apeTime,
                         aAstartTime: items.aasTime,
@@ -712,9 +725,15 @@
                 var objs={
                     items:newArray
                 };
+                var urls="";
+                if (_this.showEditOrSubmit==1){
+                    urls="http://localhost:8080/MaintenanceProject/addProjectList";
+                } else{
+                    urls="http://localhost:8080/actionItem/updateActionItemList";
+                };
 
                 $.ajax({
-                    url:"http://localhost:8080/actionItem/updateActionItemList",
+                    url:urls,
                     data:JSON.stringify(objs),
                     type:"post",
                     dataType:"JSON",
@@ -725,6 +744,7 @@
 
                             setTimeout(function () {
                                 _this.shows=true;
+                                _this.buttonsName="新增项目计划";
                             },2000);
                         };
                     }

@@ -14,43 +14,35 @@
         <result column="creater" property="creater" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="ts_id" property="tsId" jdbcType="VARCHAR"/>
+        <result column="p_project_phase_id" property="pProjectPhaseId" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
     a_id, `a_name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time,
-    a_percentage, a_state, a_is_result, creater, create_time, ts_id
+    a_percentage, a_state, a_is_result, creater, create_time, ts_id, p_project_phase_id
   </sql>
 
     <!-- 新增项目中的任务项列表 -->
     <insert id="addActionItem" parameterType="com.gedi.projectmanagement.model.ActionItem">
         insert into action_item
-       (
-                a_id,
-
-                `a_name`,
-
-                a_pstart_time,
-
-                a_pend_time,
-
-                a_astart_time,
-
-                a_aend_time,
-
-                a_percentage,
-
-                a_state,
-
-                a_is_result,
-
-                creater,
-
-                create_time,
-
-                ts_id,p_id)
+        (
+        a_id,
+        `a_name`,
+        a_pstart_time,
+        a_pend_time,
+        a_astart_time,
+        a_aend_time,
+        a_percentage,
+        a_state,
+        a_is_result,
+        creater,
+        create_time,
+        ts_id,
+        p_id,
+        p_project_phase_id)
 
         values
         <foreach collection="list" item="item" open="" close="" separator=",">
-        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
 
                 #{item.aId,jdbcType=VARCHAR},
 
@@ -78,7 +70,9 @@
 
                 #{item.pId,jdbcType=VARCHAR},
 
-        </trim>
+                #{item.pProjectPhaseId,jdbcType=INTEGER},
+
+            </trim>
         </foreach>
     </insert>
 
@@ -87,29 +81,15 @@
         <foreach collection="list" item="item" open="" close="" separator=";">
             update action_item
             <set>
-                <if test="item.aPstartTime != null">
-                    a_pstart_time = #{item.aPstartTime,jdbcType=DATE},
-                </if>
-                <if test="item.aPendTime != null">
-                    a_pend_time = #{item.aPendTime,jdbcType=DATE},
-                </if>
-                <if test="item.aAstartTime != null">
-                    a_astart_time = #{item.aAstartTime,jdbcType=DATE},
-                </if>
-                <if test="item.aAendTime != null">
-                    a_aend_time = #{item.aAendTime,jdbcType=DATE},
-                </if>
-                <if test="item.aPercentage != null">
-                    a_percentage = #{item.aPercentage,jdbcType=INTEGER},
-                </if>
-                <if test="item.aState != null">
-                    a_state = #{item.aState,jdbcType=INTEGER},
-                </if>
-                <if test="item.aIsResult != null">
-                    a_is_result = #{item.aIsResult,jdbcType=BIT},
-                </if>
+                a_pstart_time = #{item.aPstartTime},
+                a_pend_time = #{item.aPendTime},
+                a_astart_time = #{item.aAstartTime},
+                a_aend_time = #{item.aAendTime},
+                a_percentage = #{item.aPercentage},
+                a_state = #{item.aState},
+                a_is_result = #{item.aIsResult}
             </set>
-            where a_id = #{item.aId,jdbcType=VARCHAR}
+            where a_id = #{item.aId}
         </foreach>
     </update>
 

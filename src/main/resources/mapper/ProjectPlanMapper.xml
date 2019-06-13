@@ -72,7 +72,33 @@
     <!-- 根据pId和pProjectPhase查询用于项目总体计划清单列表展示 -->
     <select id="selectProjectPlanListByPidAndpProjectPhaseId" resultType="ProjectPlanList">
         SELECT
-            tps.pProjectPhaseId,
+          tps.pProjectPhaseId,
+            tps.tName,
+            tps.tId,
+            tps.tsId,
+            tps.tsName,
+            tps.aName,
+            tps.sortId,
+          tt.a_id AS aId,
+          tt.a_pstart_time AS apsTime,
+            tt.a_pend_time AS apeTime,
+            tt.a_astart_time AS aasTime,
+            tt.a_aend_time AS aaeTime,
+            tt.a_percentage AS percentage,
+            tt.a_state AS state,
+            tt.a_is_result AS isResult,
+            tt.p_id AS pId
+        from (
+            SELECT DISTINCT
+                tc.p_project_phase_id AS pProjectPhaseId,
+                tc.t_name AS tName,
+                tc.t_id AS tId,
+                ts.ts_id AS tsId,
+                ts.ts_name AS tsName,
+                ta.aName AS aName,
+                tc.sort_id AS sortId
+            FROM task_class tc
+            /*tps.pProjectPhaseId,
             tps.tName,
             tps.tsName,
             tps.aName,
@@ -93,7 +119,8 @@
                 ts.ts_name AS tsName,
                 ta.aName AS aName,
                 tc.sort_id AS sortId
-            FROM task_class tc
+            FROM task_class tc*/
+
             LEFT JOIN task_subclass ts ON ts.t_id = tc.t_id
             LEFT JOIN action_item ai ON ts.ts_id = ai.ts_id
             LEFT JOIN (

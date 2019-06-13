@@ -30,6 +30,7 @@ html {
     margin-bottom: 0.04rem;
 }
 .select {
+    text-align: center;
     padding: 0.06rem;
     background: #e9ebed;
 }
