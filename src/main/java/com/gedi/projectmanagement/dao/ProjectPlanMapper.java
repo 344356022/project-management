@@ -23,8 +23,6 @@ public interface ProjectPlanMapper {
     /*
     新增项目总计划
      */
-//    public int addProject(ProjectPlan projectPlan);
-    //public void addProject(ProjectPlan projectPlan);
     public void addProject(ProjectPlan projectPlan);
 
     /**
