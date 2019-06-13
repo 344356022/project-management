@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50018
 File Encoding         : 65001
 
-Date: 2019-06-10 16:57:49
+Date: 2019-06-13 15:47:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `action_item`;
 CREATE TABLE `action_item` (
   `a_id` varchar(50) collate utf8_unicode_ci NOT NULL COMMENT '任务项主键ID',
-  `a_ name` varchar(255) collate utf8_unicode_ci default NULL COMMENT '任务项名称',
+  `a_name` varchar(255) collate utf8_unicode_ci default NULL COMMENT '任务项名称',
   `a_pstart_time` date default NULL COMMENT '计划开始时间',
   `a_pend_time` date default NULL COMMENT '计划结束时间',
   `a_astart_time` date default NULL COMMENT '实际开始时间',
@@ -32,60 +32,62 @@ CREATE TABLE `action_item` (
   `creater` varchar(20) collate utf8_unicode_ci default NULL COMMENT '任务项创建人',
   `create_time` date default NULL COMMENT '任务项创建时间',
   `ts_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '任务子类ID',
+  `p_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '项目总计划表主键',
+  `p_project_phase_id` int(10) default NULL COMMENT '项目阶段ID 1-需求分析、2-数据处理、3-系统开发',
   PRIMARY KEY  (`a_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of action_item
 -- ----------------------------
-INSERT INTO `action_item` VALUES ('00d440ce38b3486dab9d44a1701cd125', '汇总指标梳理过程问题', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '70d1de0d950b4fcd938a561e4dd922c6');
-INSERT INTO `action_item` VALUES ('02883c237e4f4797a7155d96619ddfad', '生产环境发布', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'aec72143696949d6a23798d8fffe7949');
-INSERT INTO `action_item` VALUES ('0d99f974e9704399b50e839993092256', '前后端开发（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
-INSERT INTO `action_item` VALUES ('114e3c85dfdd4d2d9f61358864482f96', '系统功能测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7710719964d34bdb8562e89d19f18428');
-INSERT INTO `action_item` VALUES ('1da86c4bcd4b449ab1b7ef6504549832', '评审数据链路流转方案', '1994-12-31', '1994-12-31', '1994-12-31', '1994-12-31', '50', '1', '1', '张帅', '2019-06-05', '2e0ce4f866dc459b9a495330c1885d22');
-INSERT INTO `action_item` VALUES ('21f7b679ae29402984b1ed58f04e4eca', '需求调研及梳理', '2019-03-15', '2019-03-22', '2019-03-15', '2019-06-05', '100', '1', '1', '王炎彬', '2019-05-31', '437f8f5df86345ce9659af33c31a054f');
-INSERT INTO `action_item` VALUES ('26182818ebb34c6ebd459eee565ff66c', '数据库设置', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
-INSERT INTO `action_item` VALUES ('2a1d884c4fc94dbf992922add5247fcb', '前后端联调（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
-INSERT INTO `action_item` VALUES ('2ae029f6f27b4e4a86c1e118e0cf8021', '测试用例编写', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '263d012e3ee04c9cab59bcaeeb796b6f');
-INSERT INTO `action_item` VALUES ('2cf15e17b8184ae792868a17184826ca', '项目工作汇报', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'bfd9f701034b45899626d977ec7ad19f');
-INSERT INTO `action_item` VALUES ('381a95d4ec5c404c844f5e786970d8c1', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'd279a4ba4d2e41d9bf8c66b6cdb7d7e5');
-INSERT INTO `action_item` VALUES ('444019bc4c5845c08a85c6db41232fb8', '业务原型草图', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'f7568acae50e43af8ae551485df67d05');
-INSERT INTO `action_item` VALUES ('4737d22a3e3d4993b26f6af9cb40783b', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'b6910b3a2cc64e30b90201ffb6ad3fe1');
-INSERT INTO `action_item` VALUES ('483da0e9776347568b0ace9b700e184f', '数据指标清单表', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '0bad05640f944dfd99f45a4a67c6a88c');
-INSERT INTO `action_item` VALUES ('5131b979438b4ad7b877d5b67de61f04', '开发环境搭建', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
-INSERT INTO `action_item` VALUES ('5fb97a5c57dd41ed802ad7880889b471', '汇总指标算法', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '0c1b94f38c7c4f27806d391839ce0449');
-INSERT INTO `action_item` VALUES ('60d9d091ad374aaa86854d98313a03c7', '评审数据设计方案', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '17275cc689e749aba3d354cd9c20ab13');
-INSERT INTO `action_item` VALUES ('6b7972febc83490080b5b747cf76a743', '设计表结构', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'e5b91428fccc456793fd2ba04a345fe4');
-INSERT INTO `action_item` VALUES ('73ddc58bc9984bc994e7ed9a716b7ec4', '原型确定', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'f688b8bad795449bac3482da47c08d45');
-INSERT INTO `action_item` VALUES ('79355b6de24e4d1eb9860a1c43502df7', '编写需求文档（开发版）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'b1e1460b08924088ab5caca212fa7f69');
-INSERT INTO `action_item` VALUES ('84b8122e20454cd19518eead16c8bfef', '评审表数据逻辑关系', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7ee1f4ed54514ae0b630cad094ee0314');
-INSERT INTO `action_item` VALUES ('88a294364fec448587e08fcf0cd3d89a', '汇总整理所有涉及指标', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '6ddc94eaa14445d490e72013b8cb8499');
-INSERT INTO `action_item` VALUES ('8a4d353873e947b8ab81eafdea113b27', '评审数据字典文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '25c3fb4396824da3a64d6a35633c9595');
-INSERT INTO `action_item` VALUES ('8bbad7c1efce4075b2df948535b0c5e6', null, '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'e35206ebf4ea4953b8d594a515cfb56d');
-INSERT INTO `action_item` VALUES ('91a140a700d248d887909ae9ac19b743', '单个指标梳理文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '009c57ab461248a4986554bb56ca91b7');
-INSERT INTO `action_item` VALUES ('924866009d3e41f9b665e153209507f5', '测试环境系统功能验证', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '212cf1a61dbc4d6496937ae82d0fcf90');
-INSERT INTO `action_item` VALUES ('9c5151d1ee074f91b155e2492fcd53a1', '数据同步及联调', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'aec72143696949d6a23798d8fffe7949');
-INSERT INTO `action_item` VALUES ('9dd5b08529414c8f88080802b79769c9', '编写需求文档（用户版）', '2019-05-31', '2019-07-03', '2019-05-31', '2019-06-30', '100', '1', '1', '王炎彬', '2019-05-31', 'f7568acae50e43af8ae551485df67d05');
-INSERT INTO `action_item` VALUES ('a2f6ecbc00294dd0ba143ed0e7590163', '原型设计', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'f688b8bad795449bac3482da47c08d45');
-INSERT INTO `action_item` VALUES ('a3a996c3a7974d06bebd22e5ad07f5b3', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'b21aa7483b524b2a8515a8ed386ade6f');
-INSERT INTO `action_item` VALUES ('a4fe9590438543f38182bbc281a9a961', '确认需求文档（用户版）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'f7568acae50e43af8ae551485df67d05');
-INSERT INTO `action_item` VALUES ('aa7f82b4137a4729a3574c75532a39c1', '前后端开发（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0');
-INSERT INTO `action_item` VALUES ('ac3a13fb7f8747c0a579c7aae5bacf3a', '确定需求文档（开发版）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'b1e1460b08924088ab5caca212fa7f69');
-INSERT INTO `action_item` VALUES ('b70ba3be92e34aa284618615cf07c6dc', '编写数据链路流转方案', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '2e0ce4f866dc459b9a495330c1885d22');
-INSERT INTO `action_item` VALUES ('bccf391a625242b1a21c58e131b93f80', '编写表数据逻辑关系', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7ee1f4ed54514ae0b630cad094ee0314');
-INSERT INTO `action_item` VALUES ('c5dbdb7e958f474da920dedf0fff0475', '编写数据设计方案', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '17275cc689e749aba3d354cd9c20ab13');
-INSERT INTO `action_item` VALUES ('c5f2d0ae317247d1b01e3f99d447b173', 'ETL程序测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'c41525f2f837487f8dc4270d7cd7c973');
-INSERT INTO `action_item` VALUES ('c77511dd42a94ca9a90d059e51ef684e', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '1bd1f6f22073417a83effe96663f9729');
-INSERT INTO `action_item` VALUES ('d45c6a5f6422457fbbb444f3a26ec0d1', '生产环境搭建', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'aec72143696949d6a23798d8fffe7949');
-INSERT INTO `action_item` VALUES ('d461243d47524f0b9bbdbce12d1c4474', '系统上线', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '4a9f03bc564f4e0eb280ab69c62d2f4a');
-INSERT INTO `action_item` VALUES ('d6f05985c5c744bf9b40fdb0f7994ddd', '验收文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'a6940f854a3541ae8564d5f3e055a9e7');
-INSERT INTO `action_item` VALUES ('d9c20bfe6cfd4e04a10b2d7fa4dda2a9', '评审表结构', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'e5b91428fccc456793fd2ba04a345fe4');
-INSERT INTO `action_item` VALUES ('db0e83d5861b40588c30dd67489160e1', '指标数据核查（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '5ad1fe0abebd4c4399fa8b9ff41820d2');
-INSERT INTO `action_item` VALUES ('f04e2c0c4f704447839bc9f91c16eea5', 'ETL程序开发', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'c41525f2f837487f8dc4270d7cd7c973');
-INSERT INTO `action_item` VALUES ('f5fe465282454e37b5bf3fad320da060', '数据链路清单', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7ebb5c284a8e4284ba19c3fc658b32f4');
-INSERT INTO `action_item` VALUES ('f946da57c2b44072932260d36b3704e0', '二次指标数据核查（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '88e704ed4c354f24a96aa5580d494a03');
-INSERT INTO `action_item` VALUES ('f977c643b45041b78784b7ec2c0eacb2', '编写数据字典文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '25c3fb4396824da3a64d6a35633c9595');
-INSERT INTO `action_item` VALUES ('fb6f6dbb1f964d9982e9340a1cd744e9', '系统回归测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7710719964d34bdb8562e89d19f18428');
+INSERT INTO `action_item` VALUES ('00d440ce38b3486dab9d44a1701cd125', '汇总指标梳理过程问题', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '70d1de0d950b4fcd938a561e4dd922c6', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('02883c237e4f4797a7155d96619ddfad', '生产环境发布', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'aec72143696949d6a23798d8fffe7949', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('0d99f974e9704399b50e839993092256', '前后端开发（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('114e3c85dfdd4d2d9f61358864482f96', '系统功能测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7710719964d34bdb8562e89d19f18428', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('1da86c4bcd4b449ab1b7ef6504549832', '评审数据链路流转方案', '1994-12-31', '1994-12-31', '1994-12-31', '1994-12-31', '50', '1', '1', '张帅', '2019-06-05', '2e0ce4f866dc459b9a495330c1885d22', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('21f7b679ae29402984b1ed58f04e4eca', '需求调研及梳理', '2019-03-15', '2019-03-22', '2019-03-15', '2019-06-05', '100', '1', '1', '王炎彬', '2019-05-31', '437f8f5df86345ce9659af33c31a054f', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('26182818ebb34c6ebd459eee565ff66c', '数据库设置', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('2a1d884c4fc94dbf992922add5247fcb', '前后端联调（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('2ae029f6f27b4e4a86c1e118e0cf8021', '测试用例编写', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '263d012e3ee04c9cab59bcaeeb796b6f', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('2cf15e17b8184ae792868a17184826ca', '项目工作汇报', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'bfd9f701034b45899626d977ec7ad19f', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('381a95d4ec5c404c844f5e786970d8c1', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'd279a4ba4d2e41d9bf8c66b6cdb7d7e5', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('444019bc4c5845c08a85c6db41232fb8', '业务原型草图', '2019-06-14', '2019-06-05', '2019-06-15', '2019-06-05', '50', '2', '1', '张帅', '2019-06-05', 'f7568acae50e43af8ae551485df67d05', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('4737d22a3e3d4993b26f6af9cb40783b', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'b6910b3a2cc64e30b90201ffb6ad3fe1', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('483da0e9776347568b0ace9b700e184f', '数据指标清单表', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '20', '1', '1', '张帅', '2019-06-05', '0bad05640f944dfd99f45a4a67c6a88c', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('5131b979438b4ad7b877d5b67de61f04', '开发环境搭建', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('5aafe8b19f0e421cb6fb8ff914c90580', null, '2019-06-13', '2019-06-13', '2019-06-13', '2019-06-13', '100', '1', '1', '张帅', '2019-06-13', 'e35206ebf4ea4953b8d594a515cfb56d', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('5fb97a5c57dd41ed802ad7880889b471', '汇总指标算法', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '0c1b94f38c7c4f27806d391839ce0449', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('60d9d091ad374aaa86854d98313a03c7', '评审数据设计方案', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '17275cc689e749aba3d354cd9c20ab13', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('6b7972febc83490080b5b747cf76a743', '设计表结构', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'e5b91428fccc456793fd2ba04a345fe4', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('73ddc58bc9984bc994e7ed9a716b7ec4', '原型确定', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'f688b8bad795449bac3482da47c08d45', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('79355b6de24e4d1eb9860a1c43502df7', '编写需求文档（开发版）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'b1e1460b08924088ab5caca212fa7f69', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('84b8122e20454cd19518eead16c8bfef', '评审表数据逻辑关系', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7ee1f4ed54514ae0b630cad094ee0314', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('88a294364fec448587e08fcf0cd3d89a', '汇总整理所有涉及指标', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '6ddc94eaa14445d490e72013b8cb8499', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('8a4d353873e947b8ab81eafdea113b27', '评审数据字典文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '25c3fb4396824da3a64d6a35633c9595', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('91a140a700d248d887909ae9ac19b743', '单个指标梳理文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '009c57ab461248a4986554bb56ca91b7', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('924866009d3e41f9b665e153209507f5', '测试环境系统功能验证', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '212cf1a61dbc4d6496937ae82d0fcf90', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('9c5151d1ee074f91b155e2492fcd53a1', '数据同步及联调', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'aec72143696949d6a23798d8fffe7949', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('9dd5b08529414c8f88080802b79769c9', '编写需求文档（用户版）', '2019-05-31', '2019-07-03', '2019-05-31', '2019-06-30', '100', '1', '1', '王炎彬', '2019-05-31', 'f7568acae50e43af8ae551485df67d05', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('a2f6ecbc00294dd0ba143ed0e7590163', '原型设计', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'f688b8bad795449bac3482da47c08d45', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('a3a996c3a7974d06bebd22e5ad07f5b3', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'b21aa7483b524b2a8515a8ed386ade6f', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('a4fe9590438543f38182bbc281a9a961', '确认需求文档（用户版）', '2020-06-05', '2020-06-05', '2020-06-05', '2020-06-05', '50', '1', '1', '张帅', '2019-06-05', 'f7568acae50e43af8ae551485df67d05', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('aa7f82b4137a4729a3574c75532a39c1', '前后端开发（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '95164fcfcc0d4c279e0bd77f6ff170d0', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('ac3a13fb7f8747c0a579c7aae5bacf3a', '确定需求文档（开发版）', '2019-06-09', '2019-06-05', '2019-06-05', '2019-06-05', '30', '1', '1', '张帅', '2019-06-05', 'b1e1460b08924088ab5caca212fa7f69', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('b70ba3be92e34aa284618615cf07c6dc', '编写数据链路流转方案', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '2e0ce4f866dc459b9a495330c1885d22', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('bccf391a625242b1a21c58e131b93f80', '编写表数据逻辑关系', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7ee1f4ed54514ae0b630cad094ee0314', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('c5dbdb7e958f474da920dedf0fff0475', '编写数据设计方案', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '17275cc689e749aba3d354cd9c20ab13', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('c5f2d0ae317247d1b01e3f99d447b173', 'ETL程序测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'c41525f2f837487f8dc4270d7cd7c973', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('c77511dd42a94ca9a90d059e51ef684e', '开发、测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '1bd1f6f22073417a83effe96663f9729', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('d45c6a5f6422457fbbb444f3a26ec0d1', '生产环境搭建', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'aec72143696949d6a23798d8fffe7949', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
+INSERT INTO `action_item` VALUES ('d461243d47524f0b9bbdbce12d1c4474', '系统上线', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '4a9f03bc564f4e0eb280ab69c62d2f4a', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('d6f05985c5c744bf9b40fdb0f7994ddd', '验收文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'a6940f854a3541ae8564d5f3e055a9e7', 'e6b0fda2b9a34d34aaa32e797adb2008', '1');
+INSERT INTO `action_item` VALUES ('d9c20bfe6cfd4e04a10b2d7fa4dda2a9', '评审表结构', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'e5b91428fccc456793fd2ba04a345fe4', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('db0e83d5861b40588c30dd67489160e1', '指标数据核查（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '5ad1fe0abebd4c4399fa8b9ff41820d2', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('f04e2c0c4f704447839bc9f91c16eea5', 'ETL程序开发', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', 'c41525f2f837487f8dc4270d7cd7c973', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('f5fe465282454e37b5bf3fad320da060', '数据链路清单', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7ebb5c284a8e4284ba19c3fc658b32f4', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('f946da57c2b44072932260d36b3704e0', '二次指标数据核查（每个）', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '88e704ed4c354f24a96aa5580d494a03', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('f977c643b45041b78784b7ec2c0eacb2', '编写数据字典文档', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '25c3fb4396824da3a64d6a35633c9595', 'e6b0fda2b9a34d34aaa32e797adb2008', '2');
+INSERT INTO `action_item` VALUES ('fb6f6dbb1f964d9982e9340a1cd744e9', '系统回归测试', '2019-06-05', '2019-06-05', '2019-06-05', '2019-06-05', '100', '1', '1', '张帅', '2019-06-05', '7710719964d34bdb8562e89d19f18428', 'e6b0fda2b9a34d34aaa32e797adb2008', '3');
 
 -- ----------------------------
 -- Table structure for journal
@@ -119,7 +121,7 @@ CREATE TABLE `project_plan` (
   `p_name` varchar(255) collate utf8_unicode_ci default NULL COMMENT '项目名称',
   `p_start_time` date default NULL COMMENT '项目计划开始时间',
   `p_end_time` date default NULL COMMENT '项目计划结束时间',
-  `p_project_phase_id` int(10) default NULL COMMENT '项目阶段ID 01-需求分析、02-数据处理、03-系统开发',
+  `p_project_phase_id` int(10) default NULL COMMENT '项目阶段ID 1-需求分析、2-数据处理、3-系统开发',
   `p_progress` int(10) default NULL COMMENT '项目总体完成进度',
   `create_time` date default NULL COMMENT '项目创建时间',
   `creater` varchar(20) collate utf8_unicode_ci default NULL COMMENT '项目创建人',
@@ -129,9 +131,9 @@ CREATE TABLE `project_plan` (
 -- ----------------------------
 -- Records of project_plan
 -- ----------------------------
-INSERT INTO `project_plan` VALUES ('99975cbb4d5145dd96ad45622dfe496a', '项目建设进度', '2019-05-01', '2019-09-06', '2', '100', '2019-05-31', '王炎彬');
-INSERT INTO `project_plan` VALUES ('a60f4827847047ef92529de6194b22c9', '项目环节合规性监测', '2019-06-04', '2019-06-04', '3', '100', '2019-06-04', '张帅');
-INSERT INTO `project_plan` VALUES ('e6b0fda2b9a34d34aaa32e797adb2008', '市县经营评价', '2019-05-01', '2019-08-08', '1', '100', '2019-05-31', '王炎彬');
+INSERT INTO `project_plan` VALUES ('99975cbb4d5145dd96ad45622dfe496a', '项目建设进度', '2018-11-06', '2019-01-31', '1', '100', '2019-05-31', '王炎彬');
+INSERT INTO `project_plan` VALUES ('a60f4827847047ef92529de6194b22c9', '项目环节合规性监测', '2018-11-07', '2019-01-31', '1', '100', '2019-06-04', '张帅');
+INSERT INTO `project_plan` VALUES ('e6b0fda2b9a34d34aaa32e797adb2008', '市县经营评价', '2018-11-05', '2019-01-31', '1', '100', '2019-05-31', '王炎彬');
 
 -- ----------------------------
 -- Table structure for project_user_medium
@@ -148,53 +150,29 @@ CREATE TABLE `project_user_medium` (
 -- Records of project_user_medium
 -- ----------------------------
 INSERT INTO `project_user_medium` VALUES ('02144724e1e04858ae66f65fe522cb11', '010919d873d649b6bba89c2b8c33556f', '114e3c85dfdd4d2d9f61358864482f96');
-INSERT INTO `project_user_medium` VALUES ('0515e536955a4414aa9a525919d0dda2', 'f9dd3e12f01344b5be057f4a2a8542a2', 'ac3a13fb7f8747c0a579c7aae5bacf3a');
-INSERT INTO `project_user_medium` VALUES ('07801963da2c4cc2b38cdd69a9dcc0fc', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'a3a996c3a7974d06bebd22e5ad07f5b3');
 INSERT INTO `project_user_medium` VALUES ('0d95d7f76c3a468c93d797416d9d9b02', '6515522b010b400da4b872f65a3434b3', 'aa7f82b4137a4729a3574c75532a39c1');
-INSERT INTO `project_user_medium` VALUES ('0f2615572a1d455097d2cfbdcc251889', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'c5dbdb7e958f474da920dedf0fff0475');
 INSERT INTO `project_user_medium` VALUES ('0fea6a0520e54d918d94e604adff4f0f', '38563d5a812148a6b8a36d574457a3de', '9c5151d1ee074f91b155e2492fcd53a1');
-INSERT INTO `project_user_medium` VALUES ('1c0971b828484e2dbc36f7b96b552848', 'f9dd3e12f01344b5be057f4a2a8542a2', 'd461243d47524f0b9bbdbce12d1c4474');
-INSERT INTO `project_user_medium` VALUES ('23f9bde35c4240819493c68b5b7028e4', 'ac68801e62ed4ed1a26d1f4ed807be4a', '84b8122e20454cd19518eead16c8bfef');
+INSERT INTO `project_user_medium` VALUES ('13f9ff14f26e43c090a6051750b34310', null, 'a4fe9590438543f38182bbc281a9a961');
+INSERT INTO `project_user_medium` VALUES ('212eda7d77b34192951dce6ec2f01767', null, '9dd5b08529414c8f88080802b79769c9');
+INSERT INTO `project_user_medium` VALUES ('2743a6e12db24d448e1ded9b9aa48356', null, 'ac3a13fb7f8747c0a579c7aae5bacf3a');
 INSERT INTO `project_user_medium` VALUES ('3161b93dac4246138ccb68521182fb4a', 'ac68801e62ed4ed1a26d1f4ed807be4a', '8bbad7c1efce4075b2df948535b0c5e6');
-INSERT INTO `project_user_medium` VALUES ('4253f3d1b4ea4288a8233e1f43bc2880', '06f737a43556410183eb96ebc85f89e0', 'db0e83d5861b40588c30dd67489160e1');
 INSERT INTO `project_user_medium` VALUES ('45d8a7666a334a40840cb681c228f53e', '04061d9cbfec49a3a1ac8816e67f14b9', '2a1d884c4fc94dbf992922add5247fcb');
-INSERT INTO `project_user_medium` VALUES ('484ae782bf154964938223fc3a9daadf', 'ac68801e62ed4ed1a26d1f4ed807be4a', '1da86c4bcd4b449ab1b7ef6504549832');
-INSERT INTO `project_user_medium` VALUES ('49863e830c2843e9835ea9e89ed5f086', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'b70ba3be92e34aa284618615cf07c6dc');
-INSERT INTO `project_user_medium` VALUES ('50ba36537adc4ba19eb9e2a604ba4f15', 'f9dd3e12f01344b5be057f4a2a8542a2', '924866009d3e41f9b665e153209507f5');
-INSERT INTO `project_user_medium` VALUES ('546a34e237024a8cb089c977b1de15b2', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'f977c643b45041b78784b7ec2c0eacb2');
-INSERT INTO `project_user_medium` VALUES ('5590f17abb26473db20fdf6edfa7f34f', 'ac68801e62ed4ed1a26d1f4ed807be4a', '5fb97a5c57dd41ed802ad7880889b471');
+INSERT INTO `project_user_medium` VALUES ('5108644aa365446986beeed9d420b868', null, '444019bc4c5845c08a85c6db41232fb8');
+INSERT INTO `project_user_medium` VALUES ('5633df0281344b769949b772611d13d6', null, 'd461243d47524f0b9bbdbce12d1c4474');
 INSERT INTO `project_user_medium` VALUES ('5841f4da047f4d62b7874d4bb1d3054e', '38563d5a812148a6b8a36d574457a3de', 'd45c6a5f6422457fbbb444f3a26ec0d1');
 INSERT INTO `project_user_medium` VALUES ('70bc980a11bc400789f9bc94a768711b', 'ac68801e62ed4ed1a26d1f4ed807be4a', '26182818ebb34c6ebd459eee565ff66c');
-INSERT INTO `project_user_medium` VALUES ('771e588956a8448ca7e0fec094bf04d9', '20d43deb075d4edd9ea30179c44810fc', 'a2f6ecbc00294dd0ba143ed0e7590163');
 INSERT INTO `project_user_medium` VALUES ('7ba809b87e884d15854352f4f1a5230c', '010919d873d649b6bba89c2b8c33556f', 'fb6f6dbb1f964d9982e9340a1cd744e9');
-INSERT INTO `project_user_medium` VALUES ('82ef2dd5e4004334ba6e14bb53c72050', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'f5fe465282454e37b5bf3fad320da060');
 INSERT INTO `project_user_medium` VALUES ('833e577dc6854138971afd720610455c', '010919d873d649b6bba89c2b8c33556f', '2ae029f6f27b4e4a86c1e118e0cf8021');
-INSERT INTO `project_user_medium` VALUES ('834f747c395d4ed8a0732ef082128be6', 'ac68801e62ed4ed1a26d1f4ed807be4a', '60d9d091ad374aaa86854d98313a03c7');
-INSERT INTO `project_user_medium` VALUES ('84ce781d454c4814b28e2d78983936dd', 'f9dd3e12f01344b5be057f4a2a8542a2', '21f7b679ae29402984b1ed58f04e4eca');
-INSERT INTO `project_user_medium` VALUES ('857ba3153fdc4394a5642ed9bcdde68f', 'f9dd3e12f01344b5be057f4a2a8542a2', 'd6f05985c5c744bf9b40fdb0f7994ddd');
-INSERT INTO `project_user_medium` VALUES ('89dba21f66374b3ab68b7bb386beff5f', 'f9dd3e12f01344b5be057f4a2a8542a2', '483da0e9776347568b0ace9b700e184f');
-INSERT INTO `project_user_medium` VALUES ('970934531a87457b8f2ad5d760712018', 'ac68801e62ed4ed1a26d1f4ed807be4a', '4737d22a3e3d4993b26f6af9cb40783b');
-INSERT INTO `project_user_medium` VALUES ('9cad08006c924b0b8bb4909c5d73089f', 'f9dd3e12f01344b5be057f4a2a8542a2', 'a4fe9590438543f38182bbc281a9a961');
-INSERT INTO `project_user_medium` VALUES ('a053a89b40eb48a0b3559c0ba46655bf', 'f9dd3e12f01344b5be057f4a2a8542a2', '9dd5b08529414c8f88080802b79769c9');
-INSERT INTO `project_user_medium` VALUES ('a0fd9db234594b7f8d5fddb6d4155745', 'f9dd3e12f01344b5be057f4a2a8542a2', '79355b6de24e4d1eb9860a1c43502df7');
-INSERT INTO `project_user_medium` VALUES ('a2519efd0bb349bebc8c4593ab4d5272', 'ac68801e62ed4ed1a26d1f4ed807be4a', '88a294364fec448587e08fcf0cd3d89a');
-INSERT INTO `project_user_medium` VALUES ('a50cc92b2dc7490da15a82a3a439c9a4', 'c02c4a1899ba4b50808c525ef42b6a48', '2cf15e17b8184ae792868a17184826ca');
-INSERT INTO `project_user_medium` VALUES ('a9ffd7c85f994ae3a922ce5bfc73a7e0', 'f9dd3e12f01344b5be057f4a2a8542a2', '73ddc58bc9984bc994e7ed9a716b7ec4');
-INSERT INTO `project_user_medium` VALUES ('abc9fb89dd6d49218e6793298d413847', 'ac68801e62ed4ed1a26d1f4ed807be4a', '91a140a700d248d887909ae9ac19b743');
+INSERT INTO `project_user_medium` VALUES ('8ecd5f44120e4ae0971a886c6098f3a1', null, '79355b6de24e4d1eb9860a1c43502df7');
 INSERT INTO `project_user_medium` VALUES ('ad55ed70902444f98f224ea754b7913f', '6515522b010b400da4b872f65a3434b3', '5131b979438b4ad7b877d5b67de61f04');
-INSERT INTO `project_user_medium` VALUES ('afb29b391bda4ca6a14438b95e074613', 'ac68801e62ed4ed1a26d1f4ed807be4a', '381a95d4ec5c404c844f5e786970d8c1');
-INSERT INTO `project_user_medium` VALUES ('bed00f5a7b29483ba3d56ef9890340d4', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'f04e2c0c4f704447839bc9f91c16eea5');
-INSERT INTO `project_user_medium` VALUES ('c3f2cbdee8c24e359074db12821e09ec', '06f737a43556410183eb96ebc85f89e0', 'f946da57c2b44072932260d36b3704e0');
 INSERT INTO `project_user_medium` VALUES ('ca5714c5b8c145f8843a3cf612fdcb64', '04061d9cbfec49a3a1ac8816e67f14b9', '0d99f974e9704399b50e839993092256');
-INSERT INTO `project_user_medium` VALUES ('d369a6cac6294df1a04977b5b91b80c9', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'd9c20bfe6cfd4e04a10b2d7fa4dda2a9');
-INSERT INTO `project_user_medium` VALUES ('d6e189a9581e4f61aea0be2d21894990', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'c5f2d0ae317247d1b01e3f99d447b173');
-INSERT INTO `project_user_medium` VALUES ('d7873c8d3a864221a870f5bc618b0f06', 'ac68801e62ed4ed1a26d1f4ed807be4a', '00d440ce38b3486dab9d44a1701cd125');
-INSERT INTO `project_user_medium` VALUES ('e30473441ed14f3ebead18ab04fe65e9', 'f9dd3e12f01344b5be057f4a2a8542a2', '444019bc4c5845c08a85c6db41232fb8');
+INSERT INTO `project_user_medium` VALUES ('cbd37109747a4f1dba8c3618fd65e35e', null, '924866009d3e41f9b665e153209507f5');
+INSERT INTO `project_user_medium` VALUES ('da70ff9a48864e56a44adabcfad75e9f', null, 'd6f05985c5c744bf9b40fdb0f7994ddd');
+INSERT INTO `project_user_medium` VALUES ('de05ac03a0644ad2b1192074e81ddb0c', null, '73ddc58bc9984bc994e7ed9a716b7ec4');
 INSERT INTO `project_user_medium` VALUES ('e4ce583e99c24f7fa36a3ec794364530', '38563d5a812148a6b8a36d574457a3de', '02883c237e4f4797a7155d96619ddfad');
-INSERT INTO `project_user_medium` VALUES ('ee3427b000ac44faa7d77f083feda4d2', 'ac68801e62ed4ed1a26d1f4ed807be4a', '8a4d353873e947b8ab81eafdea113b27');
-INSERT INTO `project_user_medium` VALUES ('f46d5ab6227c460ba6ec1a2684a380f9', 'ac68801e62ed4ed1a26d1f4ed807be4a', '6b7972febc83490080b5b747cf76a743');
-INSERT INTO `project_user_medium` VALUES ('f7a8bf5e24f64f84a9b76323ea4bbfee', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'c77511dd42a94ca9a90d059e51ef684e');
-INSERT INTO `project_user_medium` VALUES ('f8c20d5ef5d44738885c7270db7a7544', 'ac68801e62ed4ed1a26d1f4ed807be4a', 'bccf391a625242b1a21c58e131b93f80');
+INSERT INTO `project_user_medium` VALUES ('e59d96f598c8439dbc6ff5c3d21dc122', null, '2cf15e17b8184ae792868a17184826ca');
+INSERT INTO `project_user_medium` VALUES ('e88840257a454f0d8c9f01eec60a9f41', null, '21f7b679ae29402984b1ed58f04e4eca');
+INSERT INTO `project_user_medium` VALUES ('f88df01fe3b244bfaf2276d499cb4cc7', null, 'a2f6ecbc00294dd0ba143ed0e7590163');
 
 -- ----------------------------
 -- Table structure for task_class
@@ -299,15 +277,6 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('010919d873d649b6bba89c2b8c33556f', null, '邢鑫鑫', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('04061d9cbfec49a3a1ac8816e67f14b9', null, '张理想', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('06f737a43556410183eb96ebc85f89e0', null, '张星亚', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('20d43deb075d4edd9ea30179c44810fc', null, '朱聪皓', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('38563d5a812148a6b8a36d574457a3de', null, '待定', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('6515522b010b400da4b872f65a3434b3', null, '黄中杰', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('ac68801e62ed4ed1a26d1f4ed807be4a', null, '申帅博', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('c02c4a1899ba4b50808c525ef42b6a48', null, '汪毅', null, null, '0', null, null, null);
-INSERT INTO `user` VALUES ('f9dd3e12f01344b5be057f4a2a8542a2', null, '李双见', null, null, '0', null, null, null);
 
 -- ----------------------------
 -- Table structure for weekreport
@@ -331,3 +300,4 @@ CREATE TABLE `weekreport` (
 -- ----------------------------
 -- Records of weekreport
 -- ----------------------------
+INSERT INTO `weekreport` VALUES ('weekid', '99975cbb4d5145dd96ad45622dfe496a', '2019-06-12', '2019-06-19', null, null, 'userId', null, null, '0', null);
