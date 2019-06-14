@@ -3,15 +3,15 @@ package com.gedi.projectmanagement.controller;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.service.WeekReportService;
+import com.gedi.projectmanagement.util.DetialDayDate;
 import com.gedi.projectmanagement.util.UUIDUtil;
+import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 日志 信息操作处理
- * 
+ *
  * @author zpl
  * @date 2019-06-03
  */
@@ -55,18 +55,19 @@ public class JournalController
 		List<HashMap<String,Object>> list = null;
 		if(userId != null && !"".equals(userId)){//判断是否传入用户id 有的话把userId放到map中
 			map.put("userId",userId);
-			 list = journalService.selectJournalResultList(map);//返回日报列表数据
+			System.err.println("TIME:"+getWeekDate());
+			list = journalService.selectJournalResultList(map);//返回日报列表数据
 			System.err.println("list:"+list);
-			 if(list.size() > 0){//大于0表示有数据
-				 resultMap.put("code",200);
-				 resultMap.put("msg","成功");
-			 }else{//无数据
-				 resultMap.put("code",300);
-				 resultMap.put("msg","无数据");
-			 }
-			 map.clear();//清空map
-			 map.put("result",list);
-			 //抄送人列表
+			if(list.size() > 0){//大于0表示有数据
+				resultMap.put("code",200);
+				resultMap.put("msg","成功");
+			}else{//无数据
+				resultMap.put("code",300);
+				resultMap.put("msg","无数据");
+			}
+			map.clear();//清空map
+			map.put("result",list);
+			//抄送人列表
 			List<HashMap<String,Object>> userList = journalService.selectUserList();
 			map.put("userList",userList);
 
@@ -88,8 +89,8 @@ public class JournalController
 		resultMap.put("code",300);
 		resultMap.put("msg","失败");
 		JSONObject jsonParam = this.getJSONParam(request);//转换传入json的数据
-      Map<String, Object>  map = ( Map<String, Object>)jsonParam;//转换数据类型为map
-      List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");//转换数据类型
+		Map<String, Object>  map = ( Map<String, Object>)jsonParam;//转换数据类型为map
+		List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");//转换数据类型
 		for (Object ob: ll) {
 			Map mp = (Map) ob;
 			mp.put("userId","userId");//用户id暂时写死之后从session里取或者前台传递
@@ -103,7 +104,7 @@ public class JournalController
 				for (Object obj: ll) {//再次循环然后调用周报中的改变实际完成进度接口之所以再次循环是为了批量插入完整性
 					Map mp = (Map) obj;
 					//调用周报中修改周报实际完成进度接口
-					weekReportService.updateActual(mp.get("weekId").toString(),Integer.valueOf(mp.get("wcjd").toString()));
+					weekReportService.updateActual(mp.get("w_id").toString(),Integer.valueOf(mp.get("r_finish").toString()));
 				}
 			}else {
 				resultMap.put("code",300);
@@ -128,15 +129,65 @@ public class JournalController
 			// 获取输入流
 			BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
 			// 写入数据到Stringbuilder
-			 StringBuilder sb = new StringBuilder(); String line = null;
-			 while ((line = streamReader.readLine()) != null){
-			 	sb.append(line);
-	 			}
-	 		jsonParam = JSONObject.parseObject(sb.toString()); // 直接将json信息打印出来
+			StringBuilder sb = new StringBuilder(); String line = null;
+			while ((line = streamReader.readLine()) != null){
+				sb.append(line);
+			}
+			jsonParam = JSONObject.parseObject(sb.toString()); // 直接将json信息打印出来
 			System.out.println(jsonParam.toJSONString());
 		}catch (Exception e){
 			e.printStackTrace();
-		   }
+		}
 		return jsonParam;
 	}
+
+	public CodeAndMsg getTwelveDayDate() {
+		CodeAndMsg codeAndMsg = new CodeAndMsg();
+		if (DetialDayDate.getTweleveDayDate().size() != 0) {
+			codeAndMsg.setCode(200);
+			codeAndMsg.setResult(true);
+			codeAndMsg.setData(DetialDayDate.getTweleveDayDate());
+		} else {
+			codeAndMsg.setCode(400);
+			codeAndMsg.setResult(false);
+			codeAndMsg.setMsg("获取失败");
+
+		}
+
+		return codeAndMsg;
+	}
+
+	/**
+	 * 当前时间所在一周的周一和周日时间
+	 * @param
+	 * @return
+	 */
+	public static Map<String,String> getWeekDate() {
+		Map<String,String> map = new HashMap();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Calendar cal = Calendar.getInstance();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);// 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
+		int dayWeek = cal.get(Calendar.DAY_OF_WEEK);// 获得当前日期是一个星期的第几天
+		if(dayWeek==1){
+			dayWeek = 6;
+		}
+		System.out.println("要计算日期为:" + sdf.format(cal.getTime())); // 输出要计算日期
+
+		cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - dayWeek);// 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
+		Date mondayDate = cal.getTime();
+		String weekBegin = sdf.format(mondayDate);
+		System.out.println("所在周星期一的日期：" + weekBegin);
+
+
+		cal.add(Calendar.DATE, 4 +cal.getFirstDayOfWeek());
+		Date sundayDate = cal.getTime();
+		String weekEnd = sdf.format(sundayDate);
+		System.out.println("所在周星期日的日期：" + weekEnd);
+
+		map.put("mondayDate", weekBegin);
+		map.put("sundayDate", weekEnd);
+		return map;
+	}
+
 }
