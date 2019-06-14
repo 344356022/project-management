@@ -14,6 +14,7 @@
     <result column="w_status" property="wStatus" jdbcType="INTEGER" />
     <result column="w_remark" property="wRemark" jdbcType="VARCHAR" />
     <result column="r_finish" property="rFinish" jdbcType="VARCHAR" />
+    <result column="w_type" property="wType" jdbcType="INTEGER"/>
     <collection property="projectPlans" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.ProjectPlan">
       <id column="p_id" property="pId" jdbcType="VARCHAR"/>
       <result column="p_name" property="pName" jdbcType="VARCHAR"/>
@@ -45,8 +46,12 @@
       </collection>
     <collection property="recordTimes" ofType="com.gedi.projectmanagement.model.RecordTime" javaType="java.util.List">
       <id column="time_id" property="timeId" jdbcType="VARCHAR" />
-      <result column="detial_day_date" property="detialDayDate" jdbcType="VARCHAR" />
+      <result column="detial_day_date" property="name" jdbcType="VARCHAR" />
       <result column="w_id" property="wId" jdbcType="VARCHAR" />
+      <result column="is_select" property="isSelect" jdbcType="VARCHAR"/>
+      <result column="nums" property="nums" jdbcType="INTEGER"></result>
+      <result column="sorts" property="sorts" jdbcType="INTEGER"></result>
+
     </collection>
   </resultMap>
 
@@ -202,22 +207,37 @@
   <!--查询双周计划表里的详细内容进行展示-->
   <select id="selectWeekReportDetial" resultMap="BaseResultMap">
 
-  select w.w_id,w.w_start_time,w.w_end_time,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,pp.p_name,u.u_name,tu.ts_name,rt.detial_day_date from
-weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.user_id=w.user_id  LEFT JOIN task_subclass tu on w.ts_id=tu.ts_id left join record_time rt on rt.w_id=w.w_id
-
+  select w.w_id,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,w.w_type,
+  pp.p_id,u.user_id,tu.ts_id,
+  rt.detial_day_date,rt.is_select,rt.nums,rt.sorts
+   from weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id
+    left join user u on u.user_id=w.user_id
+    LEFT JOIN task_subclass tu on w.ts_id=tu.ts_id
+    left join record_time rt on rt.w_id=w.w_id order by rt.sorts
   </select>
 
 
   <!--批量添加双周计划表的-->
   <insert id="addWeekReport">
-      insert into weekreport (w_id,p_id,w_start_time,w_end_time,ts_id,w_work_report,user_id,
-    w_actual_proportion,w_plan_proportion,w_status,w_remark)
+      insert into weekreport (w_id,p_id,ts_id,w_work_report,user_id,
+    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type)
     values
       <foreach collection="list" item="item" separator=",">
-          (#{item.wId},#{item.pId},#{item.wStartTime},#{item.wEndTime},#{item.tsId},
+          (#{item.wId},#{item.pId},#{item.tsId},
         #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},
-        #{item.wStatus},#{item.wRemark})
+        #{item.wStatus},#{item.wRemark},#{item.wType})
       </foreach>
+  </insert>
+
+  <insert id="updateWeekReport">
+     insert into weekreport (p_id,ts_id,w_work_report,user_id,
+    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.wId},#{item.pId},#{item.tsId},
+      #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},
+      #{item.wStatus},#{item.wRemark},#{item.wType})
+    </foreach>
   </insert>
 
   <!--根据双周计划表得id值进行修改为暂停-->
@@ -244,5 +264,48 @@ weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id left join user u on u.u
   <select id="selectByWeekReportId" resultMap="BaseResultMap">
     SELECT w_id from weekreport where w_id=#{wId}
   </select>
+
+  <!--更新双周计划信息-->
+  <delete id="updateWeekReportMesg">
+    DELETE from weekreport where w_id=#{wId}
+  </delete>
+
+  <!--批量修改书双周计划信息-->
+  <update id="updateMoreWeekReport">
+    <foreach collection="list" item="item" open="" close="" separator=";">
+      update weekreport
+      <set>
+        <if test="item.pId != null">
+          p_id = #{item.pId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.tsId != null">
+          ts_id = #{item.tsId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.wWorkReport != null">
+          w_work_report = #{item.wWorkReport,jdbcType=VARCHAR},
+        </if>
+        <if test="item.userId != null">
+          user_id = #{item.userId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.wActualProportion != null">
+          w_actual_proportion = #{item.wActualProportion,jdbcType=INTEGER},
+        </if>
+        <if test="item.wPlanProportion != null">
+          w_plan_proportion = #{item.wPlanProportion,jdbcType=INTEGER},
+        </if>
+        <if test="item.wStatus != null">
+          w_status = #{item.wStatus,jdbcType=INTEGER},
+        </if>
+        <if test="item.wRemark != null">
+          w_remark = #{item.wRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.wType != null">
+          w_type = #{item.wType,jdbcType=INTEGER},
+        </if>
+      </set>
+      where w_id = #{item.wId,jdbcType=VARCHAR}
+    </foreach>
+
+  </update>
 
 </mapper>

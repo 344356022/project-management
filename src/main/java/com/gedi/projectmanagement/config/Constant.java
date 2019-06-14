@@ -7,9 +7,9 @@ public class Constant {
     /**
      * 开发者后台->企业自建应用->选择您创建的E应用->查看->AppKey
      */
-    public static final String APP_KEY = "dingdkddaarp09a1dz9o";
+    public static final String APP_KEY = "dingaj1x3yp3mgfvazaq";
     /**
      * 开发者后台->企业自建应用->选择您创建的E应用->查看->AppSecret
      */
-    public static final String APP_SECRET = "0bixwcIuMFppsrVOLxtVYryuSdoDGjYRZeDhWth80ZgVHRuC-pR-q1ppAzsiK_uT";
+    public static final String APP_SECRET = "k_jBw4xTxEVa8gPLvCXxvxso8H2gxs_MvG0XukgPi1ZpeCAAir58y0K_mj4F3xJL";
 }

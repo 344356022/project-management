@@ -152,6 +152,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public CodeAndMsg selectUserById(String userId) {
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        if(userMapper.selectUserById(userId)!=null){
+            codeAndMsg.setMsg("查询成功");
+            codeAndMsg.setCode(200);
+            codeAndMsg.setData(userMapper.selectUserById(userId));
+            codeAndMsg.setResult(true);
+        }else{
+            codeAndMsg.setMsg("查失败");
+            codeAndMsg.setCode(400);
+            codeAndMsg.setResult(false);
+
+        }
+        return codeAndMsg;
+    }
+
+    @Override
     public String selectNameByUserId(String userId) {
         return userMapper.selectNameByUserId(userId);
     }
