@@ -1,6 +1,7 @@
 package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.Weekreport;
+import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,4 +41,10 @@ public interface WeekreportMapper {
 
     //查询weekReport的id是否存在
     Weekreport selectByWeekReportId(String wId);
+
+    //更新双周计划的信息
+    void updateWeekReportMesg(String wId);
+
+    //批量修改双周计划信息
+   void updateMoreWeekReport(@Param("list")List<Weekreport> weekreports);
 }
