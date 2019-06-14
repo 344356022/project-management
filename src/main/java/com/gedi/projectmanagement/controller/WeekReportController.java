@@ -10,6 +10,7 @@ import com.gedi.projectmanagement.service.TaskSubClassService;
 import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
@@ -51,8 +52,22 @@ public class WeekReportController {
 
     //查询双周计划表展示具体的内容以及完成的占比；
     @GetMapping("selectWeekReportDetial")
-    public CodeAndMsg selectWeekReportDetial() {
-        return weekReportService.selectWeekReportDetial();
+    public CodeAndMsg selectWeekReportDetial(String authCode) {
+        System.out.println(authCode);
+
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        String userId = LoginUtil.login(authCode);
+        CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
+        User user = (User)codeAndMsg1.getData();
+        if(user!=null){
+            return weekReportService.selectWeekReportDetial();
+        }else{
+            codeAndMsg.setResult(false);
+            codeAndMsg.setCode(200);
+            codeAndMsg.setMsg("用户不存在");
+            return codeAndMsg;
+        }
+
     }
 
 
@@ -61,7 +76,6 @@ public class WeekReportController {
     public CodeAndMsg addWeekReport(@RequestBody String weekreports) {
 
         System.out.println("--------------"+weekreports);
-
         CodeAndMsg msg = new CodeAndMsg();
         if (StringUtils.isEmpty(weekreports)) {
             msg.setCode(400);
@@ -74,7 +88,6 @@ public class WeekReportController {
             System.out.println(weekreports);
              msg = this.addWeekReport(weekreportse);
         }
-
         return msg;
 
     }
