@@ -4,233 +4,594 @@
         <meta charset="utf-8" />
         <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
         
-        <title>县级供电企业管理测评总览</title>
-        <link rel="stylesheet" href="../static/element_ui/index.css">
-        <link rel="stylesheet" href="../static/element_ui/iconfont/iconfont.css">
-        <link rel="stylesheet" href="../static/css/pages/week.css">
-        <script src="../static/element_ui/vue.js" type="text/javascript"></script>
-        <script src="../static/element_ui/index.js" type="text/javascript"></script>
-        <script src="../static/element_ui/vuex.js" type="text/javascript"></script>
-        <script src="../static/element_ui/store.js" type="text/javascript"></script>
-        <script src="../static/element_ui/vue-resource.js" type="text/javascript"></script>
-        <script src="../static/element_ui/vue-router.js" type="text/javascript"></script>
+        <title>双周计划</title>
+        <link rel="stylesheet" href="./element_ui/index.css">
+        <link rel="stylesheet" href="./element_ui/iconfont/iconfont.css">
+        <link rel="stylesheet" href="./css/pages/week.css">
+        <script src="./js/jquery-3.3.1.js" type="text/javascript"></script>
+        <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+        <script src="./element_ui/vue.js" type="text/javascript"></script>
+        <script src="./element_ui/index.js" type="text/javascript"></script>
+        <script src="./element_ui/vuex.js" type="text/javascript"></script>
+        <script src="./element_ui/store.js" type="text/javascript"></script>
+        <script src="./element_ui/vue-resource.js" type="text/javascript"></script>
+        <script src="./element_ui/vue-router.js" type="text/javascript"></script>
+        <meta name="wpk-bid" content="dta_1_269856828">
+        <style>
+            .tables1{
+                position: relative;
+
+            }
+            .addThisWeek{
+                position: absolute;
+                top: 18px;
+                left: 148px;
+                z-index: 10;
+            }
+            .header{
+                position: relative;
+                width: 100%;
+            }
+            .header-data{
+                position: absolute;
+                left: 10px;
+                bottom: 4px;
+                font-size: 14px;
+            }
+            .header-title{
+                width: 100%;
+                text-align: center;
+                line-height: 60px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body> 
         <div id="idbody">
-            <el-button type="primary" @click="add" size="small">新增</el-button>
-            <el-table class="tables" 
-                border
-                :data="tableData"
-                style="width: 100%">
-                <el-table-column 
-                  align="center"
-                  label="本周完成情况"
-                  >
-                  <template slot-scope="scope">
-                        <ul>
-                            <li v-for="(items,index) in scope.row.dataList"  v-text="items.name" :class="{clickIndex:items.isSelect==true}" @click="dataClick(scope.$index, scope.row,items,index)"></li>
-                        </ul>
-                  </template>
-                </el-table-column>
+            <div class="header">
+                <div class="header-title">项目双周计划</div>
+                <div class="header-data">计划期间：<span class="startTime"></span>--<span class="endTime"></span></div>
+            </div>
+            <div class="tables1">
+                <el-button type="primary" size="small" class="addThisWeek" @click="addThisWeek">新增</el-button>
+                <el-table class="tables"
+                          border
+                          :data="tableData"
+                          style="width: 100%">
+                    <el-table-column
+                            align="center"
+                            label="本周完成情况"
+                            min-width="100"
+                    >
+                        <template slot-scope="scope">
+                            <ul>
+                                <li v-for="(items,index) in scope.row.recordTimes"  v-text="items.name" :class="{clickIndex:items.isSelect=='true'}" @click="dataClick(scope.$index, scope.row,items,index)"></li>
+                            </ul>
+                        </template>
+                    </el-table-column>
 
-                <el-table-column 
-                  align="center"
-                  label="No."
-                  prop="index"
-                  >
-                </el-table-column>
 
-                <el-table-column 
-                  align="center"
-                  label="项目名称"
-                  prop="index"
-                  >
-                  <template slot-scope="scope">
-                        <el-select v-model="scope.row.XmName" placeholder="请选择">
-                            <el-option
-                                v-for="(item,index) in xmName"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.name">
-                            </el-option>
-                        </el-select>
-                  </template>
-                </el-table-column>
 
-                <el-table-column 
-                  align="center"
-                  label="任务项"
-                  prop="index"
-                  >
-                  <template slot-scope="scope">
-                        <el-select v-model="scope.row.Rwx" placeholder="请选择">
-                            <el-option
-                                v-for="(item,index) in rwx"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.name">
-                            </el-option>
-                        </el-select>
-                  </template>
-                </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="项目名称"
+                            prop="pId"
+                            min-width="100"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.pId" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in xmName"
+                                        :key="item.pId"
+                                        :label="item.pName"
+                                        :value="item.pId">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
 
-                <el-table-column 
-                  align="center"
-                  label="工作任务描述"
-                  prop="index"
-                  >
-                  <template slot-scope="scope">
-                        <el-input v-model="scope.row.miaoShu" placeholder="请输入工作任务描述"></el-input>
-                  </template>
-                </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="任务项"
+                            prop="tsId"
+                            min-width="100"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.tsId" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in rwx"
+                                        :key="item.tsId"
+                                        :label="item.tsName"
+                                        :value="item.tsId">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
 
-                <el-table-column 
-                  align="center"
-                  label="责任人"
-                  prop="index"
-                  >
-                  <template slot-scope="scope">
-                        <el-input v-model="scope.row.zrr" placeholder="请输入工作任务描述"></el-input>
-                  </template>
-                </el-table-column>
-            </el-table>
+                    <el-table-column
+                            align="center"
+                            label="工作任务描述"
+                            prop="wWorkReport"
+                    >
+                        <template slot-scope="scope">
+                            <el-input
+                                    type="textarea"
+                                    :rows="2"
+                                    placeholder="请输入工作任务描述"
+                                    v-model="scope.row.wWorkReport">
+                            </el-input>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            align="center"
+                            label="责任人"
+                            prop="userId"
+                            min-width="70"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.userId" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in zrr"
+                                        :key="item.userId"
+                                        :label="item.uName"
+                                        :value="item.userId">
+                                </el-option>
+                            </el-select>
+
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="实际完成百分比"
+                            prop="wActualProportion"
+                            min-width="50"
+                    >
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.wActualProportion" placeholder="实际完成百分比"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="计划完成百分比"
+                            prop="wPlanProportion"
+                            min-width="50"
+                    >
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.wPlanProportion" placeholder="计划完成百分比"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="状态"
+                            prop="wStatus"
+                            min-width="70"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.wStatus" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in wStatusList"
+                                        :key="item.value"
+                                        :label="item.name"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="备注\协调配合"
+                            prop="wRemark"
+                            min-width="120"
+                    >
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.wRemark" placeholder="备注\协调配合"></el-input>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <div class="tables1">
+                <el-button type="primary" size="small" class="addThisWeek" @click="addNextWeek">新增</el-button>
+                <el-table class="tables"
+                          border
+                          :data="tableData1"
+                          style="width: 100%">
+                    <el-table-column
+                            align="center"
+                            label="下周完成情况"
+                            min-width="100"
+                    >
+                        <template slot-scope="scope">
+                            <ul>
+                                <li v-for="(items,index) in scope.row.recordTimes"  v-text="items.name" :class="{clickIndex:items.isSelect=='true'}" @click="dataClick(scope.$index, scope.row,items,index)"></li>
+                            </ul>
+                        </template>
+                    </el-table-column>
+
+
+
+                    <el-table-column
+                            align="center"
+                            label="项目名称"
+                            prop="pId"
+                            min-width="100"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.pId" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in xmName"
+                                        :key="item.pId"
+                                        :label="item.pName"
+                                        :value="item.pId">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            align="center"
+                            label="任务项"
+                            prop="tsId"
+                            min-width="100"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.tsId" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in rwx"
+                                        :key="item.tsId"
+                                        :label="item.tsName"
+                                        :value="item.tsId">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            align="center"
+                            label="工作任务描述"
+                            prop="wWorkReport"
+                    >
+                        <template slot-scope="scope">
+                            <el-input
+                                    type="textarea"
+                                    :rows="2"
+                                    placeholder="请输入工作任务描述"
+                                    v-model="scope.row.wWorkReport">
+                            </el-input>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            align="center"
+                            label="责任人"
+                            prop="userId"
+                            min-width="70"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.userId" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in zrr"
+                                        :key="item.userId"
+                                        :label="item.uName"
+                                        :value="item.userId">
+                                </el-option>
+                            </el-select>
+
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="实际完成百分比"
+                            prop="wActualProportion"
+                            min-width="50"
+                    >
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.wActualProportion" placeholder="实际完成百分比"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="计划完成百分比"
+                            prop="wPlanProportion"
+                            min-width="50"
+                    >
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.wPlanProportion" placeholder="计划完成百分比"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="状态"
+                            prop="wStatus"
+                            min-width="70"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.wStatus" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,index) in wStatusList"
+                                        :key="item.value"
+                                        :label="item.name"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            label="备注\协调配合"
+                            prop="wRemark"
+                            min-width="120"
+                    >
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.wRemark" placeholder="备注\协调配合"></el-input>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
             <el-button style="margin-top:20px;" type="primary" @click="save" size="small">保存</el-button>
         </div>
     </body>
 
     <script>
+        var dataLists=[];
+        var thisWeek=[];//本周数据
+        var nextWeek=[];//下周数据
+        (function () {
+            $.ajax({
+               url:"http://localhost:8082/weekReport/getTwelveDayDate",
+               type:"GET",
+               data:{},
+               dataType:"json",
+               success:function(res){
+                   dataLists=res.data;
+                   $(".startTime").text(dataLists[0]);
+                   $(".endTime").text(dataLists[11]);
+                   thisWeek=dataLists.slice(0,7);
+                   nextWeek=dataLists.slice(-5);
+               }
+            });
+
+
+
+
+        })(window)
+       /* dd.ready(function() {
+            dd.runtime.permission.requestAuthCode({
+                corpId : "这里是你的corpID",
+                onSuccess : function(result) {
+                    var code = result.code;
+                    alert(code);
+                    //将code 发往后台处理
+                },
+                onFail : function(err) {
+                    alert('出错了, ' + err);
+                }
+            });
+
+        });*/
+
+       /* dd.ready(function() {
+            dd.runtime.permission.requestAuthCode({
+                corpId: _config.corpId, // 企业id
+                onSuccess: function (info) {
+                    alert(info);
+                    code = info.code // 通过该免登授权码可以获取用户身份
+                }
+            });
+        });*/
+
+
+
         var myHome = new Vue({
             el:"#idbody",
             data:{
                 //任务项
-                rwx:[
-                    {
-                        name:"测试一",
-                    },
-                    {
-                        name:"测试二",
-                    },
-                    {
-                        name:"测试三",
-                    },
-                    {
-                        name:"测试四",
-                    },
-                ],
+                rwx:[],
                 //项目名称
-                xmName:[
+                xmName:[],
+                //责任人
+                zrr:[],
+                tableData:[],//本周完成情况
+                tableData1:[],//下周完成情况
+
+                //状态值
+                wStatusList:[
                     {
-                        name:"实现计划评价",
+                        name:"未开始",
+                        value:1,
                     },
                     {
-                        name:"客户用电行为分析",
+                        name:"进行中",
+                        value:2,
                     },
                     {
-                        name:"市县经营评价",
-                    },
+                        name:"已完成",
+                        value:3,
+                    }
                 ],
-                tableData:[],
-                addIndex:0,
             },
             mounted:function(){
                 var _this=this;
-                
+                _this.getDatas();//回显保存的数据
+                _this.getRwx();
             },
             methods:{
-                //新增
-                add:function(){
+                /*获取已经保存过后的数据*/
+                getDatas:function (code) {
+                    var _this=this;
+                   /* var objs={
+                        authCode:code,
+                    }*/
+                    $.ajax({
+                        url:"http://localhost:8082/weekReport/selectWeekReportDetial?authCode=",
+                        type:"GET",
+                        data:{},
+                        dataType:"json",
+                        success:function(res){
+                            console.log(res)
+
+                            for(var i=0;i<res.data.length;i++){
+                                var items=res.data[i];
+                                if(items.wType==1){
+                                    _this.tableData.push(items);
+                                }else{
+                                    _this.tableData1.push(items);
+                                };
+                            };
+                            console.log(_this.tableData,_this.tableData1);
+                           /* _this.rwx=res.data;
+                            _this.getXmmc();*/
+                        }
+                    });
+                },
+                //获取任务项
+                getRwx:function(data){
+                    var _this=this;
+                    $.ajax({
+                        url:"http://localhost:8082/weekReport/queryTaskSubIdAndName",
+                        type:"GET",
+                        data:{},
+                        dataType:"json",
+                        success:function(res){
+                            console.log(res)
+                            _this.rwx=res.data;
+                            _this.getXmmc();
+                        }
+                    });
+                },
+                //获取项目名称
+                getXmmc:function(data){
+                    var _this=this;
+                    $.ajax({
+                        url:"http://localhost:8082/weekReport/selectProjectPlanIdAndName",
+                        type:"GET",
+                        data:{},
+                        dataType:"json",
+                        success:function(res){
+                            console.log(res);
+                            _this.xmName=res.data;
+                            _this.getZrr();
+                        }
+                    });
+                },
+                /*获取责任人*/
+                getZrr:function(){
+                    var _this=this;
+                    $.ajax({
+                        url:"http://localhost:8082/weekReport/selectUserByDepartment",
+                        type:"GET",
+                        data:{},
+                        dataType:"json",
+                        success:function(res){
+                            console.log(res);
+                            _this.zrr=res.data;
+                        }
+                    });
+                },
+                //新增本周
+                addThisWeek:function(){
                     var _this=this;
                      //本周日期
-                    var dataLists=[
-                        {
-                            name:"27",//日期
-                            isSelect:false,//是否被点击   获取完数据以后  可以循环遍历添加其属性
-                            nums:0,//点击次数   获取完数据以后  可以循环遍历添加其属性
-                        },
-                        {
-                            name:"28",
-                            isSelect:false,
+                    var thisWeeks=[];
+                    for(var i=0;i<thisWeek.length;i++){
+                        var items=thisWeek[i];
+
+                        var objs={
+                            isSelect:'false',
                             nums:0,
-                        },
-                        {
-                            name:"29",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"30",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"31",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"1",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"2",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"3",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"4",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"5",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"6",
-                            isSelect:false,
-                            nums:0,
-                        },
-                        {
-                            name:"7",
-                            isSelect:false,
-                            nums:0,
-                        },
-                    ];
-                    _this.addIndex++;
+                            name:thisWeek[i].substr(8,2),
+                            timeId:"",
+                            wId:"",
+                            sorts:i+1,
+                        };
+                        thisWeeks.push(objs);
+                    };
                     var objs={
-                        index:_this.addIndex,
-                        dataList:dataLists,
-                        XmName:"",
-                        miaoShu:"",
-                        zrr:"",
-                        Rwx:"",
+                        recordTimes:thisWeeks,
+                        pId:"",
+                        tsId:"",
+                        userId:"",
+                        wActualProportion:"",
+                        wPlanProportion:"",
+                        wStatus:"",
+                        wRemark:"",
+                        wType:"1",
                     };
 
                     _this.tableData.push(objs);
                 },
+                //新增下周
+                addNextWeek:function () {
+                    var _this=this;
+                    //本周日期
+                    var nextWeeks=[];
+                    for(var i=0;i<nextWeek.length;i++){
+                        var items=nextWeek[i];
+
+                        var objs={
+                            isSelect:'false',
+                            nums:0,
+                            name:nextWeek[i].substr(8,2),
+                            timeId:"",
+                            wId:"",
+                        };
+                        nextWeeks.push(objs);
+                    };
+                    var objs={
+                        recordTimes:nextWeeks,
+                        pId:"",
+                        tsId:"",
+                        userId:"",
+                        wActualProportion:"",
+                        wPlanProportion:"",
+                        wStatus:"",
+                        wRemark:"",
+                        wType:"2",
+                    };
+
+                    _this.tableData1.push(objs);
+                },
                 //点击日期
                 dataClick:function(scopeIndex,scopeRow,items,itemsIndex){
                     var _this=this;
-                    var itemss=scopeRow.dataList[itemsIndex];
+                    var itemss=scopeRow.recordTimes[itemsIndex];
                     itemss.nums++;
                     if(itemss.nums%2==0){
-                        itemss.isSelect=false;
+                        itemss.isSelect='false';
                         itemss.nums=0;
                     }else{
-                        itemss.isSelect=true;
+                        itemss.isSelect='true';
                     };
                 },
                 //保存
                 save:function(){
                     var _this=this;
-                    console.log(_this.tableData);//所有表格的數據
+                    var objs={
+                        thisWeek:_this.tableData,
+                        nextWeek
+                    };
+                    var newArray=[];
+                    newArray=_this.tableData.concat(_this.tableData1);
+                    console.log(newArray);//所有表格的數據
+
+                    var objs={
+                        weekreports:newArray,
+                    };
+
+                    $.ajax({
+                        url:"http://localhost:8082/weekReport/createMoreWeekReport",
+                        data:JSON.stringify(objs),
+                        type:"POST",
+                        dataType:"json",
+                        contentType: "application/json;charset=utf-8",
+                        success:function(res){
+                            console.log(res);
+                        }
+                    });
                 },
 
             },
