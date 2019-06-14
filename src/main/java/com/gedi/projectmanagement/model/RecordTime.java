@@ -1,8 +1,6 @@
 package com.gedi.projectmanagement.model;
 
-import lombok.Data;
 
-import java.util.Date;
 
 /**
  * @Author: renpu
