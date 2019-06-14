@@ -12,6 +12,8 @@ import java.util.List;
 
 public class WeekRportInfo {
 
+    private String wId;
+
     private String wWorkReport;
 
     private Integer  wActualProportion;
@@ -30,11 +32,12 @@ public class WeekRportInfo {
 
     private Integer wType;
 
-    private List<RecordTime> dataList;
+    private List<RecordTime> recordTimes;
 
     public WeekRportInfo(){}
 
-    public WeekRportInfo(String wWorkReport, Integer wActualProportion, Integer wPlanProportion, String wRemark, String pId, String userId, String tsId, Integer wStatus, Integer wType, List<RecordTime> dataList) {
+    public WeekRportInfo(String wId, String wWorkReport, Integer wActualProportion, Integer wPlanProportion, String wRemark, String pId, String userId, String tsId, Integer wStatus, Integer wType, List<RecordTime> recordTimes) {
+        this.wId = wId;
         this.wWorkReport = wWorkReport;
         this.wActualProportion = wActualProportion;
         this.wPlanProportion = wPlanProportion;
@@ -44,7 +47,15 @@ public class WeekRportInfo {
         this.tsId = tsId;
         this.wStatus = wStatus;
         this.wType = wType;
-        this.dataList = dataList;
+        this.recordTimes = recordTimes;
+    }
+
+    public String getwId() {
+        return wId;
+    }
+
+    public void setwId(String wId) {
+        this.wId = wId;
     }
 
     public String getwWorkReport() {
@@ -119,18 +130,19 @@ public class WeekRportInfo {
         this.wType = wType;
     }
 
-    public List<RecordTime> getDataList() {
-        return dataList;
+    public List<RecordTime> getRecordTimes() {
+        return recordTimes;
     }
 
-    public void setDataList(List<RecordTime> dataList) {
-        this.dataList = dataList;
+    public void setRecordTimes(List<RecordTime> recordTimes) {
+        this.recordTimes = recordTimes;
     }
 
     @Override
     public String toString() {
         return "WeekRportInfo{" +
-                "wWorkReport='" + wWorkReport + '\'' +
+                "wId='" + wId + '\'' +
+                ", wWorkReport='" + wWorkReport + '\'' +
                 ", wActualProportion=" + wActualProportion +
                 ", wPlanProportion=" + wPlanProportion +
                 ", wRemark='" + wRemark + '\'' +
@@ -139,7 +151,7 @@ public class WeekRportInfo {
                 ", tsId='" + tsId + '\'' +
                 ", wStatus=" + wStatus +
                 ", wType=" + wType +
-                ", dataList=" + dataList +
+                ", recordTimes=" + recordTimes +
                 '}';
     }
 }
