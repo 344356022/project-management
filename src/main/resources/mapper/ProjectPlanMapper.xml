@@ -71,15 +71,15 @@
     <!-- 根据pId和pProjectPhase查询用于项目总体计划清单列表展示 -->
     <select id="selectProjectPlanListByPidAndpProjectPhaseId" resultType="ProjectPlanList">
         SELECT
-          tps.pProjectPhaseId,
+            tps.pProjectPhaseId,
             tps.tName,
             tps.tId,
             tps.tsId,
             tps.tsName,
             tps.aName,
             tps.sortId,
-          tt.a_id AS aId,
-          tt.a_pstart_time AS apsTime,
+            tt.a_id AS aId,
+            tt.a_pstart_time AS apsTime,
             tt.a_pend_time AS apeTime,
             tt.a_astart_time AS aasTime,
             tt.a_aend_time AS aaeTime,
@@ -87,7 +87,7 @@
             tt.a_state AS state,
             tt.a_is_result AS isResult,
             tt.p_id AS pId
-        from (
+          from (
             SELECT DISTINCT
                 tc.p_project_phase_id AS pProjectPhaseId,
                 tc.t_name AS tName,
@@ -102,8 +102,8 @@
             LEFT JOIN (
                 SELECT a.a_id,a.a_name from action_item a
                 LEFT JOIN project_plan p ON a.p_id = p.p_id
-                where a.p_id =#{pId} and a.p_project_phase_id =#{pProjectPhaseId}
-            )tp on ai.a_name = tp.a_name and ai.p_id =#{pId}
+                where a.p_id = #{pId} and a.p_project_phase_id = #{pProjectPhaseId}
+            )tp on ai.a_name = tp.a_name and ai.p_id = #{pId}
             LEFT JOIN (
                 SELECT a.a_name AS aName,a.ts_id,a.p_project_phase_id from action_item a
             )ta on ta.ts_id = ts.ts_id
@@ -112,8 +112,8 @@
         LEFT JOIN (
             SELECT a.* from action_item a
             LEFT JOIN project_plan p ON a.p_id = p.p_id
-            where a.p_id =#{pId} and a.p_project_phase_id =#{pProjectPhaseId}
-        )tt on tps.aName = tt.a_name and tt.p_id =#{pId}
+            where a.p_id = #{pId} and a.p_project_phase_id = #{pProjectPhaseId}
+        )tt on tps.aName = tt.a_name and tt.p_id = #{pId}
         order by tps.sortId ASC
     </select>
 

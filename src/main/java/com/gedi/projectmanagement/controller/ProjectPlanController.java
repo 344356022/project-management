@@ -30,9 +30,8 @@ public class ProjectPlanController {
     private ProjectPlanService projectPlanService;
 
     //列表展示所有
-    @RequestMapping("/listAll")
+    @PostMapping("/listAll")
     public CodeAndMsg selectById() {
-
         return projectPlanService.selectById();
     }
 

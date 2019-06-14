@@ -27,8 +27,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM weekreport w, project_plan p
         WHERE w.p_id = p.p_id
          AND w.user_id = #{userId}
-        AND w.w_start_time &lt;= NOW()
-        AND w.w_end_time &gt;= NOW()
+        AND w.w_id in (
+        SELECT w_id FROM `record_time` where detial_day_date &gt;= '2019-06-10'
+        AND detial_day_date &lt;= '2019-06-14' GROUP BY w_id  ORDER BY detial_day_date
+        )ORDER BY r_finish
 
     </select>
 
@@ -88,20 +90,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <!-- 批量插入日报信息-->
+    <!-- 批量插入日报信息  -->
     <insert id="insertJournalList" parameterType="java.util.List">
     insert into  journal
-    (rb_id, w_id, user_id,deliver, finish, finish_content, finish_process, create_time)
+    (rb_id, w_id, user_id,deliver, finish, finish_process,finish_content,  create_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
          (
              #{item.rbId},
-             #{item.weekId},
+             #{item.w_id},
              #{item.userId},
             #{item.deliver},
-             #{item.wcjd},
-              #{item.text},
-              #{item.wcgs},
+             #{item.r_finish},
+            #{item.r_gongshi},
+              #{item.descText},
              NOW() )
           </foreach>
 

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50018
 File Encoding         : 65001
 
-Date: 2019-06-13 15:47:32
+Date: 2019-06-13 18:34:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -152,27 +152,66 @@ CREATE TABLE `project_user_medium` (
 INSERT INTO `project_user_medium` VALUES ('02144724e1e04858ae66f65fe522cb11', '010919d873d649b6bba89c2b8c33556f', '114e3c85dfdd4d2d9f61358864482f96');
 INSERT INTO `project_user_medium` VALUES ('0d95d7f76c3a468c93d797416d9d9b02', '6515522b010b400da4b872f65a3434b3', 'aa7f82b4137a4729a3574c75532a39c1');
 INSERT INTO `project_user_medium` VALUES ('0fea6a0520e54d918d94e604adff4f0f', '38563d5a812148a6b8a36d574457a3de', '9c5151d1ee074f91b155e2492fcd53a1');
-INSERT INTO `project_user_medium` VALUES ('13f9ff14f26e43c090a6051750b34310', null, 'a4fe9590438543f38182bbc281a9a961');
-INSERT INTO `project_user_medium` VALUES ('212eda7d77b34192951dce6ec2f01767', null, '9dd5b08529414c8f88080802b79769c9');
-INSERT INTO `project_user_medium` VALUES ('2743a6e12db24d448e1ded9b9aa48356', null, 'ac3a13fb7f8747c0a579c7aae5bacf3a');
 INSERT INTO `project_user_medium` VALUES ('3161b93dac4246138ccb68521182fb4a', 'ac68801e62ed4ed1a26d1f4ed807be4a', '8bbad7c1efce4075b2df948535b0c5e6');
 INSERT INTO `project_user_medium` VALUES ('45d8a7666a334a40840cb681c228f53e', '04061d9cbfec49a3a1ac8816e67f14b9', '2a1d884c4fc94dbf992922add5247fcb');
-INSERT INTO `project_user_medium` VALUES ('5108644aa365446986beeed9d420b868', null, '444019bc4c5845c08a85c6db41232fb8');
-INSERT INTO `project_user_medium` VALUES ('5633df0281344b769949b772611d13d6', null, 'd461243d47524f0b9bbdbce12d1c4474');
 INSERT INTO `project_user_medium` VALUES ('5841f4da047f4d62b7874d4bb1d3054e', '38563d5a812148a6b8a36d574457a3de', 'd45c6a5f6422457fbbb444f3a26ec0d1');
 INSERT INTO `project_user_medium` VALUES ('70bc980a11bc400789f9bc94a768711b', 'ac68801e62ed4ed1a26d1f4ed807be4a', '26182818ebb34c6ebd459eee565ff66c');
 INSERT INTO `project_user_medium` VALUES ('7ba809b87e884d15854352f4f1a5230c', '010919d873d649b6bba89c2b8c33556f', 'fb6f6dbb1f964d9982e9340a1cd744e9');
 INSERT INTO `project_user_medium` VALUES ('833e577dc6854138971afd720610455c', '010919d873d649b6bba89c2b8c33556f', '2ae029f6f27b4e4a86c1e118e0cf8021');
-INSERT INTO `project_user_medium` VALUES ('8ecd5f44120e4ae0971a886c6098f3a1', null, '79355b6de24e4d1eb9860a1c43502df7');
 INSERT INTO `project_user_medium` VALUES ('ad55ed70902444f98f224ea754b7913f', '6515522b010b400da4b872f65a3434b3', '5131b979438b4ad7b877d5b67de61f04');
 INSERT INTO `project_user_medium` VALUES ('ca5714c5b8c145f8843a3cf612fdcb64', '04061d9cbfec49a3a1ac8816e67f14b9', '0d99f974e9704399b50e839993092256');
-INSERT INTO `project_user_medium` VALUES ('cbd37109747a4f1dba8c3618fd65e35e', null, '924866009d3e41f9b665e153209507f5');
-INSERT INTO `project_user_medium` VALUES ('da70ff9a48864e56a44adabcfad75e9f', null, 'd6f05985c5c744bf9b40fdb0f7994ddd');
-INSERT INTO `project_user_medium` VALUES ('de05ac03a0644ad2b1192074e81ddb0c', null, '73ddc58bc9984bc994e7ed9a716b7ec4');
 INSERT INTO `project_user_medium` VALUES ('e4ce583e99c24f7fa36a3ec794364530', '38563d5a812148a6b8a36d574457a3de', '02883c237e4f4797a7155d96619ddfad');
-INSERT INTO `project_user_medium` VALUES ('e59d96f598c8439dbc6ff5c3d21dc122', null, '2cf15e17b8184ae792868a17184826ca');
-INSERT INTO `project_user_medium` VALUES ('e88840257a454f0d8c9f01eec60a9f41', null, '21f7b679ae29402984b1ed58f04e4eca');
-INSERT INTO `project_user_medium` VALUES ('f88df01fe3b244bfaf2276d499cb4cc7', null, 'a2f6ecbc00294dd0ba143ed0e7590163');
+
+-- ----------------------------
+-- Table structure for record_time
+-- ----------------------------
+DROP TABLE IF EXISTS `record_time`;
+CREATE TABLE `record_time` (
+  `time_id` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `detial_day_date` varchar(50) collate utf8_unicode_ci default NULL,
+  `w_id` varchar(50) collate utf8_unicode_ci default NULL,
+  `is_select` varchar(20) collate utf8_unicode_ci default '1' COMMENT 'true:已选中，false:未选中',
+  `nums` int(11) default NULL,
+  PRIMARY KEY  (`time_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of record_time
+-- ----------------------------
+INSERT INTO `record_time` VALUES ('037682f7b5294bd5800547c005e43dc7', '06-18', '533b1a9b78f04518bd431833516646d7', 'false', '0');
+INSERT INTO `record_time` VALUES ('044c37aacba047568ce5a3d92636401c', '06-15', '533b1a9b78f04518bd431833516646d7', 'false', '0');
+INSERT INTO `record_time` VALUES ('14844d5133894b7f9b40dd76165447f6', '06-18', '77f861fb7a8c4fb0b615df729ac6a0af', 'false', '0');
+INSERT INTO `record_time` VALUES ('284356c5c94b4979ae0750a449dc7510', '06-19', '5b31beb471a1427ab52bd131fc57be8f', 'false', '0');
+INSERT INTO `record_time` VALUES ('2e23b5dc08694ae7bca4743cc4ff40e2', '06-17', '800e99b74e604e76ad1b2dfb738b64e2', 'true', '1');
+INSERT INTO `record_time` VALUES ('2fc7877ae88b421482caededf2c20a47', '06-18', '12686c419ada43109a97e84d0dec5da9', 'false', '0');
+INSERT INTO `record_time` VALUES ('35a7ab62d2a24c3c9c78a3d3cc580ba5', '06-20', '800e99b74e604e76ad1b2dfb738b64e2', 'false', '0');
+INSERT INTO `record_time` VALUES ('38a6a66c9cb2464fa8ae385c22e133f7', '06-20', '77f861fb7a8c4fb0b615df729ac6a0af', 'false', '0');
+INSERT INTO `record_time` VALUES ('3b6fac95aba941709c5ddad402e441ed', '06-13', '533b1a9b78f04518bd431833516646d7', 'true', '1');
+INSERT INTO `record_time` VALUES ('3c3a2751e68a4562ba101134b6f8f77f', '06-14', '533b1a9b78f04518bd431833516646d7', 'false', '0');
+INSERT INTO `record_time` VALUES ('3dbbb5c8244641a5b44757c3c9311141', '06-15', '12686c419ada43109a97e84d0dec5da9', 'false', '0');
+INSERT INTO `record_time` VALUES ('4a55f94113e142d1b1abef8d3fff2e15', '06-16', '12686c419ada43109a97e84d0dec5da9', 'false', '0');
+INSERT INTO `record_time` VALUES ('55b51785cac448379bc18d28a7ee4f39', '06-20', '5b31beb471a1427ab52bd131fc57be8f', 'false', '0');
+INSERT INTO `record_time` VALUES ('611493983a71403aab6447ea19ac7d56', '06-12', '533b1a9b78f04518bd431833516646d7', 'true', '1');
+INSERT INTO `record_time` VALUES ('61eb29a746cb4265a182f03ed2965d09', '06-18', '71a722c446b94009bbb602ba9f3ff894', 'true', '1');
+INSERT INTO `record_time` VALUES ('65340c52a8b847c483d821cded036e84', '06-17', '533b1a9b78f04518bd431833516646d7', 'true', '1');
+INSERT INTO `record_time` VALUES ('6e53315bbe8a482594b75d68ed70ea01', '06-19', '77f861fb7a8c4fb0b615df729ac6a0af', 'false', '0');
+INSERT INTO `record_time` VALUES ('7d96d92fa778469b9cb2a5ccd826aca8', '06-19', '800e99b74e604e76ad1b2dfb738b64e2', 'false', '0');
+INSERT INTO `record_time` VALUES ('844a229fe72143659fe5fc5e0cdb3a98', '06-18', '800e99b74e604e76ad1b2dfb738b64e2', 'true', '1');
+INSERT INTO `record_time` VALUES ('8d0029bfc9664552b1d1ed6a1530cbd5', '06-17', '77f861fb7a8c4fb0b615df729ac6a0af', 'false', '0');
+INSERT INTO `record_time` VALUES ('95af1fa0aeb740d6b02ce795146f25fb', '06-13', '12686c419ada43109a97e84d0dec5da9', 'true', '1');
+INSERT INTO `record_time` VALUES ('9d5bc7a7b33e48e58a3dbb52754527a9', '06-17', '12686c419ada43109a97e84d0dec5da9', 'true', '1');
+INSERT INTO `record_time` VALUES ('addc771233a14385a623935206600f60', '06-18', '5b31beb471a1427ab52bd131fc57be8f', 'false', '0');
+INSERT INTO `record_time` VALUES ('b56b40b345a146c49a78ecf43a789dd5', '06-21', '5b31beb471a1427ab52bd131fc57be8f', 'true', '1');
+INSERT INTO `record_time` VALUES ('b9c0d79115e243ba91d84ac083fba11d', '06-21', '71a722c446b94009bbb602ba9f3ff894', 'true', '1');
+INSERT INTO `record_time` VALUES ('c1378b4916b54d3b999910c070ffb550', '06-21', '800e99b74e604e76ad1b2dfb738b64e2', 'false', '0');
+INSERT INTO `record_time` VALUES ('c6729d1822844a97992af25e3ca66abc', '06-19', '12686c419ada43109a97e84d0dec5da9', 'false', '0');
+INSERT INTO `record_time` VALUES ('cae1c79b4eef46f0bcc3f17f0df33ffd', '06-16', '533b1a9b78f04518bd431833516646d7', 'false', '0');
+INSERT INTO `record_time` VALUES ('d19a5f0832604eaab39fd0b1544d9313', '06-21', '77f861fb7a8c4fb0b615df729ac6a0af', 'true', '1');
+INSERT INTO `record_time` VALUES ('d936ef0e6e0f4af5b1f5cf545f3d99e8', '06-14', '12686c419ada43109a97e84d0dec5da9', 'false', '0');
+INSERT INTO `record_time` VALUES ('dc901fe622f7496caefb729fd53e4d11', '06-17', '5b31beb471a1427ab52bd131fc57be8f', 'false', '0');
+INSERT INTO `record_time` VALUES ('e2d3ad5d2a9746318f01a5b544754457', '06-17', '71a722c446b94009bbb602ba9f3ff894', 'true', '1');
+INSERT INTO `record_time` VALUES ('f04fd535e20d4193a7c4566f2807d8e7', '06-20', '71a722c446b94009bbb602ba9f3ff894', 'true', '1');
+INSERT INTO `record_time` VALUES ('f6da3ed8e27f4839a2d1f61ab4d774d0', '06-19', '71a722c446b94009bbb602ba9f3ff894', 'false', '0');
 
 -- ----------------------------
 -- Table structure for task_class
@@ -285,19 +324,22 @@ DROP TABLE IF EXISTS `weekreport`;
 CREATE TABLE `weekreport` (
   `w_id` varchar(50) collate utf8_unicode_ci NOT NULL COMMENT '周计划主键ID',
   `p_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '项目计划ID',
-  `w_start_time` date default NULL COMMENT '设定周计划的开始时间',
-  `w_end_time` date default NULL COMMENT '设定周计划的结束时间',
-  `a_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '任务项ID',
+  `ts_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '任务项ID',
   `w_work_report` varchar(255) collate utf8_unicode_ci default NULL COMMENT '工作叙述',
   `user_id` varchar(50) collate utf8_unicode_ci default NULL COMMENT '用户ID',
   `w_actual_proportion` int(11) default NULL COMMENT '实际占比',
   `w_plan_proportion` int(11) default NULL COMMENT '计划占比',
-  `w_status` int(1) unsigned zerofill default '0' COMMENT '0.已完成  1.进行中  2.暂停',
+  `w_status` int(1) unsigned zerofill default '0' COMMENT '0.进行中  1.暂停  2.已完成',
   `w_remark` varchar(255) collate utf8_unicode_ci default NULL COMMENT '备注/协调人员',
+  `r_finish` int(11) default NULL,
+  `w_type` int(10) default NULL,
+  `w_start_time` date default NULL,
+  `w_end_time` date default NULL,
   PRIMARY KEY  (`w_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of weekreport
 -- ----------------------------
-INSERT INTO `weekreport` VALUES ('weekid', '99975cbb4d5145dd96ad45622dfe496a', '2019-06-12', '2019-06-19', null, null, 'userId', null, null, '0', null);
+INSERT INTO `weekreport` VALUES ('100985b3f1cd4b9483c5e99c38c53e58', 'a60f4827847047ef92529de6194b22c9', '212cf1a61dbc4d6496937ae82d0fcf90', '阿斯顿发送到发', '0208286522656643', '30', '30', '2', '去玩儿群翁日期为此', null, '2', null, null);
+INSERT INTO `weekreport` VALUES ('6852732ad2c44247a2c2efe1c2e53b5e', 'a60f4827847047ef92529de6194b22c9', '17275cc689e749aba3d354cd9c20ab13', '得给对方给第三方', '0122562434781888', '60', '60', '2', '所得税的方式', null, '1', null, null);
