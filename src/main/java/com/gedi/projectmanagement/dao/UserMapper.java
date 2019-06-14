@@ -29,4 +29,9 @@ public interface UserMapper {
      */
     String selectNameByUserId(String userId);
 
+    //根据用户ID值获取员工的具体信息
+    User selectUserById(String userId);
+
+    //根据部门以及标签进行查询部门普通员工
+    List<User> selectUserByDepartment(String department);
 }
