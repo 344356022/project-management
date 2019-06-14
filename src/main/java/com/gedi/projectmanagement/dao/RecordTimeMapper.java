@@ -24,4 +24,7 @@ public interface RecordTimeMapper {
     //更改日期的状态；
     void updateSignStatus();
 
+    //根据双周计划的ID值移除所对应的时间
+    void  deleteDayDate(String wId);
+
 }
