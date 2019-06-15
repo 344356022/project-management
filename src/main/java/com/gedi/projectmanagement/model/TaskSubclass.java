@@ -1,7 +1,6 @@
 package com.gedi.projectmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 
 //项目任务子类实体类
 public class TaskSubclass {

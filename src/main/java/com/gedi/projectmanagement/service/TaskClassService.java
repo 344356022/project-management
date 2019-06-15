@@ -21,14 +21,5 @@ public interface TaskClassService {
      */
     public String addTaskClass(List<ActionItem> actionItems);
 
-    /*
-    新增项目中任务子类
-     */
-  //  public void addTaskSubclass(TaskSubclass taskSubclass);
-
-    /*
-    新增项目中任务项列表
-     */
-  //  public void addActionItem(ActionItem actionItem);
 
 }

@@ -29,6 +29,7 @@
             background: #e9ebed;
         }
         .dailyContent{
+            overflow: auto;
             width: 96%;
             margin: 0 auto;
             position: absolute;
@@ -58,11 +59,11 @@
             color: darkolivegreen;
         }
         .xiangxi .el-input{
-            width: 30px !important;
+            width: 0.3rem !important;
         }
         .xiangxi .el-input__inner{
-            height: 20px !important;
-            line-height: 20px !important;
+            height: 0.2rem !important;
+            line-height: 0.2rem !important;
             padding: 0 !important;
             text-align: center;
         }
@@ -159,18 +160,18 @@
                         <!--日报列表标题-->
                         <span class="dailyList-title" v-text="index+1+'、'+items.w_work_report"></span>
                         <el-row class="xiangxi">
-                            <el-col :span="18">
+                            <el-col :span="16" :push="1">
                                 <span>项目名称：</span>
-                                <span v-text="items.w_work_report"></span>
+                                <span v-text="items.p_name"></span>
                             </el-col>
-                            <el-col :span="6">
+                            <el-col :span="7">
                                 <div>
                                     <span>完成进度：</span>
                                     <el-input class="wcjd" v-model="items.r_finish" @blur="rFinish(items,index)"></el-input>%
                                 </div>
                                 <div style="margin-top: 0.03rem;" v-if="items.r_finish!=100?true:false">
                                     <span>完成工时：</span>
-                                    <el-input v-model="items.r_gongshi"></el-input>
+                                    <el-input v-model="items.r_gongshi" @blur="rGongshi(items,index)"></el-input>
                                 </div>
                             </el-col>
                         </el-row>
@@ -248,6 +249,7 @@
                 _this.getDailyList();
             },
             methods:{
+                //失去焦点验证完成进度
                 rFinish:function(objs,index){
                     var _this=this;
                     var nums=Number(index)+1;
@@ -268,191 +270,131 @@
                     };
                 },
 
-                checkboxChange:function(){
+                //失去焦点验证工时
+                rGongshi:function(items,index){
                     var _this=this;
-                },
-                //获取日报列表信息函数
-                getDailyList:function(){
-                    var _this=this;
-                    $.ajax({
-                        url:localhostPaht+"/journal/list",
-                        type:"post",
-                        cache:false,
-                        contentType:"application/json; charset=utf-8",
-                        dataType:"json",
-                        async:false,
-                        data:null,
-                        success:function(res){
-                            if(res.code == 200){
-                                for(var i=0;i<res.data.result.length;i++){
-                                    var items=res.data.result[i];
-                                    items.r_gongshi=0;
-                                    items.descText="";
-                                    //文本域是否禁用
-                                    /*items.disableds=false;*/
-                                    _this.wcjdValue.push(items.r_finish);
-                                };
-                                _this.dailyList=res.data.result;
-                                console.log(_this.dailyList)
-                                //接收人
-                                _this.userList=res.data.userList;
-                            }else{
-                                _this.$message({
-                                    type:"error",
-                                    message:"没有日报信息",
-                                })
-                            }
-                        }
-                    });
-                },
-                //获取接收人数据
-                getPerson:function(){
-                    var _this=this;
+                    var nums=Number(index)+1;
+                    //得到所有工时输入框的数据
+                    var allGongShi=0;
+                    for(var i=0;i<_this.dailyList.length;i++){
+                        var items=_this.dailyList[i];
+                        allGongShi+=Number(items.r_gongshi);
+                    };
 
-                },
-                //点击新增日志接收人
-                add:function () {
-                    var _this=this;
-                    _this.dialogVisible=true;
-                },
-
-                //弹出框确定按钮
-                trueEvent:function () {
-                    var _this=this;
-                    _this.zhanshi=_this.checkList;
-                    _this.dialogVisible=false;
-                },
-
-                //提交按钮
-                submit:function(){
-                    var _this=this;
-                    if(_this.checkList.length<=0){
+                    var re =  /^[1-9]\d*$/;
+                    if (!re.test(Number(_this.dailyList[index].r_gongshi))) {
                         _this.$message({
-                            message:"请选择日志接收入人",type:"error",
+                            message:"列表"+nums+"请正确的输入工时",
+                            type:"error",
                         });
-                    }else{
-                        //循环重至接收人
-                        var newArray=[];
-                        for(var i=0;i<_this.checkList.length;i++){
-                            for(var j=0;j<_this.userList.length;j++){
-                                if(_this.checkList[i]==_this.userList[j].u_name){
-                                    newArray.push(_this.userList[j].user_id);
-                                };
-                            };
-                        };
-                        //转化成字符串
-                        newArray=newArray.join(',');//接收人的id
-
-                        for(var i=0;i<_this.dailyList.length;i++){
-                            var items=_this.dailyList[i];
-                            items.deliver=newArray;
-                        };
-                        $.ajax({
-                            url:localhostPaht+"/journal/save",
-                            type:"post",
-                            cache:false,
-                            contentType:"application/json; charset=utf-8",
-                            dataType:"json",
-                            async:false,
-                            data:JSON.stringify({para: _this.dailyList}),
-                            success:function(res){
-                                if(res.code == 200){
-                                    alert(res.msg);
-                                };
-                            }
+                    }else if(allGongShi>8){
+                        _this.$message({
+                            message:"输入的总工时数不能大于8",
+                            type:"error",
                         });
                     };
                 },
-            },
-            updated:function(){
-                var _this=this;
-            },
-        });
-    </script>
-    <script>
 
-        //插入项目列表v
-        function insert() {
-
-        }
-        //插入日志接收人选择项
-        function checkALL() {
-            $('#name_list').html('');
-            //获取被选中显示到页面
-            var boxes=document.getElementsByTagName('input');
-            for(var i=0;i<boxes.length;i++){
-                if(boxes[i].checked==true){
-                   var htmlList =$('<span>'+boxes[i].value+'</span>');
-                }
-                $('#name_list').append(htmlList)
-            }
-        }
-        function show() {
-            $('.pop').show();
-        }
-        function hide() {
-            $('.pop').hide();
-        }
-//提交数据
-        function save() {
-            //意思是选择被选中的checkbox的id
-            var temp=0;
-            var deliver;
-            $.each($('input:checkbox:checked'),function(){//遍历选择的抄送人获取抄送人id
-                if( temp > 0 &&(temp+1) == $('input[type=checkbox]:checked').length){
-                    deliver=deliver+$(this).attr("id");
-                }else{
-                    if(temp == 0){
-                        if((temp+1) == $('input[type=checkbox]:checked').length){
-                            deliver=$(this).attr("id");
-                        }else{
-                            deliver=$(this).attr("id")+",";
-                        }
-                    }else{
-                        deliver=deliver +$(this).attr("id")+",";
-                    }
-
-                }
-                temp+=1;
-            });
-           var arr=$(".daily_left").length;
-           var item = [];
-           var i = 1;
-            $(".daily_left").each(function(){
-                var wcjd=$(this).children("span").children("input").eq(0).val();
-                var wcgs=$(this).children("span").children("input").eq(1).val();
-                var  weekId= $(this).attr("id");
-                var text=$(this).children("div").children("textarea").val();
-                var param = {
-                    wcjd:wcjd,
-                    wcgs:wcgs,
-                    weekId:weekId,
-                    deliver:deliver,
-                    text:text
-                };
-                i++;
-                item.push(param);
-            });
+                checkboxChange:function(){
+            var _this=this;
+        },
+        //获取日报列表信息函数
+        getDailyList:function(){
+            var _this=this;
             $.ajax({
-                url:localhostPaht+"/journal/save",
+                url:localhostPaht+"/journal/list",
                 type:"post",
                 cache:false,
                 contentType:"application/json; charset=utf-8",
                 dataType:"json",
                 async:false,
-                data:JSON.stringify({para: item}),
+                data:null,
                 success:function(res){
                     if(res.code == 200){
-                        alert(res.msg);
-
+                        for(var i=0;i<res.data.result.length;i++){
+                            var items=res.data.result[i];
+                            items.r_gongshi=0;
+                            items.descText="";
+                            //文本域是否禁用
+                            /*items.disableds=false;*/
+                            _this.wcjdValue.push(items.r_finish);
+                        };
+                        _this.dailyList=res.data.result;
+                        console.log(_this.dailyList)
+                        //接收人
+                        _this.userList=res.data.userList;
+                    }else{
+                        _this.$message({
+                            type:"error",
+                            message:"没有日报信息",
+                        })
                     }
                 }
             });
+        },
+        //获取接收人数据
+        getPerson:function(){
+            var _this=this;
 
-        }
+        },
+        //点击新增日志接收人
+        add:function () {
+            var _this=this;
+            _this.dialogVisible=true;
+        },
 
+        //弹出框确定按钮
+        trueEvent:function () {
+            var _this=this;
+            _this.zhanshi=_this.checkList;
+            _this.dialogVisible=false;
+        },
 
+        //提交按钮
+        submit:function(){
+            var _this=this;
+            if(_this.checkList.length<=0){
+                _this.$message({
+                    message:"请选择日志接收入人",type:"error",
+                });
+            }else{
+                //循环重至接收人
+                var newArray=[];
+                for(var i=0;i<_this.checkList.length;i++){
+                    for(var j=0;j<_this.userList.length;j++){
+                        if(_this.checkList[i]==_this.userList[j].u_name){
+                            newArray.push(_this.userList[j].user_id);
+                        };
+                    };
+                };
+                //转化成字符串
+                newArray=newArray.join(',');//接收人的id
 
+                for(var i=0;i<_this.dailyList.length;i++){
+                    var items=_this.dailyList[i];
+                    items.deliver=newArray;
+                };
+                $.ajax({
+                    url:localhostPaht+"/journal/save",
+                    type:"post",
+                    cache:false,
+                    contentType:"application/json; charset=utf-8",
+                    dataType:"json",
+                    async:false,
+                    data:JSON.stringify({para: _this.dailyList}),
+                    success:function(res){
+                        if(res.code == 200){
+                            alert(res.msg);
+                        };
+                    }
+                });
+            };
+        },
+        },
+        updated:function(){
+            var _this=this;
+        },
+    });
     </script>
 </body>
 </html>

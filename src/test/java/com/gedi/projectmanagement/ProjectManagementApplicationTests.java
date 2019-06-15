@@ -26,11 +26,11 @@ public class ProjectManagementApplicationTests {
         System.out.println(s);
     }
 
-    @Test
+   /* @Test
     public void test1(){
         weekReportService.addWeekReport(new Weekreport("78945612300aa","e6b0fda2b9a34d34aaa32e797adb2008",new Date(),new Date(),"21f7b679ae29402984b1ed58f04e4eca","f9dd3e12f01344b5be057f4a2a8542a2","f9dd3e12f01344b5be057f4a2a8542a2",100,20,20,"王宁",50));
 
 
-    }
+    }*/
 
 }

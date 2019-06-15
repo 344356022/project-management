@@ -40,13 +40,12 @@ public class TaskClassServiceImpl implements TaskClassService {
     private ProjectPlanMapper projectPlanMapper;
 
     /**
-     * @Description : 新增项目任务类
+     * @Description : 新增项目任务列表
      * @param : taskClass  taskSubclass  actionItem
      */
     @Override
     public String addTaskClass(List<ActionItem> actionItems) {
         List<ProjectUserMedium>  projectUserMediumList = new ArrayList<>();
-       // List<ActionItem> actionItems = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         ProjectPlan projectPlan = new ProjectPlan();
 
@@ -61,11 +60,6 @@ public class TaskClassServiceImpl implements TaskClassService {
 
         //插入中间表数据
         projectUserMediumMapper.addProjectUserMedium(projectUserMediumList);
-        //添加任务类
-       // taskClassMapper.addTaskClass(taskClass);
-
-        //添加任务子类
-       // taskSubclassMapper.addTaskSubclass(taskSubclass);
 
         //插入任务项列表数据
         actionItemMapper.addActionItem(actionItems);
@@ -74,49 +68,12 @@ public class TaskClassServiceImpl implements TaskClassService {
         if(actionItems.size() > 0 && actionItems != null){
             projectPlan.setpProjectPhaseId(actionItems.get(0).getpProjectPhaseId());
             projectPlan.setpId(actionItems.get(0).getpId());
-
             this.projectPlanMapper.updateBypId(projectPlan);
         }
-
-
         return "success";
     }
 
 
-    /**
-     * @Description : 新增项目任务类
-     * @param list
-     */
-    /*@Override
-    public int addActionItem(List<ActionItem> list) {
-        return actionItemMapper.addActionItem(list);
-        taskSubclassMapper.addTaskSubclass(taskSubclass);
-        actionItemMapper.addActionItem(actionItem);
-    }*/
 
-    /**
-     * @Description : 新增项目任务子类
-     * @param taskSubclass
-     */
-    /*@Override
-    public void addTaskSubclass(TaskSubclass taskSubclass) {
-        try {
-            taskSubclassMapper.addTaskSubclass(taskSubclass);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    /**
-     * @Description : 新增项目任务项列表
-     * @param actionItem
-     */
-    /*public void addActionItem(ActionItem actionItem){
-        try {
-            actionItemMapper.addActionItem(actionItem);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
 }

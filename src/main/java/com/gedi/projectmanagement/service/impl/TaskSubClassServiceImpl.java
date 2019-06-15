@@ -24,18 +24,13 @@ public class TaskSubClassServiceImpl implements TaskSubClassService {
     @Autowired
     private TaskSubclassMapper taskSubclassMapper;
 
-
     @Override
     public CodeAndMsg queryTaskSubIdAndName() {
 
         if(taskSubclassMapper.queryTaskSubIdAndName().size()!=0&&taskSubclassMapper.queryTaskSubIdAndName()!=null){
-
                return CodeAndMsgUtil.setOK("msg",taskSubclassMapper.queryTaskSubIdAndName());
-
         }else {
-
             return CodeAndMsgUtil.setERROR("msg",null);
-
         }
     }
 }
