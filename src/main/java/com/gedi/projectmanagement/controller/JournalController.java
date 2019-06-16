@@ -55,7 +55,15 @@ public class JournalController
 		List<HashMap<String,Object>> list = null;
 		if(userId != null && !"".equals(userId)){//判断是否传入用户id 有的话把userId放到map中
 			map.put("userId",userId);
-			System.err.println("TIME:"+getWeekDate());
+			//根据当前时间获取本周的周一到周五的时间
+			StringBuffer sb = new StringBuffer();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
+			for (Date date : getWeekDay()) {
+				sb.append("'"+dateFormat.format(date)+"',");
+			}
+			String mToFday = sb.toString().substring(0,sb.toString().length() - 1);
+			System.err.println("mToFday:"+mToFday);
+			map.put("weekDay",mToFday);
 			list = journalService.selectJournalResultList(map);//返回日报列表数据
 			System.err.println("list:"+list);
 			if(list.size() > 0){//大于0表示有数据
@@ -162,32 +170,19 @@ public class JournalController
 	 * @param
 	 * @return
 	 */
-	public static Map<String,String> getWeekDate() {
-		Map<String,String> map = new HashMap();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-		Calendar cal = Calendar.getInstance();
-		cal.setFirstDayOfWeek(Calendar.MONDAY);// 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
-		int dayWeek = cal.get(Calendar.DAY_OF_WEEK);// 获得当前日期是一个星期的第几天
-		if(dayWeek==1){
-			dayWeek = 6;
+	public static Date[] getWeekDay() {
+		Calendar calendar = Calendar.getInstance();
+		while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+			calendar.add(Calendar.DAY_OF_WEEK, -1);
 		}
-		System.out.println("要计算日期为:" + sdf.format(cal.getTime())); // 输出要计算日期
+		Date[] dates = new Date[5];
+		for (int i = 0; i < 5; i++) {
+			dates[i] = calendar.getTime();
+			calendar.add(Calendar.DATE, 1);
+		}
+		return dates;
 
-		cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - dayWeek);// 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
-		Date mondayDate = cal.getTime();
-		String weekBegin = sdf.format(mondayDate);
-		System.out.println("所在周星期一的日期：" + weekBegin);
-
-
-		cal.add(Calendar.DATE, 4 +cal.getFirstDayOfWeek());
-		Date sundayDate = cal.getTime();
-		String weekEnd = sdf.format(sundayDate);
-		System.out.println("所在周星期日的日期：" + weekEnd);
-
-		map.put("mondayDate", weekBegin);
-		map.put("sundayDate", weekEnd);
-		return map;
 	}
+
 
 }
