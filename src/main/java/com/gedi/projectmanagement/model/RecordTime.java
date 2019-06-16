@@ -1,6 +1,6 @@
 package com.gedi.projectmanagement.model;
 
-import java.util.Date;
+
 
 /**
  * @Author: renpu
@@ -11,17 +11,50 @@ public class RecordTime {
 
     private String timeId;
 
-    private String detialDayDate;
+    private String name;
 
     private String wId;
+
+    private String isSelect;
+
+    private Integer nums;
+
+    private Integer sorts;
 
     public RecordTime() {
     }
 
-    public RecordTime(String timeId, String detialDayDate, String wId) {
+    public RecordTime(String timeId, String name, String wId, String isSelect, Integer nums, Integer sorts) {
         this.timeId = timeId;
-        this.detialDayDate = detialDayDate;
+        this.name = name;
         this.wId = wId;
+        this.isSelect = isSelect;
+        this.nums = nums;
+        this.sorts = sorts;
+    }
+
+    public Integer getSorts() {
+        return sorts;
+    }
+
+    public void setSorts(Integer sorts) {
+        this.sorts = sorts;
+    }
+
+    public String getIsSelect() {
+        return isSelect;
+    }
+
+    public void setIsSelect(String isSelect) {
+        this.isSelect = isSelect;
+    }
+
+    public Integer getNums() {
+        return nums;
+    }
+
+    public void setNums(Integer nums) {
+        this.nums = nums;
     }
 
     public String getTimeId() {
@@ -32,12 +65,12 @@ public class RecordTime {
         this.timeId = timeId;
     }
 
-    public String getDetialDayDate() {
-        return detialDayDate;
+    public String getName() {
+        return name;
     }
 
-    public void setDetialDayDate(String detialDayDate) {
-        this.detialDayDate = detialDayDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getwId() {
@@ -52,8 +85,11 @@ public class RecordTime {
     public String toString() {
         return "RecordTime{" +
                 "timeId='" + timeId + '\'' +
-                ", detialDayDate='" + detialDayDate + '\'' +
+                ", name='" + name + '\'' +
                 ", wId='" + wId + '\'' +
+                ", isSelect='" + isSelect + '\'' +
+                ", nums=" + nums +
+                ", sorts=" + sorts +
                 '}';
     }
 }

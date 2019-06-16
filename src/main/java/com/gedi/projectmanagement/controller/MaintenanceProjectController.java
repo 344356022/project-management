@@ -52,7 +52,7 @@ public class MaintenanceProjectController {
     }
 
     /**
-     * @param
+     * @param projectPlan
      * @return
      * @Description : 添加新的项目总计划
      */

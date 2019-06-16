@@ -16,20 +16,19 @@
     creater
     </sql>
 
-
     <!-- 根据ID查询用于项目总体计划列表展示 -->
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select
-    p_id,
-    p_name,
-    p_start_time,
-    p_end_time,
-    p_project_phase_id,
-    p_progress,
-    create_time,
-    creater
-    from project_plan
-    ORDER BY p_start_time ASC
+        select
+            p_id,
+            p_name,
+            p_start_time,
+            p_end_time,
+            p_project_phase_id,
+            p_progress,
+            create_time,
+            creater
+        from project_plan
+        ORDER BY p_start_time ASC
   </select>
 
     <!-- 新增项目总计划 -->
@@ -53,14 +52,14 @@
     <!-- 根据pName模糊查询项目总体计划列表展示 -->
     <select id="selectBypName" resultMap="BaseResultMap">
         select
-        p_id,
-        p_name,
-        p_start_time,
-        p_end_time,
-        p_project_phase_id,
-        p_progress,
-        create_time,
-        creater
+            p_id,
+            p_name,
+            p_start_time,
+            p_end_time,
+            p_project_phase_id,
+            p_progress,
+            create_time,
+            creater
         from project_plan
         where 1=1
         <if test="pName != null or pName != ''">

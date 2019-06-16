@@ -1,5 +1,6 @@
 package com.gedi.projectmanagement.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -10,7 +11,6 @@ import java.util.*;
  * @Description:
  */
 public class DetialDayDate {
-
 
     public static List<String> findDates(Date dBegin, Date dEnd){
         List<String> lDate = new ArrayList<String>();
@@ -89,7 +89,7 @@ public class DetialDayDate {
         if(dayWeek == 1){
             cal2.add(Calendar.DAY_OF_MONTH, 5);
         } else {
-            cal2.add(Calendar.DAY_OF_MONTH, 1-dayWeek+14);
+            cal2.add(Calendar.DAY_OF_MONTH, 1-dayWeek+15);
         }
 
         // 下周 周五日期
@@ -102,6 +102,22 @@ public class DetialDayDate {
     }
 
 
+    //获取连续十二天每天所对应的具体日期；
+    public static List<String> getBeforeOrAfterDate() {
+//        Date date=new Date();
+        Date myDate1=null;
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+             myDate1 = dateFormat1.parse("2009-06-04");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();//获取日历
+        calendar.setTime(myDate1);//当date的值是当前时间，则可以不用写这段代码。
+        calendar.add(Calendar.DATE, 12);
+        Date d = calendar.getTime();//把日历转换为Date
+       return findDates(myDate1,d);
+    }
 
     //获取连续十二天每天所对应的具体日期；
     public static List<String> getTweleveDayDate(){
@@ -121,4 +137,20 @@ public class DetialDayDate {
         return findDates(date1, da);
     }
 
+
+    public static List<Date> getTweleveDayDates(){
+
+        List<Date> tweleveDayDates=new ArrayList<>();
+        List<String> tweleveDayDate = getTweleveDayDate();
+        for (String s : tweleveDayDate) {
+            SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd");
+            try {
+                Date parse = sdf.parse(s);
+                tweleveDayDates.add(parse);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return tweleveDayDates;
+    }
 }

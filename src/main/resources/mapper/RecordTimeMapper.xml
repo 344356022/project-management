@@ -3,8 +3,11 @@
 <mapper namespace="com.gedi.projectmanagement.dao.RecordTimeMapper" >
   <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.RecordTime" >
     <id column="time_id" property="timeId" jdbcType="VARCHAR" />
-    <result column="detial_day_date" property="detialDayDate" jdbcType="VARCHAR" />
+    <result column="detial_day_date" property="name" jdbcType="VARCHAR" />
     <result column="w_id" property="wId" jdbcType="VARCHAR" />
+    <result column="is_select" property="isSelect"/>
+    <result column="nums" property="nums" javaType="INTEGER"/>
+    <result column="sorts" property="sorts" javaType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
     time_id,detial_day_date,w_id
@@ -13,11 +16,15 @@
 
   <!--批量保存每天对应的具体日期-->
   <insert id="saveMoreDetialDayDate">
-    insert into record_time (time_id,detial_day_date,w_id) VALUES
+    insert into record_time (time_id,detial_day_date,w_id,is_select,nums,sorts) VALUES
     <foreach collection="list" item="item" separator=",">
-      (#{item.timeId},#{item.detialDayDate},#{item.wId})
+      (#{item.timeId},#{item.name},#{item.wId},#{item.isSelect},#{item.nums},#{item.sorts})
     </foreach>
   </insert>
+
+  <delete id="deleteDayDate">
+    DELETE from record_time where w_id=#{wId}
+  </delete>
 
   <delete id="deleteAllDate">
     DELETE  from record_time
