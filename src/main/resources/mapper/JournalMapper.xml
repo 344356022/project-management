@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="selectJournalVo">
         select rb_id, w_id, p_id, a_id, user_id, finish, finish_content, finish_process, deliver, create_time, creater from journal
     </sql>
-    <!-- 日报列表-->
+    <!-- 日报列表
 	<select id="selectJournalResultList"  parameterType="Map" resultType="Map">
         SELECT w.w_id,p.p_id,p.p_name,w.w_work_report,w.r_finish
         FROM weekreport w, project_plan p
@@ -32,8 +32,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND detial_day_date &lt;= '2019-06-14' GROUP BY w_id  ORDER BY detial_day_date
         )ORDER BY r_finish
 
-    </select>
+    </select>-->
+    <!-- 日报列表-->
+    <select id="selectJournalResultList"  parameterType="Map" resultType="Map">
+        SELECT w.w_id,p.p_id,p.p_name,w.w_work_report,w.r_finish
+        FROM weekreport w, project_plan p
+        WHERE w.p_id = p.p_id
+         AND w.user_id = #{userId}
+        AND w.w_id in (
+        SELECT w_id FROM `record_time` where detial_day_date in(${weekDay}) GROUP BY w_id  ORDER BY detial_day_date
+        )ORDER BY r_finish
 
+    </select>
     <!-- 日志抄送人列表-->
     <select id="selectUserList"  resultType="Map">
       SELECT user_id,u_phone,u_name from user where u_status=0
@@ -96,15 +106,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     (rb_id, w_id, user_id,deliver, finish, finish_process,finish_content,  create_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-         (
-             #{item.rbId},
-             #{item.w_id},
-             #{item.userId},
+        <if test="item.r_finish &lt;= 100 and item.descText != null and item.descText != ''">
+            (
+            #{item.rbId},
+            #{item.w_id},
+            #{item.userId},
             #{item.deliver},
-             #{item.r_finish},
+            #{item.r_finish},
             #{item.r_gongshi},
-              #{item.descText},
-             NOW() )
+            #{item.descText},
+            NOW() )
+        </if>
+
           </foreach>
 
 
