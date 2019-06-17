@@ -199,5 +199,24 @@ public class WeekReportServiceImpl implements WeekReportService {
         }
     }
 
+    @Override
+    public CodeAndMsg deleteWeekReportById(String wId) {
+
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        if(weekreportMapper.selectByWeekReportId(wId)!=null){
+            recordTimeMapper.deleteDayDate(wId);
+            weekreportMapper.deleteWeekReportById(wId);
+            codeAndMsg.setCode(200);
+            codeAndMsg.setMsg("修改成功");
+            codeAndMsg.setResult(true);
+            return codeAndMsg;
+        }else{
+            codeAndMsg.setCode(400);
+            codeAndMsg.setMsg("参数为空");
+            codeAndMsg.setResult(false);
+            return codeAndMsg;
+        }
+    }
+
 
 }
