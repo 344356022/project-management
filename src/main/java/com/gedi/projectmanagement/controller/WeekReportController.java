@@ -2,7 +2,8 @@ package com.gedi.projectmanagement.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.gedi.projectmanagement.model.*;
+import com.gedi.projectmanagement.config.AuthHelper;
+import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
 import com.gedi.projectmanagement.service.UserService;
@@ -14,6 +15,12 @@ import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+
 import java.util.List;
 
 /**
@@ -25,6 +32,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/weekReport")
 public class WeekReportController {
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Autowired
     private WeekReportService weekReportService;
@@ -43,13 +53,13 @@ public class WeekReportController {
     //查询双周计划表展示具体的内容以及完成的占比；
     @GetMapping("selectWeekReportDetial")
     public CodeAndMsg selectWeekReportDetial(String authCode) {
-        System.out.println(authCode);
-
         CodeAndMsg codeAndMsg=new CodeAndMsg();
+
+        /*System.out.println(authCode);
         String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
-        User user = (User)codeAndMsg1.getData();
-        if(user!=null){
+        User user = (User)codeAndMsg1.getData();*/
+        if(weekReportService.selectWeekReportDetial()!=null){
             return weekReportService.selectWeekReportDetial();
         }else{
             codeAndMsg.setResult(false);
@@ -167,6 +177,24 @@ public class WeekReportController {
     @GetMapping("selectUserByDepartment")
     public CodeAndMsg selectUserByDepartment() {
         return userService.selectUserBySign();
+    }
+
+
+    @GetMapping("queryEmterpriseMesg")
+    public String queryEmterpriseMesg(){
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        String config = AuthHelper.getConfig(request);
+        codeAndMsg.setMsg("获取成功");
+        codeAndMsg.setCode(200);
+        codeAndMsg.setData(config);
+        codeAndMsg.setResult(true);
+        return config;
+    }
+
+    //根据WeekReport的ID值进行删除；
+    @DeleteMapping("/deleteWeekReportById")
+    public CodeAndMsg deleteWeekReportById(String wId){
+        return weekReportService.deleteWeekReportById(wId);
     }
 
 
