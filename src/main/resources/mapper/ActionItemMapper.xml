@@ -76,5 +76,8 @@
         </foreach>
     </update>
 
-
+    <!-- 根据pId删除项目总计划清单 -->
+    <delete id="deleteActionItemBypId" parameterType="String">
+        delete from action_item where p_id = #{pId}
+    </delete>
 </mapper>

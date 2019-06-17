@@ -52,14 +52,14 @@
     <!-- 根据pName模糊查询项目总体计划列表展示 -->
     <select id="selectBypName" resultMap="BaseResultMap">
         select
-            p_id,
-            p_name,
-            p_start_time,
-            p_end_time,
-            p_project_phase_id,
-            p_progress,
-            create_time,
-            creater
+        p_id,
+        p_name,
+        p_start_time,
+        p_end_time,
+        p_project_phase_id,
+        p_progress,
+        create_time,
+        creater
         from project_plan
         where 1=1
         <if test="pName != null or pName != ''">
@@ -86,7 +86,9 @@
             tt.a_percentage AS percentage,
             tt.a_state AS state,
             tt.a_is_result AS isResult,
-            tt.p_id AS pId
+            tt.p_id AS pId,
+            pum.user_id AS userId,
+	        u.u_name AS username
           from (
             SELECT DISTINCT
                 tc.p_project_phase_id AS pProjectPhaseId,
@@ -114,6 +116,8 @@
             LEFT JOIN project_plan p ON a.p_id = p.p_id
             where a.p_id = #{pId} and a.p_project_phase_id = #{pProjectPhaseId}
         )tt on tps.aName = tt.a_name and tt.p_id = #{pId}
+        LEFT JOIN project_user_medium pum ON tt.a_id = pum.a_id
+        LEFT JOIN `user` u ON pum.user_id = u.user_id
         order by tps.sortId ASC
     </select>
 
@@ -127,4 +131,9 @@
         set p_project_phase_id = #{projectPlan.pProjectPhaseId}
         where p_id = #{projectPlan.pId}
     </update>
+
+    <!-- 根据pId删除项目总计划 -->
+    <delete id="deleteProjectBypId" parameterType="String">
+        delete from project_plan where p_id = #{pId}
+    </delete>
 </mapper>

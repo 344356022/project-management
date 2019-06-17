@@ -2,7 +2,6 @@ package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
-import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -48,8 +47,17 @@ public interface ProjectPlanMapper {
 
     /**
      * 根据项目ID 更新项目进度
+     *
      * @param projectPlan
      */
     void updateBypId(@Param("projectPlan") ProjectPlan projectPlan);
+
+    /**
+     * 根据pId删除项目总计划
+     *
+     * @param pId
+     * @return
+     */
+    public int deleteProjectBypId(String pId);
 
 }

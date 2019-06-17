@@ -1,5 +1,6 @@
 package com.gedi.projectmanagement.service.impl;
 
+import com.gedi.projectmanagement.dao.ActionItemMapper;
 import com.gedi.projectmanagement.dao.ProjectPlanMapper;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
@@ -23,6 +24,9 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
 
     @Resource
     private ProjectPlanMapper projectPlanMapper;
+
+    @Resource
+    private ActionItemMapper actionItemMapper;
 
     //查询所有用于列表展示
     @Override
@@ -77,6 +81,21 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
             return CodeAndMsgUtil.setERROR("msg", null);
         }
 
+    }
+
+    /**
+     * 根据pId删除项目总计划
+     *
+     * @param pId
+     * @return
+     */
+    @Override
+    public String deleteProjectBypId(String pId) {
+        int i = projectPlanMapper.deleteProjectBypId(pId);
+        if (i > 0) {
+            int j = actionItemMapper.deleteActionItemBypId(pId);
+        }
+        return "success";
     }
 
 }
