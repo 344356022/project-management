@@ -307,5 +307,10 @@
     </foreach>
 
   </update>
+  
+  
+  <delete id="deleteWeekReportById">
+    DELETE from weekreport where w_id=#{wId}
+  </delete>
 
 </mapper>
