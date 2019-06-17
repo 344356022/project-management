@@ -31,7 +31,7 @@ public class Timer {
     @Autowired
     private UserService userService;
 
-    @Scheduled(cron = "0 30 8 * * ?")
+    @Scheduled(cron = "0 00 15 * * ?")
     public  void queryDepartmentUsers() throws ApiException {
 
         //每次批量增添的数据都需要进行对库表之前存在的数据进行清空
