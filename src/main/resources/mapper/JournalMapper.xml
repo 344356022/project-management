@@ -106,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     (rb_id, w_id, user_id,deliver, finish, finish_process,finish_content,  create_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-        <if test="item.r_finish &lt;= 100 and item.descText != null and item.descText != ''">
+        <if test="item.r_finish &lt;= 100  and item.r_finish &gt; 0  and item.r_gongshi &gt; 0 and item.descText != null and item.descText != ''">
             (
             #{item.rbId},
             #{item.w_id},
