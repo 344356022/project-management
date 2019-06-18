@@ -1,16 +1,27 @@
 package com.gedi.projectmanagement;
 
 
+import com.gedi.projectmanagement.dao.UserMapper;
+import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.model.Weekreport;
+import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
+import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.TestTime;
 import com.gedi.projectmanagement.util.UUIDUtil;
+import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
@@ -20,6 +31,9 @@ public class ProjectManagementApplicationTests {
     @Autowired
     private WeekReportService weekReportService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Test
     public void contextLoads() {
         String s = UUIDUtil.getUUID2();
@@ -28,7 +42,94 @@ public class ProjectManagementApplicationTests {
 
   /*  @Test
     public void test1(){
-        weekReportService.addWeekReport(new Weekreport("78945612300aa","e6b0fda2b9a34d34aaa32e797adb2008",new Date(),new Date(),"21f7b679ae29402984b1ed58f04e4eca","f9dd3e12f01344b5be057f4a2a8542a2","f9dd3e12f01344b5be057f4a2a8542a2",100,20,20,"王宁",50));
+
+        Date date1=new Date();
+        String date= new SimpleDateFormat("yyyy-MM-dd").format(date1);
+        System.out.println(date);
+
+        Date da=null;
+        //获取当前日期所在的周的下周周五
+        Map<String, String> dateMap = null;
+        try {
+            SimpleDateFormat  sdf=new SimpleDateFormat("yyyy-MM-dd");
+            dateMap = TestTime.getNextWeek(date);
+            String s = dateMap.get("endDateNext");
+             da= sdf.parse(s);
+            System.out.println(da+"-----------");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<String> dates = DetialDayDate.findDates(date1, da);
+
+        for (String s : dates) {
+
+            System.out.println(s);
+
+        }
+    }
+
+    @Test
+    public void test66(){
+
+        List<Date> tweleveDayDates=new ArrayList<>();
+        List<String> tweleveDayDate = DetialDayDate.getTweleveDayDate();
+
+        for (String s : tweleveDayDate) {
+            SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd");
+            try {
+                Date parse = sdf.parse(s);
+                tweleveDayDates.add(parse);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(tweleveDayDates);
+    }
+
+
+    @Test
+    public void test668899(){
+
+        List<User> users = userMapper.selectUserBySign();
+
+        for (User user : users) {
+
+            System.out.println(
+                    user
+            );
+
+        }
+
+
+    }
+
+    @Test
+    public void test666777(){
+
+        List<User> users = userMapper.selectUserByDepartment("117443437");
+
+        for (User user : users) {
+
+            System.out.println(user);
+
+        }
+
+
+    }
+
+
+    @Test
+    public void test56688(){
+
+        List<String> beforeOrAfterDate = DetialDayDate.getBeforeOrAfterDate();
+        for (String s : beforeOrAfterDate) {
+            System.out.println(s);
+
+        }
+
+    }
+
 
 
     }*/

@@ -7,11 +7,15 @@ import com.dingtalk.api.request.OapiUserGetuserinfoRequest;
 import com.dingtalk.api.response.OapiUserGetResponse;
 import com.dingtalk.api.response.OapiUserGetuserinfoResponse;
 import com.gedi.projectmanagement.config.URLConstant;
+import com.gedi.projectmanagement.model.User;
+import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.util.AccessTokenUtil;
 import com.gedi.projectmanagement.util.ServiceResult;
+import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.taobao.api.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -22,6 +26,11 @@ import java.util.Map;
  */
 @RestController
 public class IndexController {
+
+
+    @Autowired
+    private UserService userService;
+
     private static final Logger bizLogger = LoggerFactory.getLogger(IndexController.class);
 
     /**
@@ -43,6 +52,7 @@ public class IndexController {
     public ServiceResult login(@RequestParam(value = "authCode") String requestAuthCode) {
 
         System.out.println(requestAuthCode);
+
         //获取accessToken,注意正是代码要有异常流处理
         String accessToken = AccessTokenUtil.getToken();
 
@@ -60,8 +70,10 @@ public class IndexController {
         //设定请求的方式
         request.setHttpMethod("GET");
 
-        //
+
         OapiUserGetuserinfoResponse response;
+
+
 
 
         try {
@@ -74,14 +86,11 @@ public class IndexController {
         // 获得到userId之后应用应该处理应用自身的登录会话管理（session）,避免后续的业务交互（前端到应用服务端）每次都要重新获取用户身份，提升用户体验
         String userId = response.getUserid();
 
-        //System.out.println(userId);
+       /* CodeAndMsg codeAndMsg = userService.selectUserById(userId);
+        User user = (User)codeAndMsg.getData();
+        final String department = user.getuDepartment();*/
 
-        /*CmfzAdmin cmfzAdmin = cmfzAdminService.selectOne();*/
 
-        /*String userName=cmfzAdmin.getUserName();*/
-
-        /* int userId=cmfzAdmin.getId();*/
-        /*System.out.println(userId);*/
 
         String userName = getUserName(accessToken, userId);
         System.out.println("用户名称" + userName);
@@ -107,6 +116,8 @@ public class IndexController {
             request.setUserid(userId);
             request.setHttpMethod("GET");
             OapiUserGetResponse response = client.execute(request, accessToken);
+
+
             return response.getName();
         } catch (ApiException e) {
             e.printStackTrace();

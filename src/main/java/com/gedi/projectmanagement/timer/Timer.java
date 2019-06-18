@@ -31,6 +31,7 @@ public class Timer {
     @Autowired
     private UserService userService;
 
+    @Scheduled(cron = "0 53 15 * * ?")
     @Scheduled(cron = "0 00 15 * * ?")
     public  void queryDepartmentUsers() throws ApiException {
 
