@@ -70,7 +70,7 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setTsId(weekreport.getTsId());
                 weekreport1.setwStatus(weekreport.getwStatus());
                 weekreport1.setwActualProportion(weekreport.getwActualProportion());
-                weekreport1.setwPlanProportion(weekreport.getwActualProportion());
+                weekreport1.setwPlanProportion(weekreport.getwPlanProportion());
                 weekreport1.setwRemark(weekreport.getwRemark());
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());

@@ -47,7 +47,7 @@ public class JournalController
 	@ResponseBody
 	public HashMap list()
 	{
-		String userId = "userId";//暂时写死后续会从session获取用户信息
+		String userId = "";//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
