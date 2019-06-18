@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>-->
     <!-- 日报列表-->
     <select id="selectJournalResultList"  parameterType="Map" resultType="Map">
-        SELECT w.w_id,p.p_id,p.p_name,w.w_work_report,w.r_finish
+        SELECT w.w_id,p.p_id,w.ts_id,p.p_name,w.w_work_report,w.r_finish
         FROM weekreport w, project_plan p
         WHERE w.p_id = p.p_id
          AND w.user_id = #{userId}
@@ -107,15 +107,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 批量插入日报信息  -->
     <insert id="insertJournalList" parameterType="java.util.List">
     insert into  journal
-    (rb_id, w_id, user_id,ts_id,deliver, finish, finish_process,finish_content,  create_time)
+    (rb_id, w_id,p_id, user_id,ts_id,deliver, finish, finish_process,finish_content,  create_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
         <if test="item.r_finish &lt;= 100  and item.r_finish &gt; 0  and item.r_gongshi &gt; 0 and item.descText != null and item.descText != ''">
             (
             #{item.rbId},
             #{item.w_id},
+            #{item.p_id},
             #{item.userId},
-            #{item.tsId},
+            #{item.ts_id},
             #{item.deliver},
             #{item.r_finish},
             #{item.r_gongshi},
