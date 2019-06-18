@@ -372,7 +372,7 @@
         var nextWeek=[];//下周数据
         (function () {
             $.ajax({
-               url:"http://localhost:8082/weekReport/getTwelveDayDate",
+               url:"http://localhost:8080/weekReport/getTwelveDayDate",
                type:"GET",
                data:{},
                dataType:"json",
@@ -449,7 +449,7 @@
                 getDingDing:function () {
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/queryEmterpriseMesg",
+                        url:"http://localhost:8080/weekReport/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -499,7 +499,7 @@
                         authCode:code,
                     }*/
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/selectWeekReportDetial?authCode="+_this.code,
+                        url:"http://localhost:8080/weekReport/selectWeekReportDetial?authCode="+_this.code,
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -524,7 +524,7 @@
                 getRwx:function(data){
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/queryTaskSubIdAndName",
+                        url:"http://localhost:8080/weekReport/queryTaskSubIdAndName",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -539,7 +539,7 @@
                 getXmmc:function(data){
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/selectProjectPlanIdAndName",
+                        url:"http://localhost:8080/weekReport/selectProjectPlanIdAndName",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -554,7 +554,7 @@
                 getZrr:function(){
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/selectUserByDepartment",
+                        url:"http://localhost:8080/weekReport/selectUserByDepartment",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -664,7 +664,7 @@
                     };
 
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/createMoreWeekReport",
+                        url:"http://localhost:8080/weekReport/createMoreWeekReport",
                         data:JSON.stringify(objs),
                         type:"POST",
                         dataType:"json",

@@ -2,25 +2,18 @@ package com.gedi.projectmanagement.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.gedi.projectmanagement.config.AuthHelper;
-import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
 import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.DetialDayDate;
-import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-
 import java.util.List;
 
 /**
@@ -180,7 +173,7 @@ public class WeekReportController {
     }
 
 
-    @GetMapping("queryEmterpriseMesg")
+    /*@GetMapping("queryEmterpriseMesg")
     public String queryEmterpriseMesg(){
         CodeAndMsg codeAndMsg=new CodeAndMsg();
         String config = AuthHelper.getConfig(request);
@@ -189,7 +182,7 @@ public class WeekReportController {
         codeAndMsg.setData(config);
         codeAndMsg.setResult(true);
         return config;
-    }
+    }*/
 
     //根据WeekReport的ID值进行删除；
     @DeleteMapping("/deleteWeekReportById")
