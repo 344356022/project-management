@@ -14,6 +14,8 @@ public class Journal {
 
     private String aId;
 
+    private String tsId;
+
     private String userId;
 
     private Integer finish;
@@ -120,11 +122,20 @@ public class Journal {
     public Journal() {
     }
 
-    public Journal(String rbId, String wId, String pId, String aId, String userId, Integer finish, String finishContent, BigDecimal finishProcess, String deliver, Date createTime, String creater) {
+    public String getTsId() {
+        return tsId;
+    }
+
+    public void setTsId(String tsId) {
+        this.tsId = tsId;
+    }
+
+    public Journal(String rbId, String wId, String pId, String aId, String tsId, String userId, Integer finish, String finishContent, BigDecimal finishProcess, String deliver, Date createTime, String creater) {
         this.rbId = rbId;
         this.wId = wId;
         this.pId = pId;
         this.aId = aId;
+        this.tsId = tsId;
         this.userId = userId;
         this.finish = finish;
         this.finishContent = finishContent;
@@ -141,6 +152,7 @@ public class Journal {
                 ", wId='" + wId + '\'' +
                 ", pId='" + pId + '\'' +
                 ", aId='" + aId + '\'' +
+                ", tsId='" + tsId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", finish=" + finish +
                 ", finishContent='" + finishContent + '\'' +

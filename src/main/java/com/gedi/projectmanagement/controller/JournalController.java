@@ -47,7 +47,9 @@ public class JournalController
 	@ResponseBody
 	public HashMap list()
 	{
-		String userId = "";//暂时写死后续会从session获取用户信息
+
+		String userId = "025525064321734942";//暂时写死后续会从session获取用户信息
+
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
@@ -101,7 +103,7 @@ public class JournalController
 		List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");//转换数据类型
 		for (Object ob: ll) {
 			Map mp = (Map) ob;
-			mp.put("userId","userId");//用户id暂时写死之后从session里取或者前台传递
+			mp.put("userId","025525064321734942");//用户id暂时写死之后从session里取或者前台传递
 			mp.put("rbId",UUIDUtil.getUUID2());//日报主键UUID
 		}
 		try {
