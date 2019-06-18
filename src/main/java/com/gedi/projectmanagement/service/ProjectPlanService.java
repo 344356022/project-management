@@ -3,8 +3,6 @@ package com.gedi.projectmanagement.service;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
-import org.apache.ibatis.annotations.Param;
-import org.omg.CORBA.StringHolder;
 
 import java.util.List;
 
@@ -40,5 +38,13 @@ public interface ProjectPlanService {
 
     //查询全部的项目名称；
     CodeAndMsg selectAllProject();
+
+    /**
+     * 根据pId删除项目总计划
+     *
+     * @param pId
+     * @return
+     */
+    String deleteProjectBypId(String pId);
 
 }

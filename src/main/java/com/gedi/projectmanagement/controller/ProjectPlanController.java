@@ -90,4 +90,28 @@ public class ProjectPlanController {
         return msg;
     }
 
+    @PostMapping(value = "/deleteProjectBypId")
+    public CodeAndMsg deleteProjectBypId(@RequestBody String pId) {
+        CodeAndMsg msg = new CodeAndMsg();
+        JSONObject jsonObject = JSON.parseObject(pId);
+        pId = jsonObject.getString("pId");
+        if (null == pId || "" == pId) {
+            msg.setCode(401);
+            msg.setMsg("pId参数值为空,删除失败");
+            msg.setResult(false);
+        } else {
+            String flag = projectPlanService.deleteProjectBypId(pId);
+            if ("success".equals(flag)) {
+                msg.setCode(200);
+                msg.setMsg("删除成功");
+                msg.setResult(true);
+            } else {
+                msg.setCode(401);
+                msg.setMsg("删除失败");
+                msg.setResult(false);
+            }
+        }
+        return msg;
+    }
+
 }
