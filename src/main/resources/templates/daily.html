@@ -192,7 +192,7 @@
             <!--选择日志接收人-->
             <div class="js_box">
                 <div class="js_box_content">
-                    <span>日志接收人</span>
+                    <span>日报接收人</span>
                     <span @click="add">添加</span>
                 </div>
                 <ul>
@@ -203,7 +203,7 @@
             </div>
 
             <el-dialog
-                    title="新增日志接收人"
+                    title="新增日报接收人"
                     :visible.sync="dialogVisible"
                     width="100%">
                 <div>
@@ -355,7 +355,7 @@
             var _this=this;
             if(_this.checkList.length<=0){
                 _this.$message({
-                    message:"请选择日志接收入人",type:"error",
+                    message:"请选择日报接收入人",type:"error",
                 });
             }else{
                 //循环重至接收人
