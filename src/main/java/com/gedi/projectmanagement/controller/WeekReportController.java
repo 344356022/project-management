@@ -2,18 +2,26 @@ package com.gedi.projectmanagement.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gedi.projectmanagement.config.AuthHelper;
+import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
 import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+
 import java.util.List;
 
 /**
@@ -25,9 +33,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/weekReport")
 public class WeekReportController {
-
-    @Autowired
-    private HttpServletRequest request;
 
     @Autowired
     private WeekReportService weekReportService;
@@ -48,8 +53,8 @@ public class WeekReportController {
     public CodeAndMsg selectWeekReportDetial(String authCode) {
         CodeAndMsg codeAndMsg=new CodeAndMsg();
 
-        /*System.out.println(authCode);
-        String userId = LoginUtil.login(authCode);
+        System.out.println(authCode+"---------%%%%%%%%%%%%*******************----------------");
+        /*String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
         User user = (User)codeAndMsg1.getData();*/
         if(weekReportService.selectWeekReportDetial()!=null){
@@ -173,8 +178,9 @@ public class WeekReportController {
     }
 
 
-    /*@GetMapping("queryEmterpriseMesg")
-    public String queryEmterpriseMesg(){
+    //获取企业ID值，appkey，serectkey等所必须的参数
+    @GetMapping("queryEmterpriseMesg")
+    public String queryEmterpriseMesg(HttpServletRequest request){
         CodeAndMsg codeAndMsg=new CodeAndMsg();
         String config = AuthHelper.getConfig(request);
         codeAndMsg.setMsg("获取成功");
@@ -182,10 +188,10 @@ public class WeekReportController {
         codeAndMsg.setData(config);
         codeAndMsg.setResult(true);
         return config;
-    }*/
+    }
 
     //根据WeekReport的ID值进行删除；
-    @DeleteMapping("/deleteWeekReportById")
+    @PostMapping("/deleteWeekReportById")
     public CodeAndMsg deleteWeekReportById(String wId){
         return weekReportService.deleteWeekReportById(wId);
     }
