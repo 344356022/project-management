@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -49,15 +50,17 @@ public class WeekReportController {
 
 
     //查询双周计划表展示具体的内容以及完成的占比；
-    @GetMapping("selectWeekReportDetial")
-    public CodeAndMsg selectWeekReportDetial(String authCode) {
+    @PostMapping("selectWeekReportDetial")
+    public CodeAndMsg selectWeekReportDetial(String authCode, HttpServletRequest request) {
         CodeAndMsg codeAndMsg=new CodeAndMsg();
-
-        System.out.println(authCode+"---------%%%%%%%%%%%%*******************----------------");
-        /*String userId = LoginUtil.login(authCode);
+        String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
-        User user = (User)codeAndMsg1.getData();*/
-        if(weekReportService.selectWeekReportDetial()!=null){
+        User user = (User)codeAndMsg1.getData();
+        System.out.println("部门得标识------------------user"+user.getuDepartment());
+        HttpSession session = request.getSession();
+        session.setAttribute("uDepartment",user.getuDepartment());
+        System.out.println(user);
+        if(user!=null){
             return weekReportService.selectWeekReportDetial();
         }else{
             codeAndMsg.setResult(false);
@@ -136,8 +139,9 @@ public class WeekReportController {
 
     //根据部门以及等级的标识进行查询，分配具体的工作；
     @GetMapping("selectDepartmentStaff")
-    public CodeAndMsg selectDepartmentStaff() {
-        return userService.selectUserBySign();
+    public CodeAndMsg selectDepartmentStaff(HttpSession session) {
+        String department = (String)session.getAttribute("uDepartment");
+        return userService.selectUserBySign(department);
     }
 
 
@@ -173,8 +177,12 @@ public class WeekReportController {
 
     //根据部门标记进行获取部门下所对应的所有员工以及ID值
     @GetMapping("selectUserByDepartment")
-    public CodeAndMsg selectUserByDepartment() {
-        return userService.selectUserBySign();
+    public CodeAndMsg selectUserByDepartment(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String department = (String)session.getAttribute("uDepartment");
+        System.out.println("部门得标识------------------session"+department);
+        return userService.selectUserBySign(department);
     }
 
 
