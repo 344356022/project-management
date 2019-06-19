@@ -30,10 +30,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public CodeAndMsg selectUserBySign() {
+    public CodeAndMsg selectUserBySign(String department) {
 
-        if (userMapper.selectUserBySign().size() != 0 && userMapper.selectUserBySign() != null) {
-            return CodeAndMsgUtil.setOK("查询成功", userMapper.selectUserBySign());
+        if (userMapper.selectUserBySign(department).size() != 0 && userMapper.selectUserBySign(department) != null) {
+            return CodeAndMsgUtil.setOK("查询成功", userMapper.selectUserBySign(department));
         } else {
             return CodeAndMsgUtil.setERROR("查询失败", null);
         }
