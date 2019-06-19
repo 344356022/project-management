@@ -13,6 +13,7 @@ import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +35,6 @@ import java.util.List;
 public class WeekReportController {
 
     @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
     private WeekReportService weekReportService;
 
 
@@ -55,8 +53,8 @@ public class WeekReportController {
     public CodeAndMsg selectWeekReportDetial(String authCode) {
         CodeAndMsg codeAndMsg=new CodeAndMsg();
 
-        /*System.out.println(authCode);
-        String userId = LoginUtil.login(authCode);
+        System.out.println(authCode+"---------%%%%%%%%%%%%*******************----------------");
+        /*String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
         User user = (User)codeAndMsg1.getData();*/
         if(weekReportService.selectWeekReportDetial()!=null){
@@ -180,8 +178,9 @@ public class WeekReportController {
     }
 
 
+    //获取企业ID值，appkey，serectkey等所必须的参数
     @GetMapping("queryEmterpriseMesg")
-    public String queryEmterpriseMesg(){
+    public String queryEmterpriseMesg(HttpServletRequest request){
         CodeAndMsg codeAndMsg=new CodeAndMsg();
         String config = AuthHelper.getConfig(request);
         codeAndMsg.setMsg("获取成功");
@@ -192,7 +191,7 @@ public class WeekReportController {
     }
 
     //根据WeekReport的ID值进行删除；
-    @DeleteMapping("/deleteWeekReportById")
+    @PostMapping("/deleteWeekReportById")
     public CodeAndMsg deleteWeekReportById(String wId){
         return weekReportService.deleteWeekReportById(wId);
     }
