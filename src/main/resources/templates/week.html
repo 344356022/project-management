@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./element_ui/iconfont/iconfont.css">
     <link rel="stylesheet" href="./css/pages/week.css">
     <script src="./js/jquery-3.3.1.js" type="text/javascript"></script>
-    <script type="text/javascript" src="http://g.alicdn.com/dingding/open-develop/0.9.9/dingtalk.js"></script>
+    <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
     <script src="./element_ui/vue.js" type="text/javascript"></script>
     <script src="./element_ui/index.js" type="text/javascript"></script>
     <script src="./element_ui/vuex.js" type="text/javascript"></script>
@@ -371,7 +371,7 @@
     var nextWeek=[];//下周数据
     (function () {
         $.ajax({
-            url:"http://localhost:8082/weekReport/getTwelveDayDate",
+            url:"http://172.20.10.3:8082/weekReport/getTwelveDayDate",
             type:"GET",
             data:{},
             dataType:"json",
@@ -388,20 +388,7 @@
 
 
     })(window)
-    /* dd.ready(function() {
-         dd.runtime.permission.requestAuthCode({
-             corpId : "这里是你的corpID",
-             onSuccess : function(result) {
-                 var code = result.code;
-                 alert(code);
-                 //将code 发往后台处理
-             },
-             onFail : function(err) {
-                 alert('出错了, ' + err);
-             }
-         });
 
-     });*/
 
 
     var myHome = new Vue({
@@ -436,8 +423,6 @@
         mounted:function(){
             var _this=this;
             _this.getDingDing();//获取临时授权码
-            _this.getDatas();//回显保存的数据
-            _this.getRwx();
         },
         created:function () {
             var _this=this;
@@ -448,7 +433,7 @@
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/queryEmterpriseMesg",
+                    url:"http://172.20.10.3:8082/weekReport/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -464,51 +449,45 @@
                 var _this=this;
                 dd.ready(function() {
                     dd.runtime.permission.requestAuthCode({
-                        corpId:'ding2a50f4716d90a91135c2f4657eb6378f', // 企业id
+                        corpId:_config.corpId, // 企业id
                         onSuccess: function (info) {
-                            dd.alert({content: info});
                             _this.code=info.code;
-                            alert(info.code)
+                            _this.getDatas(info.code);//回显保存的数据
                         },
                         onFail : function(err) {
                             alert('fail: ' + JSON.stringify(err));
                         }
                     });
                 });
-                /* dd.runtime.permission.requestAuthCode({
-                     corpId : _config.corpId,
-                     onSuccess : function(info) {
-
-                     },
-                     onFail : function(err) {
-                         alert('fail: ' + JSON.stringify(err));
-                     }
-                 });*/
 
             },
 
             /*获取已经保存过后的数据*/
-            getDatas:function () {
+            getDatas:function (code) {
                 var _this=this;
                 /* var objs={
                      authCode:code,
                  }*/
+                /*_this.tableData=[];*/
+
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/selectWeekReportDetial?authCode="+_this.code,
-                    type:"GET",
-                    data:{},
+                    url:"http://172.20.10.3:8082/weekReport/selectWeekReportDetial",
+                    type:"POST",
+                    data:{'authCode':code},
                     dataType:"json",
                     success:function(res){
 
-                        for(var i=0;i<res.data.length;i++){
-                            var items=res.data[i];
-                            if(items.wType==1){
-                                _this.tableData.push(items);
-                            }else{
-                                _this.tableData1.push(items);
+                        if(res.data!=null){
+                            for(var i=0;i<res.data.length;i++){
+                                var items=res.data[i];
+                                if(items.wType==1){
+                                    _this.tableData.push(items);
+                                }else{
+                                    _this.tableData1.push(items);
+                                };
                             };
-                        };
-
+                        }
+                        _this.getRwx();
                         /* _this.rwx=res.data;
                          _this.getXmmc();*/
                     }
@@ -518,7 +497,7 @@
             getRwx:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/queryTaskSubIdAndName",
+                    url:"http://172.20.10.3:8082/weekReport/queryTaskSubIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -532,7 +511,7 @@
             getXmmc:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/selectProjectPlanIdAndName",
+                    url:"http://172.20.10.3:8082/weekReport/selectProjectPlanIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -546,7 +525,7 @@
             getZrr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/selectUserByDepartment",
+                    url:"http://172.20.10.3:8082/weekReport/selectUserByDepartment",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -630,18 +609,19 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
+                        url:"http://172.20.10.3:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
                         success:function(res){
                             console.log(res);
+                            alert("删除成功")
 
                             // _this.getDatas();
                         }
                     });
                 };
-                console.log(params)
+                window.reload();
             },
             //删除下周
             delNextWeek:function (params) {
@@ -653,14 +633,12 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
+                        url:"http://172.20.10.3:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
                         success:function(res){
                             console.log(res);
-
-                            // _this.getDatas();
                         }
                     });
                 };
@@ -683,7 +661,6 @@
                 var _this=this;
                 var objs={
                     thisWeek:_this.tableData,
-                    nextWeek
                 };
                 var newArray=[];
                 newArray=_this.tableData.concat(_this.tableData1);
@@ -693,14 +670,17 @@
                 };
 
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/createMoreWeekReport",
+                    url:"http://172.20.10.3:8082/weekReport/createMoreWeekReport",
                     data:JSON.stringify(objs),
                     type:"POST",
                     dataType:"json",
                     contentType: "application/json;charset=utf-8",
                     success:function(res){
+                        alert("保存成功")
                     }
                 });
+
+                window.reload();
             },
 
         },
