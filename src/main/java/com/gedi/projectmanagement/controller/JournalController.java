@@ -8,8 +8,13 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gedi.projectmanagement.config.AuthHelperDaily;
+import com.gedi.projectmanagement.config.AuthHelperProjectTotle;
+import com.gedi.projectmanagement.model.User;
+import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,10 @@ public class JournalController
 
 	@Autowired
 	private WeekReportService weekReportService;
+
+	@Autowired
+	private UserService userService;
+
 	/**
 	 * zpl
 	 * 查询日志列表
@@ -45,18 +54,23 @@ public class JournalController
 	 */
 	@PostMapping("/journal/list")
 	@ResponseBody
-	public HashMap list()
-	{
+	public HashMap list(String authCode, HttpServletRequest request) {
 
-		String userId = "025525064321734942";//暂时写死后续会从session获取用户信息
+		System.out.println(authCode+"我是临时授权码");
 
+		String userId = LoginUtil.login(authCode);
+		CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
+		User user = (User)codeAndMsg1.getData();
+		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
+
+		System.out.println("用户的ID值"+userId);
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
 		HashMap map = new HashMap();
 		List<HashMap<String,Object>> list = null;
-		if(userId != null && !"".equals(userId)){//判断是否传入用户id 有的话把userId放到map中
-			map.put("userId",userId);
+		if(userId1 != null && !"".equals(userId1)){//判断是否传入用户id 有的话把userId放到map中
+			map.put("userId",userId1);
 			//根据当前时间获取本周的周一到周五的时间
 			StringBuffer sb = new StringBuffer();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
@@ -184,6 +198,19 @@ public class JournalController
 		}
 		return dates;
 
+	}
+
+	//获取企业ID值，appkey，serectkey等所必须的参数
+	@GetMapping("/journal/queryEmterpriseMesg")
+	@ResponseBody
+	public String queryEmterpriseMesg(HttpServletRequest request){
+		CodeAndMsg codeAndMsg=new CodeAndMsg();
+		String config = AuthHelperDaily.getConfig(request);
+		codeAndMsg.setMsg("获取成功");
+		codeAndMsg.setCode(200);
+		codeAndMsg.setData(config);
+		codeAndMsg.setResult(true);
+		return config;
 	}
 
 
