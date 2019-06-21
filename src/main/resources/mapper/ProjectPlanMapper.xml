@@ -88,7 +88,7 @@
             tt.a_is_result AS isResult,
             tt.p_id AS pId,
             pum.user_id AS userId,
-	        u.u_name AS username
+          u.u_name AS username
           from (
             SELECT DISTINCT
                 tc.p_project_phase_id AS pProjectPhaseId,
@@ -118,7 +118,58 @@
         )tt on tps.aName = tt.a_name and tt.p_id = #{pId}
         LEFT JOIN project_user_medium pum ON tt.a_id = pum.a_id
         LEFT JOIN `user` u ON pum.user_id = u.user_id
-        order by tps.sortId ASC
+        ORDER BY
+        field(
+            tps.aName,
+            '需求调研及梳理',
+            '编写需求文档（用户版）',
+            '业务原型草图',
+            '确认需求文档（用户版）',
+            '编写需求文档（开发版）',
+            '确认需求文档（开发版）',
+            '原型设计',
+            '原型确定',
+            '测试环境系统功能验证',
+            '系统上线',
+            '验收文档',
+            '项目工作汇报',
+            '数据指标清单表',
+            '汇总整理所有涉及指标',
+            '单个指标梳理文档',
+            '汇总指标梳理过程问题',
+            '汇总指标算法',
+            '设计表结构',
+            '评审表结构',
+            '指标数据核查（每个）',
+            '编写数据设计方案',
+            '评审数据设计方案',
+            '编写数据字典文档',
+            '评审数据字典文档',
+            '编写表数据逻辑关系',
+            '评审表数据逻辑关系',
+            'E-R图',
+            '开发、测试',
+            '开发、测试',
+            '开发、测试',
+            '开发、测试',
+            '二次指标数据核查（每个）',
+            'ETL程序开发',
+            'ETL程序测试',
+            '编写数据链路流转方案',
+            '评审数据链路流转方案',
+            '数据链路清单',
+            '数据库设置',
+            '开发环境搭建',
+            '前后端开发（每个）',
+            '前后端开发（每个）',
+            '前后端联调（每个）',
+            '测试用例编写',
+            '系统功能测试',
+            '系统回归测试',
+            '生产环境搭建',
+            '数据同步及联调',
+            '生产环境发布'
+        )
     </select>
 
     <!--查询所有得项目名称以及ID值-->
