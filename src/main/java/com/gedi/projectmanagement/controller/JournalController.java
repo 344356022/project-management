@@ -61,9 +61,9 @@ public class JournalController
 		String userId = LoginUtil.login(authCode);
 		CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
 		User user = (User)codeAndMsg1.getData();
-		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
+		String userId1 = "025525064321734942";//暂时写死后续会从session获取用户信息
 
-		System.out.println("用户的ID值"+userId);
+		System.out.println("用户的ID值"+userId1);
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
@@ -191,8 +191,8 @@ public class JournalController
 		while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
 			calendar.add(Calendar.DAY_OF_WEEK, -1);
 		}
-		Date[] dates = new Date[5];
-		for (int i = 0; i < 5; i++) {
+		Date[] dates = new Date[12];
+		for (int i = 0; i < 12; i++) {
 			dates[i] = calendar.getTime();
 			calendar.add(Calendar.DATE, 1);
 		}
