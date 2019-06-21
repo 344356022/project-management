@@ -416,7 +416,10 @@
                     data:JSON.stringify({para: _this.dailyList}),
                     success:function(res){
                         if(res.code == 200){
-                            alert(res.msg);
+                            _this.$message({
+                                message:"保存成功",
+                                type:"success",
+                            });
                         };
                     }
                 });
