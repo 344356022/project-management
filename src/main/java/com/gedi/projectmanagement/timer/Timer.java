@@ -31,8 +31,7 @@ public class Timer {
     @Autowired
     private UserService userService;
 
-    @Scheduled(cron = "0 53 15 * * ?")
-    @Scheduled(cron = "0 00 15 * * ?")
+    @Scheduled(cron = "0 00 03 * * ?")
     public  void queryDepartmentUsers() throws ApiException {
 
         //每次批量增添的数据都需要进行对库表之前存在的数据进行清空
@@ -80,7 +79,6 @@ public class Timer {
 
             try {
                 listResponse = client1.execute(request1,accessToken);
-                System.out.println(accessToken+"------accessToken2--------");
                 List<OapiUserListResponse.Userlist> userlist = listResponse.getUserlist();
                 for (OapiUserListResponse.Userlist userlist1 : userlist) {
                             //将数据封装到自己的实体类
@@ -99,7 +97,6 @@ public class Timer {
                 e.printStackTrace();
             }
 
-            System.out.println("----------每天的早上08:30分执行定时器的任务执行了-------------");
         }
 
 
