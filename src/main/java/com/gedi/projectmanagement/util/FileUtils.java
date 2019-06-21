@@ -30,12 +30,10 @@ public class FileUtils {
         }
 
         File file = new File(FILEPATH + File.separator + fileName + ".xml");
-        System.out.println("path:" + file.getPath() + " abs path:" + file.getAbsolutePath());
         if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (Exception e) {
-                System.out.println("createNewFile，出现异常:");
                 e.printStackTrace();
             }
         } else {
