@@ -34,4 +34,6 @@ public interface UserMapper {
 
     //根据部门以及标签进行查询部门普通员工
     List<User> selectUserByDepartment(String department);
+
+    List<User> selectAllUser();
 }
