@@ -6,7 +6,7 @@ spring:  ## 数据源的配置
     driver-class-name: com.mysql.jdbc.Driver
 
     username: zzgd
-    url: jdbc:mysql://180.76.139.168:3306/test2?allowMultiQueries=true
+    url: jdbc:mysql://180.76.139.168:3306/test2?useSSL=false&allowMultiQueries=true
     password: du@123456
 
     dbcp2:                                          # 进行数据库连接池的配置

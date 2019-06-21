@@ -99,7 +99,6 @@ public class WeekReportServiceImpl implements WeekReportService {
                     recordTime.setwId(weekreport1.getwId());
                 }
                 recordTimeMapper.saveMoreDetialDayDate(dataList);
-
             }
 
         }

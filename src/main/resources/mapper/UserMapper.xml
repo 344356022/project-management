@@ -22,6 +22,12 @@
     select u_name,user_id from user where u_department=#{department}
   </select>
 
+
+  <!---->
+  <select id="selectAllUser" resultMap="BaseResultMap">
+    select u_name,user_id from user
+  </select>
+
     <!--根据用户ID查询用户名称-->
     <select id="selectNameByUserId" resultType="java.lang.String">
     SELECT u_name AS uName FROM `user` WHERE user_id = #{userId}

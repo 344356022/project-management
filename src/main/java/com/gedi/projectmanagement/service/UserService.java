@@ -26,6 +26,9 @@ public interface UserService {
     //根据用户ID值获取员工的具体信息
     CodeAndMsg selectUserById(String userId);
 
+    //查询全部员工
+   CodeAndMsg selectAllUser();
+
     /**
      * 根据用户ID查询用户名称
      *

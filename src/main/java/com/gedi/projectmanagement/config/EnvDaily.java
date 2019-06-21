@@ -4,7 +4,7 @@ package com.gedi.projectmanagement.config;
 /**
  * 企业应用接入时的常量定义
  */
-public class Env {
+public class EnvDaily {
 
     /**
      * 企业corpid
@@ -12,19 +12,19 @@ public class Env {
     public static final String CORP_ID = "ding2a50f4716d90a91135c2f4657eb6378f";
 
     /**
-     * 双周计划应用agentId
+     * 日报应用agentId
      */
-    public static final String AGENT_ID = "269856828";
+    public static final String AGENT_ID = "269939002";
 
     /**
-     * 双周计划应用的appkey
+     * 日报应用的appkey
      */
-    public static final String APP_KEY = "dingaj1x3yp3mgfvazaq";
+    public static final String APP_KEY = "ding3bj8gtbi4g2qyjr4";
 
     /**
-     * 双周计划应用的appsecret
+     * 日报应用的appsecret
      */
-    public static final String APP_SECRET = "k_jBw4xTxEVa8gPLvCXxvxso8H2gxs_MvG0XukgPi1ZpeCAAir58y0K_mj4F3xJL";
+    public static final String APP_SECRET = "J7KhWnAp3iLg9D2mxpFomCinMWjcp6wDj24XsoJee1KuoNVO_al9PuJQACIHQwmp";
 
     /**
      * 回调host

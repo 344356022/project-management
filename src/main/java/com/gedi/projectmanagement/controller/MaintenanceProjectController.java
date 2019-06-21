@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.odps.udf.CodecCheck;
+import com.gedi.projectmanagement.config.AuthHelperDaily;
+import com.gedi.projectmanagement.config.AuthHelperTable;
 import com.gedi.projectmanagement.model.ActionItem;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.TaskClass;
@@ -19,6 +21,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -107,4 +110,19 @@ public class MaintenanceProjectController {
         }
         return msg;
     }
+
+    //获取企业ID值，appkey，serectkey等所必须的参数
+    @GetMapping("/queryEmterpriseMesg")
+    @ResponseBody
+    public String queryEmterpriseMesg(HttpServletRequest request){
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        String config = AuthHelperTable.getConfig(request);
+        codeAndMsg.setMsg("获取成功");
+        codeAndMsg.setCode(200);
+        codeAndMsg.setData(config);
+        codeAndMsg.setResult(true);
+        return config;
+    }
+
+
 }
