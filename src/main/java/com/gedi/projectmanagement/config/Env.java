@@ -12,17 +12,17 @@ public class Env {
     public static final String CORP_ID = "ding2a50f4716d90a91135c2f4657eb6378f";
 
     /**
-     * 应用agentId
+     * 双周计划应用agentId
      */
     public static final String AGENT_ID = "269856828";
 
     /**
-     * 应用的appkey
+     * 双周计划应用的appkey
      */
     public static final String APP_KEY = "dingaj1x3yp3mgfvazaq";
 
     /**
-     * 应用的appsecret
+     * 双周计划应用的appsecret
      */
     public static final String APP_SECRET = "k_jBw4xTxEVa8gPLvCXxvxso8H2gxs_MvG0XukgPi1ZpeCAAir58y0K_mj4F3xJL";
 
