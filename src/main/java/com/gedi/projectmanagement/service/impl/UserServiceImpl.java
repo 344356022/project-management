@@ -116,7 +116,6 @@ public class UserServiceImpl implements UserService {
 
                 try {
                     listResponse = client1.execute(request1, accessToken);
-                    System.out.println(accessToken + "------accessToken2--------");
                     List<OapiUserListResponse.Userlist> userlist = listResponse.getUserlist();
                     for (OapiUserListResponse.Userlist userlist1 : userlist) {
                         //将数据封装到自己的实体类
@@ -135,8 +134,6 @@ public class UserServiceImpl implements UserService {
                 } catch (ApiException e) {
                     e.printStackTrace();
                 }
-
-                System.out.println("----------每天的早上08:30分执行定时器的任务执行了-------------");
             }
 
             codeAndMsg.setMsg("更新用户信息成功");
