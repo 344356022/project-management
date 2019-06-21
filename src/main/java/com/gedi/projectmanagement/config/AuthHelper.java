@@ -134,7 +134,6 @@ public class AuthHelper {
         /**
          * 确认url与配置的应用首页地址一致
          */
-        System.out.println(url);
 
         /**
          * 随机字符串
