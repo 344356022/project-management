@@ -56,10 +56,8 @@ public class WeekReportController {
         String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
         User user = (User)codeAndMsg1.getData();
-        System.out.println("部门得标识------------------user"+user.getuDepartment());
         HttpSession session = request.getSession();
         session.setAttribute("uDepartment",user.getuDepartment());
-        System.out.println(user);
         if(user!=null){
             return weekReportService.selectWeekReportDetial();
         }else{
@@ -75,8 +73,6 @@ public class WeekReportController {
     //将周计划设定的具体内容进行保存；
     @PostMapping(value = "createMoreWeekReport", produces = "application/json;charset=UTF-8")
     public CodeAndMsg addWeekReport(@RequestBody String weekreports) {
-
-        System.out.println("--------------"+weekreports);
         CodeAndMsg msg = new CodeAndMsg();
         if (StringUtils.isEmpty(weekreports)) {
             msg.setCode(400);
@@ -86,7 +82,6 @@ public class WeekReportController {
             JSONObject jsonObject = JSON.parseObject(weekreports);
             weekreports = jsonObject.getString("weekreports");
             List<WeekRportInfo> weekreportse = JSONArray.parseArray(weekreports, WeekRportInfo.class);
-            System.out.println(weekreports);
              msg = this.addWeekReport(weekreportse);
         }
         return msg;
@@ -181,7 +176,6 @@ public class WeekReportController {
 
         HttpSession session = request.getSession();
         String department = (String)session.getAttribute("uDepartment");
-        System.out.println("部门得标识------------------session"+department);
         return userService.selectUserBySign(department);
     }
 
