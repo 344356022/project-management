@@ -2,16 +2,21 @@ package com.gedi.projectmanagement.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.gedi.projectmanagement.config.AuthHelper;
+import com.gedi.projectmanagement.config.AuthHelperProjectTotle;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
+import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ProjectPlanService;
+import com.gedi.projectmanagement.service.UserService;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -29,10 +34,30 @@ public class ProjectPlanController {
     @Resource
     private ProjectPlanService projectPlanService;
 
+    @Autowired
+    private UserService userService;
+
     //列表展示所有
     @PostMapping("/listAll")
-    public CodeAndMsg selectById() {
-        return projectPlanService.selectById();
+    public CodeAndMsg selectById(String authCode, HttpServletRequest request) {
+
+        System.out.println("我是临时授权码---------------"+authCode);
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        String userId = LoginUtil.login(authCode);
+        CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
+        User user = (User)codeAndMsg1.getData();
+
+        System.out.println("我是当前登录的用户---------------------------"+user);
+        System.out.println("部门得标识------------------user"+user.getuDepartment());
+        HttpSession session = request.getSession();
+        session.setAttribute("user",user);
+        if(user!=null){
+            return projectPlanService.selectById();
+        }else{
+
+            return  projectPlanService.selectById();
+        }
+
     }
 
     /**
@@ -113,5 +138,18 @@ public class ProjectPlanController {
         }
         return msg;
     }
+
+    //获取企业ID值，appkey，serectkey等所必须的参数
+    @GetMapping("queryEmterpriseMesg")
+    public String queryEmterpriseMesg(HttpServletRequest request){
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        String config = AuthHelperProjectTotle.getConfig(request);
+        codeAndMsg.setMsg("获取成功");
+        codeAndMsg.setCode(200);
+        codeAndMsg.setData(config);
+        codeAndMsg.setResult(true);
+        return config;
+    }
+
 
 }
