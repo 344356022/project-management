@@ -55,15 +55,10 @@ public class JournalController
 	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
-
-		System.out.println(authCode+"我是临时授权码");
-
 		String userId = LoginUtil.login(authCode);
 		CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
 		User user = (User)codeAndMsg1.getData();
 		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
-
-		System.out.println("用户的ID值"+userId1);
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
@@ -124,7 +119,7 @@ public class JournalController
 			int resultNum = journalService.insertJournalList(ll);//批量插入日报
 			if(resultNum > 0){//大于0表示批量插入成功
 				resultMap.put("code",200);
-				resultMap.put("msg","插入成功");
+				resultMap.put("msg","保存成功");
 				for (Object obj: ll) {//再次循环然后调用周报中的改变实际完成进度接口之所以再次循环是为了批量插入完整性
 					Map mp = (Map) obj;
 					//调用周报中修改周报实际完成进度接口
@@ -158,7 +153,6 @@ public class JournalController
 				sb.append(line);
 			}
 			jsonParam = JSONObject.parseObject(sb.toString()); // 直接将json信息打印出来
-			System.out.println(jsonParam.toJSONString());
 		}catch (Exception e){
 			e.printStackTrace();
 		}
