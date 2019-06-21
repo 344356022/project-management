@@ -3,8 +3,12 @@ package com.gedi.projectmanagement.controller;
 import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @Author: renpu
@@ -23,5 +27,12 @@ public class UserController {
     @RequestMapping("/updateUserMessage")
     public CodeAndMsg updateUserMessage(){
        return userService.updateUserMessage();
+    }
+
+
+    //获取责任人
+    @GetMapping("selectAllUser")
+    public CodeAndMsg selectAllUser() {
+        return userService.selectAllUser();
     }
 }
