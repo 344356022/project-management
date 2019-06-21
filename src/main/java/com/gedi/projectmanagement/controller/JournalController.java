@@ -61,7 +61,7 @@ public class JournalController
 		String userId = LoginUtil.login(authCode);
 		CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
 		User user = (User)codeAndMsg1.getData();
-		String userId1 = "025525064321734942";//暂时写死后续会从session获取用户信息
+		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
 
 		System.out.println("用户的ID值"+userId1);
 		HashMap resultMap = new HashMap();
