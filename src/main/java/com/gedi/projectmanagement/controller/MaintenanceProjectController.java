@@ -1,33 +1,19 @@
 package com.gedi.projectmanagement.controller;
 
-import com.alibaba.druid.support.json.JSONParser;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.support.odps.udf.CodecCheck;
-import com.gedi.projectmanagement.config.AuthHelperDaily;
 import com.gedi.projectmanagement.config.AuthHelperTable;
 import com.gedi.projectmanagement.model.ActionItem;
 import com.gedi.projectmanagement.model.ProjectPlan;
-import com.gedi.projectmanagement.model.TaskClass;
-import com.gedi.projectmanagement.model.TaskSubclass;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskClassService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
-import com.github.pagehelper.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName : MaintenanceProjectController
@@ -50,7 +36,6 @@ public class MaintenanceProjectController {
     //列表展示所有
     @RequestMapping("/listAll")
     public CodeAndMsg selectById(String pid) {
-
         return projectPlanService.selectById();
     }
 
@@ -114,8 +99,8 @@ public class MaintenanceProjectController {
     //获取企业ID值，appkey，serectkey等所必须的参数
     @GetMapping("/queryEmterpriseMesg")
     @ResponseBody
-    public String queryEmterpriseMesg(HttpServletRequest request){
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
+    public String queryEmterpriseMesg(HttpServletRequest request) {
+        CodeAndMsg codeAndMsg = new CodeAndMsg();
         String config = AuthHelperTable.getConfig(request);
         codeAndMsg.setMsg("获取成功");
         codeAndMsg.setCode(200);
