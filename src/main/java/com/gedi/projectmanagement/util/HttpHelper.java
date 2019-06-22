@@ -42,9 +42,6 @@ public class HttpHelper {
             response = httpClient.execute(httpGet, new BasicHttpContext());
 
             if (response.getStatusLine().getStatusCode() != 200) {
-
-                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
-                                   + ", url=" + url);
                 return null;
             }
             HttpEntity entity = response.getEntity();
@@ -55,15 +52,12 @@ public class HttpHelper {
                 if (result.getInteger("errcode") == 0) {
                     return result;
                 } else {
-                    System.out.println("request url=" + url + ",return value=");
-                    System.out.println(resultStr);
                     int errCode = result.getInteger("errcode");
                     String errMsg = result.getString("errmsg");
                     throw new OApiException(errCode, errMsg);
                 }
             }
         } catch (IOException e) {
-            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
         } finally {
             if (response != null) try {
@@ -93,9 +87,6 @@ public class HttpHelper {
             response = httpClient.execute(httpPost, new BasicHttpContext());
 
             if (response.getStatusLine().getStatusCode() != 200) {
-
-                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
-                                   + ", url=" + url);
                 return null;
             }
             HttpEntity entity = response.getEntity();
@@ -108,15 +99,12 @@ public class HttpHelper {
                 	result.remove("errmsg");
                     return result;
                 } else {
-                    System.out.println("request url=" + url + ",return value=");
-                    System.out.println(resultStr);
                     int errCode = result.getInteger("errcode");
                     String errMsg = result.getString("errmsg");
                     throw new OApiException(errCode, errMsg);
                 }
             }
         } catch (IOException e) {
-            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
         } finally {
             if (response != null) try {
@@ -145,9 +133,6 @@ public class HttpHelper {
             response = httpClient.execute(httpPost, new BasicHttpContext());
 
             if (response.getStatusLine().getStatusCode() != 200) {
-
-                System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
-                                   + ", url=" + url);
                 return null;
             }
             HttpEntity entity = response.getEntity();
@@ -161,15 +146,12 @@ public class HttpHelper {
                 	result.remove("errmsg");
                     return result;
                 } else {
-                    System.out.println("request url=" + url + ",return value=");
-                    System.out.println(resultStr);
                     int errCode = result.getInteger("errcode");
                     String errMsg = result.getString("errmsg");
                     throw new OApiException(errCode, errMsg);
                 }
             }
         } catch (IOException e) {
-            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
         } finally {
             if (response != null) try {
@@ -199,7 +181,6 @@ public class HttpHelper {
             if (locations != null) {
                 URI downloadUrl = locations.getAll().get(0);
                 String filename = downloadUrl.toURL().getFile();
-                System.out.println("downloadUrl=" + downloadUrl);
                 File downloadFile = new File(fileDir + File.separator + filename);
                 FileUtils.writeByteArrayToFile(downloadFile, EntityUtils.toByteArray(response.getEntity()));
                 JSONObject obj = new JSONObject();
@@ -211,9 +192,6 @@ public class HttpHelper {
                 return obj;
             } else {
                 if (response.getStatusLine().getStatusCode() != 200) {
-
-                    System.out.println("request url failed, http code=" + response.getStatusLine().getStatusCode()
-                                       + ", url=" + url);
                     return null;
                 }
                 HttpEntity entity = response.getEntity();
@@ -227,8 +205,6 @@ public class HttpHelper {
                     	result.remove("errmsg");
                         return result;
                     } else {
-                        System.out.println("request url=" + url + ",return value=");
-                        System.out.println(resultStr);
                         int errCode = result.getInteger("errcode");
                         String errMsg = result.getString("errmsg");
                         throw new OApiException(errCode, errMsg);
@@ -236,7 +212,6 @@ public class HttpHelper {
                 }
             }
         } catch (IOException e) {
-            System.out.println("request url=" + url + ", exception, msg=" + e.getMessage());
             e.printStackTrace();
         } finally {
             if (response != null) try {

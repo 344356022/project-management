@@ -41,14 +41,10 @@ public class ProjectPlanController {
     @PostMapping("/listAll")
     public CodeAndMsg selectById(String authCode, HttpServletRequest request) {
 
-        System.out.println("我是临时授权码---------------"+authCode);
         CodeAndMsg codeAndMsg=new CodeAndMsg();
         String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
         User user = (User)codeAndMsg1.getData();
-
-        System.out.println("我是当前登录的用户---------------------------"+user);
-        System.out.println("部门得标识------------------user"+user.getuDepartment());
         HttpSession session = request.getSession();
         session.setAttribute("user",user);
         if(user!=null){
