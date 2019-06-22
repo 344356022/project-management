@@ -10,10 +10,11 @@
         <result column="p_progress" property="pProgress" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="DATE"/>
         <result column="creater" property="creater" jdbcType="VARCHAR"/>
+        <result column="annual_time" property="annualTime" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
     p_id, p_name, p_start_time, p_end_time, p_project_phase_id, p_progress, create_time,
-    creater
+    creater, annual_time
     </sql>
 
     <!-- 根据ID查询用于项目总体计划列表展示 -->
@@ -26,7 +27,8 @@
             p_project_phase_id,
             p_progress,
             create_time,
-            creater
+            creater,
+            annual_time
         from project_plan
         ORDER BY p_start_time ASC
   </select>
@@ -38,14 +40,20 @@
         p_start_time,
         p_end_time,
         p_project_phase_id,
-        p_progress)
+        p_progress,
+        create_time,
+        annual_time
+        )
         values
             (#{pId,jdbcType=VARCHAR},
             #{pName,jdbcType=VARCHAR},
             #{pStartTime,jdbcType=DATE},
             #{pEndTime,jdbcType=DATE},
             #{pProjectPhaseId,jdbcType=INTEGER},
-            #{pProgress,jdbcType=INTEGER})
+            #{pProgress,jdbcType=INTEGER},
+            NOW(),
+            #{annualTime,jdbcType=VARCHAR}
+            )
     </insert>
 
 
@@ -59,7 +67,8 @@
         p_project_phase_id,
         p_progress,
         create_time,
-        creater
+        creater,
+        annual_time
         from project_plan
         where 1=1
         <if test="pName != null or pName != ''">
@@ -187,4 +196,24 @@
     <delete id="deleteProjectBypId" parameterType="String">
         delete from project_plan where p_id = #{pId}
     </delete>
+
+    <!-- 根据年度时间查询项目总体计划 -->
+    <select id="selectByTime" resultMap="BaseResultMap">
+        select
+        p_id,
+        p_name,
+        p_start_time,
+        p_end_time,
+        p_project_phase_id,
+        p_progress,
+        create_time,
+        creater,
+        annual_time
+        from project_plan
+        where 1=1
+        <if test="annualTime != null or annualTime != ''">
+            and annual_time = #{annualTime}
+        </if>
+        ORDER BY p_start_time ASC
+    </select>
 </mapper>

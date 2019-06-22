@@ -48,6 +48,7 @@ public class ActionItemServiceImpl implements ActionItemService {
             userMedium.setId(UUIDUtil.getUUID2());
             userMedium.setaId(actionItem.getaId());
             userMedium.setUserId(actionItem.getUserId());
+            userMedium.setpId(actionItem.getpId());
             userMediumList.add(userMedium);
         }
 

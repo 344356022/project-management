@@ -5,18 +5,21 @@
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="a_id" property="aId" jdbcType="VARCHAR"/>
+        <result column="p_id" property="pId" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_id, a_id
+    id, user_id, a_id, p_id
     </sql>
 
     <!-- 添加任务列表时，新增任务项与人物的关系 -->
     <insert id="addProjectUserMedium" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-        insert into project_user_medium (user_id, a_id, id) values
+        insert into project_user_medium (user_id, a_id, id, p_id) values
         <foreach collection="list" item="item" separator=",">
             (#{item.userId,jdbcType=VARCHAR},
             #{item.aId,jdbcType=VARCHAR},
-            #{item.id,jdbcType=VARCHAR})
+            #{item.id,jdbcType=VARCHAR},
+            #{item.pId,jdbcType=VARCHAR}
+            )
         </foreach>
     </insert>
 
@@ -28,11 +31,17 @@
     </delete>
 
     <insert id="batchInsert" parameterType="com.gedi.projectmanagement.model.ProjectUserMedium">
-        insert into project_user_medium (user_id, a_id, id) values
+        insert into project_user_medium (user_id, a_id, id, p_id) values
         <foreach collection="list" item="item" separator=",">
             (#{item.userId,jdbcType=VARCHAR},
             #{item.aId,jdbcType=VARCHAR},
-            #{item.id,jdbcType=VARCHAR})
+            #{item.id,jdbcType=VARCHAR},
+            #{item.pId,jdbcType=VARCHAR})
         </foreach>
     </insert>
+
+    <!-- 根据pId删除项目总计划清单 -->
+    <delete id="deletePUMBypId" parameterType="String">
+        delete from project_user_medium where p_id = #{pId}
+    </delete>
 </mapper>

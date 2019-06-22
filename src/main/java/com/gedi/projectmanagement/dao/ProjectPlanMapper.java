@@ -41,6 +41,14 @@ public interface ProjectPlanMapper {
      */
     List<ProjectPlan> selectBypName(@Param("pName") String pName);
 
+    /**
+     * 根据年度时间查询项目总体计划
+     *
+     * @param annualTime
+     * @return
+     */
+    List<ProjectPlan> selectByTime(@Param("annualTime") String annualTime);
+
     //查询所有得项目名称以及ID值；
     List<ProjectPlan> selectAllProject();
 

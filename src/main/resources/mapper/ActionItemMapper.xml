@@ -15,29 +15,31 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="ts_id" property="tsId" jdbcType="VARCHAR"/>
         <result column="p_project_phase_id" property="pProjectPhaseId" jdbcType="INTEGER"/>
+        <result column="p_id" property="pId" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
     a_id, `a_name`, a_pstart_time, a_pend_time, a_astart_time, a_aend_time,
-    a_percentage, a_state, a_is_result, creater, create_time, ts_id, p_project_phase_id
+    a_percentage, a_state, a_is_result, creater, create_time, ts_id, p_project_phase_id,p_id
   </sql>
 
     <!-- 新增项目中的任务项列表 -->
     <insert id="addActionItem" parameterType="com.gedi.projectmanagement.model.ActionItem">
         insert into action_item
         ( a_id,
-          `a_name`,
-          a_pstart_time,
-          a_pend_time,
-          a_astart_time,
-          a_aend_time,
-          a_percentage,
-          a_state,
-          a_is_result,
-          creater,
-          create_time,
-          ts_id,
-          p_id,
-          p_project_phase_id)
+        `a_name`,
+        a_pstart_time,
+        a_pend_time,
+        a_astart_time,
+        a_aend_time,
+        a_percentage,
+        a_state,
+        a_is_result,
+        creater,
+        create_time,
+        ts_id,
+        p_id,
+        p_project_phase_id
+        )
         values
         <foreach collection="list" item="item" open="" close="" separator=",">
             <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -51,7 +53,7 @@
                 #{item.aState,jdbcType=INTEGER},
                 #{item.aIsResult,jdbcType=BIT},
                 #{item.creater,jdbcType=VARCHAR},
-                #{item.createTime,jdbcType=TIMESTAMP},
+                NOW(),
                 #{item.tsId,jdbcType=VARCHAR},
                 #{item.pId,jdbcType=VARCHAR},
                 #{item.pProjectPhaseId,jdbcType=INTEGER}

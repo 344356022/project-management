@@ -35,6 +35,13 @@ public interface ProjectPlanService {
      */
     List<ProjectPlan> selectBypName(String pName);
 
+    /**
+     * 根据年度时间查询项目总体计划
+     *
+     * @param annualTime
+     * @return
+     */
+    List<ProjectPlan> selectByTime(String annualTime);
 
     //查询全部的项目名称；
     CodeAndMsg selectAllProject();

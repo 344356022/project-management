@@ -29,4 +29,12 @@ public interface ProjectUserMediumMapper {
      */
     void batchInsert(@Param("list") List<ProjectUserMedium> userMediumList);
 
+    /**
+     * 根据pId删除项目总计划清单
+     *
+     * @param pId
+     * @return
+     */
+    public int deletePUMBypId(String pId);
+
 }

@@ -1,10 +1,11 @@
 package com.gedi.projectmanagement.service.impl;
 
 import com.gedi.projectmanagement.dao.*;
-import com.gedi.projectmanagement.model.*;
+import com.gedi.projectmanagement.model.ActionItem;
+import com.gedi.projectmanagement.model.ProjectPlan;
+import com.gedi.projectmanagement.model.ProjectUserMedium;
 import com.gedi.projectmanagement.service.TaskClassService;
 import com.gedi.projectmanagement.util.UUIDUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,7 @@ public class TaskClassServiceImpl implements TaskClassService {
             userMedium.setId(UUIDUtil.getUUID2());
             userMedium.setaId(actionItem.getaId());
             userMedium.setUserId(actionItem.getUserId());
+            userMedium.setpId(actionItem.getpId());
             projectUserMediumList.add(userMedium);
         }
 

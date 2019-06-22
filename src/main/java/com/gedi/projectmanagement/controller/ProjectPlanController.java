@@ -2,21 +2,17 @@ package com.gedi.projectmanagement.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.gedi.projectmanagement.config.AuthHelper;
 import com.gedi.projectmanagement.config.AuthHelperProjectTotle;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
-import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.UserService;
-import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -39,19 +35,19 @@ public class ProjectPlanController {
 
     //列表展示所有
     @PostMapping("/listAll")
-    public CodeAndMsg selectById(String authCode, HttpServletRequest request) {
+    public CodeAndMsg selectById(HttpServletRequest request) {
 
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        /*CodeAndMsg codeAndMsg=new CodeAndMsg();
         String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
         User user = (User)codeAndMsg1.getData();
         HttpSession session = request.getSession();
-        session.setAttribute("user",user);
-        if(user!=null){
+        session.setAttribute("user",user);*/
+        if (projectPlanService.selectById() != null) {
             return projectPlanService.selectById();
-        }else{
+        } else {
 
-            return  projectPlanService.selectById();
+            return projectPlanService.selectById();
         }
 
     }
@@ -66,7 +62,8 @@ public class ProjectPlanController {
     @PostMapping(value = "/projectPlanList")
     public CodeAndMsg selectProjectPlanListByPidAndpProjectPhaseId(String pId, Integer pProjectPhaseId) {
         CodeAndMsg msg = new CodeAndMsg();
-        List<ProjectPlanList> projectPlanLists = projectPlanService.selectProjectPlanListByPidAndpProjectPhaseId(pId, pProjectPhaseId);
+        List<ProjectPlanList> projectPlanLists = projectPlanService.selectProjectPlanListByPidAndpProjectPhaseId(pId,
+                pProjectPhaseId);
         if (projectPlanLists != null) {
             msg.setCode(200);
             msg.setMsg("查询成功");
@@ -97,7 +94,38 @@ public class ProjectPlanController {
             msg.setResult(false);
         } else {
             List<ProjectPlan> projectPlans = projectPlanService.selectBypName(pName);
-            if (projectPlans != null) {
+            if (null != projectPlans && projectPlans.size() > 0) {
+                msg.setCode(200);
+                msg.setMsg("查询成功");
+                msg.setResult(true);
+                msg.setData(projectPlans);
+            } else {
+                msg.setCode(401);
+                msg.setMsg("查询失败");
+                msg.setResult(false);
+            }
+        }
+        return msg;
+    }
+
+    /**
+     * 根据年度时间查询项目总体计划
+     *
+     * @param annualTime
+     * @return
+     */
+    @PostMapping(value = "/selectByTime")
+    public CodeAndMsg selectByTime(@RequestBody String annualTime) {
+        CodeAndMsg msg = new CodeAndMsg();
+        JSONObject jsonObject = JSON.parseObject(annualTime);
+        annualTime = jsonObject.getString("annualTime");
+        if (null == annualTime || "" == annualTime) {
+            msg.setCode(401);
+            msg.setMsg("annualTime参数值为空,查询失败");
+            msg.setResult(false);
+        } else {
+            List<ProjectPlan> projectPlans = projectPlanService.selectByTime(annualTime);
+            if (null != projectPlans && projectPlans.size() > 0) {
                 msg.setCode(200);
                 msg.setMsg("查询成功");
                 msg.setResult(true);
@@ -137,8 +165,8 @@ public class ProjectPlanController {
 
     //获取企业ID值，appkey，serectkey等所必须的参数
     @GetMapping("queryEmterpriseMesg")
-    public String queryEmterpriseMesg(HttpServletRequest request){
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
+    public String queryEmterpriseMesg(HttpServletRequest request) {
+        CodeAndMsg codeAndMsg = new CodeAndMsg();
         String config = AuthHelperProjectTotle.getConfig(request);
         codeAndMsg.setMsg("获取成功");
         codeAndMsg.setCode(200);
