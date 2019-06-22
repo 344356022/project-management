@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>项目总体计划新增、编辑</title>
     <link rel="stylesheet" type="text/css" href="./css/pages/project_table.css">
     <script src="./js/jquery-3.3.1.js"></script>
@@ -17,112 +17,134 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <title>项目总体计划</title>
     <style>
-        .el-tabs__nav-wrap.is-scrollable{
+        .el-tabs__nav-wrap.is-scrollable {
             padding: 0;
         }
-        .el-tabs__nav-next, .el-tabs__nav-prev{
+
+        .el-tabs__nav-next, .el-tabs__nav-prev {
             display: none;
         }
-        .el-tabs__nav{
+
+        .el-tabs__nav {
             width: 100%;
         }
-        .el-tabs__nav>div{
+
+        .el-tabs__nav > div {
             width: 33.33333%;
             text-align: center;
             font-size: 12px;
             padding: 0;
         }
-        .el-tabs__nav>div:nth-child(2){
+
+        .el-tabs__nav > div:nth-child(2) {
             padding-left: 0 !important;
         }
-        .el-tabs__nav>div:nth-child(3){
+
+        .el-tabs__nav > div:nth-child(3) {
             padding-right: 0 !important;
         }
-        .el-tabs__item{
+
+        .el-tabs__item {
             padding: 0;
         }
-        .el-tabs__header{
+
+        .el-tabs__header {
             margin: 0;
         }
 
 
         /*表格*/
-        .cell .el-input__inner{
-            padding:0;
-            text-align:center;
+        .cell .el-input__inner {
+            padding: 0;
+            text-align: center;
         }
 
-        .el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell{
+        .el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell {
             padding-left: 0.03rem;
         }
-        .el-table .cell, .el-table th div{
+
+        .el-table .cell, .el-table th div {
             padding-right: 0.03rem;
         }
+
         /*表头固定*/
-        .idbody_title{
+        .idbody_title {
             z-index: 100;
             width: 100%;
             position: fixed;
-            top:0;
-            left:0;
+            top: 0;
+            left: 0;
         }
+
         /*主题内容*/
-        .project-table-content{
+        .project-table-content {
             position: absolute;
-            top:0.41rem;
+            top: 0.41rem;
             bottom: 0.42rem;
-            left:0;
-            right:0;
+            left: 0;
+            right: 0;
             overflow: auto;
         }
+
         /*提交按钮*/
-        .submits{
+        .submits {
             z-index: 100;
             position: fixed;
             bottom: 0;
             left: 0;
-            width:100%;
+            width: 100%;
             padding: 0.06rem;
             text-align: center;
             line-height: 0.3rem;
             font-size: 0.12rem;
-            background:#e9ebed;
+            background: #e9ebed;
         }
 
         /*点击按钮变颜色*/
-        .clickBtn{
-            color:#409EFF;
+        .clickBtn {
+            color: #409EFF;
         }
 
 
         /*弹出框样式修改*/
-        .el-dialog__header{
-            padding:0.1rem 4%;
+        .el-dialog__header {
+            padding: 0.1rem 4%;
         }
-        .el-dialog__title{
-            font-size:14px;
+
+        .el-dialog__title {
+            font-size: 14px;
         }
-        .el-dialog__body{
+
+        .el-dialog__body {
             padding: 0;
-            font-size:12px;
-        }
-        .el-dialog{
-            width: 92%;
-            margin:10px auto;
-            -webkit-box-shadow:0 1px 3px rgba(0,0,0,0);
-        }
-        .el-form-item__label{
             font-size: 12px;
         }
-        .el-form-item__label{
+
+        .el-dialog {
+            width: 92%;
+            margin: 10px auto;
+            -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+        }
+
+        .el-form-item__label {
+            font-size: 12px;
+        }
+
+        .el-form-item__label {
             text-align: left;
         }
-        .el-form-item__content{
+
+        .el-form-item__content {
             line-height: 0.4rem;
             width: 54%;
         }
-        .el-form-item{
+
+        .el-form-item {
             margin-bottom: 0.1rem;
+        }
+
+        .el-input__icon {
+            line-height: 30px !important;
         }
     </style>
 </head>
@@ -133,10 +155,23 @@
             <div class="option">
                 <div class="left">
                     <strong>年度:</strong>
-                    <select>
-                        <option>2019</option>
-                        <option>2018</option>
-                    </select>
+                    <el-select v-model="params.annualTime" placeholder="请选择">
+                        <el-option
+                                key=""
+                                label="请选择年份"
+                                value="">
+                        </el-option>
+                        <el-option
+                                key="2018"
+                                label="2018"
+                                value="2018">
+                        </el-option>
+                        <el-option
+                                key="2019"
+                                label="2019"
+                                value="2019">
+                        </el-option>
+                    </el-select>
                 </div>
                 <div class="right">
                     <el-input placeholder="请输入内容" v-model="searchTiaoJian" class="input-with-select">
@@ -145,7 +180,9 @@
                 </div>
             </div>
         </div>
-        <div class="totle">
+        <div style="text-align: center;line-height: 60px;width: 100%;" v-if="listMessage.length<=0?true:false">暂无数据
+        </div>
+        <div class="totle" v-else-if="listMessage.length>0?true:false">
             <div class="totle_list" v-for="(items,index) in listMessage" @click="listClick(items)">
                 <p>{{items.pName}}</p>
                 <span>计划开始时间：{{items.pStartTime}}</span>
@@ -159,49 +196,49 @@
                 title="新增项目列表"
                 :visible.sync="dialogVisible"
                 width="100%">
-                <div class="el-dialog">
-                    <el-form ref="form" :rules="rules" :model="forms" label-width="80">
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item  label="项目名称" prop="pName" label-width="1rem">
-                                    <el-input v-model="forms.pName" placeholder="请输入项目名称"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item  label="计划开始时间" prop="pStartTime" label-width="1rem">
-                                    <el-input v-model="forms.pStartTime" placeholder="2018-09-18"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item  label="计划结束时间" prop="pEndTime" label-width="1rem">
-                                    <el-input v-model="forms.pEndTime" placeholder="2018-09-18"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item  label="项目阶段" prop="pProjectPhaseId" label-width="1rem">
-                                    <el-select v-model="forms.pProjectPhaseId" placeholder="请选择项目阶段">
-                                        <el-option
-                                                v-for="(item,index) in productJieDuan"
-                                                :key="item.id"
-                                                :label="item.name"
-                                                :value="item.id">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item  label="项目完成进度" prop="pProgress" label-width="1rem">
-                                    <el-input v-model="forms.pProgress" placeholder="请输入项目完成进度"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                    </el-form>
-                </div>
-              <span slot="footer" class="dialog-footer">
+            <div class="el-dialog">
+                <el-form ref="form" :rules="rules" :model="forms" label-width="80">
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="项目名称" prop="pName" label-width="1rem">
+                                <el-input v-model="forms.pName" placeholder="请输入项目名称"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="计划开始时间" prop="pStartTime" label-width="1rem">
+                                <el-input v-model="forms.pStartTime" placeholder="2018-09-18"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="计划结束时间" prop="pEndTime" label-width="1rem">
+                                <el-input v-model="forms.pEndTime" placeholder="2018-09-18"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="项目阶段" prop="pProjectPhaseId" label-width="1rem">
+                                <el-select v-model="forms.pProjectPhaseId" placeholder="请选择项目阶段">
+                                    <el-option
+                                            v-for="(item,index) in productJieDuan"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="项目完成进度" prop="pProgress" label-width="1rem">
+                                <el-input v-model="forms.pProgress" placeholder="请输入项目完成进度"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form>
+            </div>
+            <span slot="footer" class="dialog-footer">
                   <el-button size="small" @click="dialogVisible = false">取 消</el-button>
                   <el-button size="small" type="primary" @click="trueEvent('form')">确 定</el-button>
               </span>
@@ -364,204 +401,218 @@
 
 <script>
     //匹配年月日
-    var validatePass2 = (rule, value, callback) => {
+    var validatePass2 = (rule, value, callback) =
+    >
+    {
         if (value === '') {
             callback(new Error('请输入日期时间'));
         } else {
-            var re =  /([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/;
+            var re = /([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/;
             if (!re.test(value)) {
                 callback(new Error('请输入正确的年月日格式'));
-            };
+            }
+            ;
 
             callback();
-        };
-    };
+        }
+        ;
+    }
+    ;
     //项目完成进度校验
-    var validatePass1 = (rule, value, callback) => {
+    var validatePass1 = (rule, value, callback) =
+    >
+    {
         if (value === '') {
             callback(new Error('请输入完成进度'));
         } else {
-            var re =  /^[1-9]\d*$/;
+            var re = /^[1-9]\d*$/;
             if (!re.test(value)) {
                 callback(new Error('请输入正整数'));
-            }else if (value>100){
+            } else if (value > 100) {
                 callback(new Error('完成进度不能超过100'));
-            } ;
+            }
+            ;
 
             callback();
-        };
-    };
+        }
+        ;
+    }
+    ;
     var myHome = new Vue({
-        el:"#idbody",
-        data:{
-            buttonsName:"新增项目计划",
+        el: "#idbody",
+        data: {
+            buttonsName: "新增项目计划",
 
-            pProjectPhaseIds:0,
+            pProjectPhaseIds: 0,
             //弹出层
-            dialogVisible:false,
+            dialogVisible: false,
             //form提交字段
-            forms:{
-                pId:"",
-                pName:"",//项目名称
-                pStartTime:"",//项目计划开始时间
-                pEndTime:"",//项目计划结束时间
-                pProjectPhaseId:"",//项目阶段ID
-                pProgress:"",//项目总体完成进度
-                createTime:"",//项目创建时间
-                creater:"",//项目创建人
+            forms: {
+                pId: "",
+                pName: "",//项目名称
+                pStartTime: "",//项目计划开始时间
+                pEndTime: "",//项目计划结束时间
+                pProjectPhaseId: "",//项目阶段ID
+                pProgress: "",//项目总体完成进度
+                createTime: "",//项目创建时间
+                creater: "",//项目创建人
             },
             //表达验证
-            rules:{
-                pName:[
-                    { required: true, message: '请输入项目名称', trigger: 'change' }
+            rules: {
+                pName: [
+                    {required: true, message: '请输入项目名称', trigger: 'change'}
                 ],
-                pStartTime:[
-                    { validator: validatePass2, trigger: 'blur' },
+                pStartTime: [
+                    {validator: validatePass2, trigger: 'blur'},
                 ],
-                pEndTime:[
-                    { validator: validatePass2, trigger: 'blur' },
+                pEndTime: [
+                    {validator: validatePass2, trigger: 'blur'},
                 ],
-                pProjectPhaseId:[
-                    { required: true, message: '请选择项目阶段', trigger: 'change' }
+                pProjectPhaseId: [
+                    {required: true, message: '请选择项目阶段', trigger: 'change'}
                 ],
-                pProgress:[
-                    { validator: validatePass1, trigger: 'blur' },
+                pProgress: [
+                    {validator: validatePass1, trigger: 'blur'},
                 ],
             },
             //项目阶段
-            productJieDuan:[
+            productJieDuan: [
                 {
-                    name:"需求分析",
-                    id:1,
+                    name: "需求分析",
+                    id: 1,
                 },
                 {
-                    name:"数据处理",
-                    id:2,
+                    name: "数据处理",
+                    id: 2,
                 },
                 {
-                    name:"系统开发",
-                    id:3,
+                    name: "系统开发",
+                    id: 3,
                 }
             ],
 
             //查询条件
-            searchTiaoJian:"",
-            pid:"",
+            //查询条件
+            params: {
+                annualTime: "",//时间
+                pName: "",//输入框
+            },
+            pid: "",
 
-            zrr:[],//责任人
+            zrr: [],//责任人
 
-            shows:true,
-            listMessage:[],
+            shows: true,
+            listMessage: [],
 
             /*默认展示的tab切换页*/
-            activeName2:"",
-            tableData:[],
+            activeName2: "",
+            tableData: [],
 
             /*状态*/
-            stateList:[
+            stateList: [
                 {
-                    name:"未开始",
-                    id:1,
+                    name: "未开始",
+                    id: 1,
                 },
                 {
-                    name:"进行中",
-                    id:2,
+                    name: "进行中",
+                    id: 2,
                 },
                 {
-                    name:"已完成",
-                    id:3,
+                    name: "已完成",
+                    id: 3,
                 }
             ],
             /*成果是否提交*/
-            isResultList:[
+            isResultList: [
                 {
-                    name:"待提交",
-                    id:1,
+                    name: "待提交",
+                    id: 1,
                 },
                 {
-                    name:"已提交",
-                    id:2,
+                    name: "已提交",
+                    id: 2,
                 },
             ],
             /*按钮动态绑定的class*/
-            isClickBtnColor1:"#000000",
-            isClickBtnColor:"#000000",
-
+            isClickBtnColor1: "#000000",
+            isClickBtnColor: "#000000",
 
 
             //确定是  修改还是提交  1为修改  2为提交
-            showEditOrSubmit:1,
+            showEditOrSubmit: 1,
         },
-        mounted:function(){
-            var _this=this;
+        mounted: function () {
+            var _this = this;
             _this.getDingDing();
+            //_this.getListMessage();
         },
-        methods:{
+        methods: {
             //弹出框确定事件
-            trueEvent:function(formName){
-                var _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
+            trueEvent: function (formName) {
+                var _this = this;
+                this.$refs[formName].validate((valid) = > {
+                    if(valid) {
                         $.ajax({
-                            url:"http://106.13.19.215:8082/MaintenanceProject/addProject",
-                            async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
-                            data:JSON.stringify({
-                                pId:_this.forms.pId,
-                                pName:_this.forms.pName,
-                                pStartTime:_this.forms.pStartTime,
-                                pEndTime:_this.forms.pEndTime,
-                                pProjectPhaseId:_this.forms.pProjectPhaseId,
-                                pProgress:_this.forms.pProgress
+                            url: "http://106.13.19.215:8082/MaintenanceProject/addProject",
+                            async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
+                            data: JSON.stringify({
+                                pId: _this.forms.pId,
+                                pName: _this.forms.pName,
+                                pStartTime: _this.forms.pStartTime,
+                                pEndTime: _this.forms.pEndTime,
+                                pProjectPhaseId: _this.forms.pProjectPhaseId,
+                                pProgress: _this.forms.pProgress
                             }),
-                            type:"POST",
-                            dataType:"JSON",
-                            contentType:"application/json;charset=utf-8",
-                            success:function(res){
+                            type: "POST",
+                            dataType: "JSON",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (res) {
                                 console.log(res);
 
-                                if (res.code==200){
-                                    _this.dialogVisible=false;
-                                    var params={
-                                        pName:"",
-                                     };
-                                    _this.getSearchData(params,false);
-                                } else{
-                                    _this.dialogVisible=true;
-                                };
+                                if (res.code == 200) {
+                                    _this.dialogVisible = false;
+
+                                    _this.getSearchData(false);
+                                } else {
+                                    _this.dialogVisible = true;
+                                }
+                                ;
 
                             }
                         });
                     }else{
                         return false;
-                    };
-                })
+            }
+                ;
+            })
             },
 
             //获取有关钉钉需要的值
-            getDingDing:function () {
-                var _this=this;
+            getDingDing: function () {
+                var _this = this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/MaintenanceProject/queryEmterpriseMesg",
-                    type:"GET",
-                    data:{},
-                    dataType:"json",
-                    success:function(res){
+                    url: "http://106.13.19.215:8082/MaintenanceProject/queryEmterpriseMesg",
+                    type: "GET",
+                    data: {},
+                    dataType: "json",
+                    success: function (res) {
                         _this.getCode(res);
                     }
                 });
             },
             //获取临时授权码,
-            getCode:function (_config) {
+            getCode: function (_config) {
                 console.log(_config);
-                var _this=this;
-                dd.ready(function() {
+                var _this = this;
+                dd.ready(function () {
                     dd.runtime.permission.requestAuthCode({
-                        corpId:_config.corpId, // 企业id
+                        corpId: _config.corpId, // 企业id
                         onSuccess: function (info) {
-                            _this.code=info.code;
+                            _this.code = info.code;
                             _this.getListMessage(info.code);//回显保存的数据
                         },
-                        onFail : function(err) {
+                        onFail: function (err) {
                             alert('fail: ' + JSON.stringify(err));
                         }
                     });
@@ -571,176 +622,177 @@
 
             //查询
             //获取查询的数据
-            getSearchData:function(objs,bool){
-                var _this=this;
+            getSearchData: function (bool) {
+                var _this = this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/projectPlan/projectBypName",
-                    async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
-                    data:JSON.stringify(objs),
-                    type:"POST",
-                    dataType:"JSON",
-                    contentType:"application/json;charset=utf-8",
-                    success:function(res){
-                        if (res.code==200){
-                            if (bool==true){
+                    url: "http://106.13.19.215:8082/projectPlan/projectBypName",
+                    async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
+                    data: _this.params,
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.code == 200) {
+                            if (bool == true) {
                                 _this.$message.success(res.msg);
-                            };
+                            }
+                            ;
 
 
-                            _this.listMessage=_this.sjzh(res.data);
-                            _this.searchTiaoJian="";
-                        };
+                            _this.listMessage = _this.sjzh(res.data);
+                            _this.searchTiaoJian = "";
+                        }
                     }
                 });
             },
-            searchs:function(objs){
-                var _this=this;
-                var objs={
-                    pName:_this.searchTiaoJian
-                };
-                _this.getSearchData(objs,true);
+            searchs: function (objs) {
+                var _this = this;
+
+                _this.getSearchData(true);
             },
             //校验显示状态
-            getStates:function(nums){
-                var _this=this;
-                var str="";
-                if (nums ==1){
+            getStates: function (nums) {
+                var _this = this;
+                var str = "";
+                if (nums == 1) {
                     str = "未开始";
-                } else if (nums ==2){
+                } else if (nums == 2) {
                     str = "进行中";
-                }else if (nums ==3){
+                } else if (nums == 3) {
                     str = "已完成";
-                };
+                }
+                ;
                 return str;
             },
 
             //项目阶段数据转换
-            sjzh:function(data){
-                var _this=this;
-                for(var i=0;i<data.length;i++){
-                    var items=data[i];
-                    if (items.pProjectPhaseId==1) {
-                        items.pProjectPhaseId="需求分析"
-                    }else if (items.pProjectPhaseId==2) {
-                        items.pProjectPhaseId="数据处理"
-                    }else if (items.pProjectPhaseId==3) {
-                        items.pProjectPhaseId="系统开发"
-                    };
-                };
+            sjzh: function (data) {
+                var _this = this;
+                for (var i = 0; i < data.length; i++) {
+                    var items = data[i];
+                    if (items.pProjectPhaseId == 1) {
+                        items.pProjectPhaseId = "需求分析"
+                    } else if (items.pProjectPhaseId == 2) {
+                        items.pProjectPhaseId = "数据处理"
+                    } else if (items.pProjectPhaseId == 3) {
+                        items.pProjectPhaseId = "系统开发"
+                    }
+                    ;
+                }
+                ;
                 return data;
             },
 
             //获取列表信息
-            getListMessage:function(code){
-                var _this=this;
+            getListMessage: function (code) {
+                var _this = this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/projectPlan/listAll",
-                    data:{'authCode':code},
-                    type:"POST",
-                    dataType:"json",
-                    success:function(res){
-                        _this.listMessage=_this.sjzh(res.data);
+                    url: "http://106.13.19.215:8082/projectPlan/listAll",
+                    data: {'authCode': code},
+                    type: "POST",
+                    dataType: "json",
+                    success: function (res) {
+                        _this.listMessage = _this.sjzh(res.data);
                         _this.getFzr();
                     }
                 });
             },
 
             //获取所有负责人
-            getFzr:function(){
-                var _this=this;
+            getFzr: function () {
+                var _this = this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/user/selectAllUser",
-                    data:{
-                    },
-                    type:"GET",
-                    dataType:"json",
-                    success:function(res){
-                        _this.zrr=_this.sjzh(res.data);
+                    url: "http://106.13.19.215:8082/user/selectAllUser",
+                    data: {},
+                    type: "GET",
+                    dataType: "json",
+                    success: function (res) {
+                        _this.zrr = _this.sjzh(res.data);
                     }
                 });
             },
 
             //点击列表信息
-            listClick:function (items) {
-                var _this=this;
-                _this.buttonsName="提交";
-                _this.shows=false;
-                _this.isClickBtnColor="#000000";
+            listClick: function (items) {
+                var _this = this;
+                _this.buttonsName = "提交";
+                _this.shows = false;
+                _this.isClickBtnColor = "#000000";
 
-                if(items.pProjectPhaseId=="需求分析"){
-                    items.pProjectPhaseId=1;
-                }else if(items.pProjectPhaseId=="数据处理"){
-                    items.pProjectPhaseId=2;
-                }else if(items.pProjectPhaseId=="系统开发"){
-                    items.pProjectPhaseId=3;
-                };
+                if (items.pProjectPhaseId == "需求分析") {
+                    items.pProjectPhaseId = "1";
+                } else if (items.pProjectPhaseId == "数据处理") {
+                    items.pProjectPhaseId = "2";
+                } else if (items.pProjectPhaseId == "系统开发") {
+                    items.pProjectPhaseId = "3";
+                }
+                ;
 
-                _this.pProjectPhaseIds=items.pProjectPhaseId;
-                _this.activeName2=items.pProjectPhaseId;
+                _this.pProjectPhaseIds = items.pProjectPhaseId;
+                _this.activeName2 = items.pProjectPhaseId;
 
-                _this.pid=items.pId;
+                _this.pid = items.pId;
                 _this.getProject(items);
             },
 
             /*获取项目总体甲基化清单明细*/
-            getProject:function(params){
-                var _this=this;
+            getProject: function (params) {
+                var _this = this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/projectPlan/projectPlanList",
-                    data:{
-                        pId:params.pId,
-                        pProjectPhaseId:params.pProjectPhaseId,
+                    url: "http://106.13.19.215:8082/projectPlan/projectPlanList",
+                    data: {
+                        pId: params.pId,
+                        pProjectPhaseId: params.pProjectPhaseId,
                     },
-                    type:"POST",
-                    dataType:"json",
-                    success:function(res){
-                         _this.showEditOrSubmit=1;
-                        for (var i=0;i<res.data.length;i++){
-                            var items=res.data[i];
-                            if (items.aaeTime!=null||items.aasTime!=null||items.apeTime!=null||items.apsTime!=null||items.isResult!=null||items.percentage!=null||items.state!=null||items.username!=null||items.userId!=null) {
-                                _this.showEditOrSubmit=2;
+                    type: "POST",
+                    dataType: "json",
+                    success: function (res) {
+                        _this.showEditOrSubmit = 1;
+                        for (var i = 0; i < res.data.length; i++) {
+                            var items = res.data[i];
+                            if (items.aaeTime != null || items.aasTime != null || items.apeTime != null || items.apsTime != null || items.isResult != null || items.percentage != null || items.state != null || items.username != null || items.userId != null) {
+                                _this.showEditOrSubmit = 2;
                                 //break;
                             }
-                          /*  else{
-                                _this.showEditOrSubmit=1;
-                                break;
-                            };*/
-                        } 
+                            /*  else{
+                                  _this.showEditOrSubmit=1;
+                                  break;
+                              };*/
+                        }
 
-                        _this.tableData=res.data;
+                        _this.tableData = res.data;
 
 
                     }
                 });
             },
             /*点击项目总体计划明细tab*/
-            handleClick:function(data){
-                var _this=this;
-                _this.pProjectPhaseIds=Number(data.name);
-                var params={
-                    pId:_this.pid,
-                    pProjectPhaseId:data.name,
+            handleClick: function (data) {
+                var _this = this;
+                _this.pProjectPhaseIds = Number(data.name);
+                var params = {
+                    pId: _this.pid,
+                    pProjectPhaseId: data.name,
                 };
                 _this.getProject(params);
             },
             /*新增项目列表事件*/
-            addList:function(){
-                var _this=this;
-                _this.isClickBtnColor1="#409EFF";
+            addList: function () {
+                var _this = this;
+                _this.isClickBtnColor1 = "#409EFF";
 
-                _this.dialogVisible=true;
+                _this.dialogVisible = true;
             },
             /*提交事件*/
-            submit:function(){
-                var _this=this;
-                _this.isClickBtnColor="#409EFF";
-                var newArray=[];
-                for (var i=0;i<_this.tableData.length;i++){
-                    var items=_this.tableData[i];
-                    var objss={
+            submit: function () {
+                var _this = this;
+                _this.isClickBtnColor = "#409EFF";
+                var newArray = [];
+                for (var i = 0; i < _this.tableData.length; i++) {
+                    var items = _this.tableData[i];
+                    var objss = {
                         aId: items.aId,
-                        aName:items.aName,
-                        tsId:items.tsId,
+                        aName: items.aName,
+                        tsId: items.tsId,
                         aPstartTime: items.apsTime,
                         aPendTime: items.apeTime,
                         aAstartTime: items.aasTime,
@@ -753,38 +805,42 @@
                         pProjectPhaseId: _this.pProjectPhaseIds,
                     };
                     newArray.push(objss);
+                }
+                ;
+                var objs = {
+                    items: newArray
                 };
-                var objs={
-                    items:newArray
-                };
-                var urls="";
-                if (_this.showEditOrSubmit==1){
-                    urls="http://106.13.19.215:8082/MaintenanceProject/addProjectList";
-                } else{
-                    urls="http://106.13.19.215:8082/actionItem/updateActionItemList";
-                };
+                var urls = "";
+                if (_this.showEditOrSubmit == 1) {
+                    urls = "http://106.13.19.215:8082/MaintenanceProject/addProjectList";
+                } else {
+                    urls = "http://106.13.19.215:8082/actionItem/updateActionItemList";
+                }
+                ;
 
                 $.ajax({
-                    url:urls,
-                    data:JSON.stringify(objs),
-                    type:"post",
-                    dataType:"JSON",
+                    url: urls,
+                    data: JSON.stringify(objs),
+                    type: "post",
+                    dataType: "JSON",
                     contentType: "application/json;charset=utf-8",
-                    success:function(res){
-                        if (res.code==200){
+                    success: function (res) {
+                        if (res.code == 200) {
                             _this.$message.success(res.msg);
-                            _this.pProjectPhaseIds=1;
+                            _this.pProjectPhaseIds = 1;
+                            _this.getListMessage();
                             setTimeout(function () {
-                                _this.shows=true;
-                                _this.buttonsName="新增项目计划";
-                            },2000);
-                        };
+                                _this.shows = true;
+                                _this.buttonsName = "新增项目计划";
+                            }, 2000);
+                        }
+                        ;
                     }
                 });
             },
         },
-        updated:function(){
-            var _this=this;
+        updated: function () {
+            var _this = this;
 
         },
     });

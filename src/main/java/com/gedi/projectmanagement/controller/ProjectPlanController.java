@@ -5,14 +5,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.config.AuthHelperProjectTotle;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
+import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.UserService;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -35,15 +38,14 @@ public class ProjectPlanController {
 
     //列表展示所有
     @PostMapping("/listAll")
-    public CodeAndMsg selectById(HttpServletRequest request) {
-
-        /*CodeAndMsg codeAndMsg=new CodeAndMsg();
+    public CodeAndMsg selectById(String authCode, HttpServletRequest request) {
+        CodeAndMsg codeAndMsg = new CodeAndMsg();
         String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
-        User user = (User)codeAndMsg1.getData();
+        User user = (User) codeAndMsg1.getData();
         HttpSession session = request.getSession();
-        session.setAttribute("user",user);*/
-        if (projectPlanService.selectById() != null) {
+        session.setAttribute("user", user);
+        if (user != null) {
             return projectPlanService.selectById();
         } else {
 
@@ -84,27 +86,24 @@ public class ProjectPlanController {
      * @return
      */
     @PostMapping(value = "/projectBypName")
-    public CodeAndMsg selectBypName(@RequestBody String pName) {
+    public CodeAndMsg selectBypName(String pName, String annualTime) {
         CodeAndMsg msg = new CodeAndMsg();
-        JSONObject jsonObject = JSON.parseObject(pName);
-        pName = jsonObject.getString("pName");
-        if (null == pName || "" == pName) {
-            msg.setCode(401);
-            msg.setMsg("pName参数值为空,查询失败");
-            msg.setResult(false);
+        ProjectPlan projectPlan = new ProjectPlan();
+        projectPlan.setAnnualTime(annualTime);
+        projectPlan.setpName(pName);
+        List<ProjectPlan> projectPlans = projectPlanService.selectBypName(projectPlan);
+        if (null != projectPlans && projectPlans.size() > 0) {
+            msg.setCode(200);
+            msg.setMsg("查询成功");
+            msg.setResult(true);
+            msg.setData(projectPlans);
         } else {
-            List<ProjectPlan> projectPlans = projectPlanService.selectBypName(pName);
-            if (null != projectPlans && projectPlans.size() > 0) {
-                msg.setCode(200);
-                msg.setMsg("查询成功");
-                msg.setResult(true);
-                msg.setData(projectPlans);
-            } else {
-                msg.setCode(401);
-                msg.setMsg("查询失败");
-                msg.setResult(false);
-            }
+            msg.setCode(200);
+            msg.setMsg("查询成功");
+            msg.setResult(true);
+            msg.setData(projectPlans);
         }
+
         return msg;
     }
 

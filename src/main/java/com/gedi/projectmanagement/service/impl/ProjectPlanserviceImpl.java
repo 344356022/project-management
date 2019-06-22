@@ -70,12 +70,12 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     /**
      * 根据pName模糊查询项目总体计划列表展示
      *
-     * @param pName
+     * @param projectPlan
      * @return
      */
     @Override
-    public List<ProjectPlan> selectBypName(String pName) {
-        return projectPlanMapper.selectBypName(pName);
+    public List<ProjectPlan> selectBypName(ProjectPlan projectPlan) {
+        return projectPlanMapper.selectBypName(projectPlan);
     }
 
     /**

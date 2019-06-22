@@ -30,10 +30,10 @@ public interface ProjectPlanService {
     /**
      * 根据pName模糊查询项目总体计划列表展示
      *
-     * @param pName
+     * @param projectPlan
      * @return
      */
-    List<ProjectPlan> selectBypName(String pName);
+    List<ProjectPlan> selectBypName(ProjectPlan projectPlan);
 
     /**
      * 根据年度时间查询项目总体计划

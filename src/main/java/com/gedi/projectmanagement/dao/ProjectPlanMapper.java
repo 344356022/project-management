@@ -31,15 +31,16 @@ public interface ProjectPlanMapper {
      * @param pProjectPhaseId
      * @return
      */
-    List<ProjectPlanList> selectProjectPlanListByPidAndpProjectPhaseId(@Param("pId") String pId, @Param("pProjectPhaseId") Integer pProjectPhaseId);
+    List<ProjectPlanList> selectProjectPlanListByPidAndpProjectPhaseId(@Param("pId") String pId, @Param(
+            "pProjectPhaseId") Integer pProjectPhaseId);
 
     /**
      * 根据pName模糊查询项目总体计划列表展示
      *
-     * @param pName
+     * @param projectPlan
      * @return
      */
-    List<ProjectPlan> selectBypName(@Param("pName") String pName);
+    List<ProjectPlan> selectBypName(@Param("projectPlan") ProjectPlan projectPlan);
 
     /**
      * 根据年度时间查询项目总体计划

@@ -62,6 +62,10 @@
             overflow: auto;
         }
 
+        .el-input__icon{
+            line-height: 30px !important;
+        }
+
     </style>
 </head>
 <body>
@@ -71,19 +75,33 @@
                 <div class="option">
                     <div class="left">
                         <strong>年度:</strong>
-                        <select>
-                            <option>2019</option>
-                            <option>2018</option>
-                        </select>
+                        <el-select v-model="params.annualTime" placeholder="请选择">
+                            <el-option
+                                    key=""
+                                    label="请选择年份"
+                                    value="">
+                            </el-option>
+                            <el-option
+                                    key="2018"
+                                    label="2018"
+                                    value="2018">
+                            </el-option>
+                            <el-option
+                                key="2019"
+                                label="2019"
+                                value="2019">
+                            </el-option>
+                        </el-select>
                     </div>
                     <div class="right">
-                        <el-input placeholder="请输入内容" v-model="searchTiaoJian" class="input-with-select">
+                        <el-input placeholder="请输入内容" v-model="params.pName" class="input-with-select">
                             <el-button slot="append" icon="el-icon-search" @click="searchs"></el-button>
                         </el-input>
                     </div>
                 </div>
             </div>
-            <div class="totle">
+            <div style="text-align: center;line-height: 60px;width: 100%;" v-if="listMessage.length<=0?true:false">暂无数据</div>
+            <div class="totle"  v-else-if="listMessage.length>0?true:false">
                 <div class="totle_list" v-for="(items,index) in listMessage" @click="listClick(items)">
                     <p>{{items.pName}}</p>
                     <span>计划开始时间：{{items.pStartTime}}</span>
@@ -229,7 +247,11 @@
             el:"#idbody",
             data:{
                 //查询条件
-                searchTiaoJian:"",
+                params:{
+                    annualTime:"",//时间
+                    pName:"",//输入框
+                },
+
 
                 pid:"",
                 shows:true,
@@ -245,6 +267,10 @@
                 _this.getDingDing();//获取临时授权码
             },
             methods:{
+                nianDu:function(){
+                    var _this=this;
+
+                },
                 //获取有关钉钉需要的值
                 getDingDing:function () {
                     var _this=this;
@@ -285,22 +311,18 @@
                 //查询
                 searchs:function(){
                     var _this=this;
-                    var objs={
-                        pName:_this.searchTiaoJian
-                    };
+
                     $.ajax({
                         url:"http://106.13.19.215:8082/projectPlan/projectBypName",
                         async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
-                        data:JSON.stringify(objs),
+                        data:_this.params,
                         type:"POST",
                         dataType:"JSON",
-                        contentType:"application/json;charset=utf-8",
                         success:function(res){
                             if (res.code==200){
                                 _this.$message.success(res.msg);
 
                                 _this.listMessage=_this.sjzh(res.data);
-                                _this.searchTiaoJian="";
                             };
                         }
                     });
@@ -341,7 +363,7 @@
                     var _this=this;
                     $.ajax({
                         url:"http://106.13.19.215:8082/projectPlan/listAll",
-                        data:{'authCode':code},
+                        data:{'authCode':code},z
                         type:"POST",
                         dataType:"json",
                         success:function(res){
