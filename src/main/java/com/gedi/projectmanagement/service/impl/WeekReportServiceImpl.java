@@ -4,7 +4,6 @@ import com.gedi.projectmanagement.dao.RecordTimeMapper;
 import com.gedi.projectmanagement.dao.WeekreportMapper;
 import com.gedi.projectmanagement.model.RecordTime;
 import com.gedi.projectmanagement.model.Weekreport;
-
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +68,7 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setTsId(weekreport.getTsId());
                 weekreport1.setwStatus(weekreport.getwStatus());
                 weekreport1.setwActualProportion(weekreport.getwActualProportion());
-                weekreport1.setwPlanProportion(weekreport.getwActualProportion());
+                weekreport1.setwPlanProportion(weekreport.getwPlanProportion());
                 weekreport1.setwRemark(weekreport.getwRemark());
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
@@ -90,7 +88,7 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setTsId(weekreport.getTsId());
                 weekreport1.setwStatus(weekreport.getwStatus());
                 weekreport1.setwActualProportion(weekreport.getwActualProportion());
-                weekreport1.setwPlanProportion(weekreport.getwActualProportion());
+                weekreport1.setwPlanProportion(weekreport.getwPlanProportion());
                 weekreport1.setwRemark(weekreport.getwRemark());
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
@@ -101,7 +99,6 @@ public class WeekReportServiceImpl implements WeekReportService {
                     recordTime.setwId(weekreport1.getwId());
                 }
                 recordTimeMapper.saveMoreDetialDayDate(dataList);
-
             }
 
         }
@@ -189,6 +186,25 @@ public class WeekReportServiceImpl implements WeekReportService {
             weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
             codeAndMsg.setCode(200);
             codeAndMsg.setMsg("修改状态成功");
+            codeAndMsg.setResult(true);
+            return codeAndMsg;
+        }else{
+            codeAndMsg.setCode(400);
+            codeAndMsg.setMsg("参数为空");
+            codeAndMsg.setResult(false);
+            return codeAndMsg;
+        }
+    }
+
+    @Override
+    public CodeAndMsg deleteWeekReportById(String wId) {
+
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        if(weekreportMapper.selectByWeekReportId(wId)!=null){
+            recordTimeMapper.deleteDayDate(wId);
+            weekreportMapper.deleteWeekReportById(wId);
+            codeAndMsg.setCode(200);
+            codeAndMsg.setMsg("修改成功");
             codeAndMsg.setResult(true);
             return codeAndMsg;
         }else{

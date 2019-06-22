@@ -30,10 +30,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public CodeAndMsg selectUserBySign() {
+    public CodeAndMsg selectUserBySign(String department) {
 
-        if (userMapper.selectUserBySign().size() != 0 && userMapper.selectUserBySign() != null) {
-            return CodeAndMsgUtil.setOK("查询成功", userMapper.selectUserBySign());
+        if (userMapper.selectUserBySign(department).size() != 0 && userMapper.selectUserBySign(department) != null) {
+            return CodeAndMsgUtil.setOK("查询成功", userMapper.selectUserBySign(department));
         } else {
             return CodeAndMsgUtil.setERROR("查询失败", null);
         }
@@ -116,7 +116,6 @@ public class UserServiceImpl implements UserService {
 
                 try {
                     listResponse = client1.execute(request1, accessToken);
-                    System.out.println(accessToken + "------accessToken2--------");
                     List<OapiUserListResponse.Userlist> userlist = listResponse.getUserlist();
                     for (OapiUserListResponse.Userlist userlist1 : userlist) {
                         //将数据封装到自己的实体类
@@ -135,8 +134,6 @@ public class UserServiceImpl implements UserService {
                 } catch (ApiException e) {
                     e.printStackTrace();
                 }
-
-                System.out.println("----------每天的早上08:30分执行定时器的任务执行了-------------");
             }
 
             codeAndMsg.setMsg("更新用户信息成功");
@@ -166,6 +163,15 @@ public class UserServiceImpl implements UserService {
 
         }
         return codeAndMsg;
+    }
+
+    @Override
+    public CodeAndMsg selectAllUser() {
+        if (userMapper.selectAllUser().size() != 0 && userMapper.selectAllUser()!= null) {
+            return CodeAndMsgUtil.setOK("查询成功", userMapper.selectAllUser());
+        } else {
+            return CodeAndMsgUtil.setERROR("查询失败", null);
+        }
     }
 
     @Override

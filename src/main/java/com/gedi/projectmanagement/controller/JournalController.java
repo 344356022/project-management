@@ -8,8 +8,13 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gedi.projectmanagement.config.AuthHelperDaily;
+import com.gedi.projectmanagement.config.AuthHelperProjectTotle;
+import com.gedi.projectmanagement.model.User;
+import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,10 @@ public class JournalController
 
 	@Autowired
 	private WeekReportService weekReportService;
+
+	@Autowired
+	private UserService userService;
+
 	/**
 	 * zpl
 	 * 查询日志列表
@@ -45,16 +54,18 @@ public class JournalController
 	 */
 	@PostMapping("/journal/list")
 	@ResponseBody
-	public HashMap list()
-	{
-		String userId = "userId";//暂时写死后续会从session获取用户信息
+	public HashMap list(String authCode, HttpServletRequest request) {
+		String userId = LoginUtil.login(authCode);
+		CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
+		User user = (User)codeAndMsg1.getData();
+		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
 		HashMap map = new HashMap();
 		List<HashMap<String,Object>> list = null;
-		if(userId != null && !"".equals(userId)){//判断是否传入用户id 有的话把userId放到map中
-			map.put("userId",userId);
+		if(userId1 != null && !"".equals(userId1)){//判断是否传入用户id 有的话把userId放到map中
+			map.put("userId",userId1);
 			//根据当前时间获取本周的周一到周五的时间
 			StringBuffer sb = new StringBuffer();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
@@ -101,14 +112,14 @@ public class JournalController
 		List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");//转换数据类型
 		for (Object ob: ll) {
 			Map mp = (Map) ob;
-			mp.put("userId","userId");//用户id暂时写死之后从session里取或者前台传递
+			mp.put("userId","025525064321734942");//用户id暂时写死之后从session里取或者前台传递
 			mp.put("rbId",UUIDUtil.getUUID2());//日报主键UUID
 		}
 		try {
 			int resultNum = journalService.insertJournalList(ll);//批量插入日报
 			if(resultNum > 0){//大于0表示批量插入成功
 				resultMap.put("code",200);
-				resultMap.put("msg","插入成功");
+				resultMap.put("msg","保存成功");
 				for (Object obj: ll) {//再次循环然后调用周报中的改变实际完成进度接口之所以再次循环是为了批量插入完整性
 					Map mp = (Map) obj;
 					//调用周报中修改周报实际完成进度接口
@@ -142,7 +153,6 @@ public class JournalController
 				sb.append(line);
 			}
 			jsonParam = JSONObject.parseObject(sb.toString()); // 直接将json信息打印出来
-			System.out.println(jsonParam.toJSONString());
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -175,13 +185,26 @@ public class JournalController
 		while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
 			calendar.add(Calendar.DAY_OF_WEEK, -1);
 		}
-		Date[] dates = new Date[5];
-		for (int i = 0; i < 5; i++) {
+		Date[] dates = new Date[12];
+		for (int i = 0; i < 12; i++) {
 			dates[i] = calendar.getTime();
 			calendar.add(Calendar.DATE, 1);
 		}
 		return dates;
 
+	}
+
+	//获取企业ID值，appkey，serectkey等所必须的参数
+	@GetMapping("/journal/queryEmterpriseMesg")
+	@ResponseBody
+	public String queryEmterpriseMesg(HttpServletRequest request){
+		CodeAndMsg codeAndMsg=new CodeAndMsg();
+		String config = AuthHelperDaily.getConfig(request);
+		codeAndMsg.setMsg("获取成功");
+		codeAndMsg.setCode(200);
+		codeAndMsg.setData(config);
+		codeAndMsg.setResult(true);
+		return config;
 	}
 
 

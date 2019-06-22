@@ -1,6 +1,8 @@
 package com.gedi.projectmanagement.service.impl;
 
+import com.gedi.projectmanagement.dao.ActionItemMapper;
 import com.gedi.projectmanagement.dao.ProjectPlanMapper;
+import com.gedi.projectmanagement.dao.ProjectUserMediumMapper;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.service.ProjectPlanService;
@@ -24,6 +26,12 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     @Resource
     private ProjectPlanMapper projectPlanMapper;
 
+    @Resource
+    private ActionItemMapper actionItemMapper;
+
+    @Resource
+    private ProjectUserMediumMapper projectUserMediumMapper;
+
     //查询所有用于列表展示
     @Override
     public CodeAndMsg selectById() {
@@ -40,7 +48,9 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     @Override
     public String addProject(ProjectPlan projectPlan) {
         projectPlan.setpId(UUIDUtil.getUUID2());
-        projectPlan.setpProjectPhaseId(1);
+        String startTime = projectPlan.getpStartTime();
+        String annualTime = startTime.substring(0, 4);
+        projectPlan.setAnnualTime(annualTime);
         projectPlanMapper.addProject(projectPlan);
         return "success";
     }
@@ -68,6 +78,17 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         return projectPlanMapper.selectBypName(pName);
     }
 
+    /**
+     * 根据年度时间查询项目总体计划
+     *
+     * @param annualTime
+     * @return
+     */
+    @Override
+    public List<ProjectPlan> selectByTime(String annualTime) {
+        return projectPlanMapper.selectByTime(annualTime);
+    }
+
     @Override
     public CodeAndMsg selectAllProject() {
 
@@ -77,6 +98,22 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
             return CodeAndMsgUtil.setERROR("msg", null);
         }
 
+    }
+
+    /**
+     * 根据pId删除项目总计划
+     *
+     * @param pId
+     * @return
+     */
+    @Override
+    public String deleteProjectBypId(String pId) {
+        int i = projectPlanMapper.deleteProjectBypId(pId);
+        if (i > 0) {
+            int j = actionItemMapper.deleteActionItemBypId(pId);
+            int k = projectUserMediumMapper.deletePUMBypId(pId);
+        }
+        return "success";
     }
 
 }

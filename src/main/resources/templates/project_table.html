@@ -6,14 +6,15 @@
     <title>项目总体计划新增、编辑</title>
     <link rel="stylesheet" type="text/css" href="./css/pages/project_table.css">
     <script src="./js/jquery-3.3.1.js"></script>
-    <link rel="stylesheet" href="./element_ui/index.css">
     <link rel="stylesheet" href="./element_ui/iconfont/iconfont.css">
     <script src="./element_ui/vue.js" type="text/javascript"></script>
-    <script src="./element_ui/index.js" type="text/javascript"></script>
     <script src="./element_ui/vuex.js" type="text/javascript"></script>
     <script src="./element_ui/store.js" type="text/javascript"></script>
     <script src="./element_ui/vue-resource.js" type="text/javascript"></script>
     <script src="./element_ui/vue-router.js" type="text/javascript"></script>
+    <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <title>项目总体计划</title>
     <style>
         .el-tabs__nav-wrap.is-scrollable{
@@ -493,7 +494,7 @@
         },
         mounted:function(){
             var _this=this;
-            _this.getListMessage();
+            _this.getDingDing();
         },
         methods:{
             //弹出框确定事件
@@ -502,7 +503,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         $.ajax({
-                            url:"http://localhost:8080/MaintenanceProject/addProject",
+                            url:"http://106.13.19.215:8082/MaintenanceProject/addProject",
                             async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                             data:JSON.stringify({
                                 pId:_this.forms.pId,
@@ -536,13 +537,44 @@
                 })
             },
 
+            //获取有关钉钉需要的值
+            getDingDing:function () {
+                var _this=this;
+                $.ajax({
+                    url:"http://106.13.19.215:8082/MaintenanceProject/queryEmterpriseMesg",
+                    type:"GET",
+                    data:{},
+                    dataType:"json",
+                    success:function(res){
+                        _this.getCode(res);
+                    }
+                });
+            },
+            //获取临时授权码,
+            getCode:function (_config) {
+                console.log(_config);
+                var _this=this;
+                dd.ready(function() {
+                    dd.runtime.permission.requestAuthCode({
+                        corpId:_config.corpId, // 企业id
+                        onSuccess: function (info) {
+                            _this.code=info.code;
+                            _this.getListMessage(info.code);//回显保存的数据
+                        },
+                        onFail : function(err) {
+                            alert('fail: ' + JSON.stringify(err));
+                        }
+                    });
+                });
+
+            },
 
             //查询
             //获取查询的数据
             getSearchData:function(objs,bool){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8080/projectPlan/projectBypName",
+                    url:"http://106.13.19.215:8082/projectPlan/projectBypName",
                     async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data:JSON.stringify(objs),
                     type:"POST",
@@ -599,12 +631,11 @@
             },
 
             //获取列表信息
-            getListMessage:function(){
+            getListMessage:function(code){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8080/projectPlan/listAll",
-                    data:{
-                    },
+                    url:"http://106.13.19.215:8082/projectPlan/listAll",
+                    data:{'authCode':code},
                     type:"POST",
                     dataType:"json",
                     success:function(res){
@@ -618,7 +649,7 @@
             getFzr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8080/weekReport/selectUserByDepartment",
+                    url:"http://106.13.19.215:8082/user/selectAllUser",
                     data:{
                     },
                     type:"GET",
@@ -637,11 +668,11 @@
                 _this.isClickBtnColor="#000000";
 
                 if(items.pProjectPhaseId=="需求分析"){
-                    items.pProjectPhaseId="1";
+                    items.pProjectPhaseId=1;
                 }else if(items.pProjectPhaseId=="数据处理"){
-                    items.pProjectPhaseId="2";
+                    items.pProjectPhaseId=2;
                 }else if(items.pProjectPhaseId=="系统开发"){
-                    items.pProjectPhaseId="3";
+                    items.pProjectPhaseId=3;
                 };
 
                 _this.pProjectPhaseIds=items.pProjectPhaseId;
@@ -655,7 +686,7 @@
             getProject:function(params){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8080/projectPlan/projectPlanList",
+                    url:"http://106.13.19.215:8082/projectPlan/projectPlanList",
                     data:{
                         pId:params.pId,
                         pProjectPhaseId:params.pProjectPhaseId,
@@ -685,6 +716,7 @@
             /*点击项目总体计划明细tab*/
             handleClick:function(data){
                 var _this=this;
+                _this.pProjectPhaseIds=Number(data.name);
                 var params={
                     pId:_this.pid,
                     pProjectPhaseId:data.name,
@@ -727,9 +759,9 @@
                 };
                 var urls="";
                 if (_this.showEditOrSubmit==1){
-                    urls="http://localhost:8080/MaintenanceProject/addProjectList";
+                    urls="http://106.13.19.215:8082/MaintenanceProject/addProjectList";
                 } else{
-                    urls="http://localhost:8080/actionItem/updateActionItemList";
+                    urls="http://106.13.19.215:8082/actionItem/updateActionItemList";
                 };
 
                 $.ajax({
@@ -741,7 +773,7 @@
                     success:function(res){
                         if (res.code==200){
                             _this.$message.success(res.msg);
-
+                            _this.pProjectPhaseIds=1;
                             setTimeout(function () {
                                 _this.shows=true;
                                 _this.buttonsName="新增项目计划";

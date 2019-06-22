@@ -34,5 +34,8 @@ public interface WeekReportService {
     //修改动态修改实际占比
     CodeAndMsg updateActual(String wId, int valueZ);
 
+    //根据weekreport的Id值删除相应的数据；
+    CodeAndMsg deleteWeekReportById(String wId);
+
 
 }

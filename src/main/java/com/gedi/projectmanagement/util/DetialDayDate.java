@@ -3,6 +3,8 @@ package com.gedi.projectmanagement.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -120,7 +122,7 @@ public class DetialDayDate {
     }
 
     //获取连续十二天每天所对应的具体日期；
-    public static List<String> getTweleveDayDate(){
+    public static List<String> getTweleveDayDates(){
         Date date1=new Date();
         String date= new SimpleDateFormat("yyyy-MM-dd").format(date1);
         Date da=null;
@@ -138,7 +140,7 @@ public class DetialDayDate {
     }
 
 
-    public static List<Date> getTweleveDayDates(){
+    /*public static List<Date> getTweleveDayDates(){
 
         List<Date> tweleveDayDates=new ArrayList<>();
         List<String> tweleveDayDate = getTweleveDayDate();
@@ -152,5 +154,20 @@ public class DetialDayDate {
             }
         }
         return tweleveDayDates;
+    }*/
+
+
+    //根据系统时间获取本周的周一所对应的具体日期，以及连续11天所对应的日期；
+    public static List<String> getTweleveDayDate() {
+        List<String> list = new ArrayList<>();
+        LocalDate localDate = LocalDate.now();
+        LocalDate reviewTime = localDate.with(DayOfWeek.MONDAY);
+        for (int i = 0; i <= 11; i++) {
+            list.add(reviewTime.plusDays(i).toString());
+        }
+        return list;
     }
+
+
+
 }

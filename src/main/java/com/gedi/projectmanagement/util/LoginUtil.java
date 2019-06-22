@@ -31,7 +31,7 @@ public class LoginUtil {
 
     public static String login(String authCode) {
 
-        //System.out.println(requestAuthCode);
+        //(requestAuthCode);
 
         //获取accessToken,注意正是代码要有异常流处理
         String accessToken = AccessTokenUtil.getToken();
@@ -60,19 +60,6 @@ public class LoginUtil {
         //3.查询得到当前用户的userId
         // 获得到userId之后应用应该处理应用自身的登录会话管理（session）,避免后续的业务交互（前端到应用服务端）每次都要重新获取用户身份，提升用户体验
         String userId = response.getUserid();
-
-      /*  CodeAndMsg codeAndMsg = userService.selectUserById(userId);
-
-
-
-
-        String userName = getUserName(accessToken, userId);
-        System.out.println("用户名称" + userName);
-        //返回结果
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("userId", userId);
-        resultMap.put("userName", userName);
-        ServiceResult serviceResult = ServiceResult.success(resultMap);*/
         return userId;
     }
 
@@ -84,8 +71,6 @@ public class LoginUtil {
             request.setUserid(userId);
             request.setHttpMethod("GET");
             OapiUserGetResponse response = client.execute(request, accessToken);
-
-
             return response.getName();
         } catch (ApiException e) {
             e.printStackTrace();

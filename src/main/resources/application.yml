@@ -1,14 +1,14 @@
 server:
   port: 8080
-  tomcat:
-    uri-encoding: UTF-8
 spring:  ## 数据源的配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    username: root
-    url: jdbc:mysql://localhost:3306/xmgl?allowMultiQueries=true
-    password: 1234
+
+    username: zzgd
+    url: jdbc:mysql://180.76.139.168:3306/test2?useSSL=false&allowMultiQueries=true
+    password: du@123456
+
     dbcp2:                                          # 进行数据库连接池的配置
       min-idle: 5                                   # 数据库连接池的最小维持连接数    
       initial-size: 5                               # 初始化提供的连接数

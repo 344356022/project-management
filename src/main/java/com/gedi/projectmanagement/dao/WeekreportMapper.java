@@ -47,4 +47,8 @@ public interface WeekreportMapper {
 
     //批量修改双周计划信息
    void updateMoreWeekReport(@Param("list")List<Weekreport> weekreports);
+
+   //根据weekreport的Id值删除相应的数据；
+    void deleteWeekReportById(String wId);
+
 }

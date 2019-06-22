@@ -24,6 +24,7 @@ public class ProjectPlan {
 
     private String creater; // 项目创建人
 
+    private String annualTime; // 年度时间
 
     public String getpId() {
         return pId;
@@ -96,7 +97,8 @@ public class ProjectPlan {
     public ProjectPlan() {
     }
 
-    public ProjectPlan(String pId, String pName, String pStartTime, String pEndTime, Integer pProjectPhaseId, Integer pProgress, String createTime, String creater) {
+    public ProjectPlan(String pId, String pName, String pStartTime, String pEndTime, Integer pProjectPhaseId,
+                       Integer pProgress, String createTime, String creater, String annualTime) {
         this.pId = pId;
         this.pName = pName;
         this.pStartTime = pStartTime;
@@ -105,6 +107,15 @@ public class ProjectPlan {
         this.pProgress = pProgress;
         this.createTime = createTime;
         this.creater = creater;
+        this.annualTime = annualTime;
+    }
+
+    public String getAnnualTime() {
+        return annualTime;
+    }
+
+    public void setAnnualTime(String annualTime) {
+        this.annualTime = annualTime;
     }
 
     @Override
@@ -112,12 +123,13 @@ public class ProjectPlan {
         return "ProjectPlan{" +
                 "pId='" + pId + '\'' +
                 ", pName='" + pName + '\'' +
-                ", pStartTime=" + pStartTime +
-                ", pEndTime=" + pEndTime +
+                ", pStartTime='" + pStartTime + '\'' +
+                ", pEndTime='" + pEndTime + '\'' +
                 ", pProjectPhaseId=" + pProjectPhaseId +
                 ", pProgress=" + pProgress +
-                ", createTime=" + createTime +
+                ", createTime='" + createTime + '\'' +
                 ", creater='" + creater + '\'' +
+                ", annualTime='" + annualTime + '\'' +
                 '}';
     }
 }
