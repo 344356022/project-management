@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>-->
     <!-- 日报列表-->
     <select id="selectJournalResultList"  parameterType="Map" resultType="Map">
-        SELECT w.w_id,p.p_id,w.ts_id,p.p_name,w.w_work_report,w.r_finish
+        SELECT w.w_id,p.p_id,w.ts_id,p.p_name,w.w_work_report,w.r_finish,w.w_status
         FROM weekreport w, project_plan p
         WHERE w.p_id = p.p_id
          AND w.user_id = #{userId}
