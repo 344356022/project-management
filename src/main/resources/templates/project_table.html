@@ -537,11 +537,14 @@
 
             //确定是  修改还是提交  1为修改  2为提交
             showEditOrSubmit: 1,
+
+            //防止极限点击
+            jiXianClick:0,
         },
         mounted: function () {
             var _this = this;
             _this.getDingDing();
-            _this.getListMessage();
+            //_this.getListMessage();
         },
         methods: {
             //弹出框确定事件
@@ -564,17 +567,24 @@
                             dataType: "JSON",
                             contentType: "application/json;charset=utf-8",
                             success: function (res) {
-                                console.log(res);
-
+                                //console.log(res);
                                 if (res.code == 200) {
                                     _this.dialogVisible = false;
-
                                     _this.getSearchData(false);
                                 } else {
                                     _this.dialogVisible = true;
                                 }
                                 ;
-
+                                _this.forms={
+                                    pId: "",
+                                    pName: "",//项目名称
+                                    pStartTime: "",//项目计划开始时间
+                                    pEndTime: "",//项目计划结束时间
+                                    pProjectPhaseId: "",//项目阶段ID
+                                    pProgress: "",//项目总体完成进度
+                                    createTime: "",//项目创建时间
+                                    creater: "",//项目创建人
+                                };
                             }
                         });
                     }else{
@@ -683,7 +693,7 @@
                 var _this = this;
                 $.ajax({
                     url: "http://172.20.10.3:8082/projectPlan/listAll",
-                    data: {'authCode': code},
+                    data: {'authCode':code},
                     type: "POST",
                     dataType: "json",
                     success: function (res) {
@@ -710,6 +720,7 @@
             //点击列表信息
             listClick: function (items) {
                 var _this = this;
+                _this.jiXianClick=0;
                 _this.buttonsName = "提交";
                 _this.shows = false;
                 _this.isClickBtnColor = "#000000";
@@ -764,6 +775,7 @@
             /*点击项目总体计划明细tab*/
             handleClick: function (data) {
                 var _this = this;
+                _this.jiXianClick=0;
                 _this.pProjectPhaseIds = Number(data.name);
                 var params = {
                     pId: _this.pid,
@@ -781,59 +793,68 @@
             /*提交事件*/
             submit: function () {
                 var _this = this;
-                _this.isClickBtnColor = "#409EFF";
-                var newArray = [];
-                for (var i = 0; i < _this.tableData.length; i++) {
-                    var items = _this.tableData[i];
-                    var objss = {
-                        aId: items.aId,
-                        aName: items.aName,
-                        tsId: items.tsId,
-                        aPstartTime: items.apsTime,
-                        aPendTime: items.apeTime,
-                        aAstartTime: items.aasTime,
-                        aAendTime: items.aaeTime,
-                        userId: items.userId,
-                        aPercentage: items.percentage,
-                        aState: items.state,
-                        aIsResult: items.isResult,
-                        pId: _this.pid,
-                        pProjectPhaseId: _this.pProjectPhaseIds,
-                    };
-                    newArray.push(objss);
-                }
-                ;
-                var objs = {
-                    items: newArray
-                };
-                var urls = "";
-                if (_this.showEditOrSubmit == 1) {
-                    urls = "http://172.20.10.3:8082/MaintenanceProject/addProjectList";
-                } else {
-                    urls = "http://172.20.10.3:8082/actionItem/updateActionItemList";
-                }
-                ;
-
-                $.ajax({
-                    url: urls,
-                    data: JSON.stringify(objs),
-                    type: "post",
-                    dataType: "JSON",
-                    contentType: "application/json;charset=utf-8",
-                    success: function (res) {
-                        if (res.code == 200) {
-                            _this.$message.success(res.msg);
-                            _this.pProjectPhaseIds = 1;
-                            _this.getListMessage();
-                            setTimeout(function () {
-                                _this.shows = true;
-                                _this.buttonsName = "新增项目计划";
-                            }, 2000);
-                        }
-                        ;
+                _this.jiXianClick++;
+                if (_this.jiXianClick == 1) {
+                    _this.jiXianClick=2;
+                    _this.isClickBtnColor = "#409EFF";
+                    var newArray = [];
+                    for (var i = 0; i < _this.tableData.length; i++) {
+                        var items = _this.tableData[i];
+                        var objss = {
+                            aId: items.aId,
+                            aName: items.aName,
+                            tsId: items.tsId,
+                            aPstartTime: items.apsTime,
+                            aPendTime: items.apeTime,
+                            aAstartTime: items.aasTime,
+                            aAendTime: items.aaeTime,
+                            userId: items.userId,
+                            aPercentage: items.percentage,
+                            aState: items.state,
+                            aIsResult: items.isResult,
+                            pId: _this.pid,
+                            pProjectPhaseId: _this.pProjectPhaseIds,
+                        };
+                        newArray.push(objss);
                     }
-                });
-            },
+                    ;
+                    var objs = {
+                        items: newArray
+                    };
+                    var urls = "";
+                    if (_this.showEditOrSubmit == 1) {
+                        urls = "http://172.20.10.3:8082/MaintenanceProject/addProjectList";
+                    } else {
+                        urls = "http://172.20.10.3:8082/actionItem/updateActionItemList";
+                    }
+                    ;
+
+                    $.ajax({
+                        url: urls,
+                        data: JSON.stringify(objs),
+                        type: "post",
+                        dataType: "JSON",
+                        contentType: "application/json;charset=utf-8",
+                        success: function (res) {
+                            if (res.code == 200) {
+                                _this.$message.success(res.msg);
+                                _this.pProjectPhaseIds = 1;
+                                _this.getListMessage();
+                                setTimeout(function () {
+                                    _this.shows = true;
+                                    _this.buttonsName = "新增项目计划";
+                                }, 2000);
+                            }
+                            ;
+                        }
+                    });
+                }else{
+                    _this.$message({
+                        message:"请勿多次提交",
+                        type:"warning",
+                    });
+                }
+            }
         },
         updated: function () {
             var _this = this;
