@@ -36,6 +36,7 @@ public class WeekRportInfo {
 
     public WeekRportInfo(){}
 
+
     public WeekRportInfo(String wId, String wWorkReport, Integer wActualProportion, Integer wPlanProportion, String wRemark, String pId, String userId, String tsId, Integer wStatus, Integer wType, List<RecordTime> recordTimes) {
         this.wId = wId;
         this.wWorkReport = wWorkReport;
@@ -47,6 +48,10 @@ public class WeekRportInfo {
         this.tsId = tsId;
         this.wStatus = wStatus;
         this.wType = wType;
+        this.recordTimes = recordTimes;
+    }
+
+    public void setRecordTimes(List<RecordTime> recordTimes) {
         this.recordTimes = recordTimes;
     }
 
@@ -132,10 +137,6 @@ public class WeekRportInfo {
 
     public List<RecordTime> getRecordTimes() {
         return recordTimes;
-    }
-
-    public void setRecordTimes(List<RecordTime> recordTimes) {
-        this.recordTimes = recordTimes;
     }
 
     @Override

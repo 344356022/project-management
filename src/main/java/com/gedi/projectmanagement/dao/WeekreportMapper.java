@@ -51,4 +51,8 @@ public interface WeekreportMapper {
    //根据weekreport的Id值删除相应的数据；
     void deleteWeekReportById(String wId);
 
+    //当实际占比于计划占比相等时修改状态为已完成的同时将实际占比的值更改
+    void updateActualAndStatus(@Param("wId") String wId, @Param("valueZ") int valueZ,@Param("rFinish") int rFinish);
+
+
 }

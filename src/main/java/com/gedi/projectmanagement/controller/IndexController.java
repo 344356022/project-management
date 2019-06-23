@@ -51,15 +51,12 @@ public class IndexController {
     @ResponseBody
     public ServiceResult login(@RequestParam(value = "authCode") String requestAuthCode) {
 
-        System.out.println(requestAuthCode);
-
         //获取accessToken,注意正是代码要有异常流处理
         String accessToken = AccessTokenUtil.getToken();
 
         //获取用户信息，调用相应的接口
         DingTalkClient client = new DefaultDingTalkClient(URLConstant.URL_GET_USER_INFO);
 
-        System.out.println(URLConstant.URL_GET_USER_INFO);
 
         //创建OapiUserGetuserinfoRequest对象
         OapiUserGetuserinfoRequest request = new OapiUserGetuserinfoRequest();
@@ -89,11 +86,7 @@ public class IndexController {
        /* CodeAndMsg codeAndMsg = userService.selectUserById(userId);
         User user = (User)codeAndMsg.getData();
         final String department = user.getuDepartment();*/
-
-
-
         String userName = getUserName(accessToken, userId);
-        System.out.println("用户名称" + userName);
         //返回结果
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("userId", userId);

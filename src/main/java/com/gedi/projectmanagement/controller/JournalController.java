@@ -26,6 +26,7 @@ import com.gedi.projectmanagement.model.Journal;
 import com.gedi.projectmanagement.service.IJournalService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 日志 信息操作处理
@@ -55,11 +56,16 @@ public class JournalController
 	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
+
+        System.out.println(authCode+"我是临时授权码");
+
 		String userId = LoginUtil.login(authCode);
 		CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
 		User user = (User)codeAndMsg1.getData();
-		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
+		String userId1 =user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
+		HttpSession session = request.getSession();
+		session.setAttribute("userj",user.getUserId());
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
 		HashMap map = new HashMap();
@@ -109,10 +115,12 @@ public class JournalController
 		resultMap.put("msg","失败");
 		JSONObject jsonParam = this.getJSONParam(request);//转换传入json的数据
 		Map<String, Object>  map = ( Map<String, Object>)jsonParam;//转换数据类型为map
+		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userj");
 		List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");//转换数据类型
 		for (Object ob: ll) {
 			Map mp = (Map) ob;
-			mp.put("userId","025525064321734942");//用户id暂时写死之后从session里取或者前台传递
+			mp.put("userId",userId);//用户id暂时写死之后从session里取或者前台传递
 			mp.put("rbId",UUIDUtil.getUUID2());//日报主键UUID
 		}
 		try {

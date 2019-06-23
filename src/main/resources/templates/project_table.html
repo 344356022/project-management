@@ -174,7 +174,7 @@
                     </el-select>
                 </div>
                 <div class="right">
-                    <el-input placeholder="请输入内容" v-model="searchTiaoJian" class="input-with-select">
+                    <el-input placeholder="请输入内容" v-model="params.pName" class="input-with-select">
                         <el-button slot="append" icon="el-icon-search" @click="searchs"></el-button>
                     </el-input>
                 </div>
@@ -401,9 +401,7 @@
 
 <script>
     //匹配年月日
-    var validatePass2 = (rule, value, callback) =
-    >
-    {
+    var validatePass2 = (rule, value, callback) =>{
         if (value === '') {
             callback(new Error('请输入日期时间'));
         } else {
@@ -419,9 +417,7 @@
     }
     ;
     //项目完成进度校验
-    var validatePass1 = (rule, value, callback) =
-    >
-    {
+    var validatePass1 = (rule, value, callback) =>{
         if (value === '') {
             callback(new Error('请输入完成进度'));
         } else {
@@ -545,16 +541,16 @@
         mounted: function () {
             var _this = this;
             _this.getDingDing();
-            //_this.getListMessage();
+            _this.getListMessage();
         },
         methods: {
             //弹出框确定事件
             trueEvent: function (formName) {
                 var _this = this;
-                this.$refs[formName].validate((valid) = > {
+                this.$refs[formName].validate((valid) => {
                     if(valid) {
                         $.ajax({
-                            url: "http://106.13.19.215:8082/MaintenanceProject/addProject",
+                            url: "http://172.20.10.3:8082/MaintenanceProject/addProject",
                             async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                             data: JSON.stringify({
                                 pId: _this.forms.pId,
@@ -592,7 +588,7 @@
             getDingDing: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/MaintenanceProject/queryEmterpriseMesg",
+                    url: "http://172.20.10.3:8082/MaintenanceProject/queryEmterpriseMesg",
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -625,7 +621,7 @@
             getSearchData: function (bool) {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/projectPlan/projectBypName",
+                    url: "http://172.20.10.3:8082/projectPlan/projectBypName",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.params,
                     type: "POST",
@@ -686,7 +682,7 @@
             getListMessage: function (code) {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/projectPlan/listAll",
+                    url: "http://172.20.10.3:8082/projectPlan/listAll",
                     data: {'authCode': code},
                     type: "POST",
                     dataType: "json",
@@ -701,7 +697,7 @@
             getFzr: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/user/selectAllUser",
+                    url: "http://172.20.10.3:8082/user/selectAllUser",
                     data: {},
                     type: "GET",
                     dataType: "json",
@@ -738,7 +734,7 @@
             getProject: function (params) {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/projectPlan/projectPlanList",
+                    url: "http://172.20.10.3:8082/projectPlan/projectPlanList",
                     data: {
                         pId: params.pId,
                         pProjectPhaseId: params.pProjectPhaseId,
@@ -812,9 +808,9 @@
                 };
                 var urls = "";
                 if (_this.showEditOrSubmit == 1) {
-                    urls = "http://106.13.19.215:8082/MaintenanceProject/addProjectList";
+                    urls = "http://172.20.10.3:8082/MaintenanceProject/addProjectList";
                 } else {
-                    urls = "http://106.13.19.215:8082/actionItem/updateActionItemList";
+                    urls = "http://172.20.10.3:8082/actionItem/updateActionItemList";
                 }
                 ;
 

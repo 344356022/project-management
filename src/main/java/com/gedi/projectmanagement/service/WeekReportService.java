@@ -5,6 +5,7 @@ import com.gedi.projectmanagement.model.RecordTime;
 import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;

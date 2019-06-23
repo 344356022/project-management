@@ -275,7 +275,7 @@
                 getDingDing:function () {
                     var _this=this;
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/queryEmterpriseMesg",
+                        url:"http://172.20.10.3:8082/projectPlan/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -313,7 +313,7 @@
                     var _this=this;
 
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/projectBypName",
+                        url:"http://172.20.10.3:8082/projectPlan/projectBypName",
                         async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                         data:_this.params,
                         type:"POST",
@@ -362,8 +362,8 @@
                 getListMessage:function(code){
                     var _this=this;
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/listAll",
-                        data:{'authCode':code},z
+                        url:"http://172.20.10.3:8082/projectPlan/listAll",
+                        data:{'authCode':code},
                         type:"POST",
                         dataType:"json",
                         success:function(res){
@@ -395,7 +395,7 @@
                     var _this=this;
 
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/projectPlanList",
+                        url:"http://172.20.10.3:8082/projectPlan/projectPlanList",
                         data:{
                             pId:params.pId,
                             pProjectPhaseId:params.pProjectPhaseId,

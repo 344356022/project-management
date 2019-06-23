@@ -7,7 +7,7 @@
     <title>双周计划</title>
 
     <!--引入element_ui的样式-->
-    <link rel="stylesheet" href="./element_ui/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="./element_ui/iconfont/iconfont.css">
     <link rel="stylesheet" href="./css/pages/week.css">
 
@@ -17,7 +17,7 @@
     <!---引入钉钉官方的script--->
     <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
     <script src="./element_ui/vue.js" type="text/javascript"></script>
-    <script src="./element_ui/index.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="./element_ui/vuex.js" type="text/javascript"></script>
     <script src="./element_ui/store.js" type="text/javascript"></script>
     <script src="./element_ui/vue-resource.js" type="text/javascript"></script>
@@ -74,8 +74,7 @@
 
         <el-table class="tables"
                   border
-                  :data="tableData"
-                  style="width: 100%">
+                  :data="tableData">
             <el-table-column
                     align="center"
                     label="本周完成情况"
@@ -165,7 +164,7 @@
                     min-width="30"
             >
                 <template slot-scope="scope">
-                    <el-input v-model="scope.row.wActualProportion" placeholder="实际完成百分比"></el-input>
+                    <el-input v-model="scope.row.wActualProportion" :disabled="true" placeholder="实际完成百分比"></el-input>
                 </template>
             </el-table-column>
             <el-table-column
@@ -185,7 +184,7 @@
                     min-width="40"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.wStatus" placeholder="请选择">
+                    <el-select v-model="scope.row.wStatus" :disabled="scope.row.statusDisabled" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in wStatusList"
                                 :key="item.value"
@@ -227,8 +226,7 @@
 
         <el-table class="tables"
                   border
-                  :data="tableData1"
-                  style="width: 100%">
+                  :data="tableData1">
             <el-table-column
                     align="center"
                     label="下周完成情况"
@@ -319,7 +317,7 @@
                     min-width="30"
             >
                 <template slot-scope="scope">
-                    <el-input v-model="scope.row.wActualProportion" placeholder="实际完成百分比"></el-input>
+                    <el-input v-model="scope.row.wActualProportion" :disabled="true" placeholder="实际完成百分比"></el-input>
                 </template>
             </el-table-column>
             <el-table-column
@@ -339,7 +337,7 @@
                     min-width="40"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.wStatus" placeholder="请选择">
+                    <el-select v-model="scope.row.wStatus" :disabled="scope.row.statusDisabled" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in wStatusList"
                                 :key="item.value"
@@ -382,7 +380,7 @@
     var nextWeek=[];//下周数据
     (function () {
         $.ajax({
-            url:"http://106.13.19.215:8082/weekReport/getTwelveDayDate",
+            url:"http://172.20.10.3:8082/weekReport/getTwelveDayDate",
             type:"GET",
             data:{},
             dataType:"json",
@@ -416,13 +414,14 @@
             tableData1:[],//下周完成情况
 
             //状态值
+
             wStatusList:[
                 {
-                    name:"未开始",
+                    name:"进行中",
                     value:1,
                 },
                 {
-                    name:"进行中",
+                    name:"暂停",
                     value:2,
                 },
                 {
@@ -436,17 +435,19 @@
         mounted:function(){
             var _this=this;
             _this.getDingDing();//获取临时授权码
+           /*_this.getDatas();*/
         },
         created:function () {
             var _this=this;
 
         },
         methods:{
+
             //获取有关钉钉需要的值
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/weekReport/queryEmterpriseMesg",
+                    url:"http://172.20.10.3:8082/weekReport/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -485,7 +486,7 @@
                 _this.tableData1=[];
 
                 $.ajax({
-                    url:"http://106.13.19.215:8082/weekReport/selectWeekReportDetial",
+                    url:"http://172.20.10.3:8082/weekReport/selectWeekReportDetial",
                     type:"POST",
                     data:{'authCode':code},
                     dataType:"json",
@@ -493,6 +494,11 @@
                         if(res.data!=null){
                             for(var i=0;i<res.data.length;i++){
                                 var items=res.data[i];
+                                if(items.wStatus==3){
+                                    items.statusDisabled=true;
+                                }else{
+                                    items.statusDisabled=false;
+                                };
                                 if(items.wType==1){
                                     _this.tableData.push(items);
                                 }else{
@@ -510,7 +516,7 @@
             getRwx:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/weekReport/queryTaskSubIdAndName",
+                    url:"http://172.20.10.3:8082/weekReport/queryTaskSubIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -524,7 +530,7 @@
             getXmmc:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/weekReport/selectProjectPlanIdAndName",
+                    url:"http://172.20.10.3:8082/weekReport/selectProjectPlanIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -538,7 +544,7 @@
             getZrr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.19.215:8082/weekReport/selectUserByDepartment",
+                    url:"http://172.20.10.3:8082/weekReport/selectUserByDepartment",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -572,6 +578,7 @@
                     userId:"",
                     wActualProportion:"",
                     wPlanProportion:"",
+                    wWorkReport:"",
                     wStatus:"",
                     wRemark:"",
                     wType:"1",
@@ -606,6 +613,7 @@
                     wActualProportion:"",
                     wPlanProportion:"",
                     wStatus:"",
+                    wWorkReport:"",
                     wRemark:"",
                     wType:"2",
                 };
@@ -624,7 +632,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.19.215:8082/weekReport/deleteWeekReportById",
+                        url:"http://172.20.10.3:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -649,7 +657,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.19.215:8082/weekReport/deleteWeekReportById",
+                        url:"http://172.20.10.3:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -676,43 +684,113 @@
                     itemss.isSelect='true';
                 };
             },
+            //检验是饭否时间选择
+            yanZhengTime:function (data) {
+                var newArray=[];
+                for(var i=0;i<data.length;i++){
+                    var items=data[i];
+                    if(items.isSelect=="true"){
+                        newArray.push(items);
+                    };
+                };
+                return newArray;
+            },
+
             //保存
             save:function(){
-
                 var _this=this;
-                if(_this.flags){
-                    _this.flags=false;//防止极限点击保存按钮
+                var flags=false;
+                var newArray=[];
+                newArray=_this.tableData.concat(_this.tableData1);
+
+                if(newArray.length<=0){
+                    _this.$message({
+                        message:"请新增数据",
+                        type:"error",
+                    });
+                }else{
                     var objs={
                         thisWeek:_this.tableData,
                     };
-                    var newArray=[];
-                    newArray=_this.tableData.concat(_this.tableData1);
-
-                    var objs={
-                        weekreports:newArray,
-                    };
-
-                    $.ajax({
-                        url:"http://106.13.19.215:8082/weekReport/createMoreWeekReport",
-                        data:JSON.stringify(objs),
-                        type:"POST",
-                        dataType:"json",
-                        contentType: "application/json;charset=utf-8",
-                        success:function(res){
+                    for(var i=0;i<newArray.length;i++){
+                        var items=newArray[i];
+                        console.log(items)
+                        if(_this.yanZhengTime(items.recordTimes).length<=0){
                             _this.$message({
-                                message:"保存成功",
-                                type:"success",
+                                message:"请选择计划完成得时间",
+                                type:"error",
                             });
-                            _this.flags=true;
-                            this.$forceUpdate();
+                            flags=false;
+                            return;
+                        }else if(items.pId==""){
+                            _this.$message({
+                                message:"请选择项目名称",
+                                type:"error",
+                            });
+                            flags=false;
+                            return;
+                        }else if(items.tsId==""){
+                            _this.$message({
+                                message:"请选择任务项",
+                                type:"error",
+                            });
+                            flags=false;
+                            return;
+                        }else if(items.wWorkReport==""){
+                            _this.$message({
+                                message:"请输入工作描述",
+                                type:"error",
+                            });
+                            flags=false;
+                            return;
+                        }else if(items.userId==""){
+                            _this.$message({
+                                message:"请选择责任人",
+                                type:"error",
+                            });
+                            flags=false;
+                            return;
+                        }else if(items.wPlanProportion==""){
+                            _this.$message({
+                                message:"请输入计划完成率",
+                                type:"error",
+                            })
+                            flags=false;
+                            return;
+                        }else if(items.wStatus==""){
+                            _this.$message({
+                                message:"请选择状态",
+                                type:"error",
+                            });
+                            flags=false;
+                            return;
+                        }else{
+                            flags=true;
                         }
-                    });
-                }else{
-                    _this.$message({
-                        message:"不要重复点击提交",
-                        type:"danger",
-                    });
-                    _this.flags=false;
+                    };
+                    console.log(flags);
+                    if(flags==true){
+                        var objs={
+                            weekreports:newArray,
+                        };
+
+                        $.ajax({
+                            url:"http://172.20.10.3:8082/weekReport/createMoreWeekReport",
+                            data:JSON.stringify(objs),
+                            type:"POST",
+                            dataType:"json",
+                            contentType: "application/json;charset=utf-8",
+                            success:function(res){
+                                _this.$message({
+                                    message:"保存成功",
+                                    type:"success",
+                                });
+                                _this.flags=true;
+                                _this.getDingDing();
+                                this.$forceUpdate();
+                            }
+                        });
+                    };
                 };
             },
 

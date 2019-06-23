@@ -125,9 +125,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
 
           </foreach>
-
-
     </insert>
+
     <update id="updateJournal" parameterType="Journal">
         update journal
         <trim prefix="SET" suffixOverrides=",">

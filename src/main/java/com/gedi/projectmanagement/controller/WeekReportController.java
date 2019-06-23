@@ -52,6 +52,7 @@ public class WeekReportController {
     //查询双周计划表展示具体的内容以及完成的占比；
     @PostMapping("selectWeekReportDetial")
     public CodeAndMsg selectWeekReportDetial(String authCode, HttpServletRequest request) {
+
         CodeAndMsg codeAndMsg=new CodeAndMsg();
         String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
@@ -135,7 +136,8 @@ public class WeekReportController {
     //根据部门以及等级的标识进行查询，分配具体的工作；
     @GetMapping("selectDepartmentStaff")
     public CodeAndMsg selectDepartmentStaff(HttpSession session) {
-        String department = (String)session.getAttribute("uDepartment");
+        /*String department = (String)session.getAttribute("uDepartment");*/
+        String department="[117572421]";
         return userService.selectUserBySign(department);
     }
 
@@ -175,7 +177,9 @@ public class WeekReportController {
     public CodeAndMsg selectUserByDepartment(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        String department = (String)session.getAttribute("uDepartment");
+        /*String department = (String)session.getAttribute("uDepartment");*/
+        String department="[117572421]";
+
         return userService.selectUserBySign(department);
     }
 

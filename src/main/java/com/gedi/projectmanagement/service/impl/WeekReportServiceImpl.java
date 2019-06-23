@@ -175,7 +175,7 @@ public class WeekReportServiceImpl implements WeekReportService {
 
             int amount=0;
 
-        if(weekreportMapper.selectByWeekReportId(wId)!=null&&valueZ!=0){
+        /*if(weekreportMapper.selectByWeekReportId(wId)!=null&&valueZ!=0){
             Weekreport weekreport = weekreportMapper.selectProjectById(wId);
             Integer planproportion = weekreport.getwPlanProportion();
             Double actual = Double.valueOf(planproportion) / new Double(100);
@@ -193,8 +193,53 @@ public class WeekReportServiceImpl implements WeekReportService {
             codeAndMsg.setMsg("参数为空");
             codeAndMsg.setResult(false);
             return codeAndMsg;
+        }*/
+        Weekreport weekreport = weekreportMapper.selectProjectById(wId);
+        Integer actualProportion = weekreport.getwActualProportion();
+        Integer planproportion = weekreport.getwPlanProportion();
+        if(actualProportion==null){
+            Double actual = Double.valueOf(planproportion) / new Double(100);
+            amount= (int) (actual * valueZ);
+            weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
+            codeAndMsg.setCode(200);
+            codeAndMsg.setMsg("修改状态成功");
+            codeAndMsg.setResult(true);
+            return codeAndMsg;
+        }else {
+            if(actualProportion<valueZ){
+                Double actual = Double.valueOf(planproportion) / new Double(100);
+                //通过日报员工的完成进度占比，计算出实际占总工作的占比
+                amount= (int) (actual * valueZ);
+                if(amount!=planproportion){
+                    weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
+                    codeAndMsg.setCode(200);
+                    codeAndMsg.setMsg("修改状态成功");
+                    codeAndMsg.setResult(true);
+                    return codeAndMsg;
+                }else if(amount==planproportion) {
+                    weekreportMapper.updateActualAndStatus(wId,amount,valueZ);
+                    codeAndMsg.setCode(200);
+                    codeAndMsg.setMsg("修改状态成功");
+                    codeAndMsg.setResult(true);
+                    return codeAndMsg;
+                }
+                weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
+                codeAndMsg.setCode(200);
+                codeAndMsg.setMsg("修改状态成功");
+                codeAndMsg.setResult(true);
+                return codeAndMsg;
+            }else{
+                codeAndMsg.setCode(400);
+                codeAndMsg.setMsg("参数为空");
+                codeAndMsg.setResult(false);
+                return codeAndMsg;
+            }
         }
+
     }
+
+
+
 
     @Override
     public CodeAndMsg deleteWeekReportById(String wId) {
