@@ -35,10 +35,10 @@
             margin: 0 auto;
             position: absolute;
             top:0.41rem;
-            bottom: 0.42rem;
+            bottom: 0.45rem;
             left: 0;
             right: 0;
-        }rGongshi
+        }
 
          .dailyList-title{
             display: block;
@@ -60,7 +60,7 @@
             color: darkolivegreen;
         }
         .xiangxi .el-input{
-            width: 0.3rem !important;
+            width: 0.25rem !important;
         }
         .xiangxi .el-input__inner{
             height: 0.2rem !important;
@@ -169,11 +169,11 @@
                             <el-col :span="7">
                                 <div>
                                     <span>完成进度：</span>
-                                    <el-input :disabled="items.w_status==3?true:false" class="wcjd" v-model="items.r_finish"></el-input>%
+                                    <el-input :disabled="items.w_status==3?true:false" class="wcjd" @change="changeWcjd" v-model="items.r_finish"></el-input>%
                                 </div>
                                 <div style="margin-top: 0.03rem;" v-if="items.w_status==3?false:true">
                                     <span>完成工时：</span>
-                                    <el-input v-model="items.r_gongshi"></el-input>
+                                    <el-input v-model="items.r_gongshi" class="wcgs" @change="changeWcgs"></el-input>
                                 </div>
                             </el-col>
                         </el-row>
@@ -181,6 +181,7 @@
                             <el-col :span="24">
                                 <el-input
                                         type="textarea"
+                                        @change="changeQkms"
                                         :autosize="{ minRows: 4, maxRows: 6}"
                                         placeholder="请输入完成情况描述"
                                         v-model="items.descText">
@@ -245,17 +246,33 @@
 
                 //提交按钮颜色
                 isClickBtnColor:"#000000",
+
+                dubClick:1,
             },
             mounted:function(){
                 var _this=this;
-                _this.getDingDing();
+                //_this.getDailyList();
+               _this.getDingDing();
             },
             methods:{
-                //获取有关钉钉需要的值
+               //将绑定的点击保存按钮  恢复默认值
+                changeWcgs:function(){
+                    var _this=this;
+                    _this.dubClick=1;
+                },
+                changeWcjd:function(){
+                    var _this=this;
+                    _this.dubClick=1;
+                },
+                changeQkms:function(){
+                    var _this=this;
+                    _this.dubClick=1;
+                },
+               //获取有关钉钉需要的值
                 getDingDing:function () {
                     var _this=this;
                     $.ajax({
-                        url:"http://172.20.10.3:8082/journal/queryEmterpriseMesg",
+                        url:"http://106.13.19.215:8082/journal/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -290,10 +307,11 @@
                 getDailyList:function(code){
                     var _this=this;
                     $.ajax({
-                        url:"http://172.20.10.3:8082/journal/list",
+                        url:"http://106.13.19.215:8082/journal/list",
                         type:"POST",
                         dataType:"json",
                         data:{'authCode':code},
+                        // data:{},
                         success:function(res){
                             if(res.code == 200){
                                 for(var i=0;i<res.data.result.length;i++){
@@ -307,22 +325,17 @@
                                 _this.dailyList=res.data.result;
                                 //接收人
                                 _this.userList=res.data.userList;
-                            }else{
-                                _this.$message({
-                                    type:"error",
-                                    message:"没有日报信息",
-                                })
                             };
                         }
                     });
                 },
-		
+
                 //获取接收人数据
                 getPerson:function(){
                     var _this=this;
 
                 },
-		
+
               //点击新增日志接收人
                 add:function () {
                     var _this=this;
@@ -332,38 +345,42 @@
                 //弹出框确定按钮
                 trueEvent:function () {
                     var _this=this;
+                    _this.dubClick=1;
                     _this.zhanshi=_this.checkList;
                     _this.dialogVisible=false;
                 },
-		
+
                //提交按钮
                 submit:function(){
                     var _this=this;
-                    console.log(_this.userList)
                     var flags=false;
                     //最终提交的数据
                     var oldArray=[];
                     var endArray=[];
                     var allGongShi=0;
-                    //得到旧的数据
-                    var oldDailyList=JSON.parse(localStorage.getItem("list"));
+
                     $.ajax({
-                        url:"http://172.20.10.3:8082/journal/queryEmterpriseMesg",
+                        url:"http://106.13.19.215:8082/journal/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
                         success:function(_config){
+
                             dd.ready(function() {
                                 dd.runtime.permission.requestAuthCode({
                                     corpId:_config.corpId, // 企业id
                                     onSuccess: function (info) {
                                         $.ajax({
-                                            url:"http://172.20.10.3:8082/journal/list",
+                                            url:"http://106.13.19.215:8082/journal/list",
                                             type:"POST",
                                             dataType:"json",
+                                            //data:{},
                                             data:{'authCode':info.code},
                                             success:function(res){
                                                 if(res.code == 200){
+                                                    //得到旧的数据
+                                                    var oldDailyList=[];
+                                                    oldDailyList=res.data.result;
                                                     //得到新的数据
                                                     for(var i=0;i<_this.dailyList.length;i++){
                                                         var items=_this.dailyList[i];
@@ -375,6 +392,7 @@
                                                             };
                                                         };
                                                     };
+                                                    console.log(endArray,oldDailyList)
                                                     if(endArray.length<=0){
                                                         _this.$message({
                                                             message:"请将其中一条数据输入完整",
@@ -394,6 +412,7 @@
                                                             };
                                                         };
                                                         console.log(allGongShi,oldArray)
+
                                                         for(var j=0;j<endArray.length;j++){
                                                             var itemss=endArray[j];
 
@@ -429,6 +448,7 @@
                                                                 return;
                                                             }else{
                                                                 flags=true;
+
                                                             };
                                                         };
                                                     };
@@ -439,41 +459,54 @@
                                                                 message:"请选择日志接收人",
                                                                 type:"error",
                                                             });
+
                                                         }else{
-                                                            //循环重至接收人
-                                                            var newArray=[];
-                                                            for(var i=0;i<_this.checkList.length;i++){
-                                                                for(var j=0;j<_this.userList.length;j++){
-                                                                    if(_this.checkList[i]==_this.userList[j].u_name){
-                                                                        newArray.push(_this.userList[j].user_id);
+                                                            if(_this.dubClick==1){
+                                                                _this.dubClick=2;
+                                                                console.log(_this.dubClick)
+                                                                //循环重至接收人
+                                                                var newArray=[];
+                                                                for(var i=0;i<_this.checkList.length;i++){
+                                                                    for(var j=0;j<_this.userList.length;j++){
+                                                                        if(_this.checkList[i]==_this.userList[j].u_name){
+                                                                            newArray.push(_this.userList[j].user_id);
+                                                                        };
                                                                     };
                                                                 };
-                                                            };
-                                                            //转化成字符串
-                                                            newArray=newArray.join(',');//接收人的id
+                                                                //转化成字符串
+                                                                newArray=newArray.join(',');//接收人的id
 
-                                                            for(var i=0;i<_this.dailyList.length;i++){
-                                                                var items=_this.dailyList[i];
-                                                                items.deliver=newArray;
+                                                                for(var i=0;i<_this.dailyList.length;i++){
+                                                                    var items=_this.dailyList[i];
+                                                                    items.deliver=newArray;
+                                                                };
+                                                                $.ajax({
+                                                                    url:"http://106.13.19.215:8082/journal/save",
+                                                                    type:"post",
+                                                                    cache:false,
+                                                                    contentType:"application/json; charset=utf-8",
+                                                                    dataType:"json",
+                                                                    async:false,
+                                                                    data:JSON.stringify({para: _this.dailyList}),
+                                                                    success:function(res){
+                                                                        if(res.code == 200){
+                                                                            _this.$message({
+                                                                                message:res.msg,
+                                                                                type:"success",
+                                                                            });
+                                                                        };
+                                                                    }
+                                                                });
+
+                                                            }else{
+                                                                console.log(_this.dubClick,"ddddddd")
+                                                                _this.$message({
+                                                                    message:"请勿多次保存",
+                                                                    type:"warning",
+                                                                });
                                                             };
-                                                            $.ajax({
-                                                                url:"http://172.20.10.3:8082/journal/save",
-                                                                type:"post",
-                                                                cache:false,
-                                                                contentType:"application/json; charset=utf-8",
-                                                                dataType:"json",
-                                                                async:false,
-                                                                data:JSON.stringify({para: _this.dailyList}),
-                                                                success:function(res){
-                                                                    if(res.code == 200){
-                                                                        _this.$message({
-                                                                            message:res.msg,
-                                                                            type:"success",
-                                                                        });
-                                                                    };
-                                                                }
-                                                            });
                                                         };
+
                                                     };
 
                                                 };
