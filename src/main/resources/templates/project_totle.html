@@ -53,20 +53,30 @@
             left:0;
         }
         /*主题内容*/
-        .project-table-content{
+        .project-table-content,.totle{
             position: absolute;
             top:0.41rem;
             bottom: 0;
             left:0;
             right:0;
-            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+
         }
 
         .el-input__icon{
             line-height: 30px !important;
         }
 
+        .left .el-select{
+            width: 1.5rem;
+        }
+        .right{
+            width: 1.5rem;
+        }
+
     </style>
+    <link rel="stylesheet" href="../static/css/pages/week.css">
 </head>
 <body>
     <div id="idbody">
@@ -75,7 +85,7 @@
                 <div class="option">
                     <div class="left">
                         <strong>年度:</strong>
-                        <el-select v-model="params.annualTime" placeholder="请选择">
+                        <el-select v-model="params.annualTime" placeholder="请选择" @change="timeChange">
                             <el-option
                                     key=""
                                     label="请选择年份"
@@ -103,13 +113,12 @@
             <div style="text-align: center;line-height: 60px;width: 100%;" v-if="listMessage.length<=0?true:false">暂无数据</div>
             <div class="totle"  v-else-if="listMessage.length>0?true:false">
                 <div class="totle_list" v-for="(items,index) in listMessage" @click="listClick(items)">
-                    <p>{{items.pName}}</p>
-                    <span>计划开始时间：{{items.pStartTime}}</span>
-                    <span>项目阶段：{{items.pProjectPhaseId}}</span>
-                    <span>计划结束时间：{{items.pEndTime}}</span>
-                    <span>总体完成进度：{{items.pProgress}}%</span>
+                    <p v-text="items.pName"></p>
+                    <span><strong>计划开始时间：</strong><strong v-text="items.pStartTime"></strong></span>
+                    <span><strong>项目阶段：</strong><strong v-text="items.pProjectPhaseId"></strong></span>
+                    <span><strong>计划结束时间：</strong><strong v-text="items.pEndTime"></strong></span>
+                    <span><strong>总体完成进度：</strong><strong><strong v-text="items.pProgress"></strong><strong>%</strong></strong></span>
                 </div>
-
             </div>
         </div>
 
@@ -275,7 +284,7 @@
                 getDingDing:function () {
                     var _this=this;
                     $.ajax({
-                        url:"http://172.20.10.3:8082/projectPlan/queryEmterpriseMesg",
+                        url:"http://106.13.19.215:8082/projectPlan/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -313,7 +322,24 @@
                     var _this=this;
 
                     $.ajax({
-                        url:"http://172.20.10.3:8082/projectPlan/projectBypName",
+                        url:"http://106.13.19.215:8082/projectPlan/projectBypName",
+                        async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
+                        data:_this.params,
+                        type:"POST",
+                        dataType:"JSON",
+                        success:function(res){
+                            if (res.code==200){
+                                _this.$message.success(res.msg);
+
+                                _this.listMessage=_this.sjzh(res.data);
+                            };
+                        }
+                    });
+                },
+                timeChange:function(){
+                    var _this=this;
+                    $.ajax({
+                        url:"http://106.13.19.215:8082/projectPlan/projectBypName",
                         async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                         data:_this.params,
                         type:"POST",
@@ -362,7 +388,7 @@
                 getListMessage:function(code){
                     var _this=this;
                     $.ajax({
-                        url:"http://172.20.10.3:8082/projectPlan/listAll",
+                        url:"http://106.13.19.215:8082/projectPlan/listAll",
                         data:{'authCode':code},
                         type:"POST",
                         dataType:"json",
@@ -395,7 +421,7 @@
                     var _this=this;
 
                     $.ajax({
-                        url:"http://172.20.10.3:8082/projectPlan/projectPlanList",
+                        url:"http://106.13.19.215:8082/projectPlan/projectPlanList",
                         data:{
                             pId:params.pId,
                             pProjectPhaseId:params.pProjectPhaseId,
