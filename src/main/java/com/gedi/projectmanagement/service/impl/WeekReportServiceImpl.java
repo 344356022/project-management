@@ -170,10 +170,9 @@ public class WeekReportServiceImpl implements WeekReportService {
 
     @Override
     public CodeAndMsg updateActual(String wId, int valueZ) {
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
 
-            CodeAndMsg codeAndMsg=new CodeAndMsg();
-
-            int amount=0;
+        int amount=0;
 
         /*if(weekreportMapper.selectByWeekReportId(wId)!=null&&valueZ!=0){
             Weekreport weekreport = weekreportMapper.selectProjectById(wId);
@@ -200,11 +199,19 @@ public class WeekReportServiceImpl implements WeekReportService {
         if(actualProportion==null){
             Double actual = Double.valueOf(planproportion) / new Double(100);
             amount= (int) (actual * valueZ);
-            weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
-            codeAndMsg.setCode(200);
-            codeAndMsg.setMsg("修改状态成功");
-            codeAndMsg.setResult(true);
-            return codeAndMsg;
+            if(amount!=planproportion){
+                weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
+                codeAndMsg.setCode(200);
+                codeAndMsg.setMsg("修改状态成功");
+                codeAndMsg.setResult(true);
+                return codeAndMsg;
+            }else {
+                weekreportMapper.updateActualAndStatus(wId,amount,valueZ);
+                codeAndMsg.setCode(200);
+                codeAndMsg.setMsg("修改状态成功");
+                codeAndMsg.setResult(true);
+                return codeAndMsg;
+            }
         }else {
             if(actualProportion<valueZ){
                 Double actual = Double.valueOf(planproportion) / new Double(100);
