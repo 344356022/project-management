@@ -380,7 +380,7 @@
     var nextWeek=[];//下周数据
     (function () {
         $.ajax({
-            url:"http://172.20.10.3:8082/weekReport/getTwelveDayDate",
+            url:"http://106.13.19.215:8082/weekReport/getTwelveDayDate",
             type:"GET",
             data:{},
             dataType:"json",
@@ -431,11 +431,13 @@
             ],
 
             flags:true,
+
+            dubClick:1,//禁止双击保存
         },
         mounted:function(){
             var _this=this;
             _this.getDingDing();//获取临时授权码
-           /*_this.getDatas();*/
+           //_this.getDatas();
         },
         created:function () {
             var _this=this;
@@ -447,7 +449,7 @@
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://172.20.10.3:8082/weekReport/queryEmterpriseMesg",
+                    url:"http://106.13.19.215:8082/weekReport/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -486,9 +488,10 @@
                 _this.tableData1=[];
 
                 $.ajax({
-                    url:"http://172.20.10.3:8082/weekReport/selectWeekReportDetial",
+                    url:"http://106.13.19.215:8082/weekReport/selectWeekReportDetial",
                     type:"POST",
                     data:{'authCode':code},
+                    //data:{},
                     dataType:"json",
                     success:function(res){
                         if(res.data!=null){
@@ -516,7 +519,7 @@
             getRwx:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://172.20.10.3:8082/weekReport/queryTaskSubIdAndName",
+                    url:"http://106.13.19.215:8082/weekReport/queryTaskSubIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -530,7 +533,7 @@
             getXmmc:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://172.20.10.3:8082/weekReport/selectProjectPlanIdAndName",
+                    url:"http://106.13.19.215:8082/weekReport/selectProjectPlanIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -544,7 +547,7 @@
             getZrr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://172.20.10.3:8082/weekReport/selectUserByDepartment",
+                    url:"http://106.13.19.215:8082/weekReport/selectUserByDepartment",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -556,6 +559,7 @@
             //新增本周
             addThisWeek:function(){
                 var _this=this;
+                _this.dubClick=1;
                 //本周日期
                 var thisWeeks=[];
                 for(var i=0;i<thisWeek.length;i++){
@@ -590,6 +594,7 @@
             //新增下周
             addNextWeek:function () {
                 var _this=this;
+                _this.dubClick=1;
                 //本周日期
                 var nextWeeks=[];
                 for(var i=0;i<nextWeek.length;i++){
@@ -623,6 +628,7 @@
             //删除本周
             delThisWeek:function (params,scope) {
                 var _this=this;
+                _this.dubClick=1;
                 console.log(params,scope);
                 if(!params.wId){
                     _this.tableData.splice(scope.$index,1);
@@ -632,7 +638,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://172.20.10.3:8082/weekReport/deleteWeekReportById",
+                        url:"http://106.13.19.215:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -649,6 +655,7 @@
             //删除下周
             delNextWeek:function (params,scope) {
                 var _this=this;
+                _this.dubClick=1;
                 if(!params.wId){
                     _this.tableData1.splice(scope.$index,1);
                 }else{
@@ -657,7 +664,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://172.20.10.3:8082/weekReport/deleteWeekReportById",
+                        url:"http://106.13.19.215:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -700,82 +707,79 @@
             save:function(){
                 var _this=this;
                 var flags=false;
+
                 var newArray=[];
                 newArray=_this.tableData.concat(_this.tableData1);
-
-                if(newArray.length<=0){
-                    _this.$message({
-                        message:"请新增数据",
-                        type:"error",
-                    });
-                }else{
-                    var objs={
-                        thisWeek:_this.tableData,
+                var objs={
+                    thisWeek:_this.tableData,
+                };
+                for(var i=0;i<newArray.length;i++){
+                    var items=newArray[i];
+                    console.log(items)
+                    if(_this.yanZhengTime(items.recordTimes).length<=0){
+                        _this.$message({
+                            message:"请选择计划完成得时间",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.pId==""){
+                        _this.$message({
+                            message:"请选择项目名称",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.tsId==""){
+                        _this.$message({
+                            message:"请选择任务项",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.wWorkReport==""){
+                        _this.$message({
+                            message:"请输入工作描述",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.userId==""){
+                        _this.$message({
+                            message:"请选择责任人",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.wPlanProportion==""){
+                        _this.$message({
+                            message:"请输入计划完成率",
+                            type:"error",
+                        })
+                        flags=false;
+                        return;
+                    }else if(items.wStatus==""){
+                        _this.$message({
+                            message:"请选择状态",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else{
+                        flags=true;
                     };
-                    for(var i=0;i<newArray.length;i++){
-                        var items=newArray[i];
-                        console.log(items)
-                        if(_this.yanZhengTime(items.recordTimes).length<=0){
-                            _this.$message({
-                                message:"请选择计划完成得时间",
-                                type:"error",
-                            });
-                            flags=false;
-                            return;
-                        }else if(items.pId==""){
-                            _this.$message({
-                                message:"请选择项目名称",
-                                type:"error",
-                            });
-                            flags=false;
-                            return;
-                        }else if(items.tsId==""){
-                            _this.$message({
-                                message:"请选择任务项",
-                                type:"error",
-                            });
-                            flags=false;
-                            return;
-                        }else if(items.wWorkReport==""){
-                            _this.$message({
-                                message:"请输入工作描述",
-                                type:"error",
-                            });
-                            flags=false;
-                            return;
-                        }else if(items.userId==""){
-                            _this.$message({
-                                message:"请选择责任人",
-                                type:"error",
-                            });
-                            flags=false;
-                            return;
-                        }else if(items.wPlanProportion==""){
-                            _this.$message({
-                                message:"请输入计划完成率",
-                                type:"error",
-                            })
-                            flags=false;
-                            return;
-                        }else if(items.wStatus==""){
-                            _this.$message({
-                                message:"请选择状态",
-                                type:"error",
-                            });
-                            flags=false;
-                            return;
-                        }else{
-                            flags=true;
-                        }
-                    };
-                    console.log(flags);
-                    if(flags==true){
+                };
+                console.log(flags);
+                if(flags==true){
+                    console.log(_this.dubClick)
+                    if(_this.dubClick==1){
+                        _this.dubClick=2;
                         var objs={
                             weekreports:newArray,
                         };
 
                         $.ajax({
-                            url:"http://172.20.10.3:8082/weekReport/createMoreWeekReport",
+                            url:"http://106.13.19.215:8082/weekReport/createMoreWeekReport",
                             data:JSON.stringify(objs),
                             type:"POST",
                             dataType:"json",
@@ -786,12 +790,19 @@
                                     type:"success",
                                 });
                                 _this.flags=true;
-                                _this.getDingDing();
-                                this.$forceUpdate();
+                                // _this.getDingDing();
                             }
                         });
+                    }else{
+                        _this.$message({
+                            message:"请勿多次保存",
+                            type:"warning",
+                        });
                     };
+
                 };
+
+
             },
 
         },
