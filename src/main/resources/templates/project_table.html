@@ -77,17 +77,19 @@
         }
 
         /*主题内容*/
-        .project-table-content {
+        .project-table-content,.totle {
             position: absolute;
             top: 0.41rem;
-            bottom: 0.42rem;
+            bottom: 0.5rem;
             left: 0;
             right: 0;
-            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
         }
 
         /*提交按钮*/
         .submits {
+            cursor:pointer;
             z-index: 100;
             position: fixed;
             bottom: 0;
@@ -146,6 +148,12 @@
         .el-input__icon {
             line-height: 30px !important;
         }
+        .left .el-select{
+            width:1.5rem;
+        }
+        .right{
+            width: 1.5rem;
+        }
     </style>
 </head>
 <body>
@@ -155,7 +163,7 @@
             <div class="option">
                 <div class="left">
                     <strong>年度:</strong>
-                    <el-select v-model="params.annualTime" placeholder="请选择">
+                    <el-select v-model="params.annualTime" placeholder="请选择" @change="timeChange">
                         <el-option
                                 key=""
                                 label="请选择年份"
@@ -184,11 +192,11 @@
         </div>
         <div class="totle" v-else-if="listMessage.length>0?true:false">
             <div class="totle_list" v-for="(items,index) in listMessage" @click="listClick(items)">
-                <p>{{items.pName}}</p>
-                <span>计划开始时间：{{items.pStartTime}}</span>
-                <span>项目阶段：{{items.pProjectPhaseId}}</span>
-                <span>计划结束时间：{{items.pEndTime}}</span>
-                <span>总体完成进度：{{items.pProgress}}%</span>
+                <p v-text="items.pName"></p>
+                <span><strong>计划开始时间：</strong><strong v-text="items.pStartTime"></strong></span>
+                <span><strong>项目阶段：</strong><strong v-text="items.pProjectPhaseId"></strong></span>
+                <span><strong>计划结束时间：</strong><strong v-text="items.pEndTime"></strong></span>
+                <span><strong>总体完成进度：</strong><strong><strong v-text="items.pProgress"></strong><strong>%</strong></strong></span>
             </div>
 
         </div>
@@ -200,26 +208,26 @@
                 <el-form ref="form" :rules="rules" :model="forms" label-width="80">
                     <el-row>
                         <el-col :span="12">
-                            <el-form-item label="项目名称" prop="pName" label-width="1rem">
+                            <el-form-item label="项目名称" prop="pName" label-width="0.7rem">
                                 <el-input v-model="forms.pName" placeholder="请输入项目名称"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="12">
-                            <el-form-item label="计划开始时间" prop="pStartTime" label-width="1rem">
+                            <el-form-item label="开始时间" prop="pStartTime" label-width="0.7rem">
                                 <el-input v-model="forms.pStartTime" placeholder="2018-09-18"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="计划结束时间" prop="pEndTime" label-width="1rem">
+                            <el-form-item label="结束时间" prop="pEndTime" label-width="0.7rem">
                                 <el-input v-model="forms.pEndTime" placeholder="2018-09-18"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="12">
-                            <el-form-item label="项目阶段" prop="pProjectPhaseId" label-width="1rem">
+                            <el-form-item label="项目阶段" prop="pProjectPhaseId" label-width="0.7rem">
                                 <el-select v-model="forms.pProjectPhaseId" placeholder="请选择项目阶段">
                                     <el-option
                                             v-for="(item,index) in productJieDuan"
@@ -231,7 +239,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="项目完成进度" prop="pProgress" label-width="1rem">
+                            <el-form-item label="完成进度" prop="pProgress" label-width="0.7rem">
                                 <el-input v-model="forms.pProgress" placeholder="请输入项目完成进度"></el-input>
                             </el-form-item>
                         </el-col>
@@ -296,7 +304,7 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.apsTime" placeholder="请输入计划开始时间"></el-input>
+                        <el-input v-model="scope.row.apsTime" placeholder="2018-09-21"></el-input>
                     </template>
                 </el-table-column>
 
@@ -306,7 +314,7 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.apeTime" placeholder="请输入计划完成时间"></el-input>
+                        <el-input v-model="scope.row.apeTime" placeholder="2018-09-21"></el-input>
                     </template>
                 </el-table-column>
 
@@ -316,7 +324,7 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.aasTime" placeholder="请输入实际开始时间"></el-input>
+                        <el-input v-model="scope.row.aasTime" placeholder="2018-09-21"></el-input>
                     </template>
                 </el-table-column>
 
@@ -326,7 +334,7 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.aaeTime" placeholder="请输入实际完成时间"></el-input>
+                        <el-input v-model="scope.row.aaeTime" placeholder="2018-09-21"></el-input>
                     </template>
                 </el-table-column>
 
@@ -354,7 +362,7 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.percentage" placeholder="请输入完成百分比"></el-input>
+                        <el-input v-model="scope.row.percentage" placeholder="50"></el-input>
                     </template>
                 </el-table-column>
 
@@ -402,20 +410,18 @@
 <script>
     //匹配年月日
     var validatePass2 = (rule, value, callback) =>{
+        console.log(value)
         if (value === '') {
             callback(new Error('请输入日期时间'));
         } else {
             var re = /([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/;
             if (!re.test(value)) {
                 callback(new Error('请输入正确的年月日格式'));
-            }
-            ;
+            };
 
             callback();
-        }
-        ;
-    }
-    ;
+        };
+    };
     //项目完成进度校验
     var validatePass1 = (rule, value, callback) =>{
         if (value === '') {
@@ -426,14 +432,11 @@
                 callback(new Error('请输入正整数'));
             } else if (value > 100) {
                 callback(new Error('完成进度不能超过100'));
-            }
-            ;
+            };
 
             callback();
-        }
-        ;
-    }
-    ;
+        };
+    };
     var myHome = new Vue({
         el: "#idbody",
         data: {
@@ -539,7 +542,8 @@
             showEditOrSubmit: 1,
 
             //防止极限点击
-            jiXianClick:0,
+            jiXianClick:1,
+            jiXianClick1:1,
         },
         mounted: function () {
             var _this = this;
@@ -550,55 +554,67 @@
             //弹出框确定事件
             trueEvent: function (formName) {
                 var _this = this;
+                console.log(_this.jiXianClick1)
                 this.$refs[formName].validate((valid) => {
                     if(valid) {
-                        $.ajax({
-                            url: "http://172.20.10.3:8082/MaintenanceProject/addProject",
-                            async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
-                            data: JSON.stringify({
-                                pId: _this.forms.pId,
-                                pName: _this.forms.pName,
-                                pStartTime: _this.forms.pStartTime,
-                                pEndTime: _this.forms.pEndTime,
-                                pProjectPhaseId: _this.forms.pProjectPhaseId,
-                                pProgress: _this.forms.pProgress
-                            }),
-                            type: "POST",
-                            dataType: "JSON",
-                            contentType: "application/json;charset=utf-8",
-                            success: function (res) {
-                                //console.log(res);
-                                if (res.code == 200) {
-                                    _this.dialogVisible = false;
-                                    _this.getSearchData(false);
-                                } else {
-                                    _this.dialogVisible = true;
+                        if(_this.jiXianClick1==1){
+                            _this.jiXianClick1=2;
+                            $.ajax({
+                                url: "http://106.13.19.215:8082/MaintenanceProject/addProject",
+                                async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
+                                data: JSON.stringify({
+                                    pId: _this.forms.pId,
+                                    pName: _this.forms.pName,
+                                    pStartTime: _this.forms.pStartTime,
+                                    pEndTime: _this.forms.pEndTime,
+                                    pProjectPhaseId: _this.forms.pProjectPhaseId,
+                                    pProgress: _this.forms.pProgress
+                                }),
+                                type: "POST",
+                                dataType: "JSON",
+                                contentType: "application/json;charset=utf-8",
+                                success: function (res) {
+                                    //console.log(res);
+                                    if (res.code == 200) {
+                                        _this.dialogVisible = false;
+                                        _this.getSearchData(false);
+                                    } else {
+                                        _this.dialogVisible = true;
+                                    };
+                                    _this.jiXianClick1=1;
+                                    _this.forms={
+                                        pId: "",
+                                        pName: "",//项目名称
+                                        pStartTime: "",//项目计划开始时间
+                                        pEndTime: "",//项目计划结束时间
+                                        pProjectPhaseId: "",//项目阶段ID
+                                        pProgress: "",//项目总体完成进度
+                                        createTime: "",//项目创建时间
+                                        creater: "",//项目创建人
+                                    };
                                 }
-                                ;
-                                _this.forms={
-                                    pId: "",
-                                    pName: "",//项目名称
-                                    pStartTime: "",//项目计划开始时间
-                                    pEndTime: "",//项目计划结束时间
-                                    pProjectPhaseId: "",//项目阶段ID
-                                    pProgress: "",//项目总体完成进度
-                                    createTime: "",//项目创建时间
-                                    creater: "",//项目创建人
-                                };
-                            }
-                        });
+                            });
+
+                        }else{
+                            _this.$message({
+                                message:"请勿多次新增项目",
+                                type:"warning",
+                            });
+
+                        };
                     }else{
                         return false;
-            }
-                ;
-            })
+                    };
+                 });
+
+
             },
 
             //获取有关钉钉需要的值
             getDingDing: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://172.20.10.3:8082/MaintenanceProject/queryEmterpriseMesg",
+                    url: "http://106.13.19.215:8082/MaintenanceProject/queryEmterpriseMesg",
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -631,7 +647,7 @@
             getSearchData: function (bool) {
                 var _this = this;
                 $.ajax({
-                    url: "http://172.20.10.3:8082/projectPlan/projectBypName",
+                    url: "http://106.13.19.215:8082/projectPlan/projectBypName",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.params,
                     type: "POST",
@@ -653,6 +669,10 @@
             searchs: function (objs) {
                 var _this = this;
 
+                _this.getSearchData(true);
+            },
+            timeChange:function(){
+                var _this=this;
                 _this.getSearchData(true);
             },
             //校验显示状态
@@ -692,8 +712,9 @@
             getListMessage: function (code) {
                 var _this = this;
                 $.ajax({
-                    url: "http://172.20.10.3:8082/projectPlan/listAll",
+                    url: "http://106.13.19.215:8082/projectPlan/listAll",
                     data: {'authCode':code},
+                    /*data: {},*/
                     type: "POST",
                     dataType: "json",
                     success: function (res) {
@@ -707,7 +728,7 @@
             getFzr: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://172.20.10.3:8082/user/selectAllUser",
+                    url: "http://106.13.19.215:8082/user/selectAllUser",
                     data: {},
                     type: "GET",
                     dataType: "json",
@@ -720,7 +741,7 @@
             //点击列表信息
             listClick: function (items) {
                 var _this = this;
-                _this.jiXianClick=0;
+                _this.jiXianClick=1;
                 _this.buttonsName = "提交";
                 _this.shows = false;
                 _this.isClickBtnColor = "#000000";
@@ -745,7 +766,7 @@
             getProject: function (params) {
                 var _this = this;
                 $.ajax({
-                    url: "http://172.20.10.3:8082/projectPlan/projectPlanList",
+                    url: "http://106.13.19.215:8082/projectPlan/projectPlanList",
                     data: {
                         pId: params.pId,
                         pProjectPhaseId: params.pProjectPhaseId,
@@ -767,7 +788,7 @@
                         }
 
                         _this.tableData = res.data;
-
+                        console.log(_this.tableData)
 
                     }
                 });
@@ -775,7 +796,7 @@
             /*点击项目总体计划明细tab*/
             handleClick: function (data) {
                 var _this = this;
-                _this.jiXianClick=0;
+                _this.jiXianClick=1;
                 _this.pProjectPhaseIds = Number(data.name);
                 var params = {
                     pId: _this.pid,
@@ -786,74 +807,194 @@
             /*新增项目列表事件*/
             addList: function () {
                 var _this = this;
+                _this.jiXianClick1=1;
                 _this.isClickBtnColor1 = "#409EFF";
-
                 _this.dialogVisible = true;
             },
             /*提交事件*/
+            //计划开始时间验证
+            yzTime:function(value){
+                var re = /([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/;
+                var isBool=false;
+                if(re.test(value)){
+                    isBool=true;
+                };
+                return isBool;
+            },
+            yzBfb:function(value){
+                var re = /^[1-9]\d*$/;
+                var isBools=false;
+                if(re.test(value)){
+                    isBools=true;
+                };
+                return isBools;
+            },
             submit: function () {
                 var _this = this;
-                _this.jiXianClick++;
-                if (_this.jiXianClick == 1) {
-                    _this.jiXianClick=2;
-                    _this.isClickBtnColor = "#409EFF";
-                    var newArray = [];
-                    for (var i = 0; i < _this.tableData.length; i++) {
-                        var items = _this.tableData[i];
-                        var objss = {
-                            aId: items.aId,
-                            aName: items.aName,
-                            tsId: items.tsId,
-                            aPstartTime: items.apsTime,
-                            aPendTime: items.apeTime,
-                            aAstartTime: items.aasTime,
-                            aAendTime: items.aaeTime,
-                            userId: items.userId,
-                            aPercentage: items.percentage,
-                            aState: items.state,
-                            aIsResult: items.isResult,
-                            pId: _this.pid,
-                            pProjectPhaseId: _this.pProjectPhaseIds,
-                        };
-                        newArray.push(objss);
-                    }
-                    ;
-                    var objs = {
-                        items: newArray
-                    };
-                    var urls = "";
-                    if (_this.showEditOrSubmit == 1) {
-                        urls = "http://172.20.10.3:8082/MaintenanceProject/addProjectList";
-                    } else {
-                        urls = "http://172.20.10.3:8082/actionItem/updateActionItemList";
-                    }
-                    ;
 
-                    $.ajax({
-                        url: urls,
-                        data: JSON.stringify(objs),
-                        type: "post",
-                        dataType: "JSON",
-                        contentType: "application/json;charset=utf-8",
-                        success: function (res) {
-                            if (res.code == 200) {
-                                _this.$message.success(res.msg);
-                                _this.pProjectPhaseIds = 1;
-                                _this.getListMessage();
-                                setTimeout(function () {
-                                    _this.shows = true;
-                                    _this.buttonsName = "新增项目计划";
-                                }, 2000);
-                            }
-                            ;
+
+                var flags=false;
+                for(var i=0;i<_this.tableData.length;i++){
+                    var items=_this.tableData[i];
+                    if(items.apsTime==""){
+                        _this.$message({
+                            message:"请输入计划开始时间",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(!_this.yzTime(items.apsTime)){
+                        _this.$message({
+                            message:"请正确的计划开始时间格式",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.apeTime==""){
+                        _this.$message({
+                            message:"请输入计划完成时间",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(!_this.yzTime(items.apeTime)){
+                        _this.$message({
+                            message:"请正确的计划完成时间格式",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.aasTime==""){
+                        _this.$message({
+                            message:"请输入实际开始时间",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(!_this.yzTime(items.aasTime)){
+                        _this.$message({
+                            message:"请正确的实际开始时间格式",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.aaeTime==""){
+                        _this.$message({
+                            message:"请输入实际完成时间",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(!_this.yzTime(items.aaeTime)){
+                        _this.$message({
+                            message:"请正确的实际完成时间格式",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.userId==null){
+                        _this.$message({
+                            message:"请选择负责人",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.percentage==null){
+                        _this.$message({
+                            message:"请输入完成百分比",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(!_this.yzBfb(items.percentage)){
+                        _this.$message({
+                            message:"请输入正确格式得百分比",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.state==null){
+                        _this.$message({
+                            message:"请选择状态",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else if(items.isResult==null){
+                        _this.$message({
+                            message:"请选择是否提交",
+                            type:"error",
+                        });
+                        flags=false;
+                        return;
+                    }else{
+                        flags=true;
+                    };
+                };
+                console.log(_this.jiXianClick)
+                if(flags==true){
+                    console.log(_this.jiXianClick)
+                    if (_this.jiXianClick == 1) {
+                        _this.jiXianClick=2;
+                        _this.isClickBtnColor = "#409EFF";
+                        var newArray = [];
+                        for (var i = 0; i < _this.tableData.length; i++) {
+                            var items = _this.tableData[i];
+                            var objss = {
+                                aId: items.aId,
+                                aName: items.aName,
+                                tsId: items.tsId,
+                                aPstartTime: items.apsTime,
+                                aPendTime: items.apeTime,
+                                aAstartTime: items.aasTime,
+                                aAendTime: items.aaeTime,
+                                userId: items.userId,
+                                aPercentage: items.percentage,
+                                aState: items.state,
+                                aIsResult: items.isResult,
+                                pId: _this.pid,
+                                pProjectPhaseId: _this.pProjectPhaseIds,
+                            };
+                            newArray.push(objss);
                         }
-                    });
-                }else{
-                    _this.$message({
-                        message:"请勿多次提交",
-                        type:"warning",
-                    });
-                }
+                        ;
+                        var objs = {
+                            items: newArray
+                        };
+                        var urls = "";
+                        if (_this.showEditOrSubmit == 1) {
+                            urls = "http://106.13.19.215:8082/MaintenanceProject/addProjectList";
+                        } else {
+                            urls = "http://106.13.19.215:8082/actionItem/updateActionItemList";
+                        }
+                        ;
+
+                        $.ajax({
+                            url: urls,
+                            data: JSON.stringify(objs),
+                            type: "post",
+                            dataType: "JSON",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (res) {
+                                if (res.code == 200) {
+                                    _this.$message.success(res.msg);
+                                    _this.pProjectPhaseIds = 1;
+                                    _this.getListMessage();
+                                    setTimeout(function () {
+                                        _this.shows = true;
+                                        _this.buttonsName = "新增项目计划";
+                                    }, 2000);
+                                };
+                            }
+                        });
+                    }else{
+                        _this.$message({
+                            message:"请勿多次提交",
+                            type:"warning",
+                        });
+                    }
+                };
+
             }
         },
         updated: function () {
