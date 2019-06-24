@@ -5,9 +5,9 @@ spring:  ## 数据源的配置
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
 
-    username: zzgd
-    url: jdbc:mysql://180.76.139.168:3306/test2?useSSL=false&allowMultiQueries=true
-    password: du@123456
+    username: root
+    url: jdbc:mysql://106.13.19.215:3306/dingding?useSSL=false&allowMultiQueries=true
+    password: root
 
     dbcp2:                                          # 进行数据库连接池的配置
       min-idle: 5                                   # 数据库连接池的最小维持连接数    
