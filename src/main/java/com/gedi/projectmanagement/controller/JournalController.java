@@ -56,9 +56,6 @@ public class JournalController
 	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
-
-        System.out.println(authCode+"我是临时授权码");
-
 		String userId = LoginUtil.login(authCode);
 		CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
 		User user = (User)codeAndMsg1.getData();
