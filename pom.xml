@@ -12,7 +12,7 @@
     <groupId>com.gedi</groupId>
     <artifactId>project-management</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -85,7 +85,8 @@
             <artifactId>top-api-sdk-dev</artifactId>
             <version>ding-open-mc-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/top-api-sdk-dev-ding-open-mc-20180719.091043-1.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/lib/top-api-sdk-dev-ding-open-mc-20180719.091043-1.jar
+            </systemPath>
         </dependency>
 
         <dependency>
@@ -93,7 +94,7 @@
             <artifactId>client-sdk.common</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/client-sdk.common-1.0.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/lib/client-sdk.common-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -101,7 +102,7 @@
             <artifactId>client-sdk.api</artifactId>
             <version>1.0.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/client-sdk.api-1.0.2.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/lib/client-sdk.api-1.0.2.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -109,7 +110,7 @@
             <artifactId>lippi-oapi-encrpt</artifactId>
             <version>dingtalk-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/lippi-oapi-encrpt.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/lib/lippi-oapi-encrpt.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -117,7 +118,7 @@
             <artifactId>client-sdk.core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/client-sdk.core-1.0.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/lib/client-sdk.core-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
 
 
@@ -126,7 +127,7 @@
             <artifactId>client-sdk.spring</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/client-sdk.spring-1.0.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/lib/client-sdk.spring-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -163,13 +164,47 @@
 
     <build>
         <plugins>
+
+            <!--&lt;!&ndash;打war包时用&ndash;&gt;
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    &lt;!&ndash;配置本地jar包在项目的存放路径&ndash;&gt;
+                    <compilerArguments>
+                        <extdirs>${project.basedir}/src/main/resources/lib</extdirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            &lt;!&ndash;配置本地jar包在项目中的存放路径&ndash;&gt;
+                            <directory>src/main/resources/lib/</directory>
+                            &lt;!&ndash;配置打包时jar包的存放路径&ndash;&gt;
+                            <targetPath>WEB-INF/lib</targetPath>
+                            <includes>
+                                <include>**/*.jar</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>-->
+
+            <!--打jar包时用-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
