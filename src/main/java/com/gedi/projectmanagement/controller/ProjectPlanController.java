@@ -45,10 +45,10 @@ public class ProjectPlanController {
         User user = (User) codeAndMsg1.getData();
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
+        session.setAttribute("uDepartment",user.getuDepartment());
         if (user != null) {
             return projectPlanService.selectById();
         } else {
-
             return projectPlanService.selectById();
         }
 
