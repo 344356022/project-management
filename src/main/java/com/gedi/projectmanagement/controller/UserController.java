@@ -35,4 +35,31 @@ public class UserController {
     public CodeAndMsg selectAllUser() {
         return userService.selectAllUser();
     }
+
+
+    //根据部门标记进行获取部门下所对应的所有员工以及ID值
+    @GetMapping("selectUserByDepartment")
+    public CodeAndMsg selectUserByDepartment(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String department = (String)session.getAttribute("uDepartment");
+        return userService.selectUserBySign(department);
+    }
+
+    //根据项目总总计划维护页面 的tab页面    筛选出所对应的所有员工以及ID值
+    @GetMapping("selectUserByTabFlag")
+    public CodeAndMsg selectUserByTabFlag(String tabFlag) {
+        String department="";
+        if(tabFlag.equals("1")){//需求分析
+            department="[117443437]";
+        }else if(tabFlag .equals("2")){//数据处理
+            department="[119455108]";
+        }else if(tabFlag.equals("3")){//系统开发
+            department="[117572421]";
+        }else{
+            return userService.selectAllUser();
+        }
+        return userService.selectUserBySign(department);
+    }
+
 }
