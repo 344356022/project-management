@@ -610,7 +610,7 @@
 
             },
 
-            //获取有关钉钉需要的值
+           //获取有关钉钉需要的值
             getDingDing: function () {
                 var _this = this;
                 $.ajax({
@@ -632,7 +632,7 @@
                         corpId: _config.corpId, // 企业id
                         onSuccess: function (info) {
                             _this.code = info.code;
-                            _this.getListMessage(info.code);//回显保存的数据
+                           _this.getListMessage(info.code);//回显保存的数据
                         },
                         onFail: function (err) {
                             alert('fail: ' + JSON.stringify(err));
@@ -713,8 +713,8 @@
                 var _this = this;
                 $.ajax({
                     url: "http://106.13.19.215:8082/projectPlan/listAll",
-                    data: {'authCode':code},
-                    /*data: {},*/
+                   data: {'authCode':code},
+                    //data: {},
                     type: "POST",
                     dataType: "json",
                     success: function (res) {
@@ -725,11 +725,13 @@
             },
 
             //获取所有负责人
-            getFzr: function () {
+            getFzr: function (id) {
+
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/user/selectAllUser",
-                    data: {},
+                   // url: "http://106.13.19.215:8082/user/selectAllUser",
+                    url:"http://106.13.19.215:8082/user/selectUserByTabFlag",
+                    data: {tabFlag:id},
                     type: "GET",
                     dataType: "json",
                     success: function (res) {
@@ -745,16 +747,13 @@
                 _this.buttonsName = "提交";
                 _this.shows = false;
                 _this.isClickBtnColor = "#000000";
-
                 if (items.pProjectPhaseId == "需求分析") {
                     items.pProjectPhaseId = "1";
                 } else if (items.pProjectPhaseId == "数据处理") {
                     items.pProjectPhaseId = "2";
                 } else if (items.pProjectPhaseId == "系统开发") {
                     items.pProjectPhaseId = "3";
-                }
-                ;
-
+                };
                 _this.pProjectPhaseIds = items.pProjectPhaseId;
                 _this.activeName2 = items.pProjectPhaseId;
 
@@ -764,6 +763,7 @@
 
             /*获取项目总体甲基化清单明细*/
             getProject: function (params) {
+                $("title").html(params.pName);
                 var _this = this;
                 $.ajax({
                     url: "http://106.13.19.215:8082/projectPlan/projectPlanList",
@@ -789,7 +789,7 @@
 
                         _this.tableData = res.data;
                         console.log(_this.tableData)
-
+                        _this.getFzr(params.pProjectPhaseId);
                     }
                 });
             },
