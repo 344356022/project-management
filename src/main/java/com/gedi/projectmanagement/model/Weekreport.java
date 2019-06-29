@@ -226,13 +226,14 @@ public class Weekreport {
 
     }
 
-    public Weekreport(String wId, String pId, String tsId, String userId, Integer wActualProportion,  String userDepartmet) {
+    public Weekreport(String wId, String pId, String tsId, String userId, Integer wActualProportion,  String userDepartmet,String wWorkReport) {
         this.wId = wId;
         this.pId = pId;
         this.tsId = tsId;
         this.userId = userId;
         this.wActualProportion = wActualProportion;
         this.userDepartmet = userDepartmet;
+        this.wWorkReport=wWorkReport;
     }
 
     @Override

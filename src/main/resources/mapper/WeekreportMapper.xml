@@ -247,12 +247,12 @@ ORDER BY
   <!--批量添加双周计划表的-->
   <insert id="addWeekReport">
       insert into weekreport (w_id,p_id,ts_id,w_work_report,user_id,
-    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type,user_department)
+    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type,user_department,w_end_time,w_start_time)
     values
       <foreach collection="list" item="item" separator=",">
           (#{item.wId},#{item.pId},#{item.tsId},
         #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},#{item.wStatus},
-        #{item.wRemark},#{item.wType},#{item.userDepartmet})
+        #{item.wRemark},#{item.wType},#{item.userDepartmet},#{item.w_end_time},#{item.w_start_time})
       </foreach>
   </insert>
 
@@ -348,7 +348,7 @@ ORDER BY
 
 
   <insert id="dailyAddRecord">
-    insert into weekreport (w_id,p_id,ts_id,user_id,w_actual_proportion,user_department) values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet})
+    insert into weekreport (w_id,p_id,ts_id,user_id,w_actual_proportion,user_department,w_work_report) values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet},#{wWorkReport})
   </insert>
 
 
