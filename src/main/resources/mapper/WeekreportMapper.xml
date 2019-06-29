@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.Weekreport" >
     <id column="w_id" property="wId" jdbcType="VARCHAR" />
     <result column="p_id" property="pId" jdbcType="VARCHAR" />
-    <result column="w_start_time" property="wStartTime" jdbcType="DATE" />
-    <result column="w_end_time" property="wEndTime" jdbcType="DATE" />
+    <result column="w_start_time" property="wStartTime" jdbcType="VARCHAR" />
+    <result column="w_end_time" property="wEndTime" jdbcType="VARCHAR" />
     <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
     <result column="w_work_report" property="wWorkReport" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
@@ -15,6 +15,7 @@
     <result column="w_remark" property="wRemark" jdbcType="VARCHAR" />
     <result column="r_finish" property="rFinish" jdbcType="VARCHAR" />
     <result column="w_type" property="wType" jdbcType="INTEGER"/>
+    <result column="user_department" property="userDepartmet" jdbcType="VARCHAR"></result>
     <collection property="projectPlans" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.ProjectPlan">
       <id column="p_id" property="pId" jdbcType="VARCHAR"/>
       <result column="p_name" property="pName" jdbcType="VARCHAR"/>
@@ -206,26 +207,52 @@
 
   <!--查询双周计划表里的详细内容进行展示-->
   <select id="selectWeekReportDetial" resultMap="BaseResultMap">
-
-  select w.w_id,w.w_work_report,w.w_actual_proportion,w.w_plan_proportion,w.w_status,w.w_remark,w.r_finish,w.w_type,
-  pp.p_id,u.user_id,tu.ts_id,
-  rt.detial_day_date,rt.is_select,rt.nums,rt.sorts
-   from weekreport w LEFT JOIN project_plan pp on w.p_id=pp.p_id
-    left join user u on u.user_id=w.user_id
-    LEFT JOIN task_subclass tu on w.ts_id=tu.ts_id
-    left join record_time rt on rt.w_id=w.w_id order by rt.sorts
+SELECT
+	w.w_id,
+	w.w_work_report,
+	w.w_actual_proportion,
+	w.w_plan_proportion,
+	w.w_status,
+	w.w_remark,
+	w.r_finish,
+	w.w_type,
+	pp.p_id,
+	u.user_id,
+	tu.ts_id,
+	rt.detial_day_date,
+	rt.is_select,
+	rt.nums,
+	rt.sorts
+FROM
+	weekreport w
+LEFT JOIN project_plan pp ON w.p_id = pp.p_id
+LEFT JOIN USER u ON u.user_id = w.user_id
+LEFT JOIN task_subclass tu ON w.ts_id = tu.ts_id
+LEFT JOIN record_time rt ON rt.w_id = w.w_id
+where 1=1
+<if test="userDepartment!=null and userDepartment!=''">
+ and  w.user_department=#{userDepartment}
+</if>
+<if test="wStarTime!=null and wStarTime!=''">
+ and w.w_start_time=#{wStarTime}
+</if>
+<if test="wEndTime!=null and wEndTime!=''">
+  and w.w_end_time=#{wEndTime}
+</if>
+ORDER BY
+	rt.sorts
   </select>
 
 
   <!--批量添加双周计划表的-->
   <insert id="addWeekReport">
       insert into weekreport (w_id,p_id,ts_id,w_work_report,user_id,
-    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type)
+    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type,user_department)
     values
       <foreach collection="list" item="item" separator=",">
           (#{item.wId},#{item.pId},#{item.tsId},
         #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},#{item.wStatus},
-        #{item.wRemark},#{item.wType})
+        #{item.wRemark},#{item.wType},#{item.userDepartmet})
       </foreach>
   </insert>
 
@@ -318,6 +345,11 @@
   <update id="updateActualAndStatus">
      update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish},w_status=3 where w_id=#{wId}
   </update>
+
+
+  <insert id="dailyAddRecord">
+    insert into weekreport (w_id,p_id,ts_id,user_id,w_actual_proportion,user_department) values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet})
+  </insert>
 
 
 </mapper>
