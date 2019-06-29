@@ -60,7 +60,7 @@ public class WeekReportController {
         HttpSession session = request.getSession();
         session.setAttribute("uDepartment",user.getuDepartment());
         if(user!=null){
-            return weekReportService.selectWeekReportDetial();
+            return weekReportService.selectWeekReportDetial(null,null,null);
         }else{
             codeAndMsg.setResult(false);
             codeAndMsg.setCode(200);
