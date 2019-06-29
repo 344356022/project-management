@@ -88,6 +88,8 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
+                weekreport1.setwEndTime(weekreport.getwEndTime());
+                weekreport1.setwStartTime(weekreport.getwStartTime());
                 weekreports1.add(weekreport1);
                  dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -109,6 +111,8 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
+                weekreport1.setwEndTime(weekreport.getwEndTime());
+                weekreport1.setwStartTime(weekreport.getwStartTime());
                 weekreports1.add(weekreport1);
                 dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -296,7 +300,7 @@ public class WeekReportServiceImpl implements WeekReportService {
             RecordTime recordTime=new RecordTime();
             recordTime.setTimeId(UUIDUtil.getUUID2());
             recordTime.setwId(other);
-            SimpleDateFormat simpleDateFormat=new SimpleDateFormat();
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             String dailyTime = simpleDateFormat.format(date);
             recordTime.setName(dailyTime);
