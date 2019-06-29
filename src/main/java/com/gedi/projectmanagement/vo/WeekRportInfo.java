@@ -32,12 +32,16 @@ public class WeekRportInfo {
 
     private Integer wType;
 
+    private String wStartTime;
+
+    private String wEndTime;
+
     private List<RecordTime> recordTimes;
 
     public WeekRportInfo(){}
 
 
-    public WeekRportInfo(String wId, String wWorkReport, Integer wActualProportion, Integer wPlanProportion, String wRemark, String pId, String userId, String tsId, Integer wStatus, Integer wType, List<RecordTime> recordTimes) {
+    public WeekRportInfo(String wId, String wWorkReport, Integer wActualProportion, Integer wPlanProportion, String wRemark, String pId, String userId, String tsId, Integer wStatus, Integer wType, String wStartTime, String wEndTime, List<RecordTime> recordTimes) {
         this.wId = wId;
         this.wWorkReport = wWorkReport;
         this.wActualProportion = wActualProportion;
@@ -48,7 +52,25 @@ public class WeekRportInfo {
         this.tsId = tsId;
         this.wStatus = wStatus;
         this.wType = wType;
+        this.wStartTime = wStartTime;
+        this.wEndTime = wEndTime;
         this.recordTimes = recordTimes;
+    }
+
+    public String getwStartTime() {
+        return wStartTime;
+    }
+
+    public void setwStartTime(String wStartTime) {
+        this.wStartTime = wStartTime;
+    }
+
+    public String getwEndTime() {
+        return wEndTime;
+    }
+
+    public void setwEndTime(String wEndTime) {
+        this.wEndTime = wEndTime;
     }
 
     public void setRecordTimes(List<RecordTime> recordTimes) {
