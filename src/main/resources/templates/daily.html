@@ -23,11 +23,34 @@
             padding: 0;
             font-size: 0.12rem;
         }
-
+        #idbody{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
         .daily-title{
+            position: relative;
+            color:white;
+        }
+        .daily-title>i{
+            position: absolute;
+            font-size: 0.16rem;
+        }
+        .icon-lishijilu{
+            top: 0.08rem;
+            left: 0.1rem;
+            font-size: 0.18rem;
+        }
+        .icon-rizhibaobiao{
+            top: 0.08rem;
+            right: 0.15rem;
+        }
+        .daily-title-name{
             text-align: center;
-            padding: 0.06rem;
-            background: #e9ebed;
+            padding: 0.08rem;
+            background: #409EFF;
         }
         .dailyContent{
             overflow: auto;
@@ -146,13 +169,21 @@
             text-align: center;
             line-height: 0.3rem;
             font-size: 0.12rem;
-            background:#e9ebed;
+            background:#409EFF;
+            color:white;
         }
     </style>
 </head>
 <body>
-    <div id="idbody">
-        <div class="daily-title">日报</div>
+    <div id="idbody" v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 1)">
+        <div class="daily-title">
+            <i class="iconfont icon-lishijilu" @click="historyMethods" title="历史日报"></i>
+            <div class="daily-title-name">写日报</div>
+            <i class="iconfont icon-rizhibaobiao" title="日志报表"></i>
+        </div>
         <div style="line-height: 0.6rem;width: 100%;text-align: center;" v-if="dailyList.length<=0?true:false">暂无数据</div>
         <div class="dailyContent" v-else-if="dailyList.length>0?true:false">
             <!--日报完成度没有达到100%的列表-->
@@ -221,7 +252,7 @@
                 </span>
             </el-dialog>
         </div>
-        <div class="submits" :style="{color:isClickBtnColor}" @click="submit">提交</div>
+        <div class="submits" @click="submit">提交</div>
     </div>
 	
     <script>
@@ -232,6 +263,7 @@
         var myHome = new Vue({
            el:"#idbody",
             data:{
+                loading:false,
                 //第一次的完成进度
                 wcjdValue:[],
 
@@ -255,6 +287,16 @@
                _this.getDingDing();
             },
             methods:{
+               //点击历史记录
+                historyMethods:function(){
+                    var _this=this;
+                    _this.loading=true;
+
+                    setTimeout(function () {
+                        window.location.href="./dailyLook.html";
+                    });
+                },
+
                //将绑定的点击保存按钮  恢复默认值
                 changeWcgs:function(){
                     var _this=this;
