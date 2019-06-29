@@ -1,8 +1,10 @@
 package com.gedi.projectmanagement.service.impl;
 
 import com.gedi.projectmanagement.dao.RecordTimeMapper;
+import com.gedi.projectmanagement.dao.UserMapper;
 import com.gedi.projectmanagement.dao.WeekreportMapper;
 import com.gedi.projectmanagement.model.RecordTime;
+import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.UUIDUtil;
@@ -11,8 +13,14 @@ import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,16 +39,18 @@ public class WeekReportServiceImpl implements WeekReportService {
     @Autowired
     private RecordTimeMapper recordTimeMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
-    public CodeAndMsg selectWeekReportDetial() {
+    public CodeAndMsg selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime) {
 
         CodeAndMsg codeAndMsg=new CodeAndMsg();
-
-        if(weekreportMapper.selectWeekReportDetial().size()!=0&&weekreportMapper.selectWeekReportDetial()!=null){
+        if(weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime).size()!=0&&weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime)!=null){
             codeAndMsg.setCode(200);
             codeAndMsg.setMsg("查询成功");
             codeAndMsg.setResult(true);
-            codeAndMsg.setData(weekreportMapper.selectWeekReportDetial());
+            codeAndMsg.setData(weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime));
             return codeAndMsg;
         }else{
             codeAndMsg.setCode(400);
@@ -56,6 +66,11 @@ public class WeekReportServiceImpl implements WeekReportService {
 
         List<RecordTime> dataList=null;
         List<Weekreport> weekreports1=new ArrayList<>();
+        ServletRequestAttributes rr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = rr.getRequest();
+        HttpSession session = request.getSession();
+        String uDepartment = (String)session.getAttribute("uDepartment");
+        System.out.println(uDepartment+"session里保存的数据---------------------------");
         for (WeekRportInfo weekreport : weekreports) {
             if(weekreport.getwId()!=null){
                 Weekreport weekreport1=new Weekreport();
@@ -72,6 +87,9 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwRemark(weekreport.getwRemark());
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
+                weekreport1.setUserDepartmet(uDepartment);
+                weekreport1.setwEndTime(weekreport.getwEndTime());
+                weekreport1.setwStartTime(weekreport.getwStartTime());
                 weekreports1.add(weekreport1);
                  dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -92,6 +110,9 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwRemark(weekreport.getwRemark());
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
+                weekreport1.setUserDepartmet(uDepartment);
+                weekreport1.setwEndTime(weekreport.getwEndTime());
+                weekreport1.setwStartTime(weekreport.getwStartTime());
                 weekreports1.add(weekreport1);
                 dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -265,6 +286,38 @@ public class WeekReportServiceImpl implements WeekReportService {
             codeAndMsg.setResult(false);
             return codeAndMsg;
         }
+    }
+
+    @Override
+    public CodeAndMsg dailyAddRecord(Weekreport weekreport) {
+
+        CodeAndMsg codeAndMsg=new CodeAndMsg();
+        String userId = weekreport.getUserId();
+        User user = userMapper.selectUserById(userId);
+        if(weekreport!=null&&user!=null){
+            weekreport.setwId(UUIDUtil.getUUID2());
+            String other = weekreport.getwId();
+            RecordTime recordTime=new RecordTime();
+            recordTime.setTimeId(UUIDUtil.getUUID2());
+            recordTime.setwId(other);
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            String dailyTime = simpleDateFormat.format(date);
+            recordTime.setName(dailyTime);
+            recordTimeMapper.addDailyTime(recordTime);
+            weekreportMapper.dailyAddRecord(weekreport);
+            codeAndMsg.setCode(200);
+            codeAndMsg.setMsg("添加成功");
+            codeAndMsg.setResult(true);
+            return codeAndMsg;
+        }else{
+            codeAndMsg.setResult(false);
+            codeAndMsg.setCode(400);
+            codeAndMsg.setMsg("数据有误");
+            return codeAndMsg;
+
+        }
+
     }
 
 

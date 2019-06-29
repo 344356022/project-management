@@ -22,7 +22,7 @@ public interface WeekreportMapper {
     int updateByPrimaryKey(Weekreport record);
 
     //展示双周计划表得所有具体内容
-    List<Weekreport> selectWeekReportDetial();
+    List<Weekreport> selectWeekReportDetial(@Param("userDepartment")String userDepartment,@Param("wStarTime")String wStarTime,@Param("wEndTime")String wEndTime);
 
     //批量添加双周计划表的
     void  addWeekReport(@Param("list") List<Weekreport> weekreports);
@@ -53,6 +53,9 @@ public interface WeekreportMapper {
 
     //当实际占比于计划占比相等时修改状态为已完成的同时将实际占比的值更改
     void updateActualAndStatus(@Param("wId") String wId, @Param("valueZ") int valueZ,@Param("rFinish") int rFinish);
+
+    //供日计划自定义填写其他所调用的接口
+    void dailyAddRecord(Weekreport weekreport);
 
 
 }

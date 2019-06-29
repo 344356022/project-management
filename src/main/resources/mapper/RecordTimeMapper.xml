@@ -35,5 +35,9 @@
     update record_time set sign=true where detial_day_date=#{detial_day_date}
   </update>
 
+  <insert id="addDailyTime">
+    insert into record_time values(#{timeId},#{wId},#{name})
+  </insert>
+
 
 </mapper>

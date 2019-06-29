@@ -24,6 +24,8 @@ public class RecordTime {
     public RecordTime() {
     }
 
+
+
     public RecordTime(String timeId, String name, String wId, String isSelect, Integer nums, Integer sorts) {
         this.timeId = timeId;
         this.name = name;
@@ -31,6 +33,12 @@ public class RecordTime {
         this.isSelect = isSelect;
         this.nums = nums;
         this.sorts = sorts;
+    }
+
+    public RecordTime(String timeId, String name, String wId) {
+        this.timeId = timeId;
+        this.name = name;
+        this.wId = wId;
     }
 
     public Integer getSorts() {

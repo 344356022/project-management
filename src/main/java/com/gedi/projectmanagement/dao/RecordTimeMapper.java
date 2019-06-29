@@ -27,4 +27,9 @@ public interface RecordTimeMapper {
     //根据双周计划的ID值移除所对应的时间
     void  deleteDayDate(String wId);
 
+
+    //供日报提供的其他任务的时间接口
+    void addDailyTime(RecordTime recordTime);
+
+
 }

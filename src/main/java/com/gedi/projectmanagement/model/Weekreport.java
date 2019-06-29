@@ -9,9 +9,9 @@ public class Weekreport {
 
     private String pId;
 
-    private Date wStartTime;
+    private String wStartTime;
 
-    private Date wEndTime;
+    private String wEndTime;
 
     private String tsId;
 
@@ -27,6 +27,8 @@ public class Weekreport {
 
     private String wRemark;
 
+    private String userDepartmet;
+
     private List<ProjectPlan> projectPlans;
 
     private List<User> users;
@@ -40,6 +42,14 @@ public class Weekreport {
     private List<TaskSubclass> taskSubclasses;
 
     private Integer wType;
+
+    public String getUserDepartmet() {
+        return userDepartmet;
+    }
+
+    public void setUserDepartmet(String userDepartmet) {
+        this.userDepartmet = userDepartmet;
+    }
 
     public Integer getwType() {
         return wType;
@@ -113,21 +123,19 @@ public class Weekreport {
         this.pId = pId;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getwStartTime() {
+    public String getwStartTime() {
         return wStartTime;
     }
 
-    public void setwStartTime(Date wStartTime) {
+    public void setwStartTime(String wStartTime) {
         this.wStartTime = wStartTime;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    public Date getwEndTime() {
+    public String getwEndTime() {
         return wEndTime;
     }
 
-    public void setwEndTime(Date wEndTime) {
+    public void setwEndTime(String wEndTime) {
         this.wEndTime = wEndTime;
     }
 
@@ -202,8 +210,7 @@ public class Weekreport {
         this.wRemark = wRemark;
         this.wType=wType;
     }
-
-    public Weekreport(String wId, String pId, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer rFinish,Integer wType) {
+    public Weekreport(String wId, String pId, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark,Integer rFinish,Integer wType,String userDepartmet) {
         this.wId = wId;
         this.pId = pId;
         this.tsId = tsId;
@@ -215,7 +222,18 @@ public class Weekreport {
         this.wRemark = wRemark;
         this.rFinish=rFinish;
         this.wType=wType;
+        this.userDepartmet=userDepartmet;
 
+    }
+
+    public Weekreport(String wId, String pId, String tsId, String userId, Integer wActualProportion,  String userDepartmet,String wWorkReport) {
+        this.wId = wId;
+        this.pId = pId;
+        this.tsId = tsId;
+        this.userId = userId;
+        this.wActualProportion = wActualProportion;
+        this.userDepartmet = userDepartmet;
+        this.wWorkReport=wWorkReport;
     }
 
     @Override
@@ -232,14 +250,9 @@ public class Weekreport {
                 ", wPlanProportion=" + wPlanProportion +
                 ", wStatus=" + wStatus +
                 ", wRemark='" + wRemark + '\'' +
-                ", projectPlans=" + projectPlans +
-                ", users=" + users +
-                ", actionItems=" + actionItems +
+                ", userDepartmet='" + userDepartmet + '\'' +
                 ", rFinish=" + rFinish +
-                ", recordTimes=" + recordTimes +
-                ", taskSubclasses=" + taskSubclasses +
                 ", wType=" + wType +
                 '}';
     }
-
 }
