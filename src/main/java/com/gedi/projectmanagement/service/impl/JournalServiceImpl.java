@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.gedi.projectmanagement.dao.JournalMapper;
+import com.gedi.projectmanagement.model.system.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.gedi.projectmanagement.model.Journal;
@@ -74,5 +75,30 @@ public class JournalServiceImpl implements  IJournalService
 		return journalMapper.insertJournalList(list);
 	}
 
+
+	/**
+	 * 返回日报填写记录列表
+	 */
+	@Override
+	public List<HashMap<String, Object>> selectJournalHistory(HashMap map,int pageSize,int pageNum) {
+		//该设置是设置分页查询   暂时不用  如需  请打开
+		//PageHelper.startPage( pageNum,pageSize);
+		//判断权限
+		SysUser user = (SysUser) map.get("user");
+		String type = (String) map.get("type");
+		//如果是管理员或者老板或者主管
+		if(user.getIsAdmin() || user.getIsBoss() || user.getIsLeader()){
+			if("2".equals(type)){//只查询自己的
+
+				return journalMapper.selectJournalHistory(map);
+			}else if ("3".equals(type)){//查询我的团队人员的
+				return this.journalMapper.querySelfTeamDaily(map);
+			}else { //查询全部
+				return this.journalMapper.queryAllDaily(map);
+			}
+		}else { //说明是员工
+			return journalMapper.selectJournalHistory(map);
+		}
+	}
 
 }
