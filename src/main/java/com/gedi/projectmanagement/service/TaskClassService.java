@@ -1,9 +1,8 @@
 package com.gedi.projectmanagement.service;
 
 import com.gedi.projectmanagement.model.ActionItem;
-import com.gedi.projectmanagement.model.TaskClass;
-import com.gedi.projectmanagement.model.TaskSubclass;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -19,7 +18,7 @@ public interface TaskClassService {
     /*
     新增项目中的任务类
      */
-    public String addTaskClass(List<ActionItem> actionItems);
+    public String addTaskClass(List<ActionItem> actionItems, HttpServletRequest request);
 
 
 }
