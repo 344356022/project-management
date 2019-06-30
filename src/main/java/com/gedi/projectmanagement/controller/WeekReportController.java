@@ -51,16 +51,16 @@ public class WeekReportController {
 
     //查询双周计划表展示具体的内容以及完成的占比；
     @PostMapping("selectWeekReportDetial")
-    public CodeAndMsg selectWeekReportDetial(String authCode, HttpServletRequest request) {
+    public CodeAndMsg selectWeekReportDetial(String wStarTime,String wEndTime,String authCode, HttpServletRequest request) {
 
         CodeAndMsg codeAndMsg=new CodeAndMsg();
-       String userId = LoginUtil.login(authCode);
+   /*    String userId = LoginUtil.login(authCode);
         CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
-        User user = (User)codeAndMsg1.getData();
+        User user = (User)codeAndMsg1.getData();*/
         HttpSession session = request.getSession();
-        session.setAttribute("uDepartment",user.getuDepartment());
-        if(user!=null){
-            return weekReportService.selectWeekReportDetial();
+        session.setAttribute("uDepartment","[117572421]");
+        if(weekReportService.selectWeekReportDetial("[117572421]","","")!=null){
+            return weekReportService.selectWeekReportDetial("[117572421]","","");
         }else{
             codeAndMsg.setResult(false);
             codeAndMsg.setCode(200);
