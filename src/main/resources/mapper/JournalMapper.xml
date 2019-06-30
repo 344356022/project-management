@@ -35,7 +35,7 @@
 
     </select>-->
     <!-- 日报列表-->
-    <select id="selectJournalResultList" parameterType="Map" resultType="Map">
+    <select id="selectJournalResultList"  parameterType="Map" resultType="Map">
         SELECT w.w_id,p.p_id,w.ts_id,p.p_name,w.w_work_report,w.r_finish,w.w_status
         FROM weekreport w, project_plan p
         WHERE w.p_id = p.p_id
@@ -46,25 +46,25 @@
 
     </select>
     <!-- 日志抄送人列表-->
-    <select id="selectUserList" resultType="Map">
-      SELECT user_id,u_phone,u_name from user where u_status=0
+    <select id="selectUserList"  resultType="Map">
+      SELECT user_id,mobile,name,acatar from user where active is true
     </select>
     <select id="selectJournalList" parameterType="Journal" resultMap="JournalResult">
         <include refid="selectJournalVo"/>
         <where>
-            <if test="rbId != null  and rbId != '' ">and rb_id = #{rbId}</if>
-            <if test="wId != null  and wId != '' ">and w_id = #{wId}</if>
-            <if test="pId != null  and pId != '' ">and p_id = #{pId}</if>
-            <if test="aId != null  and aId != '' ">and a_id = #{aId}</if>
-            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
-            <if test="userId != null  and userId != '' ">and user_id = #{userId}</if>
-            <if test="finish != null ">and finish = #{finish}</if>
-            <if test="finishContent != null  and finishContent != '' ">and finish_content = #{finishContent}</if>
-            <if test="finishProcess != null ">and finish_process = #{finishProcess}</if>
-            <if test="deliver != null  and deliver != '' ">and deliver = #{deliver}</if>
-            <if test="createTime != null ">and create_time = #{createTime}</if>
-            <if test="creater != null  and creater != '' ">and creater = #{creater}</if>
-        </where>
+            <if test="rbId != null  and rbId != '' "> and rb_id = #{rbId}</if>
+             <if test="wId != null  and wId != '' "> and w_id = #{wId}</if>
+             <if test="pId != null  and pId != '' "> and p_id = #{pId}</if>
+             <if test="aId != null  and aId != '' "> and a_id = #{aId}</if>
+             <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
+             <if test="userId != null  and userId != '' "> and user_id = #{userId}</if>
+             <if test="finish != null "> and finish = #{finish}</if>
+             <if test="finishContent != null  and finishContent != '' "> and finish_content = #{finishContent}</if>
+             <if test="finishProcess != null "> and finish_process = #{finishProcess}</if>
+             <if test="deliver != null  and deliver != '' "> and deliver = #{deliver}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="creater != null  and creater != '' "> and creater = #{creater}</if>
+         </where>
     </select>
 
     <select id="selectJournalById" parameterType="String" resultMap="JournalResult">
@@ -74,57 +74,57 @@
 
     <insert id="insertJournal" parameterType="Journal">
         insert into journal
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="rbId != null  and rbId != ''  ">rb_id,</if>
-            <if test="wId != null  and wId != ''  ">w_id,</if>
-            <if test="pId != null  and pId != ''  ">p_id,</if>
-            <if test="aId != null  and aId != ''  ">a_id,</if>
-            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
-            <if test="userId != null  and userId != ''  ">user_id,</if>
-            <if test="finish != null  ">finish,</if>
-            <if test="finishContent != null  and finishContent != ''  ">finish_content,</if>
-            <if test="finishProcess != null  ">finish_process,</if>
-            <if test="deliver != null  and deliver != ''  ">deliver,</if>
-            <if test="createTime != null  ">create_time,</if>
-            <if test="creater != null  and creater != ''  ">creater,</if>
-        </trim>
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="rbId != null  and rbId != ''  ">rb_id,</if>
+			<if test="wId != null  and wId != ''  ">w_id,</if>
+			<if test="pId != null  and pId != ''  ">p_id,</if>
+			<if test="aId != null  and aId != ''  ">a_id,</if>
+            <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
+			<if test="userId != null  and userId != ''  ">user_id,</if>
+			<if test="finish != null  ">finish,</if>
+			<if test="finishContent != null  and finishContent != ''  ">finish_content,</if>
+			<if test="finishProcess != null  ">finish_process,</if>
+			<if test="deliver != null  and deliver != ''  ">deliver,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="creater != null  and creater != ''  ">creater,</if>
+         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="rbId != null  and rbId != ''  ">#{rbId},</if>
-            <if test="wId != null  and wId != ''  ">#{wId},</if>
-            <if test="pId != null  and pId != ''  ">#{pId},</if>
-            <if test="aId != null  and aId != ''  ">#{aId},</if>
-            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
-            <if test="userId != null  and userId != ''  ">#{userId},</if>
-            <if test="finish != null  ">#{finish},</if>
-            <if test="finishContent != null  and finishContent != ''  ">#{finishContent},</if>
-            <if test="finishProcess != null  ">#{finishProcess},</if>
-            <if test="deliver != null  and deliver != ''  ">#{deliver},</if>
-            <if test="createTime != null  ">#{createTime},</if>
-            <if test="creater != null  and creater != ''  ">#{creater},</if>
-        </trim>
+			<if test="rbId != null  and rbId != ''  ">#{rbId},</if>
+			<if test="wId != null  and wId != ''  ">#{wId},</if>
+			<if test="pId != null  and pId != ''  ">#{pId},</if>
+			<if test="aId != null  and aId != ''  ">#{aId},</if>
+            <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
+			<if test="userId != null  and userId != ''  ">#{userId},</if>
+			<if test="finish != null  ">#{finish},</if>
+			<if test="finishContent != null  and finishContent != ''  ">#{finishContent},</if>
+			<if test="finishProcess != null  ">#{finishProcess},</if>
+			<if test="deliver != null  and deliver != ''  ">#{deliver},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="creater != null  and creater != ''  ">#{creater},</if>
+         </trim>
     </insert>
 
     <!-- 批量插入日报信息  -->
     <insert id="insertJournalList" parameterType="java.util.List">
-        insert into journal
-        (rb_id, w_id,p_id, user_id,ts_id,deliver, finish, finish_process,finish_content, create_time)
+    insert into  journal
+    (rb_id, w_id,p_id, user_id,ts_id,deliver, finish, finish_process,finish_content,  create_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            <if test="item.r_finish &lt;= 100  and item.r_finish &gt; 0  and item.r_gongshi &gt; 0 and item.descText != null and item.descText != ''">
-                (
-                #{item.rbId},
-                #{item.w_id},
-                #{item.p_id},
-                #{item.userId},
-                #{item.ts_id},
-                #{item.deliver},
-                #{item.r_finish},
-                #{item.r_gongshi},
-                #{item.descText},
-                NOW() )
-            </if>
+        <if test="item.r_finish &lt;= 100  and item.r_finish &gt; 0  and item.r_gongshi &gt; 0 and item.descText != null and item.descText != ''">
+            (
+            #{item.rbId},
+            #{item.w_id},
+            #{item.p_id},
+            #{item.userId},
+            #{item.ts_id},
+            #{item.deliver},
+            #{item.r_finish},
+            #{item.r_gongshi},
+            #{item.descText},
+            NOW() )
+        </if>
 
-        </foreach>
+          </foreach>
     </insert>
 
     <update id="updateJournal" parameterType="Journal">
@@ -133,7 +133,7 @@
             <if test="wId != null  and wId != ''  ">w_id = #{wId},</if>
             <if test="pId != null  and pId != ''  ">p_id = #{pId},</if>
             <if test="aId != null  and aId != ''  ">a_id = #{aId},</if>
-            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
+            <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
             <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
             <if test="finish != null  ">finish = #{finish},</if>
             <if test="finishContent != null  and finishContent != ''  ">finish_content = #{finishContent},</if>
@@ -145,7 +145,7 @@
         where rb_id = #{rbId}
     </update>
 
-    <delete id="deleteJournalById" parameterType="String">
+	<delete id="deleteJournalById" parameterType="String">
         delete from journal where rb_id = #{rbId}
     </delete>
 
@@ -155,6 +155,125 @@
             #{rbId}
         </foreach>
     </delete>
+
+
+    <!-- 个人日报填写列表   展示用-->
+    <select id="selectJournalHistory"  parameterType="Journal" resultType="Map">
+        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name
+        FROM
+            journal j,
+            weekreport w,
+            project_plan p,
+            `user` u
+        WHERE
+            j.w_id = w.w_id
+        AND j.p_id = p.p_id
+        AND j.user_id=u.user_id
+
+        <!-- 用户 -->
+        <if test="userId != null and userId !=''" >
+            AND j.user_id in ( #{userId})
+        </if>
+        <!-- 开始时间 -->
+        <if test="startTime != null and startTime !=''" >
+            AND j.create_time <![CDATA[>=]]> #{startTime}
+        </if>
+        <!-- 结束时间 -->
+        <if test="endTime != null and endTime !=''" >
+            AND j.create_time <![CDATA[<=]]> #{endTime}
+        </if>
+
+        <!-- 发送人 -->
+        <if test="sendUserId != null and sendUserId !=''" >
+            AND j.user_id in ( #{sendUserId})
+        </if>
+
+            <!-- pId -->
+        <if test="pId != null and pId !=''" >
+            AND j.p_id in ( #{pId})
+        </if>
+
+        <!-- ts_id -->
+        <if test="tsId != null and tsId !=''" >
+            AND j.ts_id in ( #{tsId})
+        </if>
+
+        order by create_time DESC
+
+    </select>
+
+
+    <select id="querySelfTeamDaily"  parameterType="Journal" resultType="Map">
+        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name
+        FROM
+        journal j,
+        weekreport w,
+        project_plan p,
+        `user` u
+        WHERE
+        j.w_id = w.w_id
+        AND j.p_id = p.p_id
+        AND j.user_id=u.user_id
+
+        <!-- 用户 -->
+        <if test="userId != null and userId !=''" >
+            AND j.deliver in ( #{userId})
+        </if>
+        <!-- 开始时间 -->
+        <if test="startTime != null and startTime !=''" >
+            AND j.create_time <![CDATA[>=]]> #{startTime}
+        </if>
+        <!-- 结束时间 -->
+        <if test="endTime != null and endTime !=''" >
+            AND j.create_time <![CDATA[<=]]> #{endTime}
+        </if>
+        <!-- pId -->
+        <if test="pId != null and pId !=''" >
+            AND j.p_id in ( #{pId})
+        </if>
+        <!-- ts_id -->
+        <if test="tsId != null and tsId !=''" >
+            AND j.ts_id in ( #{tsId})
+        </if>
+        order by create_time DESC
+
+    </select>
+
+    <select id="queryAllDaily"  parameterType="Journal" resultType="Map">
+        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name
+        FROM
+        journal j,
+        weekreport w,
+        project_plan p,
+        `user` u
+        WHERE
+        j.w_id = w.w_id
+        AND j.p_id = p.p_id
+        AND j.user_id=u.user_id
+
+        <!-- 用户 -->
+        <if test="userId != null and userId !=''" >
+            AND (j.deliver in ( #{userId}) or j.user_id in ( #{userId}))
+        </if>
+        <!-- 开始时间 -->
+        <if test="startTime != null and startTime !=''" >
+            AND j.create_time <![CDATA[>=]]> #{startTime}
+        </if>
+        <!-- 结束时间 -->
+        <if test="endTime != null and endTime !=''" >
+            AND j.create_time <![CDATA[<=]]> #{endTime}
+        </if>
+        <!-- pId -->
+        <if test="pId != null and pId !=''" >
+            AND j.p_id in ( #{pId})
+        </if>
+        <!-- ts_id -->
+        <if test="tsId != null and tsId !=''" >
+            AND j.ts_id in ( #{tsId})
+        </if>
+        order by create_time DESC
+
+    </select>
 
     <select id="selectBypId" parameterType="String">
         SELECT
