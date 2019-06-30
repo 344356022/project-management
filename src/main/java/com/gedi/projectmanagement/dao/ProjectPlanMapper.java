@@ -69,4 +69,12 @@ public interface ProjectPlanMapper {
      */
     public int deleteProjectBypId(String pId);
 
+    /**
+     * 根据pId修改项目总计划
+     *
+     * @param projectPlan
+     * @return
+     */
+    public int updateProjectBypId(@Param("projectPlan") ProjectPlan projectPlan);
+
 }

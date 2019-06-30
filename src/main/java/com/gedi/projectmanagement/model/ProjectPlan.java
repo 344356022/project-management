@@ -97,6 +97,11 @@ public class ProjectPlan {
     public ProjectPlan() {
     }
 
+    public ProjectPlan(String pId, Integer pProjectPhaseId) {
+        this.pId = pId;
+        this.pProjectPhaseId = pProjectPhaseId;
+    }
+
     public ProjectPlan(String pId, String pName, String pStartTime, String pEndTime, Integer pProjectPhaseId,
                        Integer pProgress, String createTime, String creater, String annualTime) {
         this.pId = pId;
@@ -107,6 +112,24 @@ public class ProjectPlan {
         this.pProgress = pProgress;
         this.createTime = createTime;
         this.creater = creater;
+        this.annualTime = annualTime;
+    }
+
+    public ProjectPlan(String pId, String pName, String pStartTime, String pEndTime, Integer pProgress) {
+        this.pId = pId;
+        this.pName = pName;
+        this.pStartTime = pStartTime;
+        this.pEndTime = pEndTime;
+        this.pProgress = pProgress;
+    }
+
+    public ProjectPlan(String pId, String pName, String pStartTime, String pEndTime, Integer pProgress,
+                       String annualTime) {
+        this.pId = pId;
+        this.pName = pName;
+        this.pStartTime = pStartTime;
+        this.pEndTime = pEndTime;
+        this.pProgress = pProgress;
         this.annualTime = annualTime;
     }
 

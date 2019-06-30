@@ -33,26 +33,20 @@ public class MaintenanceProjectController {
     @Resource
     private TaskClassService taskClassService;
 
-    //列表展示所有
-    @RequestMapping("/listAll")
-    public CodeAndMsg selectById(String pid) {
-        return projectPlanService.selectById();
-    }
-
     /**
      * @param projectPlan
      * @return
      * @Description : 添加新的项目总计划
      */
     @PostMapping("/addProject")
-    public CodeAndMsg addProject1(@RequestBody ProjectPlan projectPlan) {
+    public CodeAndMsg addProject1(@RequestBody ProjectPlan projectPlan, HttpServletRequest request) {
         CodeAndMsg msg = new CodeAndMsg();
         if (null == projectPlan) {
             msg.setCode(400);
             msg.setMsg("参数不能为空");
             msg.setResult(false);
         } else {
-            String flag = this.projectPlanService.addProject(projectPlan);
+            String flag = this.projectPlanService.addProject(projectPlan, request);
             if ("success".equals(flag)) {
                 msg.setCode(200);
                 msg.setMsg("新增成功");
@@ -72,7 +66,7 @@ public class MaintenanceProjectController {
      * @Description : 添加新的项目总计划新增项目中的任务类和任务子类列表
      */
     @PostMapping("/addProjectList")
-    public CodeAndMsg addTaskSubclass(@RequestBody String items) {
+    public CodeAndMsg addTaskSubclass(@RequestBody String items, HttpServletRequest request) {
         CodeAndMsg msg = new CodeAndMsg();
         if (null == items) {
             msg.setCode(400);
@@ -82,7 +76,7 @@ public class MaintenanceProjectController {
             JSONObject jsonObject = JSON.parseObject(items);
             items = jsonObject.getString("items");
             List<ActionItem> actionItems = JSONArray.parseArray(items, ActionItem.class);
-            String flag = this.taskClassService.addTaskClass(actionItems);
+            String flag = this.taskClassService.addTaskClass(actionItems, request);
             if ("success".equals(flag)) {
                 msg.setCode(200);
                 msg.setMsg("新增成功");
