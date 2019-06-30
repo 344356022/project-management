@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,17 +42,21 @@ public class TaskClassServiceImpl implements TaskClassService {
     private ProjectPlanMapper projectPlanMapper;
 
     /**
-     * @Description : 新增项目任务列表
      * @param : taskClass  taskSubclass  actionItem
+     * @Description : 新增项目任务列表
      */
     @Override
-    public String addTaskClass(List<ActionItem> actionItems) {
-        List<ProjectUserMedium>  projectUserMediumList = new ArrayList<>();
+    public String addTaskClass(List<ActionItem> actionItems, HttpServletRequest request) {
+        List<ProjectUserMedium> projectUserMediumList = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         ProjectPlan projectPlan = new ProjectPlan();
+        /*HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");*/
 
         for (ActionItem actionItem : actionItems) {
             actionItem.setaId(UUIDUtil.getUUID2());
+            //actionItem.setCreater(user.getuName());
+            actionItem.setCreater("张帅");
             ProjectUserMedium userMedium = new ProjectUserMedium();
             userMedium.setId(UUIDUtil.getUUID2());
             userMedium.setaId(actionItem.getaId());
@@ -67,15 +72,13 @@ public class TaskClassServiceImpl implements TaskClassService {
         actionItemMapper.addActionItem(actionItems);
 
         //修改项目阶段
-        if(actionItems.size() > 0 && actionItems != null){
+        if (actionItems.size() > 0 && actionItems != null) {
             projectPlan.setpProjectPhaseId(actionItems.get(0).getpProjectPhaseId());
             projectPlan.setpId(actionItems.get(0).getpId());
             this.projectPlanMapper.updateBypId(projectPlan);
         }
         return "success";
     }
-
-
 
 
 }

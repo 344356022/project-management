@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gedi.projectmanagement.dao.JournalMapper">
-    
+
     <resultMap type="Journal" id="JournalResult">
-        <result property="rbId"    column="rb_id"    />
-        <result property="wId"    column="w_id"    />
-        <result property="pId"    column="p_id"    />
-        <result property="aId"    column="a_id"    />
-        <result property="tsId"    column="ts_id"    />
-        <result property="userId"    column="user_id"    />
-        <result property="finish"    column="finish"    />
-        <result property="finishContent"    column="finish_content"    />
-        <result property="finishProcess"    column="finish_process"    />
-        <result property="deliver"    column="deliver"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="creater"    column="creater"    />
+        <result property="rbId" column="rb_id"/>
+        <result property="wId" column="w_id"/>
+        <result property="pId" column="p_id"/>
+        <result property="aId" column="a_id"/>
+        <result property="tsId" column="ts_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="finish" column="finish"/>
+        <result property="finishContent" column="finish_content"/>
+        <result property="finishProcess" column="finish_process"/>
+        <result property="deliver" column="deliver"/>
+        <result property="createTime" column="create_time"/>
+        <result property="creater" column="creater"/>
     </resultMap>
-	
-	<sql id="selectJournalVo">
+
+    <sql id="selectJournalVo">
         select rb_id, w_id, p_id, a_id,ts_id, user_id, finish, finish_content, finish_process, deliver, create_time, creater from journal
     </sql>
     <!-- 日报列表
@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>-->
     <!-- 日报列表-->
-    <select id="selectJournalResultList"  parameterType="Map" resultType="Map">
+    <select id="selectJournalResultList" parameterType="Map" resultType="Map">
         SELECT w.w_id,p.p_id,w.ts_id,p.p_name,w.w_work_report,w.r_finish,w.w_status
         FROM weekreport w, project_plan p
         WHERE w.p_id = p.p_id
@@ -46,85 +46,85 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
     <!-- 日志抄送人列表-->
-    <select id="selectUserList"  resultType="Map">
+    <select id="selectUserList" resultType="Map">
       SELECT user_id,u_phone,u_name from user where u_status=0
     </select>
     <select id="selectJournalList" parameterType="Journal" resultMap="JournalResult">
         <include refid="selectJournalVo"/>
-        <where>  
-            <if test="rbId != null  and rbId != '' "> and rb_id = #{rbId}</if>
-             <if test="wId != null  and wId != '' "> and w_id = #{wId}</if>
-             <if test="pId != null  and pId != '' "> and p_id = #{pId}</if>
-             <if test="aId != null  and aId != '' "> and a_id = #{aId}</if>
-             <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
-             <if test="userId != null  and userId != '' "> and user_id = #{userId}</if>
-             <if test="finish != null "> and finish = #{finish}</if>
-             <if test="finishContent != null  and finishContent != '' "> and finish_content = #{finishContent}</if>
-             <if test="finishProcess != null "> and finish_process = #{finishProcess}</if>
-             <if test="deliver != null  and deliver != '' "> and deliver = #{deliver}</if>
-             <if test="createTime != null "> and create_time = #{createTime}</if>
-             <if test="creater != null  and creater != '' "> and creater = #{creater}</if>
-         </where>
+        <where>
+            <if test="rbId != null  and rbId != '' ">and rb_id = #{rbId}</if>
+            <if test="wId != null  and wId != '' ">and w_id = #{wId}</if>
+            <if test="pId != null  and pId != '' ">and p_id = #{pId}</if>
+            <if test="aId != null  and aId != '' ">and a_id = #{aId}</if>
+            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
+            <if test="userId != null  and userId != '' ">and user_id = #{userId}</if>
+            <if test="finish != null ">and finish = #{finish}</if>
+            <if test="finishContent != null  and finishContent != '' ">and finish_content = #{finishContent}</if>
+            <if test="finishProcess != null ">and finish_process = #{finishProcess}</if>
+            <if test="deliver != null  and deliver != '' ">and deliver = #{deliver}</if>
+            <if test="createTime != null ">and create_time = #{createTime}</if>
+            <if test="creater != null  and creater != '' ">and creater = #{creater}</if>
+        </where>
     </select>
 
     <select id="selectJournalById" parameterType="String" resultMap="JournalResult">
         <include refid="selectJournalVo"/>
         where rb_id = #{rbId}
     </select>
-        
+
     <insert id="insertJournal" parameterType="Journal">
         insert into journal
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="rbId != null  and rbId != ''  ">rb_id,</if>
-			<if test="wId != null  and wId != ''  ">w_id,</if>
-			<if test="pId != null  and pId != ''  ">p_id,</if>
-			<if test="aId != null  and aId != ''  ">a_id,</if>
-            <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
-			<if test="userId != null  and userId != ''  ">user_id,</if>
-			<if test="finish != null  ">finish,</if>
-			<if test="finishContent != null  and finishContent != ''  ">finish_content,</if>
-			<if test="finishProcess != null  ">finish_process,</if>
-			<if test="deliver != null  and deliver != ''  ">deliver,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="creater != null  and creater != ''  ">creater,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rbId != null  and rbId != ''  ">rb_id,</if>
+            <if test="wId != null  and wId != ''  ">w_id,</if>
+            <if test="pId != null  and pId != ''  ">p_id,</if>
+            <if test="aId != null  and aId != ''  ">a_id,</if>
+            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
+            <if test="userId != null  and userId != ''  ">user_id,</if>
+            <if test="finish != null  ">finish,</if>
+            <if test="finishContent != null  and finishContent != ''  ">finish_content,</if>
+            <if test="finishProcess != null  ">finish_process,</if>
+            <if test="deliver != null  and deliver != ''  ">deliver,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="creater != null  and creater != ''  ">creater,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="rbId != null  and rbId != ''  ">#{rbId},</if>
-			<if test="wId != null  and wId != ''  ">#{wId},</if>
-			<if test="pId != null  and pId != ''  ">#{pId},</if>
-			<if test="aId != null  and aId != ''  ">#{aId},</if>
-            <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
-			<if test="userId != null  and userId != ''  ">#{userId},</if>
-			<if test="finish != null  ">#{finish},</if>
-			<if test="finishContent != null  and finishContent != ''  ">#{finishContent},</if>
-			<if test="finishProcess != null  ">#{finishProcess},</if>
-			<if test="deliver != null  and deliver != ''  ">#{deliver},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="creater != null  and creater != ''  ">#{creater},</if>
-         </trim>
+            <if test="rbId != null  and rbId != ''  ">#{rbId},</if>
+            <if test="wId != null  and wId != ''  ">#{wId},</if>
+            <if test="pId != null  and pId != ''  ">#{pId},</if>
+            <if test="aId != null  and aId != ''  ">#{aId},</if>
+            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
+            <if test="userId != null  and userId != ''  ">#{userId},</if>
+            <if test="finish != null  ">#{finish},</if>
+            <if test="finishContent != null  and finishContent != ''  ">#{finishContent},</if>
+            <if test="finishProcess != null  ">#{finishProcess},</if>
+            <if test="deliver != null  and deliver != ''  ">#{deliver},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="creater != null  and creater != ''  ">#{creater},</if>
+        </trim>
     </insert>
 
     <!-- 批量插入日报信息  -->
     <insert id="insertJournalList" parameterType="java.util.List">
-    insert into  journal
-    (rb_id, w_id,p_id, user_id,ts_id,deliver, finish, finish_process,finish_content,  create_time)
+        insert into journal
+        (rb_id, w_id,p_id, user_id,ts_id,deliver, finish, finish_process,finish_content, create_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-        <if test="item.r_finish &lt;= 100  and item.r_finish &gt; 0  and item.r_gongshi &gt; 0 and item.descText != null and item.descText != ''">
-            (
-            #{item.rbId},
-            #{item.w_id},
-            #{item.p_id},
-            #{item.userId},
-            #{item.ts_id},
-            #{item.deliver},
-            #{item.r_finish},
-            #{item.r_gongshi},
-            #{item.descText},
-            NOW() )
-        </if>
+            <if test="item.r_finish &lt;= 100  and item.r_finish &gt; 0  and item.r_gongshi &gt; 0 and item.descText != null and item.descText != ''">
+                (
+                #{item.rbId},
+                #{item.w_id},
+                #{item.p_id},
+                #{item.userId},
+                #{item.ts_id},
+                #{item.deliver},
+                #{item.r_finish},
+                #{item.r_gongshi},
+                #{item.descText},
+                NOW() )
+            </if>
 
-          </foreach>
+        </foreach>
     </insert>
 
     <update id="updateJournal" parameterType="Journal">
@@ -133,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="wId != null  and wId != ''  ">w_id = #{wId},</if>
             <if test="pId != null  and pId != ''  ">p_id = #{pId},</if>
             <if test="aId != null  and aId != ''  ">a_id = #{aId},</if>
-            <if test="tsId != null  and tsId != '' "> and ts_id = #{tsId}</if>
+            <if test="tsId != null  and tsId != '' ">and ts_id = #{tsId}</if>
             <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
             <if test="finish != null  ">finish = #{finish},</if>
             <if test="finishContent != null  and finishContent != ''  ">finish_content = #{finishContent},</if>
@@ -145,15 +145,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where rb_id = #{rbId}
     </update>
 
-	<delete id="deleteJournalById" parameterType="String">
+    <delete id="deleteJournalById" parameterType="String">
         delete from journal where rb_id = #{rbId}
     </delete>
-	
+
     <delete id="deleteJournalByIds" parameterType="String">
-        delete from journal where rb_id in 
+        delete from journal where rb_id in
         <foreach item="rbId" collection="array" open="(" separator="," close=")">
             #{rbId}
         </foreach>
     </delete>
-    
+
+    <select id="selectBypId" parameterType="String">
+        SELECT
+        p_id
+        FROM journal WHERE p_id = #{pId}
+    </select>
+
 </mapper>

@@ -4,7 +4,9 @@ import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangyanbin, zhangshuai
@@ -13,10 +15,10 @@ import java.util.List;
 public interface ProjectPlanService {
 
     //查询所有用于项目总计划列表展示
-    CodeAndMsg selectById();
+    List<ProjectPlan> selectById();
 
     //新增项目总计划
-    public String addProject(ProjectPlan projectPlan);
+    public String addProject(ProjectPlan projectPlan, HttpServletRequest request);
 
     /**
      * 查询所有用于项目总计划清单的展示
@@ -53,5 +55,13 @@ public interface ProjectPlanService {
      * @return
      */
     String deleteProjectBypId(String pId);
+
+    /**
+     * 根据pId修改项目总计划
+     *
+     * @param projectPlan
+     * @return
+     */
+    Map updateProjectBypId(ProjectPlan projectPlan);
 
 }
