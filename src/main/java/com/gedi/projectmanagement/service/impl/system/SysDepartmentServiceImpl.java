@@ -17,7 +17,6 @@ import com.gedi.projectmanagement.util.AccessTokenUtil;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.taobao.api.ApiException;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
