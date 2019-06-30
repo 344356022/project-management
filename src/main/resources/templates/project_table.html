@@ -15,7 +15,7 @@
     <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <title>项目总体计划</title>
+    <title>项目信息</title>
     <style>
         .el-tabs__nav-wrap.is-scrollable {
             padding: 0;
@@ -99,7 +99,8 @@
             text-align: center;
             line-height: 0.3rem;
             font-size: 0.12rem;
-            background: #e9ebed;
+            background: #409eff;
+            color: white;
         }
 
         /*点击按钮变颜色*/
@@ -149,10 +150,11 @@
             line-height: 30px !important;
         }
         .left .el-select{
-            width:1.5rem;
+            width:0.8rem;
         }
         .right{
             width: 1.5rem;
+            margin-left:0.04rem;
         }
     </style>
 </head>
@@ -162,6 +164,7 @@
         <div class="select">
             <div class="option">
                 <div class="left">
+                    <!--年份-->
                     <strong>年度:</strong>
                     <el-select v-model="params.annualTime" placeholder="请选择" @change="timeChange">
                         <el-option
@@ -178,6 +181,20 @@
                                 key="2019"
                                 label="2019"
                                 value="2019">
+                        </el-option>
+                    </el-select>
+                    <!--阶段-->
+                    <el-select v-model="params.pProjectPhaseId" placeholder="请选择" @change="timeChange">
+                        <el-option
+                                key=""
+                                label="请选择年份"
+                                value="">
+                        </el-option>
+                        <el-option
+                                v-for="(item,index) in productJieDuan"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -251,7 +268,7 @@
                   <el-button size="small" type="primary" @click="trueEvent('form')">确 定</el-button>
               </span>
         </el-dialog>
-        <div class="submits" v-if="shows" :style="{color:isClickBtnColor1}" @click="addList" v-text="buttonsName"></div>
+        <div class="submits" v-if="shows" @click="addList" v-text="buttonsName"></div>
     </div>
 
     <div id="project_table" v-else-if="!shows">
@@ -349,7 +366,7 @@
                             <el-option
                                     v-for="item in zrr"
                                     :key="item.userId"
-                                    :label="item.uName"
+                                    :label="item.name"
                                     :value="item.userId">
                             </el-option>
                         </el-select>
@@ -495,7 +512,9 @@
             params: {
                 annualTime: "",//时间
                 pName: "",//输入框
+                pProjectPhaseId:"",
             },
+
             pid: "",
 
             zrr: [],//责任人
@@ -547,8 +566,8 @@
         },
         mounted: function () {
             var _this = this;
-            _this.getDingDing();
-            //_this.getListMessage();
+            //_this.getDingDing();
+            _this.getListMessage();
         },
         methods: {
             //弹出框确定事件
@@ -560,7 +579,7 @@
                         if(_this.jiXianClick1==1){
                             _this.jiXianClick1=2;
                             $.ajax({
-                                url: "http://106.13.19.215:8082/MaintenanceProject/addProject",
+                                url: "http://localhost:8082/MaintenanceProject/addProject",
                                 async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                                 data: JSON.stringify({
                                     pId: _this.forms.pId,
@@ -610,11 +629,11 @@
 
             },
 
-           //获取有关钉钉需要的值
+           /*//获取有关钉钉需要的值
             getDingDing: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/MaintenanceProject/queryEmterpriseMesg",
+                    url: "http://localhost:8082/MaintenanceProject/queryEmterpriseMesg",
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -640,14 +659,14 @@
                     });
                 });
 
-            },
+            },*/
 
             //查询
             //获取查询的数据
             getSearchData: function (bool) {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/projectPlan/projectBypName",
+                    url: "http://localhost:8082/projectPlan/projectBypName",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.params,
                     type: "POST",
@@ -655,9 +674,7 @@
                     success: function (res) {
                         if (res.code == 200) {
                             if (bool == true) {
-                                _this.$message.success(res.msg);
-                            }
-                            ;
+                            };
 
 
                             _this.listMessage = _this.sjzh(res.data);
@@ -701,37 +718,36 @@
                         items.pProjectPhaseId = "数据处理"
                     } else if (items.pProjectPhaseId == 3) {
                         items.pProjectPhaseId = "系统开发"
-                    }
-                    ;
+                    };
                 }
                 ;
                 return data;
             },
 
             //获取列表信息
-            getListMessage: function (code) {
+            getListMessage: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/projectPlan/listAll",
-                   data: {'authCode':code},
-                    //data: {},
+                    url: "http://localhost:8082/projectPlan/listAll",
+                    //data: {'authCode':code},
+                    data: {},
                     type: "POST",
                     dataType: "json",
                     success: function (res) {
-                        _this.listMessage = _this.sjzh(res.data);
+                        _this.listMessage = _this.sjzh(res.projectPlans);
                         _this.getFzr();
                     }
                 });
             },
 
             //获取所有负责人
-            getFzr: function (id) {
+            getFzr: function () {
 
                 var _this = this;
                 $.ajax({
-                   // url: "http://106.13.19.215:8082/user/selectAllUser",
-                    url:"http://106.13.19.215:8082/user/selectUserByTabFlag",
-                    data: {tabFlag:id},
+                    // url: "http://localhost:8082/user/selectAllUser",
+                    url:"http://localhost:8082/sys/user/selectUserByTabFlag",
+                    data: {pProjectPhaseId:_this.activeName2},
                     type: "GET",
                     dataType: "json",
                     success: function (res) {
@@ -758,15 +774,15 @@
                 _this.activeName2 = items.pProjectPhaseId;
 
                 _this.pid = items.pId;
+                _this.pName = items.pName;
                 _this.getProject(items);
             },
 
             /*获取项目总体甲基化清单明细*/
             getProject: function (params) {
-                $("title").html(params.pName);
                 var _this = this;
                 $.ajax({
-                    url: "http://106.13.19.215:8082/projectPlan/projectPlanList",
+                    url: "http://localhost:8082/projectPlan/projectPlanList",
                     data: {
                         pId: params.pId,
                         pProjectPhaseId: params.pProjectPhaseId,
@@ -774,6 +790,7 @@
                     type: "POST",
                     dataType: "json",
                     success: function (res) {
+                        $(".idbody_title").html(params.pName);
                         _this.showEditOrSubmit = 1;
                         for (var i = 0; i < res.data.length; i++) {
                             var items = res.data[i];
@@ -801,6 +818,7 @@
                 var params = {
                     pId: _this.pid,
                     pProjectPhaseId: data.name,
+                    pName:_this.pName
                 };
                 _this.getProject(params);
             },
@@ -963,9 +981,9 @@
                         };
                         var urls = "";
                         if (_this.showEditOrSubmit == 1) {
-                            urls = "http://106.13.19.215:8082/MaintenanceProject/addProjectList";
+                            urls = "http://localhost:8082/MaintenanceProject/addProjectList";
                         } else {
-                            urls = "http://106.13.19.215:8082/actionItem/updateActionItemList";
+                            urls = "http://localhost:8082/actionItem/updateActionItemList";
                         }
                         ;
 

@@ -32,7 +32,7 @@ html {
 .select {
     text-align: center;
     padding: 0.06rem;
-    background: #e9ebed;
+    background: #409eff;
 }
 .el-input{
     font-size: 0.12rem !important;
@@ -55,17 +55,21 @@ html {
     text-align: center;
     line-height: 0.3rem;
     font-size: 0.12rem;
-    background: #e9ebed;
+    background: #409eff;
+    color: white;
 }
 
 .left select{
-    height: 0.3rem;
+    padding: 0.08rem;
     border: 1px solid #DCDFE6;
     border-radius: 4px;
 }
 .option{
     height: 0.3rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+}
+.left{
+    color: #ffffff;
 }
