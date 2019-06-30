@@ -25,10 +25,20 @@
     <result column="job_number" property="jobNumber" jdbcType="VARCHAR" />
     <result column="is_leader" property="isLeader" jdbcType="BIT" />
     <result column="state_code" property="stateCode" jdbcType="VARCHAR" />
-    <result column="sys_level" property="sysLevel" jdbcType="INTEGER" />
+    <result column="sys_level" jdbcType="BIGINT" property="sysLevel" />
   </resultMap>
 
-
+  <update id="batchUpdateUser">
+    <foreach collection="list" item="item" open="" close="" separator=";">
+      update user
+      <set>
+        <if test="item.sysLevel != null">
+          sys_level = #{item.sysLevel},
+        </if>
+      </set>
+      where user_id = #{item.userId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
 
 
 </mapper>

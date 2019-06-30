@@ -292,6 +292,7 @@ public class SysUserTests {
                     System.out.println(dm.getUserid()+"======"+dm.getSysLevel());
                 }
             }
+
         } catch (ApiException e) {
             e.printStackTrace();
         }

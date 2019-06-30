@@ -48,4 +48,9 @@ public interface UserService {
      * 执行同步用户信息定时计划
      */
     void doSynchUserTask();
+
+    /**
+     * 执行同步获取管理员列表
+     */
+    void doSynchAdminTask() throws Exception;
 }

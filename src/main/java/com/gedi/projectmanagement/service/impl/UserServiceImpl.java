@@ -2,13 +2,16 @@ package com.gedi.projectmanagement.service.impl;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
+import com.dingtalk.api.request.OapiUserGetAdminRequest;
 import com.dingtalk.api.request.OapiUserListRequest;
+import com.dingtalk.api.response.OapiUserGetAdminResponse;
 import com.dingtalk.api.response.OapiUserListResponse;
 import com.gedi.projectmanagement.config.URLConstant;
 import com.gedi.projectmanagement.dao.UserMapper;
 import com.gedi.projectmanagement.dao.system.SysDepartmentMapper;
 import com.gedi.projectmanagement.dao.system.SysUserDepartmentMapper;
 import com.gedi.projectmanagement.dao.system.SysUserMapper;
+import com.gedi.projectmanagement.exception.ServiceException;
 import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.model.system.SysDepartment;
 import com.gedi.projectmanagement.model.system.SysUser;
@@ -261,6 +264,39 @@ public class UserServiceImpl implements UserService {
                 logger.info("UserServiceImpl 同步部门下面的人员出错>>"+e.getErrMsg());
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void doSynchAdminTask() throws Exception{
+        //获取accessToken
+        String accessToken = AccessTokenUtil.getToken();
+
+        DingTalkClient client = new DefaultDingTalkClient(URLConstant.USER_ADMIN);
+        OapiUserGetAdminRequest request = new OapiUserGetAdminRequest();
+        request.setHttpMethod("GET");
+
+        OapiUserGetAdminResponse adminResponse ; client.execute(request, accessToken);
+
+        try {
+            adminResponse = client.execute(request, accessToken);
+            List<OapiUserGetAdminResponse.AdminList> adminListList = adminResponse.getAdminList();
+            if(adminListList == null || adminListList.size() == 0){
+                throw new ServiceException("抓取不到管理员列表,操作停止");
+            }else {
+                List<SysUser> userList = new ArrayList<>();
+                for (OapiUserGetAdminResponse.AdminList dm : adminListList) {
+                    SysUser sysUser = new SysUser();
+                    sysUser.setUserId(dm.getUserid());
+                    sysUser.setSysLevel(dm.getSysLevel());
+                    userList.add(sysUser);
+                }
+                if(userList != null && userList.size() > 0){
+                    this.sysUserMapper.batchUpdateUser(userList);
+                }
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
         }
     }
 
