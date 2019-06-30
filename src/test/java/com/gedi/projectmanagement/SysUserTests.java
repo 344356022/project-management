@@ -65,7 +65,7 @@ public class SysUserTests {
 //    @Autowired
 //    private UserMapper userMapper;
 
-/*    @Test
+    @Test
     public void textGetSysUser() throws Exception {
         //获取accessToken
         String accessToken = AccessTokenUtil.getToken();
@@ -198,11 +198,11 @@ public class SysUserTests {
         }
     }
 
-    *//**
+    /**
      * 钉钉同步部门详情
      * 同时更新部门详情
      * @param departmentId
-     *//*
+     */
     private void syncDepartmentDetail(Long departmentId){
 
         SysDepartment sysDepartment = new SysDepartment();
@@ -268,9 +268,9 @@ public class SysUserTests {
         }
     }
 
-    *//**
+    /**
      * 测试抓取管理员
-     *//*
+     */
     @Test
     public void testGetAdmin() throws Exception{
         //获取accessToken
@@ -292,10 +292,11 @@ public class SysUserTests {
                     System.out.println(dm.getUserid()+"======"+dm.getSysLevel());
                 }
             }
+
         } catch (ApiException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
 
 }

@@ -122,7 +122,7 @@ public class SysUser {
      * 如果是管理员。管理员角色级别，1:主管理员，2:子管理员
      */
     @Column(name = "sys_level")
-    private Integer sysLevel;
+    private Long sysLevel;
 
     /**
      * 部门ID集合
@@ -493,11 +493,21 @@ public class SysUser {
         this.stateCode = stateCode == null ? null : stateCode.trim();
     }
 
-    public Integer getSysLevel() {
+    /**
+     * 获取如果是管理员。管理员角色级别，1:主管理员，2:子管理员
+     *
+     * @return sys_level - 如果是管理员。管理员角色级别，1:主管理员，2:子管理员
+     */
+    public Long getSysLevel() {
         return sysLevel;
     }
 
-    public void setSysLevel(Integer sysLevel) {
+    /**
+     * 设置如果是管理员。管理员角色级别，1:主管理员，2:子管理员
+     *
+     * @param sysLevel 如果是管理员。管理员角色级别，1:主管理员，2:子管理员
+     */
+    public void setSysLevel(Long sysLevel) {
         this.sysLevel = sysLevel;
     }
 

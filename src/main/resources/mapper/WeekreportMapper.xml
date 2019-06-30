@@ -1,76 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gedi.projectmanagement.dao.WeekreportMapper" >
-  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.Weekreport" >
-    <id column="w_id" property="wId" jdbcType="VARCHAR" />
-    <result column="p_id" property="pId" jdbcType="VARCHAR" />
-    <result column="w_start_time" property="wStartTime" jdbcType="VARCHAR" />
-    <result column="w_end_time" property="wEndTime" jdbcType="VARCHAR" />
-    <result column="ts_id" property="tsId" jdbcType="VARCHAR" />
-    <result column="w_work_report" property="wWorkReport" jdbcType="VARCHAR" />
-    <result column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="w_actual_proportion" property="wActualProportion" jdbcType="INTEGER" />
-    <result column="w_plan_proportion" property="wPlanProportion" jdbcType="INTEGER" />
-    <result column="w_status" property="wStatus" jdbcType="INTEGER" />
-    <result column="w_remark" property="wRemark" jdbcType="VARCHAR" />
-    <result column="r_finish" property="rFinish" jdbcType="VARCHAR" />
-    <result column="w_type" property="wType" jdbcType="INTEGER"/>
-    <result column="user_department" property="userDepartmet" jdbcType="VARCHAR"></result>
-    <collection property="projectPlans" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.ProjectPlan">
-      <id column="p_id" property="pId" jdbcType="VARCHAR"/>
-      <result column="p_name" property="pName" jdbcType="VARCHAR"/>
-      <result column="p_start_time" property="pStartTime" jdbcType="DATE"/>
-      <result column="p_end_time" property="pEndTime" jdbcType="DATE"/>
-      <result column="p_project_phase" property="pProjectPhase" jdbcType="INTEGER"/>
-      <result column="p_progress" property="pProgress" jdbcType="DECIMAL"/>
-      <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-      <result column="creater" property="creater" jdbcType="VARCHAR"/>
-    </collection>
-    <collection property="users" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.User">
-      <id column="user_id" property="userId" jdbcType="VARCHAR" />
-      <result column="u_phone" property="uPhone" jdbcType="INTEGER" />
-      <result column="u_name" property="uName" jdbcType="VARCHAR" />
-      <result column="u_department" property="uDepartment" jdbcType="VARCHAR" />
-      <result column="u_sign" property="uSign" jdbcType="INTEGER" />
-      <result column="u_status" property="uStatus" jdbcType="BIT" />
-      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-      <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-      <result column="creater" property="creater" jdbcType="VARCHAR" />
-    </collection>
-      <collection property="taskSubclasses" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.TaskSubclass">
-        <id column="ts_id" property="tsId" jdbcType="VARCHAR" />
-        <result column="ts_name" property="tsName" jdbcType="VARCHAR" />
-        <result column="p_id" property="pId" jdbcType="VARCHAR" />
-        <result column="t_id" property="tId" jdbcType="VARCHAR" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="creater" property="creater" jdbcType="VARCHAR" />
-      </collection>
-    <collection property="recordTimes" ofType="com.gedi.projectmanagement.model.RecordTime" javaType="java.util.List">
-      <id column="time_id" property="timeId" jdbcType="VARCHAR" />
-      <result column="detial_day_date" property="name" jdbcType="VARCHAR" />
-      <result column="w_id" property="wId" jdbcType="VARCHAR" />
-      <result column="is_select" property="isSelect" jdbcType="VARCHAR"/>
-      <result column="nums" property="nums" jdbcType="INTEGER"></result>
-      <result column="sorts" property="sorts" jdbcType="INTEGER"></result>
+<mapper namespace="com.gedi.projectmanagement.dao.WeekreportMapper">
+    <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.Weekreport">
+        <id column="w_id" property="wId" jdbcType="VARCHAR"/>
+        <result column="p_id" property="pId" jdbcType="VARCHAR"/>
+        <result column="w_start_time" property="wStartTime" jdbcType="VARCHAR"/>
+        <result column="w_end_time" property="wEndTime" jdbcType="VARCHAR"/>
+        <result column="ts_id" property="tsId" jdbcType="VARCHAR"/>
+        <result column="w_work_report" property="wWorkReport" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="w_actual_proportion" property="wActualProportion" jdbcType="INTEGER"/>
+        <result column="w_plan_proportion" property="wPlanProportion" jdbcType="INTEGER"/>
+        <result column="w_status" property="wStatus" jdbcType="INTEGER"/>
+        <result column="w_remark" property="wRemark" jdbcType="VARCHAR"/>
+        <result column="r_finish" property="rFinish" jdbcType="VARCHAR"/>
+        <result column="w_type" property="wType" jdbcType="INTEGER"/>
+        <result column="user_department" property="userDepartmet" jdbcType="VARCHAR"></result>
+        <collection property="projectPlans" javaType="java.util.List"
+                    ofType="com.gedi.projectmanagement.model.ProjectPlan">
+            <id column="p_id" property="pId" jdbcType="VARCHAR"/>
+            <result column="p_name" property="pName" jdbcType="VARCHAR"/>
+            <result column="p_start_time" property="pStartTime" jdbcType="DATE"/>
+            <result column="p_end_time" property="pEndTime" jdbcType="DATE"/>
+            <result column="p_project_phase" property="pProjectPhase" jdbcType="INTEGER"/>
+            <result column="p_progress" property="pProgress" jdbcType="DECIMAL"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="creater" property="creater" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="users" javaType="java.util.List" ofType="com.gedi.projectmanagement.model.User">
+            <id column="user_id" property="userId" jdbcType="VARCHAR"/>
+            <result column="u_phone" property="uPhone" jdbcType="INTEGER"/>
+            <result column="u_name" property="uName" jdbcType="VARCHAR"/>
+            <result column="u_department" property="uDepartment" jdbcType="VARCHAR"/>
+            <result column="u_sign" property="uSign" jdbcType="INTEGER"/>
+            <result column="u_status" property="uStatus" jdbcType="BIT"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+            <result column="creater" property="creater" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="taskSubclasses" javaType="java.util.List"
+                    ofType="com.gedi.projectmanagement.model.TaskSubclass">
+            <id column="ts_id" property="tsId" jdbcType="VARCHAR"/>
+            <result column="ts_name" property="tsName" jdbcType="VARCHAR"/>
+            <result column="p_id" property="pId" jdbcType="VARCHAR"/>
+            <result column="t_id" property="tId" jdbcType="VARCHAR"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="creater" property="creater" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="recordTimes" ofType="com.gedi.projectmanagement.model.RecordTime"
+                    javaType="java.util.List">
+            <id column="time_id" property="timeId" jdbcType="VARCHAR"/>
+            <result column="detial_day_date" property="name" jdbcType="VARCHAR"/>
+            <result column="w_id" property="wId" jdbcType="VARCHAR"/>
+            <result column="is_select" property="isSelect" jdbcType="VARCHAR"/>
+            <result column="nums" property="nums" jdbcType="INTEGER"></result>
+            <result column="sorts" property="sorts" jdbcType="INTEGER"></result>
 
-    </collection>
-  </resultMap>
+        </collection>
+    </resultMap>
 
-  <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
     w_id, p_id, w_start_time, w_end_time, a_id, w_work_report, user_id, w_actual_proportion, 
     w_plan_proportion, w_status, w_remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from weekreport
-    where w_id = #{wId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from weekreport
+        where w_id = #{wId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from weekreport
     where w_id = #{wId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.gedi.projectmanagement.model.Weekreport" >
+    <insert id="insert" parameterType="com.gedi.projectmanagement.model.Weekreport">
     insert into weekreport (w_id, p_id, w_start_time, 
       w_end_time, a_id, w_work_report, 
       user_id, w_actual_proportion, w_plan_proportion, 
@@ -80,117 +83,117 @@
       #{userId,jdbcType=VARCHAR}, #{wActualProportion,jdbcType=INTEGER}, #{wPlanProportion,jdbcType=INTEGER}, 
       #{wStatus,jdbcType=INTEGER}, #{wRemark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.Weekreport" >
-    insert into weekreport
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="wId != null" >
-        w_id,
-      </if>
-      <if test="pId != null" >
-        p_id,
-      </if>
-      <if test="wStartTime != null" >
-        w_start_time,
-      </if>
-      <if test="wEndTime != null" >
-        w_end_time,
-      </if>
-      <if test="aId != null" >
-        a_id,
-      </if>
-      <if test="wWorkReport != null" >
-        w_work_report,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="wActualProportion != null" >
-        w_actual_proportion,
-      </if>
-      <if test="wPlanProportion != null" >
-        w_plan_proportion,
-      </if>
-      <if test="wStatus != null" >
-        w_status,
-      </if>
-      <if test="wRemark != null" >
-        w_remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="wId != null" >
-        #{wId,jdbcType=VARCHAR},
-      </if>
-      <if test="pId != null" >
-        #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="wStartTime != null" >
-        #{wStartTime,jdbcType=DATE},
-      </if>
-      <if test="wEndTime != null" >
-        #{wEndTime,jdbcType=DATE},
-      </if>
-      <if test="aId != null" >
-        #{aId,jdbcType=VARCHAR},
-      </if>
-      <if test="wWorkReport != null" >
-        #{wWorkReport,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="wActualProportion != null" >
-        #{wActualProportion,jdbcType=INTEGER},
-      </if>
-      <if test="wPlanProportion != null" >
-        #{wPlanProportion,jdbcType=INTEGER},
-      </if>
-      <if test="wStatus != null" >
-        #{wStatus,jdbcType=INTEGER},
-      </if>
-      <if test="wRemark != null" >
-        #{wRemark,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.Weekreport" >
-    update weekreport
-    <set >
-      <if test="pId != null" >
-        p_id = #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="wStartTime != null" >
-        w_start_time = #{wStartTime,jdbcType=DATE},
-      </if>
-      <if test="wEndTime != null" >
-        w_end_time = #{wEndTime,jdbcType=DATE},
-      </if>
-      <if test="aId != null" >
-        a_id = #{aId,jdbcType=VARCHAR},
-      </if>
-      <if test="wWorkReport != null" >
-        w_work_report = #{wWorkReport,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="wActualProportion != null" >
-        w_actual_proportion = #{wActualProportion,jdbcType=INTEGER},
-      </if>
-      <if test="wPlanProportion != null" >
-        w_plan_proportion = #{wPlanProportion,jdbcType=INTEGER},
-      </if>
-      <if test="wStatus != null" >
-        w_status = #{wStatus,jdbcType=INTEGER},
-      </if>
-      <if test="wRemark != null" >
-        w_remark = #{wRemark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where w_id = #{wId,jdbcType=VARCHAR}
-  </update>
+    <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.Weekreport">
+        insert into weekreport
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wId != null">
+                w_id,
+            </if>
+            <if test="pId != null">
+                p_id,
+            </if>
+            <if test="wStartTime != null">
+                w_start_time,
+            </if>
+            <if test="wEndTime != null">
+                w_end_time,
+            </if>
+            <if test="aId != null">
+                a_id,
+            </if>
+            <if test="wWorkReport != null">
+                w_work_report,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="wActualProportion != null">
+                w_actual_proportion,
+            </if>
+            <if test="wPlanProportion != null">
+                w_plan_proportion,
+            </if>
+            <if test="wStatus != null">
+                w_status,
+            </if>
+            <if test="wRemark != null">
+                w_remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wId != null">
+                #{wId,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                #{pId,jdbcType=VARCHAR},
+            </if>
+            <if test="wStartTime != null">
+                #{wStartTime,jdbcType=DATE},
+            </if>
+            <if test="wEndTime != null">
+                #{wEndTime,jdbcType=DATE},
+            </if>
+            <if test="aId != null">
+                #{aId,jdbcType=VARCHAR},
+            </if>
+            <if test="wWorkReport != null">
+                #{wWorkReport,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="wActualProportion != null">
+                #{wActualProportion,jdbcType=INTEGER},
+            </if>
+            <if test="wPlanProportion != null">
+                #{wPlanProportion,jdbcType=INTEGER},
+            </if>
+            <if test="wStatus != null">
+                #{wStatus,jdbcType=INTEGER},
+            </if>
+            <if test="wRemark != null">
+                #{wRemark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.gedi.projectmanagement.model.Weekreport">
+        update weekreport
+        <set>
+            <if test="pId != null">
+                p_id = #{pId,jdbcType=VARCHAR},
+            </if>
+            <if test="wStartTime != null">
+                w_start_time = #{wStartTime,jdbcType=DATE},
+            </if>
+            <if test="wEndTime != null">
+                w_end_time = #{wEndTime,jdbcType=DATE},
+            </if>
+            <if test="aId != null">
+                a_id = #{aId,jdbcType=VARCHAR},
+            </if>
+            <if test="wWorkReport != null">
+                w_work_report = #{wWorkReport,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="wActualProportion != null">
+                w_actual_proportion = #{wActualProportion,jdbcType=INTEGER},
+            </if>
+            <if test="wPlanProportion != null">
+                w_plan_proportion = #{wPlanProportion,jdbcType=INTEGER},
+            </if>
+            <if test="wStatus != null">
+                w_status = #{wStatus,jdbcType=INTEGER},
+            </if>
+            <if test="wRemark != null">
+                w_remark = #{wRemark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where w_id = #{wId,jdbcType=VARCHAR}
+    </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.Weekreport" >
+    <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.Weekreport">
     update weekreport
     set p_id = #{pId,jdbcType=VARCHAR},
       w_start_time = #{wStartTime,jdbcType=DATE},
@@ -205,151 +208,156 @@
     where w_id = #{wId,jdbcType=VARCHAR}
   </update>
 
-  <!--查询双周计划表里的详细内容进行展示-->
-  <select id="selectWeekReportDetial" resultMap="BaseResultMap">
-SELECT
-	w.w_id,
-	w.w_work_report,
-	w.w_actual_proportion,
-	w.w_plan_proportion,
-	w.w_status,
-	w.w_remark,
-	w.r_finish,
-	w.w_type,
-	pp.p_id,
-	u.user_id,
-	tu.ts_id,
-	rt.detial_day_date,
-	rt.is_select,
-	rt.nums,
-	rt.sorts
-FROM
-	weekreport w
-LEFT JOIN project_plan pp ON w.p_id = pp.p_id
-LEFT JOIN USER u ON u.user_id = w.user_id
-LEFT JOIN task_subclass tu ON w.ts_id = tu.ts_id
-LEFT JOIN record_time rt ON rt.w_id = w.w_id
-where 1=1
-<if test="userDepartment!=null and userDepartment!=''">
- and  w.user_department=#{userDepartment}
-</if>
-<if test="wStarTime!=null and wStarTime!=''">
- and w.w_start_time=#{wStarTime}
-</if>
-<if test="wEndTime!=null and wEndTime!=''">
-  and w.w_end_time=#{wEndTime}
-</if>
-ORDER BY
-	rt.sorts
-  </select>
+    <!--查询双周计划表里的详细内容进行展示-->
+    <select id="selectWeekReportDetial" resultMap="BaseResultMap">
+        SELECT
+        w.w_id,
+        w.w_work_report,
+        w.w_actual_proportion,
+        w.w_plan_proportion,
+        w.w_status,
+        w.w_remark,
+        w.r_finish,
+        w.w_type,
+        pp.p_id,
+        u.user_id,
+        tu.ts_id,
+        rt.detial_day_date,
+        rt.is_select,
+        rt.nums,
+        rt.sorts
+        FROM
+        weekreport w
+        LEFT JOIN project_plan pp ON w.p_id = pp.p_id
+        LEFT JOIN USER u ON u.user_id = w.user_id
+        LEFT JOIN task_subclass tu ON w.ts_id = tu.ts_id
+        LEFT JOIN record_time rt ON rt.w_id = w.w_id
+        where 1=1
+        <if test="userDepartment!=null and userDepartment!=''">
+            and w.user_department=#{userDepartment}
+        </if>
+        <if test="wStarTime!=null and wStarTime!=''">
+            and w.w_start_time=#{wStarTime}
+        </if>
+        <if test="wEndTime!=null and wEndTime!=''">
+            and w.w_end_time=#{wEndTime}
+        </if>
+        ORDER BY
+        rt.sorts
+    </select>
 
 
-  <!--批量添加双周计划表的-->
-  <insert id="addWeekReport">
-      insert into weekreport (w_id,p_id,ts_id,w_work_report,user_id,
-    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type,user_department,w_end_time,w_start_time)
-    values
-      <foreach collection="list" item="item" separator=",">
-          (#{item.wId},#{item.pId},#{item.tsId},
-        #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},#{item.wStatus},
-        #{item.wRemark},#{item.wType},#{item.userDepartmet},#{item.w_end_time},#{item.w_start_time})
-      </foreach>
-  </insert>
+    <!--批量添加双周计划表的-->
+    <insert id="addWeekReport">
+        insert into weekreport (w_id,p_id,ts_id,w_work_report,user_id,
+        w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type,user_department,w_end_time,w_start_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.wId},#{item.pId},#{item.tsId},
+            #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},#{item.wStatus},
+            #{item.wRemark},#{item.wType},#{item.userDepartmet},#{item.wEndTime},#{item.wStartTime})
+        </foreach>
+    </insert>
 
-  <insert id="updateWeekReport">
-     insert into weekreport (p_id,ts_id,w_work_report,user_id,
-    w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.wId},#{item.pId},#{item.tsId},
-      #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},
-      #{item.wStatus},#{item.wRemark},#{item.wType})
-    </foreach>
-  </insert>
+    <insert id="updateWeekReport">
+        insert into weekreport (p_id,ts_id,w_work_report,user_id,
+        w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.wId},#{item.pId},#{item.tsId},
+            #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},
+            #{item.wStatus},#{item.wRemark},#{item.wType})
+        </foreach>
+    </insert>
 
-  <!--根据双周计划表得id值进行修改为暂停-->
-  <update id="updateWeekReportStop">
+    <!--根据双周计划表得id值进行修改为暂停-->
+    <update id="updateWeekReportStop">
     UPDATE weekreport SET w_status=2 where w_id=#{wId}
   </update>
 
-  <!--根据双周计划表得id值进行修改为进行中-->
-  <update id="updateWeekReportAction">
+    <!--根据双周计划表得id值进行修改为进行中-->
+    <update id="updateWeekReportAction">
     UPDATE weekreport SET w_status=1 where w_id=#{wId}
   </update>
 
-  <!--根据双周计划表得id值查询到相应的计划占比值-->
-  <select id="selectProjectById" resultMap="BaseResultMap">
+    <!--根据双周计划表得id值查询到相应的计划占比值-->
+    <select id="selectProjectById" resultMap="BaseResultMap">
     SELECT w_plan_proportion,w_actual_proportion FROM weekreport WHERE w_id=#{wId}
   </select>
 
-  <!--根据日报中所填写的值，通过计算进行修改双周及计划表实际占比的数值 20190612 zpl 添加一个传入参数：rFinish 日报完成进度-->
-  <update id="updateActual">
+    <!--根据日报中所填写的值，通过计算进行修改双周及计划表实际占比的数值 20190612 zpl 添加一个传入参数：rFinish 日报完成进度-->
+    <update id="updateActual">
     update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish},w_status=1  where w_id=#{wId}
   </update>
 
-  <!--查询wId值是否存在-->
-  <select id="selectByWeekReportId" resultMap="BaseResultMap">
+    <!--查询wId值是否存在-->
+    <select id="selectByWeekReportId" resultMap="BaseResultMap">
     SELECT w_id from weekreport where w_id=#{wId}
   </select>
 
-  <!--更新双周计划信息-->
-  <delete id="updateWeekReportMesg">
+    <!--更新双周计划信息-->
+    <delete id="updateWeekReportMesg">
     DELETE from weekreport where w_id=#{wId}
   </delete>
 
-  <!--批量修改书双周计划信息-->
-  <update id="updateMoreWeekReport">
-    <foreach collection="list" item="item" open="" close="" separator=";">
-      update weekreport
-      <set>
-        <if test="item.pId != null">
-          p_id = #{item.pId,jdbcType=VARCHAR},
-        </if>
-        <if test="item.tsId != null">
-          ts_id = #{item.tsId,jdbcType=VARCHAR},
-        </if>
-        <if test="item.wWorkReport != null">
-          w_work_report = #{item.wWorkReport,jdbcType=VARCHAR},
-        </if>
-        <if test="item.userId != null">
-          user_id = #{item.userId,jdbcType=VARCHAR},
-        </if>
-        <if test="item.wActualProportion != null">
-          w_actual_proportion = #{item.wActualProportion,jdbcType=INTEGER},
-        </if>
-        <if test="item.wPlanProportion != null">
-          w_plan_proportion = #{item.wPlanProportion,jdbcType=INTEGER},
-        </if>
-        <if test="item.wStatus != null">
-          w_status = #{item.wStatus,jdbcType=INTEGER},
-        </if>
-        <if test="item.wRemark != null">
-          w_remark = #{item.wRemark,jdbcType=VARCHAR},
-        </if>
-        <if test="item.wType != null">
-          w_type = #{item.wType,jdbcType=INTEGER},
-        </if>
-      </set>
-      where w_id = #{item.wId,jdbcType=VARCHAR}
-    </foreach>
+    <!--批量修改书双周计划信息-->
+    <update id="updateMoreWeekReport">
+        <foreach collection="list" item="item" open="" close="" separator=";">
+            update weekreport
+            <set>
+                <if test="item.pId != null">
+                    p_id = #{item.pId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.tsId != null">
+                    ts_id = #{item.tsId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.wWorkReport != null">
+                    w_work_report = #{item.wWorkReport,jdbcType=VARCHAR},
+                </if>
+                <if test="item.userId != null">
+                    user_id = #{item.userId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.wActualProportion != null">
+                    w_actual_proportion = #{item.wActualProportion,jdbcType=INTEGER},
+                </if>
+                <if test="item.wPlanProportion != null">
+                    w_plan_proportion = #{item.wPlanProportion,jdbcType=INTEGER},
+                </if>
+                <if test="item.wStatus != null">
+                    w_status = #{item.wStatus,jdbcType=INTEGER},
+                </if>
+                <if test="item.wRemark != null">
+                    w_remark = #{item.wRemark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.wType != null">
+                    w_type = #{item.wType,jdbcType=INTEGER},
+                </if>
+            </set>
+            where w_id = #{item.wId,jdbcType=VARCHAR}
+        </foreach>
 
-  </update>
-  
-  
-  <delete id="deleteWeekReportById">
+    </update>
+
+
+    <delete id="deleteWeekReportById">
     DELETE from weekreport where w_id=#{wId}
   </delete>
 
 
-  <!--当实际占比于计划占比相等时修改状态为已完成的同时将实际占比的值更改-->
-  <update id="updateActualAndStatus">
+    <!--当实际占比于计划占比相等时修改状态为已完成的同时将实际占比的值更改-->
+    <update id="updateActualAndStatus">
      update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish},w_status=3 where w_id=#{wId}
   </update>
 
 
-  <insert id="dailyAddRecord">
+    <insert id="dailyAddRecord">
     insert into weekreport (w_id,p_id,ts_id,user_id,w_actual_proportion,user_department,w_work_report) values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet},#{wWorkReport})
   </insert>
 
+    <select id="selectBypId" parameterType="String">
+        SELECT
+        p_id
+        FROM weekreport WHERE p_id = #{pId}
+    </select>
 
 </mapper>

@@ -6,6 +6,7 @@ package com.gedi.projectmanagement.base;
 import java.util.List;
 
 import org.apache.ibatis.annotations.InsertProvider;
+
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 

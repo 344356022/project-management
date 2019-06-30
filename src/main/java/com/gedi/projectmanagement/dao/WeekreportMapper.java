@@ -1,7 +1,6 @@
 package com.gedi.projectmanagement.dao;
 
 import com.gedi.projectmanagement.model.Weekreport;
-import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,10 +21,11 @@ public interface WeekreportMapper {
     int updateByPrimaryKey(Weekreport record);
 
     //展示双周计划表得所有具体内容
-    List<Weekreport> selectWeekReportDetial(@Param("userDepartment")String userDepartment,@Param("wStarTime")String wStarTime,@Param("wEndTime")String wEndTime);
+    List<Weekreport> selectWeekReportDetial(@Param("userDepartment") String userDepartment,
+                                            @Param("wStarTime") String wStarTime, @Param("wEndTime") String wEndTime);
 
     //批量添加双周计划表的
-    void  addWeekReport(@Param("list") List<Weekreport> weekreports);
+    void addWeekReport(@Param("list") List<Weekreport> weekreports);
 
     //修改WeekReport的进行状态修改为暂停状态
     void updateWeekReportStop(String wId);
@@ -37,7 +37,7 @@ public interface WeekreportMapper {
     Weekreport selectProjectById(String wId);
 
     //修改动态修改实际占比值 20190612 zpl 添加一个传入参数rFinish
-    void updateActual(@Param("wId") String wId, @Param("valueZ") int valueZ,@Param("rFinish") int rFinish);
+    void updateActual(@Param("wId") String wId, @Param("valueZ") int valueZ, @Param("rFinish") int rFinish);
 
     //查询weekReport的id是否存在
     Weekreport selectByWeekReportId(String wId);
@@ -46,16 +46,17 @@ public interface WeekreportMapper {
     void updateWeekReportMesg(String wId);
 
     //批量修改双周计划信息
-   void updateMoreWeekReport(@Param("list")List<Weekreport> weekreports);
+    void updateMoreWeekReport(@Param("list") List<Weekreport> weekreports);
 
-   //根据weekreport的Id值删除相应的数据；
+    //根据weekreport的Id值删除相应的数据；
     void deleteWeekReportById(String wId);
 
     //当实际占比于计划占比相等时修改状态为已完成的同时将实际占比的值更改
-    void updateActualAndStatus(@Param("wId") String wId, @Param("valueZ") int valueZ,@Param("rFinish") int rFinish);
+    void updateActualAndStatus(@Param("wId") String wId, @Param("valueZ") int valueZ, @Param("rFinish") int rFinish);
 
     //供日计划自定义填写其他所调用的接口
     void dailyAddRecord(Weekreport weekreport);
 
+    List<Weekreport> selectBypId(String pId);
 
 }

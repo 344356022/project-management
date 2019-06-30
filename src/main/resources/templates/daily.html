@@ -283,8 +283,8 @@
             },
             mounted:function(){
                 var _this=this;
-                //_this.getDailyList();
-               _this.getDingDing();
+                _this.getDailyList();
+               //_this.getDingDing();
             },
             methods:{
                //点击历史记录
@@ -310,11 +310,13 @@
                     var _this=this;
                     _this.dubClick=1;
                 },
-               //获取有关钉钉需要的值
+
+
+              /* //获取有关钉钉需要的值
                 getDingDing:function () {
                     var _this=this;
                     $.ajax({
-                        url:"http://106.13.19.215:8082/journal/queryEmterpriseMesg",
+                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -339,21 +341,21 @@
                             }
                         });
                     });
-                },
+                },*/
 
                 checkboxChange:function(){
                     var _this=this;
                 },
 
                  //获取日报列表信息函数
-                getDailyList:function(code){
+                getDailyList:function(){
                     var _this=this;
                     $.ajax({
-                        url:"http://106.13.19.215:8082/journal/list",
+                        url:"http://localhost:8082/journal/list",
                         type:"POST",
                         dataType:"json",
-                        data:{'authCode':code},
-                        // data:{},
+                        //data:{'authCode':code},
+                         data:{},
                         success:function(res){
                             if(res.code == 200){
                                 for(var i=0;i<res.data.result.length;i++){
@@ -402,7 +404,7 @@
                     var allGongShi=0;
 
                     $.ajax({
-                        url:"http://106.13.19.215:8082/journal/queryEmterpriseMesg",
+                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -413,7 +415,7 @@
                                     corpId:_config.corpId, // 企业id
                                     onSuccess: function (info) {
                                         $.ajax({
-                                            url:"http://106.13.19.215:8082/journal/list",
+                                            url:"http://localhost:8082/journal/list",
                                             type:"POST",
                                             dataType:"json",
                                             //data:{},
@@ -523,7 +525,7 @@
                                                                     items.deliver=newArray;
                                                                 };
                                                                 $.ajax({
-                                                                    url:"http://106.13.19.215:8082/journal/save",
+                                                                    url:"http://localhost:8082/journal/save",
                                                                     type:"post",
                                                                     cache:false,
                                                                     contentType:"application/json; charset=utf-8",

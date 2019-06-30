@@ -6,6 +6,7 @@ import com.dingtalk.api.request.OapiDepartmentGetRequest;
 import com.dingtalk.api.request.OapiDepartmentListRequest;
 import com.dingtalk.api.response.OapiDepartmentGetResponse;
 import com.dingtalk.api.response.OapiDepartmentListResponse;
+import com.gedi.projectmanagement.config.URLConstant;
 import com.gedi.projectmanagement.dao.system.SysDepartmentManagerMapper;
 import com.gedi.projectmanagement.dao.system.SysDepartmentMapper;
 import com.gedi.projectmanagement.exception.ServiceException;
@@ -49,7 +50,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
 
         List<SysDepartment> departments = new ArrayList<>();
 
-        DingTalkClient client = new DefaultDingTalkClient("");
+        DingTalkClient client = new DefaultDingTalkClient(URLConstant.DEPARTMENT_LIST);
         OapiDepartmentListRequest request = new OapiDepartmentListRequest();
         request.setId("1");//默认取根目录
         request.setHttpMethod("GET");
@@ -93,7 +94,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
         //获取AccessToken
         String accessToken = AccessTokenUtil.getToken();
 
-        DingTalkClient client = new DefaultDingTalkClient("");
+        DingTalkClient client = new DefaultDingTalkClient(URLConstant.DEPARTMENT_DETAIL);
         OapiDepartmentGetRequest request = new OapiDepartmentGetRequest();
         request.setId(String.valueOf(departmentId));
         request.setHttpMethod("GET");

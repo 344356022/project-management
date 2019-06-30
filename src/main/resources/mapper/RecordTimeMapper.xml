@@ -36,8 +36,7 @@
   </update>
 
   <insert id="addDailyTime">
-    insert into record_time values(#{timeId},#{wId},#{name})
+    insert into record_time (time_id,w_id,detial_day_date) values(#{timeId},#{wId},#{name})
   </insert>
-
 
 </mapper>

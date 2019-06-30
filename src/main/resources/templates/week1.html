@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
     <title>双周计划</title>
 
     <!--引入element_ui的样式-->
@@ -28,9 +28,6 @@
     <style>
         .tables1{
             position: relative;
-            overflow: auto;
-        }
-        .tables1 .el-table--border{
 
         }
         .addThisWeek{
@@ -38,30 +35,24 @@
              top: 18px;
              left: 148px;
              z-index: 10;*/
-            margin:0.1rem 0;
+            margin:10px 0;
         }
         .header{
             position: relative;
             width: 100%;
         }
         .header-data{
-            font-size: 0.12rem;
-        }
-        .header-data .el-date-editor.el-input, .el-date-editor.el-input__inner{
-            width:1.2rem;
-            height: 0.3rem !important;
-        }
-        .header-data input{
-            line-height: 0.3rem !important;
+            position: absolute;
+            left: 10px;
+            bottom: 4px;
+            font-size: 12px;
         }
         .header-title{
-            position: relative;
-            color:white;
             width: 100%;
             text-align: center;
-            padding: 0.08rem 0;
-            background: #409EFF;
-            font-size: 0.12rem;
+            line-height: 60px;
+            font-size: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -74,41 +65,38 @@
         <div class="header-title">项目双周计划</div>
         <div class="header-data">
             <el-date-picker
-                    v-model="params.startTime"
-                    @change="startTimeChange"
+                    v-model="params.start"
                     type="date"
                     placeholder="选择开始日期">
             </el-date-picker>
             <el-date-picker
-                    v-model="params.endTime"
-                    @change="endTimeChange"
+                    v-model="value1"
                     type="date"
                     placeholder="选择结束日期">
             </el-date-picker>
-            <div style="display:flex;justify-content:flex-end;">
-                <el-button type="primary" @click="save" class="addThisWeek" size="mini">保存</el-button>
-                <el-button type="primary" size="mini" class="addThisWeek" @click="addThisWeek">新增</el-button>
-
-            </div>
         </div>
 <!--
         <div class="header-data">计划期间：<span class="startTime"></span>&#45;&#45;<span class="endTime"></span></div>
 -->
     </div>
     <div class="tables1">
+        <div style="display:flex;justify-content:flex-end;">
+            <el-button type="primary" @click="save" class="addThisWeek" size="small">保存</el-button>
+            <el-button type="primary" size="small" class="addThisWeek" @click="addThisWeek">新增</el-button>
 
+        </div>
 
         <el-table class="tables"
                   border
                   :data="tableData">
             <el-table-column
                     align="center"
-                    label="计划时间"
-                    min-width="120"
+                    label="本周完成情况"
+                    min-width="60"
             >
                 <template slot-scope="scope">
                     <ul>
-                        <li v-for="(items,index) in scope.row.recordTimes"  v-text="items.name" :class="{clickIndex:items.isSelect=='true'}" @click="dataClick(scope.$index, scope.row,items,index)"></li>
+                        <li v-for="(items,index) in scope.row.recordTimes"  v-text="items.name.substr(3,2)" :class="{clickIndex:items.isSelect=='true'}" @click="dataClick(scope.$index, scope.row,items,index)"></li>
                     </ul>
                 </template>
             </el-table-column>
@@ -119,7 +107,7 @@
                     align="center"
                     label="项目名称"
                     prop="pId"
-                    min-width="120"
+                    min-width="70"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.pId" @change="xmmcChange" placeholder="请选择">
@@ -137,7 +125,7 @@
                     align="center"
                     label="任务项"
                     prop="tsId"
-                    min-width="120"
+                    min-width="70"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.tsId" @change="rwxChange" placeholder="请选择">
@@ -155,7 +143,6 @@
                     align="center"
                     label="工作任务描述"
                     prop="wWorkReport"
-                    min-width="200"
             >
                 <template slot-scope="scope">
                     <el-input
@@ -172,7 +159,7 @@
                     align="center"
                     label="责任人"
                     prop="userId"
-                    min-width="80"
+                    min-width="40"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.userId" @change="fzrChange" placeholder="请选择">
@@ -189,7 +176,7 @@
                     align="center"
                     label="实际完成率"
                     prop="wActualProportion"
-                    min-width="80"
+                    min-width="30"
             >
                 <template slot-scope="scope">
                     <el-input v-model="scope.row.wActualProportion" :disabled="true" placeholder="实际完成百分比"></el-input>
@@ -199,7 +186,7 @@
                     align="center"
                     label="计划完成率"
                     prop="wPlanProportion"
-                    min-width="80"
+                    min-width="30"
             >
                 <template slot-scope="scope">
                     <el-input v-model="scope.row.wPlanProportion" @change="jhbfbChange" placeholder="计划完成百分比"></el-input>
@@ -209,7 +196,7 @@
                     align="center"
                     label="状态"
                     prop="wStatus"
-                    min-width="80"
+                    min-width="40"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.wStatus" @change="statusChange" :disabled="scope.row.statusDisabled" placeholder="请选择">
@@ -226,7 +213,7 @@
                     align="center"
                     label="备注\协调配合"
                     prop="wRemark"
-                    min-width="150"
+                    min-width="40"
             >
                 <template slot-scope="scope">
                     <el-input type="textarea" @change="bzChange"
@@ -237,7 +224,7 @@
                     align="center"
                     label="操作"
                     prop="wRemark"
-                    min-width="50"
+                    min-width="20"
             >
                 <template slot-scope="scope">
                     <img src="./imgs/shanchu.png" @click="delThisWeek(scope.row,scope)" style="width: 15px;cursor:pointer;"/>
@@ -249,7 +236,7 @@
 
     <div class="tables1">
         <div style="display:flex;justify-content:flex-end;">
-            <el-button type="primary" size="mini" class="addThisWeek" @click="addNextWeek">新增</el-button>
+            <el-button type="primary" size="small" class="addThisWeek" @click="addNextWeek">新增</el-button>
         </div>
 
         <el-table class="tables"
@@ -257,12 +244,12 @@
                   :data="tableData1">
             <el-table-column
                     align="center"
-                    label="计划时间"
-                    min-width="120"
+                    label="下周完成情况"
+                    min-width="60"
             >
                 <template slot-scope="scope">
                     <ul>
-                        <li v-for="(items,index) in scope.row.recordTimes"  v-text="items.name" :class="{clickIndex:items.isSelect=='true'}" @click="dataClick(scope.$index, scope.row,items,index)"></li>
+                        <li v-for="(items,index) in scope.row.recordTimes"  v-text="items.name.substr(3,2)" :class="{clickIndex:items.isSelect=='true'}" @click="dataClick(scope.$index, scope.row,items,index)"></li>
                     </ul>
                 </template>
             </el-table-column>
@@ -273,7 +260,7 @@
                     align="center"
                     label="项目名称"
                     prop="pId"
-                    min-width="120"
+                    min-width="70"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.pId" @change="xmmcChange" placeholder="请选择">
@@ -291,7 +278,7 @@
                     align="center"
                     label="任务项"
                     prop="tsId"
-                    min-width="120"
+                    min-width="70"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.tsId" @change="rwxChange" placeholder="请选择">
@@ -308,7 +295,6 @@
             <el-table-column
                     align="center"
                     label="工作任务描述"
-                    min-width="200"
                     prop="wWorkReport" >
                 <template slot-scope="scope">
                     <el-input
@@ -325,7 +311,7 @@
                     align="center"
                     label="责任人"
                     prop="userId"
-                    min-width="80"
+                    min-width="40"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.userId"  @change="fzrChange" placeholder="请选择">
@@ -343,7 +329,7 @@
                     align="center"
                     label="实际完成率"
                     prop="wActualProportion"
-                    min-width="80"
+                    min-width="30"
             >
                 <template slot-scope="scope">
                     <el-input v-model="scope.row.wActualProportion" :disabled="true" placeholder="实际完成百分比"></el-input>
@@ -353,7 +339,7 @@
                     align="center"
                     label="计划完成率"
                     prop="wPlanProportion"
-                    min-width="80"
+                    min-width="30"
             >
                 <template slot-scope="scope">
                     <el-input v-model="scope.row.wPlanProportion" @change="jhbfbChange" placeholder="计划完成百分比"></el-input>
@@ -363,7 +349,7 @@
                     align="center"
                     label="状态"
                     prop="wStatus"
-                    min-width="80"
+                    min-width="40"
             >
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.wStatus" :disabled="scope.row.statusDisabled" @change="statusChange" placeholder="请选择">
@@ -380,7 +366,7 @@
                     align="center"
                     label="备注\协调配合"
                     prop="wRemark"
-                    min-width="150"
+                    min-width="40"
             >
                 <template slot-scope="scope">
                     <el-input type="textarea"
@@ -391,7 +377,7 @@
             <el-table-column
                     align="center"
                     label="操作"
-                    min-width="50"
+                    min-width="20"
             >
                 <template slot-scope="scope">
                     <img src="./imgs/shanchu.png" @click="delNextWeek(scope.row,scope)" style="width: 15px;cursor:pointer;"/>
@@ -473,9 +459,6 @@
         mounted:function(){
             var _this=this;
            // _this.getDingDing();//获取临时授权码
-            //获取本周和下周时间范围
-            var date=new Date();//当前时间
-            _this.getMonRen(date);
            _this.getDatas();
         },
         created:function () {
@@ -483,47 +466,6 @@
 
         },
         methods:{
-            //改变时间框
-            endTimeChange:function(value){
-                var _this=this;
-                _this.getMonRen(value);
-            },
-            //改变时间框
-            startTimeChange:function(value){
-                var _this=this;
-                _this.getMonRen(value);
-            },
-
-            //获取默认开始时间和结束时间
-            getMonRen:function(date){
-                var _this=this;
-
-                var day = date.getDay() || 7;
-                var thisDateWeekOne=new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1 - day)//当前时间的周一
-                var nextWeek=new Date(date.getFullYear(), date.getMonth(),thisDateWeekOne.getDate()+11);
-                //当前时间的本周一
-                _this.params.startTime=thisDateWeekOne;
-                //当前时间的下周五
-                _this.params.endTime=nextWeek;
-                console.log(thisDateWeekOne,nextWeek);
-            },
-
-            //得到新增时候本周、下周的日期
-            getAddThisWeek:function(){
-               var _this=this;
-               var startTimes=_this.params.startTime;
-               var newArray=[];
-               for(var i=0;i<12;i++){
-                   var str=new Date(new Date()
-                       .setDate(startTimes.getDate()+i))
-                       .toLocaleDateString();
-                   str=str.replace(/\//g, '-');
-                   newArray.unshift(str);
-               };
-               newArray.reverse();//数组反转
-               return newArray;
-            },
-
             //项目名称改变事件
             xmmcChange:function(){
                 var _this=this;
@@ -609,10 +551,7 @@
                     url:"http://localhost:8082/weekReport/selectWeekReportDetial",
                     type:"POST",
                     //data:{'authCode':code},
-                    data:{
-                        'wStarTime':_this.params.startTime,
-                        'wEndTime':_this.params.endTime,
-                    },
+                    data:{},
                     dataType:"json",
                     success:function(res){
                         if(res.data!=null){
@@ -677,29 +616,19 @@
                     }
                 });
             },
-            //找到 日期  -  第二个的下标
-            findIndex:function(str,cha,num){
-                var x=str.indexOf(cha);
-                for(var i=0;i<num;i++){
-                    x=str.indexOf(cha,x+1);
-                }
-                return x;
-            },
             //新增本周
             addThisWeek:function(){
                 var _this=this;
-                var thisNextWeek=_this.getAddThisWeek();//获取本周和下周 2018-02-10  结合在一起的数组
                 _this.dubClick=1;
                 //本周日期
                 var thisWeeks=[];
-                for(var i=0;i<thisNextWeek.slice(0,7).length;i++){
-                    var items=thisNextWeek.slice(0,7)[i];
-                    items.indexOf("-");
-                    var index=_this.findIndex(items,'-',1);
+                for(var i=0;i<thisWeek.length;i++){
+                    var items=thisWeek[i];
+
                     var objs={
                         isSelect:'false',
                         nums:0,
-                        name:items.substring(index+1),
+                        name:thisWeek[i].substr(5,5),
                         timeId:"",
                         wId:"",
                         sorts:i+1,
@@ -712,13 +641,11 @@
                     tsId:"",
                     userId:"",
                     wActualProportion:"",
-                    wPlanProportion:"100",
+                    wPlanProportion:"",
                     wWorkReport:"",
                     wStatus:"",
                     wRemark:"",
                     wType:"1",
-                    wStartTime:_this.params.startTime,
-                    wEndTime:_this.params.endTime,
                 };
 
                 _this.tableData.push(objs);
@@ -730,36 +657,30 @@
                 _this.dubClick=1;
                 //本周日期
                 var nextWeeks=[];
-                var thisNextWeek=_this.getAddThisWeek().slice(-5);
+                for(var i=0;i<nextWeek.length;i++){
+                    var items=nextWeek[i];
 
-                for(var i=0;i<thisNextWeek.length;i++){
-                    var items=thisNextWeek[i];
-                    items.indexOf("-");
-                    var index=_this.findIndex(items,'-',1);
                     var objs={
                         isSelect:'false',
                         nums:0,
-                        name:items.substring(index+1),
+                        name:nextWeek[i].substr(5,5),
                         timeId:"",
                         wId:"",
                         sorts:i+1,
                     };
                     nextWeeks.push(objs);
                 };
-
                 var objs={
                     recordTimes:nextWeeks,
                     pId:"",
                     tsId:"",
                     userId:"",
                     wActualProportion:"",
-                    wPlanProportion:"100",
+                    wPlanProportion:"",
                     wStatus:"",
                     wWorkReport:"",
                     wRemark:"",
                     wType:"2",
-                    wStartTime:_this.params.startTime,
-                    wEndTime:_this.params.endTime,
                 };
 
                 _this.tableData1.push(objs);
@@ -930,7 +851,7 @@
                                     type:"success",
                                 });
                                 _this.flags=true;
-                                _this.getDatas();
+                                _this.getDingDing();
                             }
                         });
                     }else{

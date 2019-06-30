@@ -5,18 +5,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.config.AuthHelperProjectTotle;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
-import com.gedi.projectmanagement.model.User;
+import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.ProjectPlanService;
-import com.gedi.projectmanagement.service.UserService;
-import com.gedi.projectmanagement.util.LoginUtil;
+import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName : ProjectPlanController
@@ -30,28 +29,29 @@ import java.util.List;
 @RequestMapping("/projectPlan")
 public class ProjectPlanController {
 
-    @Resource
+    @Autowired
     private ProjectPlanService projectPlanService;
 
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
     //列表展示所有
     @PostMapping("/listAll")
-    public CodeAndMsg selectById(String authCode, HttpServletRequest request) {
-        CodeAndMsg codeAndMsg = new CodeAndMsg();
-        String userId = LoginUtil.login(authCode);
-        CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
-        User user = (User) codeAndMsg1.getData();
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-        session.setAttribute("uDepartment",user.getuDepartment());
-        if (user != null) {
-            return projectPlanService.selectById();
+    public Map selectById(String authCode, HttpServletRequest request) {
+        Map map = new HashMap();
+        //String userId = LoginUtil.login(authCode);
+        SysUser sysUser = sysUserService.queryUserDetail("0208024548845822");
+        List<ProjectPlan> projectPlans = projectPlanService.selectById();
+        /*HttpSession session = request.getSession();
+        session.setAttribute("user", sysUser);
+        session.setAttribute("department", sysUser.getDepartment());*/
+        if (sysUser != null) {
+            map.put("sysUser", sysUser);
+            map.put("projectPlans", projectPlans);
         } else {
-            return projectPlanService.selectById();
+            map.put("msg", "查询失败");
         }
-
+        return map;
     }
 
     /**
@@ -86,11 +86,12 @@ public class ProjectPlanController {
      * @return
      */
     @PostMapping(value = "/projectBypName")
-    public CodeAndMsg selectBypName(String pName, String annualTime) {
+    public CodeAndMsg selectBypName(String pName, String annualTime, Integer pProjectPhaseId) {
         CodeAndMsg msg = new CodeAndMsg();
         ProjectPlan projectPlan = new ProjectPlan();
         projectPlan.setAnnualTime(annualTime);
         projectPlan.setpName(pName);
+        projectPlan.setpProjectPhaseId(pProjectPhaseId);
         List<ProjectPlan> projectPlans = projectPlanService.selectBypName(projectPlan);
         if (null != projectPlans && projectPlans.size() > 0) {
             msg.setCode(200);
@@ -103,7 +104,6 @@ public class ProjectPlanController {
             msg.setResult(true);
             msg.setData(projectPlans);
         }
-
         return msg;
     }
 
@@ -138,11 +138,15 @@ public class ProjectPlanController {
         return msg;
     }
 
+    /**
+     * 根据pId删除项目总计划
+     *
+     * @param pId
+     * @return
+     */
     @PostMapping(value = "/deleteProjectBypId")
-    public CodeAndMsg deleteProjectBypId(@RequestBody String pId) {
+    public CodeAndMsg deleteProjectBypId(String pId) {
         CodeAndMsg msg = new CodeAndMsg();
-        JSONObject jsonObject = JSON.parseObject(pId);
-        pId = jsonObject.getString("pId");
         if (null == pId || "" == pId) {
             msg.setCode(401);
             msg.setMsg("pId参数值为空,删除失败");
@@ -162,7 +166,42 @@ public class ProjectPlanController {
         return msg;
     }
 
-    //获取企业ID值，appkey，serectkey等所必须的参数
+    /**
+     * 根据pId修改项目总计划
+     *
+     * @param pName,pStartTime,pEndTime,pProgress,pId
+     * @return
+     */
+    @PostMapping(value = "/updateProjectBypId")
+    public CodeAndMsg updateProjectBypId(String pId, String pName, String pStartTime, String pEndTime,
+                                         Integer pProgress) {
+        CodeAndMsg msg = new CodeAndMsg();
+        if (null == pId || "" == pId) {
+            msg.setCode(401);
+            msg.setMsg("pId参数值为空,修改失败");
+            msg.setResult(false);
+        } else {
+            ProjectPlan projectPlan = new ProjectPlan();
+            projectPlan.setpId(pId);
+            projectPlan.setpName(pName);
+            projectPlan.setpStartTime(pStartTime);
+            projectPlan.setpEndTime(pEndTime);
+            projectPlan.setpProgress(pProgress);
+            Map map = projectPlanService.updateProjectBypId(projectPlan);
+            if (map.get("success") == "success") {
+                msg.setCode(200);
+                msg.setMsg("修改成功");
+                msg.setResult(true);
+            } else if (map.get("error") == "error") {
+                msg.setCode(401);
+                msg.setMsg("修改失败");
+                msg.setResult(false);
+            }
+        }
+        return msg;
+    }
+
+    // 获取企业ID值，appkey，serectkey等所必须的参数
     @GetMapping("queryEmterpriseMesg")
     public String queryEmterpriseMesg(HttpServletRequest request) {
         CodeAndMsg codeAndMsg = new CodeAndMsg();
@@ -173,6 +212,5 @@ public class ProjectPlanController {
         codeAndMsg.setResult(true);
         return config;
     }
-
 
 }

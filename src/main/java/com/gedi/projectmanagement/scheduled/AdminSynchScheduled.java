@@ -10,29 +10,29 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-/**  定时任务：抓取用户信息
+/**  定时任务：获取管理员列表
  * 同时更新到数据库里
- * @Author: renpu
- * @Date: 2019/6/9 16:01
+ * @Author: zhang xingya
+ * @Date: 2019/6/30 16:01
  * @Description:
  */
 
 
 @Component
-public class UserSynchScheduled {
-    private static Logger logger = LoggerFactory.getLogger(DepartSynchScheduled.class);
+public class AdminSynchScheduled {
+    private static Logger logger = LoggerFactory.getLogger(AdminSynchScheduled.class);
 
     @Autowired
     private UserService userService;
 
 
-    @Scheduled(cron = "0 00 03 * * ?")
+    @Scheduled(cron = "0 00 04 * * ?")
     public  void queryDepartmentUsers() throws ApiException {
-        logger.info("执行钉钉中用户信息同步>>>>>>>>>>>>>>>开始=="+new Date());
+        logger.info("执行钉钉中获取管理员列表同步>>>>>>>>>>>>>>>开始=="+new Date());
 
-        this.userService.doSynchUserTask();
+//        this.userService.doSynchAdminTask();
 
-        logger.info("执行钉钉中用户信息同步>>>>>>>>>>>>>>>结束=="+new Date());
+        logger.info("执行钉钉中获取管理员列表同步>>>>>>>>>>>>>>>结束=="+new Date());
     }
 
 }

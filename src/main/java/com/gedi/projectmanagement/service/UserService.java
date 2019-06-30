@@ -1,6 +1,7 @@
 package com.gedi.projectmanagement.service;
 
 import com.gedi.projectmanagement.model.User;
+import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,4 +37,20 @@ public interface UserService {
      * @return
      */
     String selectNameByUserId(String userId);
+
+    /**
+     * 批量插入用户
+     * @param users
+     */
+    void batchInsertUser(List<SysUser> users);
+
+    /**
+     * 执行同步用户信息定时计划
+     */
+    void doSynchUserTask();
+
+    /**
+     * 执行同步获取管理员列表
+     */
+    void doSynchAdminTask() throws Exception;
 }

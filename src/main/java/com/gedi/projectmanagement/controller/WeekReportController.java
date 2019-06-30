@@ -38,7 +38,6 @@ public class WeekReportController {
     @Autowired
     private WeekReportService weekReportService;
 
-
     @Autowired
     private UserService userService;
 
@@ -48,19 +47,25 @@ public class WeekReportController {
     @Autowired
     private TaskSubClassService taskSubClassService;
 
+    @Autowired
+    private SysUserService sysUserService;
+
 
     //查询双周计划表展示具体的内容以及完成的占比；
     @PostMapping("selectWeekReportDetial")
-    public CodeAndMsg selectWeekReportDetial(String authCode, HttpServletRequest request) {
+    public CodeAndMsg selectWeekReportDetial(String wStarTime,String wEndTime,String authCode, HttpServletRequest request) {
 
+        String timeStart = TimeChange.getTime(wStarTime);
+        String timeEnd = TimeChange.getTime(wEndTime);
+        System.out.println(timeStart+"-----asdfasdfasdfasdf-----"+timeEnd);
         CodeAndMsg codeAndMsg=new CodeAndMsg();
-       String userId = LoginUtil.login(authCode);
-        CodeAndMsg codeAndMsg1 = userService.selectUserById(userId);
-        User user = (User)codeAndMsg1.getData();
+        /*String userId = LoginUtil.login(authCode);
+        SysUser sysUser = sysUserService.queryUserDetail(userId);
+        String department = sysUser.getDepartment();*/
         HttpSession session = request.getSession();
-        session.setAttribute("uDepartment",user.getuDepartment());
-        if(user!=null){
-            return weekReportService.selectWeekReportDetial(null,null,null);
+        session.setAttribute("department","[117572421]");
+        if(weekReportService.selectWeekReportDetial("[117572421]",timeStart,timeEnd)!=null){
+            return weekReportService.selectWeekReportDetial("[117572421]",timeStart,timeEnd);
         }else{
             codeAndMsg.setResult(false);
             codeAndMsg.setCode(200);
