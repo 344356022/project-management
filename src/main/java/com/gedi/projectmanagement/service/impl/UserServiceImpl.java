@@ -6,28 +6,47 @@ import com.dingtalk.api.request.OapiUserListRequest;
 import com.dingtalk.api.response.OapiUserListResponse;
 import com.gedi.projectmanagement.config.URLConstant;
 import com.gedi.projectmanagement.dao.UserMapper;
+import com.gedi.projectmanagement.dao.system.SysDepartmentMapper;
+import com.gedi.projectmanagement.dao.system.SysUserDepartmentMapper;
+import com.gedi.projectmanagement.dao.system.SysUserMapper;
 import com.gedi.projectmanagement.model.User;
+import com.gedi.projectmanagement.model.system.SysDepartment;
+import com.gedi.projectmanagement.model.system.SysUser;
+import com.gedi.projectmanagement.model.system.SysUserDepartment;
 import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.util.AccessTokenUtil;
+import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.CodeAndMsgUtil;
 import com.taobao.api.ApiException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private SysUserMapper sysUserMapper;
+    @Resource
+    private SysDepartmentMapper sysDepartmentMapper;
+    @Resource
+    private SysUserDepartmentMapper sysUserDepartmentMapper;
+
+
+
 
     @Override
     public CodeAndMsg selectUserBySign(String department) {
@@ -104,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
                 List<User> users = new ArrayList<>();
 
-                DingTalkClient client1 = new DefaultDingTalkClient(URLConstant.URL_USER_ListByGage);
+                DingTalkClient client1 = new DefaultDingTalkClient(URLConstant.URL_USER_LISTBYPAGE);
                 OapiUserListRequest request1 = new OapiUserListRequest();
                 request1.setDepartmentId(aLong);
                 request1.setOffset(0L);
@@ -178,4 +197,113 @@ public class UserServiceImpl implements UserService {
     public String selectNameByUserId(String userId) {
         return userMapper.selectNameByUserId(userId);
     }
+
+    @Override
+    public void batchInsertUser(List<SysUser> users) {
+        this.sysUserMapper.batchInsert(users);
+    }
+
+    @Override
+    public void doSynchUserTask() {
+        //从数据库里取部门信息
+        List<SysDepartment> departmentList = this.sysDepartmentMapper.selectAll();
+        List<SysUser> users = new ArrayList<>();
+        if(departmentList == null || departmentList.size() == 0){
+            return;
+        }
+
+        for (SysDepartment department : departmentList) {
+            //获取AccessToken
+            String accessToken = AccessTokenUtil.getToken();
+
+            DingTalkClient userClient = new DefaultDingTalkClient(URLConstant.URL_USER_LISTBYPAGE);
+            OapiUserListRequest request = new OapiUserListRequest();
+            request.setDepartmentId(Long.valueOf(department.getDepartmentId()));
+            request.setOffset(0L);
+            request.setSize(100L);
+            request.setOrder("entry_desc");
+            request.setHttpMethod("GET");
+
+            OapiUserListResponse listResponse = null;
+
+            try {
+                listResponse = userClient.execute(request,accessToken);
+                List<OapiUserListResponse.Userlist> userlist = listResponse.getUserlist();
+                for (OapiUserListResponse.Userlist ut : userlist) {
+                    //将数据封装到自己的实体类
+                    SysUser user=new SysUser();
+                    user.setUnionId(ut.getUnionid());
+                    user.setName(ut.getName());
+                    user.setTel(ut.getTel());
+                    user.setWorkPlace(ut.getWorkPlace());
+                    user.setRemark(ut.getRemark());
+                    user.setMobile(ut.getMobile());
+                    user.setEmail(ut.getEmail());
+                    user.setOrgEmail(ut.getOrgEmail());
+                    user.setActive(ut.getActive());
+                    user.setIsAdmin(ut.getIsAdmin());
+                    user.setIsBoss(ut.getIsBoss());
+                    user.setIsHide(ut.getIsHide());
+                    user.setPosition(ut.getPosition());
+                    user.setAcatar(ut.getAvatar());
+                    user.setHiredDate(ut.getHiredDate());
+                    user.setJobNumber(ut.getJobnumber());
+                    user.setIsLeader(ut.getIsLeader());
+                    user.setDepartment(ut.getDepartment());
+                    user.setUserId(ut.getUserid());
+
+//                    sys_levelint(11) NULL如果是管理员。管理员角色级别，1:主管理员，2:子管理员
+                    users.add(user);
+                }
+                //调用用户相应增的方法，将数据增添到自己的数据库中；
+                this.detailWithUserInfos(users);
+            } catch (ApiException e) {
+                logger.info("UserServiceImpl 同步部门下面的人员出错>>"+e.getErrMsg());
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /**
+     * 更新用户
+     * 更新用户所属部门
+     * @param users
+     */
+    private void detailWithUserInfos(List<SysUser> users){
+        if(users == null || users.size() == 0){
+            return;
+        }else {
+            //每次批量增添的数据都需要进行对库表之前存在的数据进行清空
+            this.userMapper.deleteAllUserMessage();
+            //清空用户-部门关系表
+            //"department": [1, 2], 参数类型不清楚，暂不处理
+            List<String> userIds = new ArrayList<>();
+            List<SysUserDepartment> userDepartments = new ArrayList<>();
+            for (SysUser user : users) {
+                userIds.add(user.getUserId());
+                if(StringUtils.isNotBlank(user.getDepartment())){
+                    String department = user.getDepartment();
+                    String depart = department.substring(1,department.length()-1);
+                    List<String> departIds = Arrays.asList(depart.split(","));
+                    for (String departId : departIds) {
+                        SysUserDepartment userDepartment = new SysUserDepartment();
+                        userDepartment.setUserDepartmentId(UUIDUtil.getUUID2());
+                        userDepartment.setDepartmentId(departId);
+                        userDepartment.setUserId(user.getUserId());
+                        userDepartments.add(userDepartment);
+                    }
+                }
+            }
+            this.sysUserMapper.batchInsert(users);
+            if(userIds.size() > 0){
+                this.sysUserDepartmentMapper.deleteAllMsg(userIds);//清除用户-部门关系
+            }
+            if(userDepartments != null || userDepartments.size() > 0){
+                this.sysUserDepartmentMapper.batchInsert(userDepartments);//新建用户-部门关系
+            }
+        }
+    }
+
+
 }
