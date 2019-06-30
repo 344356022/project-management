@@ -1,6 +1,6 @@
 package com.gedi.projectmanagement.scheduled;
 
-import com.gedi.projectmanagement.service.UserService;
+import com.gedi.projectmanagement.service.system.SysUserService;
 import com.taobao.api.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +23,19 @@ public class AdminSynchScheduled {
     private static Logger logger = LoggerFactory.getLogger(AdminSynchScheduled.class);
 
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
 
     @Scheduled(cron = "0 00 04 * * ?")
-    public  void queryDepartmentUsers() throws ApiException {
+    public  void queryDepartmentUsers() {
         logger.info("执行钉钉中获取管理员列表同步>>>>>>>>>>>>>>>开始=="+new Date());
 
-//        this.userService.doSynchAdminTask();
+        try {
+            this.sysUserService.doSynchAdminTask();
+        } catch (Exception e) {
+            logger.error("执行钉钉中获取管理员列表同步>>>>>>>>>>>>>>>失败=="+e);
+            e.printStackTrace();
+        }
 
         logger.info("执行钉钉中获取管理员列表同步>>>>>>>>>>>>>>>结束=="+new Date());
     }

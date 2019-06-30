@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 系统用户
@@ -67,17 +69,42 @@ public class SysUserController {
         return model;
     }
 
-    // 根据项目总计划维护页面的tab页面筛选出所对应的所有员工以及ID值
+    /******************************/
+
+    //手动维护用户信息
+    @RequestMapping("/updateUserMessage")
+    public CodeAndMsg updateUserMessage(){
+        return sysUserService.updateUserMessage();
+    }
+
+
+    //获取责任人
+    @GetMapping("selectAllUser")
+    public CodeAndMsg selectAllUser() {
+        return sysUserService.selectAllUser();
+    }
+
+
+    //根据部门标记进行获取部门下所对应的所有员工以及ID值
+    @GetMapping("selectUserByDepartment")
+    public CodeAndMsg selectUserByDepartment(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String department = (String)session.getAttribute("department");
+        return sysUserService.selectUserBySign(department);
+    }
+
+    //根据项目总总计划维护页面 的tab页面    筛选出所对应的所有员工以及ID值
     @GetMapping("selectUserByTabFlag")
-    public CodeAndMsg selectUserByTabFlag(Integer pProjectPhaseId) {
-        String department = "";
-        if (pProjectPhaseId == 1) {//需求分析
-            department = "[117443437]";
-        } else if (pProjectPhaseId == 2) {//数据处理
-            department = "[119455108]";
-        } else if (pProjectPhaseId == 3) {//系统开发
-            department = "[117572421]";
-        } else {
+    public CodeAndMsg selectUserByTabFlag(String tabFlag) {
+        String department="";
+        if("1".equals(tabFlag)){//需求分析
+            department="[117443437]";
+        }else if("2" .equals(tabFlag)){//数据处理
+            department="[119455108]";
+        }else if("3".equals(tabFlag)){//系统开发
+            department="[117572421]";
+        }else{
             return sysUserService.selectAllUser();
         }
         return sysUserService.selectUserBySign(department);

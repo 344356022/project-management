@@ -18,4 +18,24 @@ public interface SysUserMapper extends GeneralMapper<SysUser> {
     //根据部门以及标签进行查询部门普通员工
     List<SysUser> selectUserBySign(@Param("department") String department);
 
+    //查询用户的唯一表示主键id值；
+    List<SysUser> selectAllUserId();
+
+    //删除表里的所有数据
+    void deleteAllUserMessage();
+
+    /**
+     * 根据用户ID查询用户名称
+     *
+     * @param userId
+     * @return
+     */
+    String selectNameByUserId(String userId);
+
+    //根据用户ID值获取员工的具体信息
+    SysUser selectUserById(String userId);
+
+    //根据部门以及标签进行查询部门普通员工
+    List<SysUser> selectUserByDepartment(String department);
+
 }

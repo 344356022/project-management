@@ -1,37 +1,27 @@
 package com.gedi.projectmanagement.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.config.AuthHelperDaily;
-import com.gedi.projectmanagement.config.AuthHelperProjectTotle;
-import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.model.system.SysUser;
+import com.gedi.projectmanagement.service.IJournalService;
 import com.gedi.projectmanagement.service.ProjectPlanService;
-import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.util.DetialDayDate;
-import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.gedi.projectmanagement.model.Journal;
-import com.gedi.projectmanagement.service.IJournalService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 日志 信息操作处理
@@ -48,9 +38,6 @@ public class JournalController
 
 	@Autowired
 	private WeekReportService weekReportService;
-
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -428,8 +415,7 @@ public class JournalController
 			for (int i = 0; i < deliverArray.length; i++) {
 				String deliId =deliverArray[i];
 				//根据查询出的id  查询出名称
-				CodeAndMsg returnCodeAndMsg = userService.selectUserById(deliId);
-				SysUser userReturn = (SysUser)returnCodeAndMsg.getData();
+				SysUser userReturn = this.sysUserService.queryUserDetail(deliId);
 				String userName=userReturn.getName();
 				HashMap mapLoc = new HashMap();
 				mapLoc.put("uName",userName);

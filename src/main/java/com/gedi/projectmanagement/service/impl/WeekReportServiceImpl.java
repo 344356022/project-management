@@ -1,14 +1,13 @@
 package com.gedi.projectmanagement.service.impl;
 
 import com.gedi.projectmanagement.dao.RecordTimeMapper;
-import com.gedi.projectmanagement.dao.UserMapper;
 import com.gedi.projectmanagement.dao.WeekreportMapper;
+import com.gedi.projectmanagement.dao.system.SysUserMapper;
 import com.gedi.projectmanagement.model.RecordTime;
-import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.model.Weekreport;
+import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.DetialDayDate;
-import com.gedi.projectmanagement.util.TimeChange;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
@@ -42,7 +41,7 @@ public class WeekReportServiceImpl implements WeekReportService {
     private RecordTimeMapper recordTimeMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private SysUserMapper sysUserMapper;
 
     @Override
     public CodeAndMsg selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime) {
@@ -277,7 +276,7 @@ public class WeekReportServiceImpl implements WeekReportService {
     public CodeAndMsg dailyAddRecord(Weekreport weekreport) {
         CodeAndMsg codeAndMsg=new CodeAndMsg();
         String userId = weekreport.getUserId();
-        User user = userMapper.selectUserById(userId);
+        SysUser user = sysUserMapper.selectUserById(userId);
         List<String> tweleveDayDate = DetialDayDate.getTweleveDayDate();
         String startTime = tweleveDayDate.get(0);
         String endTime = tweleveDayDate.get(11);

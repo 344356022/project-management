@@ -12,7 +12,6 @@ import com.dingtalk.api.response.OapiDepartmentListResponse;
 import com.dingtalk.api.response.OapiUserGetAdminResponse;
 import com.dingtalk.api.response.OapiUserListResponse;
 import com.gedi.projectmanagement.config.URLConstant;
-import com.gedi.projectmanagement.dao.UserMapper;
 import com.gedi.projectmanagement.dao.system.SysDepartmentManagerMapper;
 import com.gedi.projectmanagement.dao.system.SysDepartmentMapper;
 import com.gedi.projectmanagement.dao.system.SysUserDepartmentMapper;
@@ -22,8 +21,8 @@ import com.gedi.projectmanagement.model.system.SysDepartment;
 import com.gedi.projectmanagement.model.system.SysDepartmentManager;
 import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.model.system.SysUserDepartment;
-import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
+import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.util.AccessTokenUtil;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.taobao.api.ApiException;
@@ -47,15 +46,13 @@ import java.util.List;
 public class SysUserTests {
 
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
     @Autowired
     private WeekReportService weekReportService;
     @Resource
     private SysDepartmentMapper sysDepartmentMapper;
     @Resource
     private SysDepartmentManagerMapper sysDepartmentManagerMapper;
-    @Resource
-    private UserMapper userMapper;
     @Resource
     private SysUserMapper sysUserMapper;
     @Resource
@@ -132,7 +129,7 @@ public class SysUserTests {
             return;
         }else {
             //每次批量增添的数据都需要进行对库表之前存在的数据进行清空
-            this.userMapper.deleteAllUserMessage();
+            this.sysUserMapper.deleteAllUserMessage();
             //清空用户-部门关系表
             //"department": [1, 2], 参数类型不清楚，暂不处理
             List<String> userIds = new ArrayList<>();

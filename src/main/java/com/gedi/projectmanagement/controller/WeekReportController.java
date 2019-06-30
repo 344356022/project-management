@@ -1,30 +1,23 @@
 package com.gedi.projectmanagement.controller;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.config.AuthHelper;
-import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
-import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.util.DetialDayDate;
-import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.util.TimeChange;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-
 import java.util.List;
 
 /**
@@ -41,7 +34,7 @@ public class WeekReportController {
     private WeekReportService weekReportService;
 
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
     @Autowired
     private ProjectPlanService projectPlanService;
@@ -49,8 +42,6 @@ public class WeekReportController {
     @Autowired
     private TaskSubClassService taskSubClassService;
 
-    @Autowired
-    private SysUserService sysUserService;
 
 
     //查询双周计划表展示具体的内容以及完成的占比；
@@ -144,8 +135,7 @@ public class WeekReportController {
     @GetMapping("selectDepartmentStaff")
     public CodeAndMsg selectDepartmentStaff(HttpSession session) {
         String department = (String)session.getAttribute("uDepartment");
-       // String department="[117572421]";
-        return userService.selectUserBySign(department);
+        return sysUserService.selectUserBySign(department);
     }
 
 

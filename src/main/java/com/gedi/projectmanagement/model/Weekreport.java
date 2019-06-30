@@ -1,5 +1,7 @@
 package com.gedi.projectmanagement.model;
 
+import com.gedi.projectmanagement.model.system.SysUser;
+
 import java.util.List;
 public class Weekreport {
 
@@ -29,7 +31,7 @@ public class Weekreport {
 
     private List<ProjectPlan> projectPlans;
 
-    private List<User> users;
+    private List<SysUser> users;
 
     private List<ActionItem> actionItems;
 
@@ -97,11 +99,11 @@ public class Weekreport {
         this.actionItems = actionItems;
     }
 
-    public List<User> getUsers() {
+    public List<SysUser> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<SysUser> users) {
         this.users = users;
     }
 

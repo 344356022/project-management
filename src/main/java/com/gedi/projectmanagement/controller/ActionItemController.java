@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.model.ActionItem;
-import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.service.ActionItemService;
-import com.gedi.projectmanagement.service.UserService;
+import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
-import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +31,7 @@ public class ActionItemController {
     private ActionItemService actionItemService;
 
     @Resource
-    private UserService userService;
+    private SysUserService sysUserService;
 
     /**
      * 项目总体计划清单的动态修改
@@ -69,7 +67,7 @@ public class ActionItemController {
     @PostMapping(value = "/getNameByUserId")
     public CodeAndMsg getNameByUserId(String userId) {
         CodeAndMsg msg = new CodeAndMsg();
-        String userName = userService.selectNameByUserId(userId);
+        String userName = this.sysUserService.selectNameByUserId(userId);
         if (userName != null) {
             msg.setCode(200);
             msg.setMsg("查询成功");

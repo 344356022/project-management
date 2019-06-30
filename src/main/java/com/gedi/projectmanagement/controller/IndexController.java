@@ -7,15 +7,11 @@ import com.dingtalk.api.request.OapiUserGetuserinfoRequest;
 import com.dingtalk.api.response.OapiUserGetResponse;
 import com.dingtalk.api.response.OapiUserGetuserinfoResponse;
 import com.gedi.projectmanagement.config.URLConstant;
-import com.gedi.projectmanagement.model.User;
-import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.util.AccessTokenUtil;
 import com.gedi.projectmanagement.util.ServiceResult;
-import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.taobao.api.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -26,10 +22,6 @@ import java.util.Map;
  */
 @RestController
 public class IndexController {
-
-
-    @Autowired
-    private UserService userService;
 
     private static final Logger bizLogger = LoggerFactory.getLogger(IndexController.class);
 

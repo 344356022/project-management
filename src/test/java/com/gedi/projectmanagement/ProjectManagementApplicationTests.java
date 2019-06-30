@@ -1,26 +1,13 @@
 package com.gedi.projectmanagement;
 
 
-import com.gedi.projectmanagement.dao.UserMapper;
-import com.gedi.projectmanagement.model.User;
-import com.gedi.projectmanagement.model.Weekreport;
-import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
-import com.gedi.projectmanagement.util.DetialDayDate;
 import com.gedi.projectmanagement.util.UUIDUtil;
-import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
@@ -29,9 +16,6 @@ public class ProjectManagementApplicationTests {
 
     @Autowired
     private WeekReportService weekReportService;
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Test
     public void contextLoads() {
