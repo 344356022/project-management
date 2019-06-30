@@ -69,4 +69,12 @@ public interface IJournalService
 	 * @return
 	 */
 	int insertJournalList(List list);
+
+
+	/**
+	 *	获取日报的填写记录
+	 * @param map
+	 * @return list
+	 */
+	public List<HashMap<String, Object>> selectJournalHistory(HashMap map,int pageSize,int pageNum);
 }
