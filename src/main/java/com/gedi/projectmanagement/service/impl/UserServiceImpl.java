@@ -48,9 +48,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private SysUserDepartmentMapper sysUserDepartmentMapper;
 
-
-
-
     @Override
     public CodeAndMsg selectUserBySign(String department) {
 

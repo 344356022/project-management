@@ -1,7 +1,5 @@
 package com.gedi.projectmanagement.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Date;
 import java.util.List;
 public class Weekreport {
 
@@ -226,14 +224,33 @@ public class Weekreport {
 
     }
 
-    public Weekreport(String wId, String pId, String tsId, String userId, Integer wActualProportion,  String userDepartmet,String wWorkReport) {
-        this.wId = wId;
+
+
+    public Weekreport(String pId, String tsId, String userId, Integer wActualProportion,  String userDepartmet,String wWorkReport) {
         this.pId = pId;
         this.tsId = tsId;
         this.userId = userId;
         this.wActualProportion = wActualProportion;
         this.userDepartmet = userDepartmet;
         this.wWorkReport=wWorkReport;
+    }
+
+
+    public Weekreport(String wId, String pId, String wStartTime, String wEndTime, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark, String userDepartmet, Integer rFinish, Integer wType) {
+        this.wId = wId;
+        this.pId = pId;
+        this.wStartTime = wStartTime;
+        this.wEndTime = wEndTime;
+        this.tsId = tsId;
+        this.wWorkReport = wWorkReport;
+        this.userId = userId;
+        this.wActualProportion = wActualProportion;
+        this.wPlanProportion = wPlanProportion;
+        this.wStatus = wStatus;
+        this.wRemark = wRemark;
+        this.userDepartmet = userDepartmet;
+        this.rFinish = rFinish;
+        this.wType = wType;
     }
 
     @Override

@@ -7,6 +7,8 @@ import com.gedi.projectmanagement.model.RecordTime;
 import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.service.WeekReportService;
+import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.TimeChange;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
@@ -63,14 +65,12 @@ public class WeekReportServiceImpl implements WeekReportService {
 
     @Override
     public String addWeekReport(List<WeekRportInfo> weekreports) {
-
         List<RecordTime> dataList=null;
         List<Weekreport> weekreports1=new ArrayList<>();
         ServletRequestAttributes rr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = rr.getRequest();
         HttpSession session = request.getSession();
-        String uDepartment = (String)session.getAttribute("uDepartment");
-        System.out.println(uDepartment+"session里保存的数据---------------------------");
+        String uDepartment = (String)session.getAttribute("department");
         for (WeekRportInfo weekreport : weekreports) {
             if(weekreport.getwId()!=null){
                 Weekreport weekreport1=new Weekreport();
@@ -88,8 +88,11 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
-                weekreport1.setwEndTime(weekreport.getwEndTime());
-                weekreport1.setwStartTime(weekreport.getwStartTime());
+                List<String> tweleveDayDate = DetialDayDate.getTweleveDayDate();
+                String startTime = tweleveDayDate.get(0);
+                String endTime = tweleveDayDate.get(11);
+                weekreport1.setwEndTime(endTime);
+                weekreport1.setwStartTime(startTime);
                 weekreports1.add(weekreport1);
                  dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -111,8 +114,11 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
-                weekreport1.setwEndTime(weekreport.getwEndTime());
-                weekreport1.setwStartTime(weekreport.getwStartTime());
+                List<String> tweleveDayDate = DetialDayDate.getTweleveDayDate();
+                String startTime = tweleveDayDate.get(0);
+                String endTime = tweleveDayDate.get(11);
+                weekreport1.setwEndTime(endTime);
+                weekreport1.setwStartTime(startTime);
                 weekreports1.add(weekreport1);
                 dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -192,28 +198,7 @@ public class WeekReportServiceImpl implements WeekReportService {
     @Override
     public CodeAndMsg updateActual(String wId, int valueZ) {
         CodeAndMsg codeAndMsg=new CodeAndMsg();
-
         int amount=0;
-
-        /*if(weekreportMapper.selectByWeekReportId(wId)!=null&&valueZ!=0){
-            Weekreport weekreport = weekreportMapper.selectProjectById(wId);
-            Integer planproportion = weekreport.getwPlanProportion();
-            Double actual = Double.valueOf(planproportion) / new Double(100);
-
-            //通过日报员工的完成进度占比，计算出实际占总工作的占比
-            amount= (int) (actual * valueZ);
-
-            weekreportMapper.updateActual(wId,amount,valueZ);//20190612 zpl 添加一个传入参数valueZ 日报完成进度
-            codeAndMsg.setCode(200);
-            codeAndMsg.setMsg("修改状态成功");
-            codeAndMsg.setResult(true);
-            return codeAndMsg;
-        }else{
-            codeAndMsg.setCode(400);
-            codeAndMsg.setMsg("参数为空");
-            codeAndMsg.setResult(false);
-            return codeAndMsg;
-        }*/
         Weekreport weekreport = weekreportMapper.selectProjectById(wId);
         Integer actualProportion = weekreport.getwActualProportion();
         Integer planproportion = weekreport.getwPlanProportion();
@@ -290,12 +275,16 @@ public class WeekReportServiceImpl implements WeekReportService {
 
     @Override
     public CodeAndMsg dailyAddRecord(Weekreport weekreport) {
-
         CodeAndMsg codeAndMsg=new CodeAndMsg();
         String userId = weekreport.getUserId();
         User user = userMapper.selectUserById(userId);
+        List<String> tweleveDayDate = DetialDayDate.getTweleveDayDate();
+        String startTime = tweleveDayDate.get(0);
+        String endTime = tweleveDayDate.get(11);
         if(weekreport!=null&&user!=null){
             weekreport.setwId(UUIDUtil.getUUID2());
+            weekreport.setwStartTime(startTime);
+            weekreport.setwEndTime(endTime);
             String other = weekreport.getwId();
             RecordTime recordTime=new RecordTime();
             recordTime.setTimeId(UUIDUtil.getUUID2());
