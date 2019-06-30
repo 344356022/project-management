@@ -42,7 +42,7 @@ public class UserController {
     public CodeAndMsg selectUserByDepartment(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        String department = (String)session.getAttribute("uDepartment");
+        String department = (String)session.getAttribute("department");
         return userService.selectUserBySign(department);
     }
 

@@ -13,4 +13,9 @@ public interface SysUserMapper extends GeneralMapper<SysUser> {
 
     void batchUpdateUser(@Param("list") List<SysUser> userList);
 
+    List<SysUser> selectAllUser();
+
+    //根据部门以及标签进行查询部门普通员工
+    List<SysUser> selectUserBySign(@Param("department") String department);
+
 }

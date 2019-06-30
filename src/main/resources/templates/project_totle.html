@@ -15,7 +15,7 @@
     <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <title>项目总体计划</title>
+    <title>项目总览展示</title>
     <style>
         .el-tabs__nav-wrap.is-scrollable{
             padding: 0;
@@ -69,12 +69,12 @@
         }
 
         .left .el-select{
-            width: 1.5rem;
+            width:0.8rem;
         }
         .right{
             width: 1.5rem;
+            margin-left:0.04rem;
         }
-
     </style>
     <link rel="stylesheet" href="../static/css/pages/week.css">
 </head>
@@ -102,6 +102,20 @@
                                 value="2019">
                             </el-option>
                         </el-select>
+                        <!--阶段-->
+                        <el-select v-model="params.pProjectPhaseId" placeholder="请选择" @change="timeChange">
+                            <el-option
+                                    key=""
+                                    label="请选择年份"
+                                    value="">
+                            </el-option>
+                            <el-option
+                                    v-for="(item,index) in productJieDuan"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
                     </div>
                     <div class="right">
                         <el-input placeholder="请输入内容" v-model="params.pName" class="input-with-select">
@@ -112,7 +126,8 @@
             </div>
             <div style="text-align: center;line-height: 60px;width: 100%;" v-if="listMessage.length<=0?true:false">暂无数据</div>
             <div class="totle"  v-else-if="listMessage.length>0?true:false">
-                <div class="totle_list" v-for="(items,index) in listMessage" @click="listClick(items)">
+                <div class="totle_list" v-for="(items,index) in listMessage"
+                     @click="listClick(items)">
                     <p v-text="items.pName"></p>
                     <span><strong>计划开始时间：</strong><strong v-text="items.pStartTime"></strong></span>
                     <span><strong>项目阶段：</strong><strong v-text="items.pProjectPhaseId"></strong></span>
@@ -259,12 +274,32 @@
                 params:{
                     annualTime:"",//时间
                     pName:"",//输入框
+                    pProjectPhaseId:"",
                 },
-
+                //项目阶段
+                productJieDuan: [
+                    {
+                        name: "需求分析",
+                        id: 1,
+                    },
+                    {
+                        name: "数据处理",
+                        id: 2,
+                    },
+                    {
+                        name: "系统开发",
+                        id: 3,
+                    }
+                ],
 
                 pid:"",
                 shows:true,
                 listMessage:[],
+
+                //当前登录用户信息
+                loginUser:{
+
+                },
 
                 /*默认展示的tab切换页*/
                 activeName2:"",
@@ -272,19 +307,19 @@
             },
             mounted:function(){
                 var _this=this;
-                //_this.getListMessage();
-                _this.getDingDing();//获取临时授权码
+                _this.getListMessage();
+                //_this.getDingDing();//获取临时授权码
             },
             methods:{
                 nianDu:function(){
                     var _this=this;
 
                 },
-                //获取有关钉钉需要的值
+                /*//获取有关钉钉需要的值
                 getDingDing:function () {
                     var _this=this;
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/queryEmterpriseMesg",
+                        url:"http://localhost:8082/projectPlan/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -311,7 +346,7 @@
                         });
                     });
 
-                },
+                },*/
 
 
 
@@ -322,14 +357,13 @@
                     var _this=this;
 
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/projectBypName",
+                        url:"http://localhost:8082/projectPlan/projectBypName",
                         async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                         data:_this.params,
                         type:"POST",
                         dataType:"JSON",
                         success:function(res){
                             if (res.code==200){
-                                _this.$message.success(res.msg);
 
                                 _this.listMessage=_this.sjzh(res.data);
                             };
@@ -339,14 +373,13 @@
                 timeChange:function(){
                     var _this=this;
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/projectBypName",
+                        url:"http://localhost:8082/projectPlan/projectBypName",
                         async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                         data:_this.params,
                         type:"POST",
                         dataType:"JSON",
                         success:function(res){
                             if (res.code==200){
-                                _this.$message.success(res.msg);
 
                                 _this.listMessage=_this.sjzh(res.data);
                             };
@@ -385,15 +418,17 @@
                 },
 
                 //获取列表信息
-                getListMessage:function(code){
+                getListMessage:function(){
                     var _this=this;
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/listAll",
-                        data:{'authCode':code},
+                        url:"http://localhost:8082/projectPlan/listAll",
+                        //data:{'authCode':code},
+                        data:{},
                         type:"POST",
                         dataType:"json",
                         success:function(res){
-                            _this.listMessage=_this.sjzh(res.data);
+                            _this.listMessage=_this.sjzh(res.projectPlans);
+                            _this.loginUser=res.sysUser;
                         }
                     });
                 },
@@ -401,27 +436,37 @@
                 //点击列表信息
                 listClick:function (items) {
                     var _this=this;
-                    _this.shows=false;
 
-                    if(items.pProjectPhaseId=="需求分析"){
-                        items.pProjectPhaseId="1";
-                    }else if(items.pProjectPhaseId=="数据处理"){
-                        items.pProjectPhaseId="2";
-                    }else if(items.pProjectPhaseId=="系统开发"){
-                        items.pProjectPhaseId="3";
+                    //权限  设置  点击列表不让下钻
+                    if(_this.loginUser.isAdmin==true||_this.loginUser.isBoss==true||_this.loginUser.isLeader==true){
+                        _this.shows=false;
+
+                        if(items.pProjectPhaseId=="需求分析"){
+                            items.pProjectPhaseId="1";
+                        }else if(items.pProjectPhaseId=="数据处理"){
+                            items.pProjectPhaseId="2";
+                        }else if(items.pProjectPhaseId=="系统开发"){
+                            items.pProjectPhaseId="3";
+                        };
+                        _this.activeName2=items.pProjectPhaseId;
+
+                        _this.pid=items.pId;
+                        _this.pName=items.pName;
+                        _this.getProject(items);
+
+                    }else{
+                        _this.$message({
+                            message:"您没有查看详情的权限",
+                            type:"warning",
+                        });
                     };
-                    _this.activeName2=items.pProjectPhaseId;
-
-                    _this.pid=items.pId;
-                    _this.getProject(items);
                 },
 
-                /*获取项目总体甲基化清单明细*/
+                /*获取项目总体计划清单明细*/
                 getProject:function(params){
                     var _this=this;
-
                     $.ajax({
-                        url:"http://106.13.19.215:8082/projectPlan/projectPlanList",
+                        url:"http://localhost:8082/projectPlan/projectPlanList",
                         data:{
                             pId:params.pId,
                             pProjectPhaseId:params.pProjectPhaseId,
@@ -430,6 +475,7 @@
                         dataType:"json",
                         success:function(res){
                             _this.tableData=res.data;
+                            $(".idbody_title").html(params.pName);
                         }
                     });
                 },
@@ -439,6 +485,7 @@
                     var params={
                         pId:_this.pid,
                         pProjectPhaseId:data.name,
+                        pName:_this.pName
                     };
                     console.log(params)
                     _this.getProject(params);

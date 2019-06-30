@@ -7,7 +7,6 @@ import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.util.DetialDayDate;
-//import com.gedi.projectmanagement.util.TestTime;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.junit.Test;
@@ -31,8 +30,8 @@ public class ProjectManagementApplicationTests {
     @Autowired
     private WeekReportService weekReportService;
 
-//    @Autowired
-//    private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     public void contextLoads() {
