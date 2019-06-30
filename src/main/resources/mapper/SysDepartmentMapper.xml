@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gedi.projectmanagement.dao.system.SysDepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.system.SysDepartment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="create_dept_group" jdbcType="BIT" property="createDeptGroup" />
+    <result column="auto_add_user" jdbcType="BIT" property="autoAddUser" />
+    <result column="dept_hiding" jdbcType="BIT" property="deptHiding" />
+    <result column="outer_dept" jdbcType="BIT" property="outerDept" />
+    <result column="org_dept_owner" jdbcType="VARCHAR" property="orgDeptOwner" />
+    <result column="source_identifier" jdbcType="VARCHAR" property="sourceIdentifier" />
+  </resultMap>
+
+  <select id="queryBySource" resultMap="BaseResultMap">
+    select * from sys_department
+    where department_id = #{departmentId}
+  </select>
+
+
+</mapper>

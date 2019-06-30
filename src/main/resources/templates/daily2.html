@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>钉钉e应用-日报</title>
+    <script src="./js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./element_ui/iconfont/iconfont.css">
+    <script src="./element_ui/vue.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./element_ui/vuex.js" type="text/javascript"></script>
+    <script src="./element_ui/store.js" type="text/javascript"></script>
+    <script src="./element_ui/vue-resource.js" type="text/javascript"></script>
+   <!-- <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>-->
+    <script src="./element_ui/vue-router.js" type="text/javascript"></script>
+     <style>
+        html {
+            font-size: 625%; /*100 ÷ 16 × 100% = 625%*/
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            font-size: 0.12rem;
+        }
+
+        .daily-title{
+            text-align: center;
+            padding: 0.06rem;
+            background: #e9ebed;
+        }
+        .dailyContent{
+            overflow: auto;
+            width: 96%;
+            margin: 0 auto;
+            position: absolute;
+            top:0.41rem;
+            bottom: 0.45rem;
+            left: 0;
+            right: 0;
+        }
+
+         .dailyList-title{
+            display: block;
+            font-weight: bold;
+            line-height: 0.24rem;
+        }
+        .el-input{
+            font-size: 0.12rem;
+        }
+        .el-input__inner{
+            border-radius: 2px;
+        }
+        .xiangxi{
+            margin-top: 0.06rem;
+            display: flex;
+            align-items: baseline;
+        }
+        .xiangxi,.textareaText{
+            color: darkolivegreen;
+        }
+        .xiangxi .el-input{
+            width: 0.25rem !important;
+        }
+        .xiangxi .el-input__inner{
+            height: 0.2rem !important;
+            line-height: 0.2rem !important;
+            padding: 0 !important;
+            text-align: center;
+        }
+        .textareaText{
+            margin-top:0.06rem;
+        }
+
+        /*日志接收人*/
+        .js_box{
+            width: 100%;
+            background: whitesmoke;
+            padding: 0.1rem 0 0 0;
+            margin-top: 0.1rem;
+        }
+        .js_box_content{
+            width: 96%;
+            height: 0.4rem;
+            margin: 0 auto;
+            background: white;
+            display: flex;
+            align-content: center;
+            justify-content: space-between;
+            padding:0 3%;
+        }
+        .js_box_content>span{
+            line-height: 0.4rem;
+        }
+        .js_box_content>span:nth-child(1){
+            font-weight: bold;
+        }
+        .js_box_content>span:nth-child(2){
+            cursor:pointer;
+        }
+        /*弹出框样式修改*/
+        .el-dialog__header,.el-dialog__body{
+            padding:0.1rem 4%;
+        }
+        .el-dialog__title{
+            font-size:14px;
+        }
+        .el-dialog__body{
+            padding:0.1rem 2%;
+            font-size:12px;
+        }
+        .el-dialog{
+            width: 92%;
+            margin:10px auto;
+            -webkit-box-shadow:0 1px 3px rgba(0,0,0,0);
+        }
+        .js_box ul{
+            overflow: hidden;
+            background: white;
+            padding: 0.03rem 0.1rem;
+        }
+        .js_box li{
+            float:left;
+            margin-left: 0.02rem;
+        }
+        .js_box li>div{
+            width: 0.4rem;
+            height:0.4rem;
+            text-align: center;
+            line-height: 0.4rem;
+            font-size: 0.14rem;
+            background:rgba(0,0,0,0.5);
+            border-radius: 50%;
+            color: white;
+        }
+
+        /*提交按钮*/
+        .submits{
+            cursor:pointer;
+            z-index: 100;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width:100%;
+            padding: 0.06rem;
+            text-align: center;
+            line-height: 0.3rem;
+            font-size: 0.12rem;
+            background:#e9ebed;
+        }
+    </style>
+</head>
+<body>
+    <div id="idbody">
+        <div class="daily-title">日报</div>
+        <div style="line-height: 0.6rem;width: 100%;text-align: center;" v-if="dailyList.length<=0?true:false">暂无数据</div>
+        <div class="dailyContent" v-else-if="dailyList.length>0?true:false">
+            <!--日报完成度没有达到100%的列表-->
+            <div class="daily">
+                <ul class="dailyList">
+                    <li v-for="(items,index) in dailyList">
+                        <!--日报列表标题-->
+                        <span class="dailyList-title" v-text="index+1+'、'+items.w_work_report"></span>
+                        <el-row class="xiangxi">
+                            <el-col :span="16" :push="1">
+                                <span>项目名称：</span>
+                                <span v-text="items.p_name"></span>
+                            </el-col>
+                            <el-col :span="7">
+                                <div>
+                                    <span>完成进度：</span>
+                                    <el-input :disabled="items.w_status==3?true:false" class="wcjd" @change="changeWcjd" v-model="items.r_finish"></el-input>%
+                                </div>
+                                <div style="margin-top: 0.03rem;" v-if="items.w_status==3?false:true">
+                                    <span>完成工时：</span>
+                                    <el-input v-model="items.r_gongshi" class="wcgs" @change="changeWcgs"></el-input>
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <el-row class="textareaText" v-if="items.w_status==3?false:true">
+                            <el-col :span="24">
+                                <el-input
+                                        type="textarea"
+                                        @change="changeQkms"
+                                        :autosize="{ minRows: 4, maxRows: 6}"
+                                        placeholder="请输入完成情况描述"
+                                        v-model="items.descText">
+                                </el-input>
+                            </el-col>
+                        </el-row>
+                    </li>
+                </ul>
+            </div>
+
+            <!--选择日志接收人-->
+            <div class="js_box">
+                <div class="js_box_content">
+                    <span>日志接收人</span>
+                    <span @click="add">添加</span>
+                </div>
+                <ul>
+                    <li v-for="(items,index) in zhanshi">
+                        <div v-text="items"></div>
+                    </li>
+                </ul>
+            </div>
+
+            <el-dialog
+                    title="新增日志接收人"
+                    :visible.sync="dialogVisible"
+                    width="100%">
+                <div>
+                    <el-checkbox-group v-model="checkList">
+                        <el-checkbox v-for="(item,index) in userList" :label="item.u_name" :key="item.user_id" :value="item.user_id" @change="checkboxChange"></el-checkbox>
+                    </el-checkbox-group>
+                </div>
+
+                <span slot="footer" class="dialog-footer">
+                  <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+                  <el-button size="small" type="primary" @click="trueEvent">确 定</el-button>
+                </span>
+            </el-dialog>
+        </div>
+        <div class="submits" :style="{color:isClickBtnColor}" @click="submit">提交</div>
+    </div>
+	
+    <script>
+        var curWwwPath=window.document.location.href;
+        var pathName=window.document.location.pathname;
+        var pos=curWwwPath.indexOf(pathName);
+        var localhostPaht=curWwwPath.substring(0,pos);
+        var myHome = new Vue({
+           el:"#idbody",
+            data:{
+                //第一次的完成进度
+                wcjdValue:[],
+
+                dialogVisible:false,
+                //日报列表信息
+                dailyList:[],
+                //接收人数据
+                userList:[],
+
+                zhanshi:[],
+                checkList:[],//选中接收人
+
+                //提交按钮颜色
+                isClickBtnColor:"#000000",
+
+                dubClick:1,
+            },
+            mounted:function(){
+                var _this=this;
+                _this.getDailyList(null);
+               //_this.getDingDing();
+            },
+            methods:{
+               //将绑定的点击保存按钮  恢复默认值
+                changeWcgs:function(){
+                    var _this=this;
+                    _this.dubClick=1;
+                },
+                changeWcjd:function(){
+                    var _this=this;
+                    _this.dubClick=1;
+                },
+                changeQkms:function(){
+                    var _this=this;
+                    _this.dubClick=1;
+                },
+               //获取有关钉钉需要的值
+                getDingDing:function () {
+                    var _this=this;
+                    $.ajax({
+                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
+                        type:"GET",
+                        data:{},
+                        dataType:"json",
+                        success:function(res){
+                            _this.getCode(res);
+                        }
+                    });
+                },
+
+                //获取临时授权码,
+                getCode:function (_config) {
+                    var _this=this;
+                    dd.ready(function() {
+                        dd.runtime.permission.requestAuthCode({
+                            corpId:_config.corpId, // 企业id
+                            onSuccess: function (info) {
+                                _this.code=info.code;
+                                _this.getDailyList(info.code);//回显保存的数据
+                            },
+                            onFail : function(err) {
+                                alert('fail: ' + JSON.stringify(err));
+                            }
+                        });
+                    });
+                },
+
+                checkboxChange:function(){
+                    var _this=this;
+                },
+
+                 //获取日报列表信息函数
+                getDailyList:function(code){
+                    var _this=this;
+                    $.ajax({
+                        url:"http://localhost:8082/journal/list",
+                        type:"POST",
+                        dataType:"json",
+                        data:{'authCode':code},
+                        // data:{},
+                        success:function(res){
+                            if(res.code == 200){
+                                for(var i=0;i<res.data.result.length;i++){
+                                    var items=res.data.result[i];
+                                    items.r_gongshi="";
+                                    items.descText="";
+                                    //文本域是否禁用
+                                    /*items.disableds=false;*/
+
+                                };
+                                _this.dailyList=res.data.result;
+                                //接收人
+                                _this.userList=res.data.userList;
+                            };
+                        }
+                    });
+                },
+
+                //获取接收人数据
+                getPerson:function(){
+                    var _this=this;
+
+                },
+
+              //点击新增日志接收人
+                add:function () {
+                    var _this=this;
+                    _this.dialogVisible=true;
+                },
+
+                //弹出框确定按钮
+                trueEvent:function () {
+                    var _this=this;
+                    _this.dubClick=1;
+                    _this.zhanshi=_this.checkList;
+                    _this.dialogVisible=false;
+                },
+
+               //提交按钮
+                submit:function(){
+                    var _this=this;
+                    var flags=false;
+                    //最终提交的数据
+                    var oldArray=[];
+                    var endArray=[];
+                    var allGongShi=0;
+
+                    $.ajax({
+                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
+                        type:"GET",
+                        data:{},
+                        dataType:"json",
+                        success:function(_config){
+
+
+                            $.ajax({
+                                url:"http://localhost:8082/journal/list",
+                                type:"POST",
+                                dataType:"json",
+                                //data:{},
+                                data:{'authCode':null},
+                                success:function(res){
+                                    if(res.code == 200){
+                                        //得到旧的数据
+                                        var oldDailyList=[];
+                                        oldDailyList=res.data.result;
+                                        //得到新的数据
+                                        for(var i=0;i<_this.dailyList.length;i++){
+                                            var items=_this.dailyList[i];
+                                            if(items.w_status!=3){
+                                                if(items.r_finish!=""&&items.r_gongshi!=""&&items.descText!=""){
+                                                    endArray.push(items);
+                                                }else if(items.r_gongshi==""&&items.descText==""){
+                                                    endArray=endArray;
+                                                };
+                                            };
+                                        };
+                                        console.log(endArray,oldDailyList)
+                                        if(endArray.length<=0){
+                                            _this.$message({
+                                                message:"请将其中一条数据输入完整",
+                                                type:"error",
+                                            });
+                                        }else{
+                                            //得到原始数据
+                                            console.log(endArray,oldDailyList)
+                                            for(var i=0;i<endArray.length;i++){
+                                                var itemss=endArray[i];
+                                                allGongShi+=Number(itemss.r_gongshi);
+                                                for(var j=0;j<oldDailyList.length;j++){
+                                                    var item=oldDailyList[j];
+                                                    if(item.w_id==itemss.w_id){
+                                                        oldArray.push(item.r_finish);
+                                                    };
+                                                };
+                                            };
+                                            console.log(allGongShi,oldArray)
+
+                                            for(var j=0;j<endArray.length;j++){
+                                                var itemss=endArray[j];
+
+                                                var re =  /^[1-9]\d*$/;
+                                                var re =  /^[1-9]\d*$/;
+                                                if (!re.test(itemss.r_finish)) {
+                                                    _this.$message({
+                                                        message:"项目的完成进度请输入正整数",
+                                                        type:"error",
+                                                    });
+                                                    flags=false;
+                                                    return;
+                                                }else if (Number(itemss.r_finish)>100||Number(itemss.r_finish)<Number(oldArray[j])){
+                                                    _this.$message({
+                                                        message:"项目的完成进度不能超过100并且不能小于原始数据",
+                                                        type:"error",
+                                                    });
+                                                    flags=false;
+                                                    return;
+                                                }else if (!re.test(Number(itemss.r_gongshi))) {
+                                                    _this.$message({
+                                                        message:"请正确的输入项目工时",
+                                                        type:"error",
+                                                    });
+                                                    flags=false;
+                                                    return;
+                                                }else if(allGongShi>8){
+                                                    _this.$message({
+                                                        message:"输入的总工时数不能大于8",
+                                                        type:"error",
+                                                    });
+                                                    flags=false;
+                                                    return;
+                                                }else{
+                                                    flags=true;
+
+                                                };
+                                            };
+                                        };
+
+                                        if(flags==true){
+                                            if(_this.checkList.length<=0){
+                                                _this.$message({
+                                                    message:"请选择日志接收人",
+                                                    type:"error",
+                                                });
+
+                                            }else{
+                                                if(_this.dubClick==1){
+                                                    _this.dubClick=2;
+                                                    console.log(_this.dubClick)
+                                                    //循环重至接收人
+                                                    var newArray=[];
+                                                    for(var i=0;i<_this.checkList.length;i++){
+                                                        for(var j=0;j<_this.userList.length;j++){
+                                                            if(_this.checkList[i]==_this.userList[j].u_name){
+                                                                newArray.push(_this.userList[j].user_id);
+                                                            };
+                                                        };
+                                                    };
+                                                    //转化成字符串
+                                                    newArray=newArray.join(',');//接收人的id
+
+                                                    for(var i=0;i<_this.dailyList.length;i++){
+                                                        var items=_this.dailyList[i];
+                                                        items.deliver=newArray;
+                                                    };
+                                                    $.ajax({
+                                                        url:"http://localhost:8082/journal/save",
+                                                        type:"post",
+                                                        cache:false,
+                                                        contentType:"application/json; charset=utf-8",
+                                                        dataType:"json",
+                                                        async:false,
+                                                        data:JSON.stringify({para: _this.dailyList}),
+                                                        success:function(res){
+                                                            if(res.code == 200){
+                                                                _this.$message({
+                                                                    message:res.msg,
+                                                                    type:"success",
+                                                                });
+                                                            };
+                                                        }
+                                                    });
+
+                                                }else{
+                                                    console.log(_this.dubClick,"ddddddd")
+                                                    _this.$message({
+                                                        message:"请勿多次保存",
+                                                        type:"warning",
+                                                    });
+                                                };
+                                            };
+
+                                        };
+
+                                    };
+                                }
+                            });
+                        }
+                    });
+
+            },
+        },
+        updated:function(){
+            var _this=this;
+        },
+    });
+    </script>
+</body>
+</html>

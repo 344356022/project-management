@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gedi.projectmanagement.dao.system.SysUserMapper" >
+  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.system.SysUser" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="union_id" property="unionId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="work_place" property="workPlace" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="org_email" property="orgEmail" jdbcType="VARCHAR" />
+    <result column="active" property="active" jdbcType="BIT" />
+    <result column="is_admin" property="isAdmin" jdbcType="BIT" />
+    <result column="is_boss" property="isBoss" jdbcType="BIT" />
+    <result column="is_hide" property="isHide" jdbcType="BIT" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="acatar" property="acatar" jdbcType="VARCHAR" />
+    <result column="hired_date" property="hiredDate" jdbcType="TIMESTAMP" />
+    <result column="job_number" property="jobNumber" jdbcType="VARCHAR" />
+    <result column="is_leader" property="isLeader" jdbcType="BIT" />
+    <result column="state_code" property="stateCode" jdbcType="VARCHAR" />
+    <result column="sys_level" property="sysLevel" jdbcType="INTEGER" />
+  </resultMap>
+
+
+
+
+</mapper>

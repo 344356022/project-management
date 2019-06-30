@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gedi.projectmanagement.dao.system.SysDepartmentManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.gedi.projectmanagement.model.system.SysDepartmentManager" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="dm_id" property="dmId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="department_id" property="departmentId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <delete id="deleteByDepartmentId" parameterType="java.lang.String">
+    delete from sys_department_manager where department_id = #{departmentId}
+  </delete>
+
+
+</mapper>
