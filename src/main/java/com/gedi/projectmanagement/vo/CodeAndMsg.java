@@ -4,6 +4,7 @@ public class CodeAndMsg {
     private int code;
     private String msg;
     private Boolean result; //true 成功, false 失败
+    private Object data;
 
     public int getCode() {
         return code;
@@ -29,11 +30,6 @@ public class CodeAndMsg {
         this.data = data;
     }
 
-    private Object data;
-
-    public CodeAndMsg() {
-    }
-
     public Boolean getResult() {
         return result;
     }
@@ -42,6 +38,9 @@ public class CodeAndMsg {
         this.result = result;
     }
 
+    public CodeAndMsg() {
+
+    }
     public CodeAndMsg(int code, String msg, Object data, Boolean result) {
         this.code = code;
         this.msg = msg;
