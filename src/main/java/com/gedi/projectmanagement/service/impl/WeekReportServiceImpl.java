@@ -312,6 +312,7 @@ public class WeekReportServiceImpl implements WeekReportService {
             codeAndMsg.setCode(200);
             codeAndMsg.setMsg("添加成功");
             codeAndMsg.setResult(true);
+            codeAndMsg.setData(weekreport.getwId());
             return codeAndMsg;
         }else{
             codeAndMsg.setResult(false);
