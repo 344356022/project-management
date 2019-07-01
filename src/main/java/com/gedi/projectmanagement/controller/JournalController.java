@@ -9,6 +9,7 @@ import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.apache.commons.lang.StringUtils;
@@ -54,13 +55,13 @@ public class JournalController
 	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
-//		String userId = LoginUtil.login(authCode);
-		String userId = "2544515311778981";
+		String userId = LoginUtil.login(authCode);
 		SysUser user = this.sysUserService.queryUserDetail(userId);
 		String userId1 =user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
 		HttpSession session = request.getSession();
 		session.setAttribute("userj",user.getUserId());
+		session.setAttribute("udepartment",user.getDepartment());
 		resultMap.put("code",300);
 		resultMap.put("msg","未传入用户信息，请重新登录！");
 		HashMap map = new HashMap();
@@ -248,10 +249,7 @@ public class JournalController
 			return resultMap;
 		}*/
 
-		//String userId = LoginUtil.login(authCode);
-		String userId=authCode;
-
-		System.out.println(startTime+"---------开始时间-----------"+"----------------------"+endTime);
+		String userId = LoginUtil.login(authCode);
 		if(isEmpry(userId)){
 			resultMap.put("code",300);
 			resultMap.put("msg","未传入用户信息，请重新登录！");
@@ -365,8 +363,7 @@ public class JournalController
 	@PostMapping("/journal/lastReceiver")
 	@ResponseBody
 	public HashMap lastReceiver(String authCode,String pId,String tsId,  HttpServletRequest request) {
-		//String userId = LoginUtil.login(authCode);
-		String userId="2544515311778981";
+		String userId = LoginUtil.login(authCode);
 		HashMap resultMap = new HashMap();
 		if(isEmpry(userId)  || isEmpry(pId)  || isEmpry(tsId)  ){
 			resultMap.put("code",300);
@@ -442,15 +439,18 @@ public class JournalController
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/journal/addRbOther",method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
-	public HashMap addRbOther(HttpServletRequest request,@RequestBody Weekreport weekreport){
+	public HashMap addRbOther(HttpServletRequest request,String pId,String wActualProportion,String wWorkReport){
 		HashMap resultMap = new HashMap();
-		resultMap.put("code",300);
-		resultMap.put("msg","失败");
-		JSONObject jsonParam = this.getJSONParam(request);//转换传入json的数据
-		Map<String, Object>  map = ( Map<String, Object>)jsonParam;//转换数据类型为map
+		Weekreport weekreport = new Weekreport();
+		weekreport.setpId(pId);
+		weekreport.setwActualProportion(Integer.valueOf(wActualProportion));
+		weekreport.setwWorkReport(wWorkReport);
+
+		//JSONObject jsonParam = this.getJSONParam(request);//转换传入json的数据
+		//Map<String, Object>  map = ( Map<String, Object>)jsonParam;//转换数据类型为map
 		HttpSession session = request.getSession();
-		//String userId = (String)session.getAttribute("userj");
-		String  userId="2544515311778981";
+		String userId = (String)session.getAttribute("userj");
+		String userDepartmet = (String)session.getAttribute("udepartment");
 
 //		获取参数信息完整性
 		if(isEmpry(userId)){
@@ -475,26 +475,27 @@ public class JournalController
 //					String wActualProportion=(String)mp.get("");//实际占比值
 //					String userDepartmet=(String)mp.get("");//部门
 
-
-
 					/*String  pId="f748b7d64cbb40e985d11228dcf3e63a";//项目id
 					String tsId="f7568acae50e43af8ae551485df67d00";//任务子类的id值
 					String useId="2544515311778981";
 					String wActualProportion="10";//实际占比值*/
-					String userDepartmet="[117572421]";//部门
 
 				/*	weekreport.setpId(pId);
 					weekreport.setTsId(tsId);
 					weekreport.setUserId(useId);
 					weekreport.setwActualProportion(Integer.parseInt(wActualProportion));*/
 					weekreport.setUserDepartmet(userDepartmet);
+					weekreport.setUserId(userId);
 					/*weekreport.setwWorkReport("我是活雷锋！");*/
 
 					//调用周报中  增加其他的  接口
 					CodeAndMsg codeAndMsg=weekReportService.dailyAddRecord(weekreport);
-					if(!codeAndMsg.getResult()){
+					if(codeAndMsg.getMsg()=="添加成功"){
 						resultMap.put("code",200);
 						resultMap.put("msg","保存成功");
+					}else {
+						resultMap.put("code",401);
+						resultMap.put("msg","保存失败");
 					}
 
 

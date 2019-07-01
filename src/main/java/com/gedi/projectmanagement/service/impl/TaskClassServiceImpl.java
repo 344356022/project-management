@@ -4,6 +4,7 @@ import com.gedi.projectmanagement.dao.*;
 import com.gedi.projectmanagement.model.ActionItem;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectUserMedium;
+import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.TaskClassService;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +52,13 @@ public class TaskClassServiceImpl implements TaskClassService {
         List<ProjectUserMedium> projectUserMediumList = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         ProjectPlan projectPlan = new ProjectPlan();
-        /*HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");*/
+        HttpSession session = request.getSession();
+        SysUser user = (SysUser) session.getAttribute("user");
 
         for (ActionItem actionItem : actionItems) {
             actionItem.setaId(UUIDUtil.getUUID2());
-            //actionItem.setCreater(user.getuName());
-            actionItem.setCreater("张帅");
+            actionItem.setCreater(user.getName());
+            //actionItem.setCreater("张帅");
             ProjectUserMedium userMedium = new ProjectUserMedium();
             userMedium.setId(UUIDUtil.getUUID2());
             userMedium.setaId(actionItem.getaId());

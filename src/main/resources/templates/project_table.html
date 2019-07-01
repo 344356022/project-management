@@ -566,8 +566,8 @@
         },
         mounted: function () {
             var _this = this;
-            //_this.getDingDing();
-            _this.getListMessage();
+            _this.getDingDing();
+            //_this.getListMessage();
         },
         methods: {
             //弹出框确定事件
@@ -579,7 +579,7 @@
                         if(_this.jiXianClick1==1){
                             _this.jiXianClick1=2;
                             $.ajax({
-                                url: "http://localhost:8082/MaintenanceProject/addProject",
+                                url: "http://106.13.24.63:8082/MaintenanceProject/addProject",
                                 async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                                 data: JSON.stringify({
                                     pId: _this.forms.pId,
@@ -629,11 +629,11 @@
 
             },
 
-           /*//获取有关钉钉需要的值
+           //获取有关钉钉需要的值
             getDingDing: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/MaintenanceProject/queryEmterpriseMesg",
+                    url: "http://106.13.24.63:8082/MaintenanceProject/queryEmterpriseMesg",
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -659,14 +659,14 @@
                     });
                 });
 
-            },*/
+            },
 
             //查询
             //获取查询的数据
             getSearchData: function (bool) {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/projectPlan/projectBypName",
+                    url: "http://106.13.24.63:8082/projectPlan/projectBypName",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.params,
                     type: "POST",
@@ -725,12 +725,12 @@
             },
 
             //获取列表信息
-            getListMessage: function () {
+            getListMessage: function (code) {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/projectPlan/listAll",
-                    //data: {'authCode':code},
-                    data: {},
+                    url: "http://106.13.24.63:8082/projectPlan/listAll",
+                    data: {'authCode':code},
+                    //data: {},
                     type: "POST",
                     dataType: "json",
                     success: function (res) {
@@ -745,8 +745,8 @@
 
                 var _this = this;
                 $.ajax({
-                    // url: "http://localhost:8082/user/selectAllUser",
-                    url:"http://localhost:8082/sys/user/selectUserByTabFlag",
+                    // url: "http://106.13.24.63:8082/user/selectAllUser",
+                    url:"http://106.13.24.63:8082/sys/user/selectUserByTabFlag",
                     data: {pProjectPhaseId:_this.activeName2},
                     type: "GET",
                     dataType: "json",
@@ -782,7 +782,7 @@
             getProject: function (params) {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/projectPlan/projectPlanList",
+                    url: "http://106.13.24.63:8082/projectPlan/projectPlanList",
                     data: {
                         pId: params.pId,
                         pProjectPhaseId: params.pProjectPhaseId,
@@ -981,9 +981,9 @@
                         };
                         var urls = "";
                         if (_this.showEditOrSubmit == 1) {
-                            urls = "http://localhost:8082/MaintenanceProject/addProjectList";
+                            urls = "http://106.13.24.63:8082/MaintenanceProject/addProjectList";
                         } else {
-                            urls = "http://localhost:8082/actionItem/updateActionItemList";
+                            urls = "http://106.13.24.63:8082/actionItem/updateActionItemList";
                         }
                         ;
 

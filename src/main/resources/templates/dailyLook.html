@@ -310,46 +310,48 @@
         },
         mounted:function(){
             var _this=this;
-            // _this.getDingDing();
+            _this.getDingDing();
 
-            _this.getDailyList();
+            //_this.getDailyList();
         },
         methods: {
             //获取有关钉钉需要的值
-            // getDingDing:function () {
-            //     var _this=this;
-            //     $.ajax({
-            //         url:"localhost:8082/journal/queryEmterpriseMesg",
-            //         type:"GET",
-            //         data:{},
-            //         dataType:"json",
-            //         success:function(res){
-            //             _this.getCode(res);
-            //         }
-            //     });
-            // },
-            //
-            // //获取临时授权码,
-            // getCode:function (_config) {
-            //     var _this=this;
-            //     dd.ready(function() {
-            //         dd.runtime.permission.requestAuthCode({
-            //             corpId:_config.corpId, // 企业id
-            //             onSuccess: function (info) {
-            //                 console.log(info)//临时授权码
-            //             },
-            //             onFail : function(err) {
-            //                 alert('fail: ' + JSON.stringify(err));
-            //             }
-            //         });
-            //     });
-            // },
+            getDingDing:function () {
+                var _this=this;
+                $.ajax({
+                    url:"http://106.13.24.63:8082/journal/queryEmterpriseMesg",
+                    type:"GET",
+                    data:{},
+                    dataType:"json",
+                    success:function(res){
+                        _this.getCode(res);
+                    }
+                });
+            },
+
+            //获取临时授权码,
+            getCode:function (_config) {
+                var _this=this;
+                dd.ready(function() {
+                    dd.runtime.permission.requestAuthCode({
+                        corpId:_config.corpId, // 企业id
+                        onSuccess: function (info) {
+                            console.log(info)//临时授权码
+                            _this.getDailyList(info.code);
+                        },
+                        onFail : function(err) {
+                            alert('fail: ' + JSON.stringify(err));
+                        }
+                    });
+                });
+            },
 
             //获取日报列表详情信息
             getDailyList:function (params) {
                 var _this=this;
+                _this.searchParam.authCode=params;
                 $.ajax({
-                    url: "http://localhost:8082/journal/history",
+                    url: "http://106.13.24.63:8082/journal/history",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.searchParam,
                     type: "POST",
@@ -394,7 +396,7 @@
             //点击radio查询
             radioClick:function(){
                 var _this=this;
-                _this.getDailyList();
+                _this.getDingDing();
             },
             //点击筛选
             shaiXuan:function(){

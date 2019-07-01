@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.config.AuthHelper;
+import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.util.DetialDayDate;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.util.TimeChange;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
@@ -50,15 +52,14 @@ public class WeekReportController {
 
         String timeStart = TimeChange.getTime(wStarTime);
         String timeEnd = TimeChange.getTime(wEndTime);
-        System.out.println(timeStart+"-----asdfasdfasdfasdf-----"+timeEnd);
         CodeAndMsg codeAndMsg=new CodeAndMsg();
-        /*String userId = LoginUtil.login(authCode);
+        String userId = LoginUtil.login(authCode);
         SysUser sysUser = sysUserService.queryUserDetail(userId);
-        String department = sysUser.getDepartment();*/
+        String department = sysUser.getDepartment();
         HttpSession session = request.getSession();
-        session.setAttribute("department","[117572421]");
-        if(weekReportService.selectWeekReportDetial("[117572421]",timeStart,timeEnd)!=null){
-            return weekReportService.selectWeekReportDetial("[117572421]",timeStart,timeEnd);
+        session.setAttribute("department",department);
+        if(sysUser!=null){
+            return weekReportService.selectWeekReportDetial(department,timeStart,timeEnd);
         }else{
             codeAndMsg.setResult(false);
             codeAndMsg.setCode(200);
@@ -81,7 +82,7 @@ public class WeekReportController {
             JSONObject jsonObject = JSON.parseObject(weekreports);
             weekreports = jsonObject.getString("weekreports");
             List<WeekRportInfo> weekreportse = JSONArray.parseArray(weekreports, WeekRportInfo.class);
-             msg = this.addWeekReport(weekreportse);
+            msg = this.addWeekReport(weekreportse);
         }
         return msg;
 

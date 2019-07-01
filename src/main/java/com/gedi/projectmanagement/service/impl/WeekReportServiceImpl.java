@@ -95,6 +95,14 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreports1.add(weekreport1);
                  dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
+                    List<String> tweleveDayDate1 = DetialDayDate.getTweleveDayDate();
+                    for (String s : tweleveDayDate1) {
+                        String substring = s.substring(8,10);
+                        if(substring.equals(recordTime.getName())){
+                            String substring1 = s.substring(5, 10);
+                            recordTime.setName(substring1);
+                        }
+                    }
                     recordTime.setTimeId(UUIDUtil.getUUID2());
                     recordTime.setwId(weekreport1.getwId());
                 }
@@ -121,6 +129,14 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreports1.add(weekreport1);
                 dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
+                    List<String> tweleveDayDate1 = DetialDayDate.getTweleveDayDate();
+                    for (String s : tweleveDayDate1) {
+                        String substring = s.substring(8,10);
+                        if(substring.equals(recordTime.getName())){
+                            String substring1 = s.substring(5, 10);
+                            recordTime.setName(substring1);
+                        }
+                    }
                     recordTime.setTimeId(UUIDUtil.getUUID2());
                     recordTime.setwId(weekreport1.getwId());
                 }
@@ -251,8 +267,6 @@ public class WeekReportServiceImpl implements WeekReportService {
     }
 
 
-
-
     @Override
     public CodeAndMsg deleteWeekReportById(String wId) {
 
@@ -284,6 +298,7 @@ public class WeekReportServiceImpl implements WeekReportService {
             weekreport.setwId(UUIDUtil.getUUID2());
             weekreport.setwStartTime(startTime);
             weekreport.setwEndTime(endTime);
+            weekreport.setwStatus(null);
             String other = weekreport.getwId();
             RecordTime recordTime=new RecordTime();
             recordTime.setTimeId(UUIDUtil.getUUID2());

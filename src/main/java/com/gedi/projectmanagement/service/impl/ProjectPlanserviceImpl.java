@@ -5,6 +5,7 @@ import com.gedi.projectmanagement.model.Journal;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.model.Weekreport;
+import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +62,10 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
         String startTime = projectPlan.getpStartTime();
         String annualTime = startTime.substring(0, 4);
         projectPlan.setAnnualTime(annualTime);
-        /*HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        projectPlan.setCreater(user.getuName());*/
-        projectPlan.setCreater("张帅");
+        HttpSession session = request.getSession();
+        SysUser user = (SysUser) session.getAttribute("user");
+        projectPlan.setCreater(user.getName());
+        //projectPlan.setCreater("张帅");
         projectPlanMapper.addProject(projectPlan);
         return "success";
     }

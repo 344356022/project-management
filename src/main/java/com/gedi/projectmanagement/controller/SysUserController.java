@@ -73,7 +73,7 @@ public class SysUserController {
 
     //手动维护用户信息
     @RequestMapping("/updateUserMessage")
-    public CodeAndMsg updateUserMessage(){
+    public CodeAndMsg updateUserMessage() {
         return sysUserService.updateUserMessage();
     }
 
@@ -90,21 +90,21 @@ public class SysUserController {
     public CodeAndMsg selectUserByDepartment(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        String department = (String)session.getAttribute("department");
+        String department = (String) session.getAttribute("department");
         return sysUserService.selectUserBySign(department);
     }
 
     //根据项目总总计划维护页面 的tab页面    筛选出所对应的所有员工以及ID值
     @GetMapping("selectUserByTabFlag")
-    public CodeAndMsg selectUserByTabFlag(String tabFlag) {
-        String department="";
-        if("1".equals(tabFlag)){//需求分析
-            department="[117443437]";
-        }else if("2" .equals(tabFlag)){//数据处理
-            department="[119455108]";
-        }else if("3".equals(tabFlag)){//系统开发
-            department="[117572421]";
-        }else{
+    public CodeAndMsg selectUserByTabFlag(Integer pProjectPhaseId) {
+        String department = "";
+        if (pProjectPhaseId == 1) {//需求分析
+            department = "[117443437]";
+        } else if (pProjectPhaseId == 2) {//数据处理
+            department = "[119455108]";
+        } else if (pProjectPhaseId == 3) {//系统开发
+            department = "[117572421]";
+        } else {
             return sysUserService.selectAllUser();
         }
         return sysUserService.selectUserBySign(department);

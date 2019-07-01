@@ -8,11 +8,13 @@ import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.system.SysUserService;
+import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +41,12 @@ public class ProjectPlanController {
     @PostMapping("/listAll")
     public Map selectById(String authCode, HttpServletRequest request) {
         Map map = new HashMap();
-        //String userId = LoginUtil.login(authCode);
-        SysUser sysUser = sysUserService.queryUserDetail("0208024548845822");
+        String userId = LoginUtil.login(authCode);
+        SysUser sysUser = sysUserService.queryUserDetail(userId);
         List<ProjectPlan> projectPlans = projectPlanService.selectById();
-        /*HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         session.setAttribute("user", sysUser);
-        session.setAttribute("department", sysUser.getDepartment());*/
+        session.setAttribute("department", sysUser.getDepartment());
         if (sysUser != null) {
             map.put("sysUser", sysUser);
             map.put("projectPlans", projectPlans);

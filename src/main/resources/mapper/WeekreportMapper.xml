@@ -363,7 +363,9 @@
 
 
     <insert id="dailyAddRecord">
-    insert into weekreport (w_id,p_id,ts_id,user_id,w_actual_proportion,user_department,w_work_report) values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet},#{wWorkReport})
+    insert into weekreport
+    (w_id,p_id,ts_id,user_id,w_actual_proportion,user_department,w_work_report,w_start_time,w_end_time,w_status)
+    values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet},#{wWorkReport},#{wStartTime},#{wEndTime},#{wStatus})
   </insert>
 
     <select id="selectBypId" parameterType="String">
