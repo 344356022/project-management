@@ -217,7 +217,7 @@
 
         <!-- 用户 -->
         <if test="userId != null and userId !=''" >
-            AND j.deliver in ( #{userId})
+            AND j.deliver like '%${userId}%'
         </if>
         <!-- 开始时间 -->
         <if test="startTime != null and startTime !=''" >
@@ -253,7 +253,7 @@
 
         <!-- 用户 -->
         <if test="userId != null and userId !=''" >
-            AND (j.deliver in ( #{userId}) or j.user_id in ( #{userId}))
+            AND (j.deliver like  '%${userId}%'  or j.user_id in ( #{userId}))
         </if>
         <!-- 开始时间 -->
         <if test="startTime != null and startTime !=''" >
