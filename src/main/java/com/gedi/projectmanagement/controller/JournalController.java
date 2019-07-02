@@ -80,6 +80,15 @@ public class JournalController
 			map.put("weekDay",mToFday);
 			list = journalService.selectJournalResultList(map);//返回日报列表数据
 			System.err.println("list:"+list);
+			for(int i=0;i<list.size();i++){
+				HashMap<String,Object> item=list.get(i);
+				String ts_id=(String) item.get("ts_id");//获取双周计划里的数据，如果是通过日报中   “其他”反写的数据  ts_id是空的，就不显示该计划，日报需要重新按空的填写
+				if(StringUtils.isEmpty(ts_id)){
+					list.clear();
+					resultMap.put("code",300);
+					resultMap.put("msg","无数据");
+				}
+			}
 			if(list.size() > 0){//大于0表示有数据
 				resultMap.put("code",200);
 				resultMap.put("msg","成功");
