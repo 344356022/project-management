@@ -216,7 +216,7 @@
         AND j.user_id=u.user_id
 
         <!-- 用户 -->
-        <if test="userId != null and userId !=''   and sendUserId==null  and sendUserId==''" >
+        <if test="userId != null and userId !=''" >
             AND j.deliver like '%${userId}%'
         </if>
 
