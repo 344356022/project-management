@@ -18,6 +18,8 @@ public class ProjectPlan {
 
     private Integer pProjectPhaseId; // 项目阶段ID
 
+    private String pProjectPhaseName; // 项目阶段名称
+
     private Integer pProgress; // 项目总体完成进度
 
     private String createTime; // 项目创建时间
@@ -139,6 +141,14 @@ public class ProjectPlan {
 
     public void setAnnualTime(String annualTime) {
         this.annualTime = annualTime;
+    }
+
+    public String getpProjectPhaseName() {
+        return pProjectPhaseName;
+    }
+
+    public void setpProjectPhaseName(String pProjectPhaseName) {
+        this.pProjectPhaseName = pProjectPhaseName;
     }
 
     @Override

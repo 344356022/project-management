@@ -8,7 +8,6 @@ import com.gedi.projectmanagement.model.ProjectPlanList;
 import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.system.SysUserService;
-import com.gedi.projectmanagement.util.LoginUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +40,8 @@ public class ProjectPlanController {
     @PostMapping("/listAll")
     public Map selectById(String authCode, HttpServletRequest request) {
         Map map = new HashMap();
-        String userId = LoginUtil.login(authCode);
-        SysUser sysUser = sysUserService.queryUserDetail(userId);
+        //String userId = LoginUtil.login(authCode);
+        SysUser sysUser = sysUserService.queryUserDetail("0208024548845822");
         List<ProjectPlan> projectPlans = projectPlanService.selectById();
         HttpSession session = request.getSession();
         session.setAttribute("user", sysUser);
@@ -171,24 +170,17 @@ public class ProjectPlanController {
     /**
      * 根据pId修改项目总计划
      *
-     * @param pName,pStartTime,pEndTime,pProgress,pId
+     * @param projectPlan
      * @return
      */
     @PostMapping(value = "/updateProjectBypId")
-    public CodeAndMsg updateProjectBypId(String pId, String pName, String pStartTime, String pEndTime,
-                                         Integer pProgress) {
+    public CodeAndMsg updateProjectBypId(@RequestBody ProjectPlan projectPlan) {
         CodeAndMsg msg = new CodeAndMsg();
-        if (null == pId || "" == pId) {
+        if (null == projectPlan.getpId() || "" == projectPlan.getpId()) {
             msg.setCode(401);
             msg.setMsg("pId参数值为空,修改失败");
             msg.setResult(false);
         } else {
-            ProjectPlan projectPlan = new ProjectPlan();
-            projectPlan.setpId(pId);
-            projectPlan.setpName(pName);
-            projectPlan.setpStartTime(pStartTime);
-            projectPlan.setpEndTime(pEndTime);
-            projectPlan.setpProgress(pProgress);
             Map map = projectPlanService.updateProjectBypId(projectPlan);
             if (map.get("success") == "success") {
                 msg.setCode(200);
