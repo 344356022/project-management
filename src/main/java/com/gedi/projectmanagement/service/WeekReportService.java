@@ -18,7 +18,7 @@ import java.util.Map;
 public interface WeekReportService {
 
     //展示双周计划表得所有具体内容
-    CodeAndMsg selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime);
+    List<Weekreport> selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime);
 
     //批量添加新的WeekReport对象；
     String  addWeekReport(List<WeekRportInfo> weekreports);
