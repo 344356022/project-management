@@ -281,8 +281,8 @@
                             <span v-text="items.p_name"></span>
                         </p>
                         <p style="font-size: 0.1rem;">
-                            工时：<span class="colors">1</span>
-                            进度：<span>10%</span>
+                            工时：<span class="colors"  v-text="items.finish_process"></span>
+                            进度：<span  v-text="items.finish+'%'"></span>
                         </p>
                         <p>
                             <span>填报时间：</span>
