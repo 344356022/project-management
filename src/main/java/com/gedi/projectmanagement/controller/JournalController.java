@@ -56,6 +56,7 @@ public class JournalController
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
 		String userId = LoginUtil.login(authCode);
+		//String userId =authCode;
 		SysUser user = this.sysUserService.queryUserDetail(userId);
 		String userId1 =user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
@@ -91,6 +92,7 @@ public class JournalController
 			//抄送人列表
 			List<HashMap<String,Object>> userList = journalService.selectUserList();
 			map.put("userList",userList);
+
 
 		}
 		resultMap.put("data",map);
@@ -249,6 +251,7 @@ public class JournalController
 			return resultMap;
 		}*/
 
+		//String userId = authCode;
 		String userId = LoginUtil.login(authCode);
 		if(isEmpry(userId)){
 			resultMap.put("code",300);
@@ -289,20 +292,31 @@ public class JournalController
 
 		//2，查询参数第二个   开始时间和结束时间
 		if(!StringUtils.isEmpty(startTime)){
-			String time = getTime(startTime);
+			String time = getTime(startTime)+" 00:00:00";
 			map.put("startTime",time);
 		}
 		if(!StringUtils.isEmpty(endTime)){
-			String time = getTime(endTime);
+			String time = getTime(endTime) +" 23:59:59";
 			map.put("endTime",time);
 		}
 
 		//3,查询参数第三个    发送人
+		//获取发送人的id    根据name获取对应的id
+
+
 		map.put("sendUserId",sendUserId);
 		//4,查询参数第四个    1-全部 2-我发出的 3-我的团队
 		map.put("type",type);
 
 		map.put("user",user);
+
+		//判断是否是普通员工筛选都得
+		if(!StringUtils.isEmpty(sendUserId) &&  !user.getIsAdmin() && !user.getIsBoss() && !user.getIsLeader()){
+			resultMap.put("code",300);
+			resultMap.put("msg","无数据");
+			return resultMap;
+		}
+
 
 		//调用服务 查询数据
 		list = journalService.selectJournalHistory(map,Integer.parseInt(pageSize),Integer.parseInt(pageNum));//返回日报列表数据
@@ -340,12 +354,18 @@ public class JournalController
 		//分页
 		com.github.pagehelper.PageInfo<HashMap<String,Object>> pageInfo=new com.github.pagehelper.PageInfo<HashMap<String,Object>>(list);
 
+
+		//获取筛选下拉框  人员信息
+		CodeAndMsg userCodeAndMsg =this.sysUserService.selectUserBySign(user.getDepartment());
+		List<SysUser> userDepList=(List<SysUser>) userCodeAndMsg.getData();
+
 		resultMap.put("code",200);
 		resultMap.put("msg","成功");
 
 		map.clear();//清空map
 		map.put("result",pageInfo.getList());
 		map.put("user",user);
+		map.put("userDepList",userDepList);
 		//分页数据   已经写好  目前不用，但是以后会用到的
 		//map.put("pageNum",pageInfo.getPageNum());
 		//map.put("pageSize",pageInfo.getPageSize());
@@ -439,74 +459,69 @@ public class JournalController
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/journal/addRbOther",method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
-	public HashMap addRbOther(HttpServletRequest request,String pId,String wActualProportion,String wWorkReport){
-		HashMap resultMap = new HashMap();
-		Weekreport weekreport = new Weekreport();
-		weekreport.setpId(pId);
-		weekreport.setwActualProportion(Integer.valueOf(wActualProportion));
-		weekreport.setwWorkReport(wWorkReport);
+	public HashMap addRbOther(HttpServletRequest request,String pId,String wActualProportion,String wWorkReport
+		,String rGongshi,String descText,String deliver
+	){
 
-		//JSONObject jsonParam = this.getJSONParam(request);//转换传入json的数据
-		//Map<String, Object>  map = ( Map<String, Object>)jsonParam;//转换数据类型为map
+		HashMap resultMap = new HashMap();
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userj");
-		String userDepartmet = (String)session.getAttribute("udepartment");
-
-//		获取参数信息完整性
+		//获取参数信息完整性
 		if(isEmpry(userId)){
 			resultMap.put("code",300);
 			resultMap.put("msg","获取用户信息失败！");
 			return resultMap;
 		}
-//		List<Map<String,Object>> ll = (List<Map<String, Object>>) map.get("para");//转换数据类型
-//		for (Object ob: ll) {
-//			Map mp = (Map) ob;
-//			mp.put("userId",userId);//用户id暂时写死之后从session里取或者前台传递
-//			mp.put("rbId",UUIDUtil.getUUID2());//日报主键UUID
-//		}
-//		try {
-//		int resultNum = journalService.insertJournalList(ll);//批量插入日报
-//			if(resultNum > 0){//大于0表示批量插入成功
-//				for (Object obj: ll) {//再次循环然后调用周报中的改变实际完成进度接口之所以再次循环是为了批量插入完整性
-					//Map mp = (Map) obj;
-//					String  pId=(String)mp.get("");//项目id
-//					String tsId=(String)mp.get("");//任务子类的id值
-//					String useId=(String)mp.get("");
-//					String wActualProportion=(String)mp.get("");//实际占比值
-//					String userDepartmet=(String)mp.get("");//部门
-
-					/*String  pId="f748b7d64cbb40e985d11228dcf3e63a";//项目id
-					String tsId="f7568acae50e43af8ae551485df67d00";//任务子类的id值
-					String useId="2544515311778981";
-					String wActualProportion="10";//实际占比值*/
-
-				/*	weekreport.setpId(pId);
-					weekreport.setTsId(tsId);
-					weekreport.setUserId(useId);
-					weekreport.setwActualProportion(Integer.parseInt(wActualProportion));*/
-					weekreport.setUserDepartmet(userDepartmet);
-					weekreport.setUserId(userId);
-					/*weekreport.setwWorkReport("我是活雷锋！");*/
-
-					//调用周报中  增加其他的  接口
-					CodeAndMsg codeAndMsg=weekReportService.dailyAddRecord(weekreport);
-					if(codeAndMsg.getMsg()=="添加成功"){
-						resultMap.put("code",200);
-						resultMap.put("msg","保存成功");
-					}else {
-						resultMap.put("code",401);
-						resultMap.put("msg","保存失败");
-					}
+		String userDepartmet = (String)session.getAttribute("udepartment");
 
 
-//				}
-//			}else {
-//				resultMap.put("code",300);
-//				resultMap.put("msg","失败");
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		Weekreport weekreport = new Weekreport();
+		weekreport.setpId(pId);
+		weekreport.setwActualProportion(Integer.valueOf(wActualProportion));
+		weekreport.setwWorkReport(wWorkReport);
+		//首先保存双周计划
+		weekreport.setUserDepartmet(userDepartmet);
+		weekreport.setUserId(userId);
+
+		//调用周报中  增加其他的  接口
+		CodeAndMsg codeAndMsg=weekReportService.dailyAddRecord(weekreport);
+		if(!codeAndMsg.getMsg().equals("添加成功")){
+			resultMap.put("code",401);
+			resultMap.put("msg","保存失败");
+			return resultMap;
+		}
+		//拿到保存的双周计划的id
+		String wId=(String) codeAndMsg.getData();
+		if(isEmpry(wId)){
+			resultMap.put("code",300);
+			resultMap.put("msg","提交异常，请重试！");
+			return resultMap;
+		}
+
+		List<Map<String,Object>> ll = new ArrayList<Map<String,Object>>();//转换数据类型
+		Map mp = new HashMap();
+		mp.put("rbId",UUIDUtil.getUUID2());//日报主键UUID
+		mp.put("w_id",wId);
+		mp.put("p_id",pId);
+		mp.put("userId",userId);//用户id暂时写死之后从session里取或者前台传递
+		mp.put("ts_id","");
+		mp.put("deliver",deliver);
+		mp.put("r_finish",wActualProportion);
+		mp.put("r_gongshi",rGongshi);
+		mp.put("descText",descText);
+		ll.add(mp);
+		try {
+			int resultNum = journalService.insertJournalList(ll);//批量插入日报
+			if(resultNum > 0){//大于0表示批量插入成功
+				resultMap.put("code",200);
+				resultMap.put("msg","成功");
+				}else {
+					resultMap.put("code",300);
+					resultMap.put("msg","失败");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+		}
 
 		return resultMap;
 
@@ -540,7 +555,7 @@ public class JournalController
 
 		String c=null;
 		try{
-			 c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
+			 c = new SimpleDateFormat("yyyy-MM-dd").format(date);
 			System.out.println(c);
 		}catch (Exception e){
 			e.printStackTrace();
