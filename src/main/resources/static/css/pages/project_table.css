@@ -7,13 +7,28 @@ html {
     font-size: 0.12rem;
 }
 
-
+.el-message-box__wrapper>.el-message-box{
+    width: 3rem;
+}
 /**/
 .totle_list{
+    position: relative;
     padding: 0.1rem;
     background: #fff;
     overflow: hidden;
     cursor: pointer;
+}
+.methods{
+    position: absolute;
+    right: 0.1rem;
+    top: 0.32rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.icon-shanchu-copy{
+    margin-top: 0.06rem;
 }
 
 .totle_list p{

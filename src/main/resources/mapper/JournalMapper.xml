@@ -288,7 +288,7 @@
 
     </select>
 
-    <select id="selectBypId" parameterType="String">
+    <select id="selectBypId" resultType="com.gedi.projectmanagement.model.Journal" parameterType="String">
         SELECT
         p_id
         FROM journal WHERE p_id = #{pId}

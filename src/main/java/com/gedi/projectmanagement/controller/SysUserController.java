@@ -97,6 +97,13 @@ public class SysUserController {
     //根据项目总总计划维护页面 的tab页面    筛选出所对应的所有员工以及ID值
     @GetMapping("selectUserByTabFlag")
     public CodeAndMsg selectUserByTabFlag(Integer pProjectPhaseId) {
+        CodeAndMsg msg = new CodeAndMsg();
+        if (null == pProjectPhaseId) {
+            msg.setCode(401);
+            msg.setMsg("pProjectPhaseId参数值为空,查询失败");
+            msg.setResult(false);
+            return msg;
+        }
         String department = "";
         if (pProjectPhaseId == 1) {//需求分析
             department = "[117443437]";

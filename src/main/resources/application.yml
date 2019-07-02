@@ -5,14 +5,15 @@ spring:  ## 数据源的配置
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
 
-    username: root
+    # url: jdbc:mysql://94.191.43.232:3306/dingding?useSSL=false&allowMultiQueries=true
     url: jdbc:mysql://localhost:3306/xmgl?useSSL=false&allowMultiQueries=true
+    username: root
     password: 123456
 
     dbcp2:                                          # 进行数据库连接池的配置
       min-idle: 5                                   # 数据库连接池的最小维持连接数    
-      initial-size: 5                               # 初始化提供的连接数
-      max-total: 5                                  # 最大的连接数
+      initial-size: 10                               # 初始化提供的连接数
+      max-total: 20                                  # 最大的连接数
       max-wait-millis: 200                          # 等待连接获取的最大超时时间
   http:
     encoding:
@@ -33,9 +34,19 @@ spring:  ## 数据源的配置
         content:
           enabled: true
           paths: /**
+  jpa:
+    properties:
+      hibernate.hbm2ddl.auto: update
+    show-sql: true
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml         # 默认去src/main/resources 扫描
   type-aliases-package: com.gedi.projectmanagement.model       # 实体类别名
+mapper:
+  mappers:
+    - com.gedi.projectmanagement.base.GeneralMapper
+  not-empty: false
+  identity: MYSQL
 
 #pagehelper分页插件
 pagehelper:
@@ -45,7 +56,7 @@ pagehelper:
   params: count=countSql
   returnPageInfo: check
 
-# mybatis 显示sql
+# logger level
 logging:
   level:
-    com.gedi.projectmanagement.dao: DEBUG
+    com.gedi.projectmanagement: DEBUG

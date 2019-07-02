@@ -368,7 +368,7 @@
     values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet},#{wWorkReport},#{wStartTime},#{wEndTime},#{wStatus})
   </insert>
 
-    <select id="selectBypId" parameterType="String">
+    <select id="selectBypId" resultType="com.gedi.projectmanagement.model.Weekreport" parameterType="String">
         SELECT
         p_id
         FROM weekreport WHERE p_id = #{pId}

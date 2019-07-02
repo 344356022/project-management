@@ -48,6 +48,15 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     @Override
     public List<ProjectPlan> selectById() {
         List<ProjectPlan> projectPlans = projectPlanMapper.selectById();
+        for (ProjectPlan projectPlan : projectPlans) {
+            if (null != projectPlan.getpProjectPhaseId() && projectPlan.getpProjectPhaseId() == 1) {
+                projectPlan.setpProjectPhaseName("需求分析");
+            } else if (null != projectPlan.getpProjectPhaseId() && projectPlan.getpProjectPhaseId() == 2) {
+                projectPlan.setpProjectPhaseName("数据处理");
+            } else if (null != projectPlan.getpProjectPhaseId() && projectPlan.getpProjectPhaseId() == 3) {
+                projectPlan.setpProjectPhaseName("系统开发");
+            }
+        }
         if (projectPlans != null && projectPlans.size() > 0) {
             return projectPlans;
         } else {
@@ -90,7 +99,17 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
      */
     @Override
     public List<ProjectPlan> selectBypName(ProjectPlan projectPlan) {
-        return projectPlanMapper.selectBypName(projectPlan);
+        List<ProjectPlan> projectPlans = projectPlanMapper.selectBypName(projectPlan);
+        for (ProjectPlan plan : projectPlans) {
+            if (null != plan.getpProjectPhaseId() && plan.getpProjectPhaseId() == 1) {
+                plan.setpProjectPhaseName("需求分析");
+            } else if (null != plan.getpProjectPhaseId() && plan.getpProjectPhaseId() == 2) {
+                plan.setpProjectPhaseName("数据处理");
+            } else if (null != plan.getpProjectPhaseId() && plan.getpProjectPhaseId() == 3) {
+                plan.setpProjectPhaseName("系统开发");
+            }
+        }
+        return projectPlans;
     }
 
     /**
