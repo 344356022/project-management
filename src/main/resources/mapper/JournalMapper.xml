@@ -171,7 +171,7 @@
         AND j.user_id=u.user_id
 
         <!-- 用户 -->
-        <if test="userId != null and userId !=''" >
+        <if test="userId != null and userId !=''   and sendUserId==null  and sendUserId==''" >
             AND j.user_id in ( #{userId})
         </if>
         <!-- 开始时间 -->
@@ -216,9 +216,15 @@
         AND j.user_id=u.user_id
 
         <!-- 用户 -->
-        <if test="userId != null and userId !=''" >
+        <if test="userId != null and userId !=''   and sendUserId==null  and sendUserId==''" >
             AND j.deliver like '%${userId}%'
         </if>
+
+        <!-- 发送人 -->
+        <if test="sendUserId != null and sendUserId !=''" >
+            AND j.user_id in ( #{sendUserId})
+        </if>
+
         <!-- 开始时间 -->
         <if test="startTime != null and startTime !=''" >
             AND j.create_time <![CDATA[>=]]> #{startTime}
@@ -235,6 +241,7 @@
         <if test="tsId != null and tsId !=''" >
             AND j.ts_id in ( #{tsId})
         </if>
+        and j.user_id  not in(j.deliver)
         order by create_time DESC
 
     </select>
@@ -252,9 +259,15 @@
         AND j.user_id=u.user_id
 
         <!-- 用户 -->
-        <if test="userId != null and userId !=''" >
+        <if test="userId != null and userId !=''   and sendUserId==null  and sendUserId==''" >
             AND (j.deliver like  '%${userId}%'  or j.user_id in ( #{userId}))
         </if>
+        <!-- 发送人 -->
+        <if test="sendUserId != null and sendUserId !=''" >
+            AND j.user_id in ( #{sendUserId})
+        </if>
+
+
         <!-- 开始时间 -->
         <if test="startTime != null and startTime !=''" >
             AND j.create_time <![CDATA[>=]]> #{startTime}
