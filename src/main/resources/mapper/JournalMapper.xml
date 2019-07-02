@@ -159,7 +159,8 @@
 
     <!-- 个人日报填写列表   展示用-->
     <select id="selectJournalHistory"  parameterType="Journal" resultType="Map">
-        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name
+        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name,j.finish,
+        j.finish_process
         FROM
             journal j,
             weekreport w,
@@ -204,7 +205,8 @@
 
 
     <select id="querySelfTeamDaily"  parameterType="Journal" resultType="Map">
-        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name
+        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name ,j.finish,
+        j.finish_process
         FROM
         journal j,
         weekreport w,
@@ -247,7 +249,8 @@
     </select>
 
     <select id="queryAllDaily"  parameterType="Journal" resultType="Map">
-        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name
+        SELECT j.rb_id id,j.user_id,p.p_name,w.w_work_report,j.finish_content,j.create_time,deliver,u.name,j.finish,
+        j.finish_process
         FROM
         journal j,
         weekreport w,
