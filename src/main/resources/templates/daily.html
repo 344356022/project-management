@@ -378,9 +378,12 @@
                     dataType:"json",
                     data:{},
                     success:function(res){
-                        console.log(res)
                         if(res.code==200){
                             _this.zhanshi=res.data;
+                            for(i in res.data){
+                                _this.checkList.push(res.data[i].user_id);
+                            };
+
                         };
                     }
                 });
@@ -738,7 +741,8 @@
         },
         updated:function(){
             var _this=this;
-            console.log(_this.zhanshi)
+            _this.$nextTick(function(){
+            });
         },
     });
 </script>
