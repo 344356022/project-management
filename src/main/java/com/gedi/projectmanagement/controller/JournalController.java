@@ -91,6 +91,12 @@ public class JournalController
 			map.put("result",list);
 			//抄送人列表
 			List<HashMap<String,Object>> userList = journalService.selectUserList();
+
+			/*HashMap<String,Object>  userHashMap= new HashMap<String,Object>();
+			userHashMap.put("user_id",userId);
+			userHashMap.put("user_name",user.getName());
+			userList.remove(userHashMap);*/
+
 			map.put("userList",userList);
 
 
@@ -225,32 +231,9 @@ public class JournalController
 	@ResponseBody
 	public HashMap history(String authCode,String type,String pageNum,String  pageSize,String startTime,String endTime,String sendUserId,HttpServletRequest request) {
 		HashMap resultMap = new HashMap();
-		/*if (StringUtils.isEmpty(items)) {
-			resultMap.put("code",300);
-			resultMap.put("msg","参数为空！");
-			return resultMap;
-		}
 
-		JSONObject jsonObject1 = JSON.parseObject(items);
-		JSONObject jsonObject=jsonObject1.getJSONObject("items");
-
-		String authCode=jsonObject.getString("authCode");
-		String pageSize=jsonObject.getString("pageSize");
-		String pageNum=jsonObject.getString("pageNum");
-		String startTime=jsonObject.getString("startTime");
-		String endTime=jsonObject.getString("endTime");
-		String sendUserId=jsonObject.getString("sendUserId");
-		String type=jsonObject.getString("type");
-		if(StringUtils.isEmpty(type)){
-			type="1";//1  全部   2，我发送的   3   我的团队
-		}
-
-		if(StringUtils.isEmpty(authCode)){
-			resultMap.put("code",300);
-			resultMap.put("msg","传递的用户为空！");
-			return resultMap;
-		}*/
-
+		HttpSession session2 = request.getSession();
+		String userId2= (String)session2.getAttribute("userj");
 		//String userId = authCode;
 		String userId = LoginUtil.login(authCode);
 		if(isEmpry(userId)){
@@ -310,6 +293,11 @@ public class JournalController
 
 		map.put("user",user);
 
+		//获取筛选下拉框  人员信息
+		CodeAndMsg userCodeAndMsg =this.sysUserService.selectUserBySign(user.getDepartment());
+		List<SysUser> userDepList=(List<SysUser>) userCodeAndMsg.getData();
+		map.put("userDepList",userDepList);
+
 		//判断是否是普通员工筛选都得
 		if(!StringUtils.isEmpty(sendUserId) &&  !user.getIsAdmin() && !user.getIsBoss() && !user.getIsLeader()){
 			resultMap.put("code",300);
@@ -355,9 +343,7 @@ public class JournalController
 		com.github.pagehelper.PageInfo<HashMap<String,Object>> pageInfo=new com.github.pagehelper.PageInfo<HashMap<String,Object>>(list);
 
 
-		//获取筛选下拉框  人员信息
-		CodeAndMsg userCodeAndMsg =this.sysUserService.selectUserBySign(user.getDepartment());
-		List<SysUser> userDepList=(List<SysUser>) userCodeAndMsg.getData();
+
 
 		resultMap.put("code",200);
 		resultMap.put("msg","成功");
@@ -382,10 +368,14 @@ public class JournalController
 	 */
 	@PostMapping("/journal/lastReceiver")
 	@ResponseBody
-	public HashMap lastReceiver(String authCode,String pId,String tsId,  HttpServletRequest request) {
-		String userId = LoginUtil.login(authCode);
+	public HashMap lastReceiver(String authCode, HttpServletRequest request) {
+		//String userId = LoginUtil.login(authCode);
+		//String userId=authCode;
 		HashMap resultMap = new HashMap();
-		if(isEmpry(userId)  || isEmpry(pId)  || isEmpry(tsId)  ){
+		HttpSession session = request.getSession();
+		String userId= (String)session.getAttribute("userj");
+
+		if(isEmpry(userId)  ){
 			resultMap.put("code",300);
 			resultMap.put("msg","传入参数异常，请退出重试！");
 			return resultMap;
@@ -397,25 +387,19 @@ public class JournalController
 			resultMap.put("msg","获取用户信息失败！");
 			return resultMap;
 		}
-		String userId1 =user.getUserId();//获取用户信息
-		if(isEmpry(userId1)){
-			resultMap.put("code",300);
-			resultMap.put("msg","获取用户信息失败！");
-			return resultMap;
-		}
 
-		HttpSession session = request.getSession();
-		session.setAttribute("userj",user.getUserId());
+
+		//HttpSession session = request.getSession();
+		//session.setAttribute("userj",user.getUserId());
 
 		//参数  查询用
 		HashMap map = new HashMap();
 		List<HashMap<String,Object>> list = null;
 
 		//1，查询参数第1个   userid
-		map.put("userId",userId1);
-		//2，查询第2个参数
-		map.put("pId",pId);
-		map.put("tsId",tsId);
+		map.put("userId",userId);
+		map.put("type","2");//只查询自己的
+		map.put("user",user);
 		list = journalService.selectJournalHistory(map,1,1);//返回日报列表数据
 		if(null==list || list.size() <=0){//无数据
 			resultMap.put("code",300);
