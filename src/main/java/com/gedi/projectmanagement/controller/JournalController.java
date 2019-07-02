@@ -55,7 +55,7 @@ public class JournalController
 	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
-		String userId = LoginUtil.login(authCode);
+        String userId = LoginUtil.login(authCode);
 		//String userId =authCode;
 		SysUser user = this.sysUserService.queryUserDetail(userId);
 		String userId1 =user.getUserId();//暂时写死后续会从session获取用户信息
@@ -233,9 +233,9 @@ public class JournalController
 		HashMap resultMap = new HashMap();
 
 		HttpSession session2 = request.getSession();
-		String userId2= (String)session2.getAttribute("userj");
+		String userId= (String)session2.getAttribute("userj");
 		//String userId = authCode;
-		String userId = LoginUtil.login(authCode);
+		//String userId = LoginUtil.login(authCode);
 		if(isEmpry(userId)){
 			resultMap.put("code",300);
 			resultMap.put("msg","未传入用户信息，请重新登录！");
@@ -419,8 +419,9 @@ public class JournalController
 				SysUser userReturn = this.sysUserService.queryUserDetail(deliId);
 				String userName=userReturn.getName();
 				HashMap mapLoc = new HashMap();
-				mapLoc.put("uName",userName);
-				mapLoc.put("uId",deliId);
+				mapLoc.put("acatar",userReturn.getAcatar());
+				mapLoc.put("name",userName);
+				mapLoc.put("user_id",deliId);
 				returnList.add(mapLoc);
 			}
 		}else{
