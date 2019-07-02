@@ -1,6 +1,6 @@
-var IP="106.13.24.63";  //测试：94.191.43.232   正式：
-var isDing=true;
-var ceShiCode='';
+var IP="localhost";  //测试：94.191.43.232   正式：106.13.24.63
+var isDing=false;
+var ceShiCode='025525064321734942';
 
 //获取有关钉钉需要的值
 function  getDingDing() {
