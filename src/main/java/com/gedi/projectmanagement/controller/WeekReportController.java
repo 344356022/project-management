@@ -3,12 +3,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.config.AuthHelper;
-import com.gedi.projectmanagement.model.User;
 import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
-import com.gedi.projectmanagement.service.UserService;
 import com.gedi.projectmanagement.service.WeekReportService;
 import com.gedi.projectmanagement.service.system.SysUserService;
 import com.gedi.projectmanagement.util.DetialDayDate;
@@ -43,8 +41,6 @@ public class WeekReportController {
     @Autowired
     private WeekReportService weekReportService;
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ProjectPlanService projectPlanService;
@@ -143,15 +139,6 @@ public class WeekReportController {
         return weekReportService.updateActual(wId, wActualProportion);
     }
 
-
-    //根据部门以及等级的标识进行查询，分配具体的工作；
-    @GetMapping("selectDepartmentStaff")
-    public CodeAndMsg selectDepartmentStaff(HttpSession session) {
-        String department = (String)session.getAttribute("department");
-
-       // String department="[117572421]";
-        return userService.selectUserBySign(department);
-    }
 
 
     //查询全部任务子类
