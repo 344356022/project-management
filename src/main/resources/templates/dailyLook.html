@@ -121,10 +121,13 @@
         .daily-search-content-right{
             float: left;
             margin-left: 0.2rem;
-            width: 2.8rem;
+            width: 2.2rem;
         }
         .daily-search-content-right p{
             line-height:0.2rem;
+        }
+        .daily-search-content-right p>span:nth-child(2),.colors{
+            color:#606266;
         }
 
         /*弹出框样式*/
@@ -218,7 +221,9 @@
 
         <el-form :model="searchParam">
             <el-form-item label="发送人" prop="sendUserId">
-                <el-input v-model="searchParam.sendUserId"></el-input>
+                <el-select v-model="searchParam.sendUserId">
+                    <el-option v-for="(items,indeex) in userDepList" :key="items.userId" :label="items.name" :value="items.userId"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="开始时间" prop="startTime">
                 <el-date-picker
@@ -267,13 +272,27 @@
                         <span v-text="items.name.substr(0,1)"></span>
                     </div>
                     <div class="daily-search-content-right">
-                        <p v-text="items.p_name"></p>
                         <p>
-                            <span v-text="items.create_time"></span>
-                            <span>日志接受人：<span v-text="items.deliverNames"></span></span>
+                            <strong  v-text="items.name+'的日报'"></strong>
                         </p>
                         <p>
-                            今日完成工作:
+                            <span>项目名称：</span>
+                            <span v-text="items.p_name"></span>
+                        </p>
+                        <p style="font-size: 0.1rem;">
+                            工时：<span class="colors">1</span>
+                            进度：<span>10%</span>
+                        </p>
+                        <p>
+                            <span>填报时间：</span>
+                            <span v-text="items.create_time"></span>
+                        </p>
+                        <p>
+                            <span>日志接受人：</span>
+                            <span v-text="items.deliverNames.substr(0,items.deliverNames.length-1)"></span>
+                        </p>
+                        <p>
+                            <span>今日完成工作：</span>
                             <span v-text="items.finish_content"></span>
                         </p>
                     </div>
@@ -294,7 +313,7 @@
             //筛选弹框dialogVisible
             dialogVisible:false,
             searchParam:{
-                authCode:"2544515311778981",//登录人
+                authCode:"",//登录人
                 type:"1",//全部   我发出的  我的团对
                 startTime:"",//结束时间
                 endTime:"",//结束时间
@@ -307,19 +326,22 @@
             loading:false,
             //日报列表
             dailyList:[],
+
+            //发送人列表
+            userDepList:[],
         },
         mounted:function(){
             var _this=this;
             _this.getDingDing();
 
-            //_this.getDailyList();
+           // _this.getDailyList();
         },
         methods: {
             //获取有关钉钉需要的值
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/journal/queryEmterpriseMesg",
+                    url:"http://94.191.43.232:8082/journal/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -329,7 +351,7 @@
                 });
             },
 
-            //获取临时授权码,
+           //获取临时授权码,
             getCode:function (_config) {
                 var _this=this;
                 dd.ready(function() {
@@ -351,7 +373,7 @@
                 var _this=this;
                 _this.searchParam.authCode=params;
                 $.ajax({
-                    url: "http://106.13.24.63:8082/journal/history",
+                    url: "http://94.191.43.232:8082/journal/history",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.searchParam,
                     type: "POST",
@@ -360,6 +382,7 @@
                         console.log(res);
                         if(res.code==200){
                             _this.dailyList=res.data.result;
+                            _this.userDepList=res.data.userDepList;
                             //ajax  获取信息
                             _this.zwsj=false;
                             _this.dialogVisible=false;
@@ -368,6 +391,7 @@
                             //ajax  获取信息
                             _this.zwsj=true;
                             _this.dialogVisible=false;
+                            _this.userDepList=res.data.userDepList;
                         };
                     }
                 });
@@ -396,13 +420,14 @@
             //点击radio查询
             radioClick:function(){
                 var _this=this;
-                _this.getDingDing();
+                //_this.getDingDing();
+                _this.getDailyList();
             },
             //点击筛选
             shaiXuan:function(){
                 var _this=this;
                 _this.searchParam={
-                    authCode:"2544515311778981",//登录人
+                    authCode:"",//登录人
                     type:_this.searchParam.type,//全部   我发出的  我的团对
                     startTime:"",//结束时间
                     endTime:"",//结束时间
@@ -451,6 +476,7 @@
                 var _this=this;
 
                 _this.getDailyList();
+                _this.searchParam.sendUserId="";
                 _this.searchParam.startTime="";
                 _this.searchParam.endTime="";
 
