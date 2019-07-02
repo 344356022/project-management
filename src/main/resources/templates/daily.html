@@ -201,7 +201,7 @@
     <div class="daily-title">
         <i class="iconfont icon-lishijilu" @click="historyMethods" title="历史日报"></i>
         <div class="daily-title-name">写日报</div>
-        <i class="iconfont icon-rizhibaobiao" title="日志报表"></i>
+        <i class="iconfont icon-rizhibaobiao" title="日报报表"></i>
     </div>
     <div class="dailyContent">
         <!--日报完成度没有达到100%的列表-->
@@ -287,7 +287,7 @@
         <!--选择日志接收人-->
         <div class="js_box">
             <div class="js_box_content">
-                <span>日志接收人</span>
+                <span>日报接收人</span>
                 <span @click="add">添加</span>
             </div>
             <ul>
@@ -301,7 +301,7 @@
         </div>
 
         <el-dialog
-                title="新增日志接收人"
+                title="新增日报接收人"
                 :visible.sync="dialogVisible"
                 width="100%">
             <div>
@@ -378,8 +378,10 @@
                     dataType:"json",
                     data:{},
                     success:function(res){
-
-
+                        console.log(res)
+                        if(res.code==200){
+                            _this.zhanshi=res.data;
+                        };
                     }
                 });
             },
@@ -539,7 +541,7 @@
                     }else{
                         if(_this.checkList.length<=0){
                             _this.$message({
-                                message:"请选择日志接收人",
+                                message:"请选择日报接收人",
                                 type:"error",
                             });
                         }else{
@@ -677,7 +679,7 @@
                                 if(flags==true){
                                     if(_this.checkList.length<=0){
                                         _this.$message({
-                                            message:"请选择日志接收人",
+                                            message:"请选择日报接收人",
                                             type:"error",
                                         });
 
