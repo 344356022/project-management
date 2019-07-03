@@ -207,8 +207,41 @@
         <!--日报完成度没有达到100%的列表-->
         <div class="daily">
             <ul class="dailyList">
+                <!--有数据的情况-->
+                <li v-if="dailyList.length<=0?false:true" v-for="(items,index) in dailyList" style="margin-bottom: 0.2rem;">
+                    <!--日报列表标题-->
+                    <span class="dailyList-title" v-text="index+1+'、'+items.w_work_report"></span>
+                    <el-row class="xiangxi">
+                        <el-col :span="16" :push="1">
+                            <span>项目名称：</span>
+                            <span v-text="items.p_name"></span>
+                        </el-col>
+                        <el-col :span="7">
+                            <div>
+                                <span>完成进度：</span>
+                                <el-input :disabled="items.w_status==3?true:false" class="wcjd" @change="changeWcjd" v-model="items.r_finish"></el-input>%
+                            </div>
+                            <div style="margin-top: 0.03rem;" v-if="items.w_status==3?false:true">
+                                <span>消耗工时：</span>
+                                <el-input v-model="items.r_gongshi" class="wcgs" @change="changeWcgs"></el-input>
+                            </div>
+                        </el-col>
+                    </el-row>
+                    <el-row class="textareaText" v-if="items.w_status==3?false:true">
+                        <el-col :span="24">
+                            <el-input
+                                    type="textarea"
+                                    @change="changeQkms"
+                                    :autosize="{ minRows: 4, maxRows: 6}"
+                                    placeholder="请输入完成情况描述"
+                                    v-model="items.descText">
+                            </el-input>
+                        </el-col>
+                    </el-row>
+                </li>
+
                 <!--没有数据的情况-->
-                <li v-if="noDatas">
+                <li v-if="!noDatas">
                     <!--日报列表标题-->
                     <div  class="dailyList-title">
                         <el-input type="textarea"
@@ -245,38 +278,6 @@
                                     :autosize="{ minRows: 4, maxRows: 6}"
                                     placeholder="请输入完成情况描述"
                                     v-model="noData.descText">
-                            </el-input>
-                        </el-col>
-                    </el-row>
-                </li>
-                <!--有数据的情况-->
-                <li v-else-if="!noDatas" v-for="(items,index) in dailyList">
-                    <!--日报列表标题-->
-                    <span class="dailyList-title" v-text="index+1+'、'+items.w_work_report"></span>
-                    <el-row class="xiangxi">
-                        <el-col :span="16" :push="1">
-                            <span>项目名称：</span>
-                            <span v-text="items.p_name"></span>
-                        </el-col>
-                        <el-col :span="7">
-                            <div>
-                                <span>完成进度：</span>
-                                <el-input :disabled="items.w_status==3?true:false" class="wcjd" @change="changeWcjd" v-model="items.r_finish"></el-input>%
-                            </div>
-                            <div style="margin-top: 0.03rem;" v-if="items.w_status==3?false:true">
-                                <span>消耗工时：</span>
-                                <el-input v-model="items.r_gongshi" class="wcgs" @change="changeWcgs"></el-input>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <el-row class="textareaText" v-if="items.w_status==3?false:true">
-                        <el-col :span="24">
-                            <el-input
-                                    type="textarea"
-                                    @change="changeQkms"
-                                    :autosize="{ minRows: 4, maxRows: 6}"
-                                    placeholder="请输入完成情况描述"
-                                    v-model="items.descText">
                             </el-input>
                         </el-col>
                     </el-row>
@@ -465,16 +466,26 @@
                                 items.descText="";
                                 //文本域是否禁用
                                 /*items.disableds=false;*/
-
                             };
-                            _this.noDatas=false;
+                            var flag;
+                            for(var i=0;i<res.data.result.length;i++){
+                                var items=res.data.result[i];
+                                if(items.r_finish<100){
+                                    flag=true;
+                                    break;
+                                }else{
+                                    flag=false;
+                                };
+                            };
+                            _this.noDatas=flag;
+
                             _this.dailyList=res.data.result;
                             //接收人
                             _this.userList=res.data.userList;
                             _this.getUserHistory(code);
 
                         }else if(res.code == 300){
-                            _this.noDatas=true;
+                            _this.noDatas=false;
                             _this.isHuiXianOrAdd=1;
                             //接收人
                             _this.userList=res.data.userList;
@@ -789,7 +800,147 @@
                             }
                         });
                     }else{
-                        _this.getDailyList("");
+
+                        $.ajax({
+                            url:"http://"+_this.IP+":8088/journal/list",
+                            type:"POST",
+                            dataType:"json",
+                            //data:{},
+                            data:{'authCode':'025525064321734942'},
+                            success:function(res){
+                                if(res.code == 200){
+                                    //得到旧的数据
+                                    var oldDailyList=[];
+                                    oldDailyList=res.data.result;
+                                    //得到新的数据
+                                    for(var i=0;i<_this.dailyList.length;i++){
+                                        var items=_this.dailyList[i];
+                                        if(items.w_status!=3){
+                                            if(items.r_finish!=""&&items.r_gongshi!=""&&items.descText!=""){
+                                                endArray.push(items);
+                                            }else if(items.r_gongshi==""&&items.descText==""){
+                                                endArray=endArray;
+                                            };
+                                        };
+                                    };
+                                    console.log(endArray,oldDailyList)
+                                    if(endArray.length<=0){
+                                        _this.$message({
+                                            message:"请将其中一条数据输入完整",
+                                            type:"error",
+                                        });
+                                    }else{
+                                        //得到原始数据
+                                        console.log(endArray,oldDailyList)
+                                        for(var i=0;i<endArray.length;i++){
+                                            var itemss=endArray[i];
+                                            allGongShi+=Number(itemss.r_gongshi);
+                                            for(var j=0;j<oldDailyList.length;j++){
+                                                var item=oldDailyList[j];
+                                                if(item.w_id==itemss.w_id){
+                                                    oldArray.push(item.r_finish);
+                                                };
+                                            };
+                                        };
+                                        console.log(allGongShi,oldArray)
+
+                                        for(var j=0;j<endArray.length;j++){
+                                            var itemss=endArray[j];
+
+                                            var re =  /^[1-9]\d*$/;
+                                            var re =  /^[1-9]\d*$/;
+                                            if (!re.test(itemss.r_finish)) {
+                                                _this.$message({
+                                                    message:"项目的完成进度请输入正整数",
+                                                    type:"error",
+                                                });
+                                                flags=false;
+                                                return;
+                                            }else if (Number(itemss.r_finish)>100||Number(itemss.r_finish)<Number(oldArray[j])){
+                                                _this.$message({
+                                                    message:"项目的完成进度不能超过100并且不能小于原始数据",
+                                                    type:"error",
+                                                });
+                                                flags=false;
+                                                return;
+                                            }else if (!re.test(Number(itemss.r_gongshi))) {
+                                                _this.$message({
+                                                    message:"请正确的输入项目工时",
+                                                    type:"error",
+                                                });
+                                                flags=false;
+                                                return;
+                                            }else if(allGongShi>8){
+                                                _this.$message({
+                                                    message:"输入的总工时数不能大于8",
+                                                    type:"error",
+                                                });
+                                                flags=false;
+                                                return;
+                                            }else{
+                                                flags=true;
+
+                                            };
+                                        };
+                                    };
+
+                                    if(flags==true){
+                                        if(_this.checkList.length<=0){
+                                            _this.$message({
+                                                message:"请选择日报接收人",
+                                                type:"error",
+                                            });
+
+                                        }else{
+                                            if(_this.dubClick==1){
+                                                _this.dubClick=2;
+                                                console.log(_this.dubClick)
+                                                //循环重至接收人
+                                                var newArray=[];
+                                                //转化成字符串
+                                                newArray=_this.checkList.join(',');//接收人的id
+
+                                                for(var i=0;i<_this.dailyList.length;i++){
+                                                    var items=_this.dailyList[i];
+                                                    items.deliver=newArray;
+                                                };
+                                                $.ajax({
+                                                    url:"http://"+_this.IP+":8088/journal/save",
+                                                    type:"post",
+                                                    cache:false,
+                                                    contentType:"application/json; charset=utf-8",
+                                                    dataType:"json",
+                                                    async:false,
+                                                    data:JSON.stringify({para: _this.dailyList}),
+                                                    success:function(res){
+                                                        if(res.code == 200){
+                                                            _this.$message({
+                                                                message:res.msg,
+                                                                type:"success",
+                                                            });
+
+                                                            setTimeout(function(){
+                                                                window.location.href="./dailyLook.html";
+                                                            },1500);
+                                                        }else{
+                                                            _this.dubClick=1;
+                                                        };
+                                                    }
+                                                });
+
+                                            }else{
+                                                _this.$message({
+                                                    message:"请勿多次保存",
+                                                    type:"warning",
+                                                });
+                                            };
+                                        };
+
+                                    };
+
+                                };
+                            }
+                        });
                     }
 
 

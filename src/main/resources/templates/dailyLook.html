@@ -366,7 +366,7 @@
                             _this.searchParam.pageNum++;
                             $.ajax({
                                 type: 'POST',
-                                url:  'http://'+IP+':8082/journal/history',
+                                url:  'http://'+IP+':8088/journal/history',
                                 dataType: 'json',
                                 success: function (data) {
                                     _this.dailyList=data;
