@@ -21,5 +21,4 @@ public class ProjectManagementApplication extends SpringBootServletInitializer {
         SpringApplication.run(ProjectManagementApplication.class, args);
     }
 
-
 }

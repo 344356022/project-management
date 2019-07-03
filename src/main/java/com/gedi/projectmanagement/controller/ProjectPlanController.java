@@ -36,7 +36,13 @@ public class ProjectPlanController {
     @Autowired
     private SysUserService sysUserService;
 
-    //列表展示所有
+    /**
+     * @return java.util.Map
+     * @Author 张帅
+     * @Description 项目总计划列表展示
+     * @Date 2019/7/3 14:21
+     * @Param [authCode, request]
+     **/
     @PostMapping("/listAll")
     public Map selectById(String authCode, HttpServletRequest request) {
         Map map = new HashMap();
@@ -160,7 +166,7 @@ public class ProjectPlanController {
                 msg.setResult(true);
             } else {
                 msg.setCode(401);
-                msg.setMsg("删除失败");
+                msg.setMsg("删除失败,项目已开始");
                 msg.setResult(false);
             }
         }

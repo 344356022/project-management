@@ -56,6 +56,9 @@ public class TaskClassServiceImpl implements TaskClassService {
         SysUser user = (SysUser) session.getAttribute("user");
 
         for (ActionItem actionItem : actionItems) {
+            if (null != actionItem.getaPercentage() && 100 == actionItem.getaPercentage()) {
+                actionItem.setaState(3);
+            }
             actionItem.setaId(UUIDUtil.getUUID2());
             actionItem.setCreater(user.getName());
             //actionItem.setCreater("张帅");
