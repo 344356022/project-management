@@ -419,7 +419,7 @@
     var nextWeek=[];//下周数据
     (function () {
         $.ajax({
-            url:"http://106.13.24.63:8082/weekReport/getTwelveDayDate",
+            url:"http://106.13.24.63:8088/weekReport/getTwelveDayDate",
             type:"GET",
             data:{},
             dataType:"json",
@@ -597,7 +597,7 @@
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/queryEmterpriseMesg",
+                    url:"http://106.13.24.63:8088/weekReport/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -636,7 +636,7 @@
                 _this.tableData1=[];
 
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/selectWeekReportDetial",
+                    url:"http://106.13.24.63:8088/weekReport/selectWeekReportDetial",
                     type:"POST",
                     //data:{},
                     data:{
@@ -687,7 +687,7 @@
             getRwx:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/queryTaskSubIdAndName",
+                    url:"http://106.13.24.63:8088/weekReport/queryTaskSubIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -701,7 +701,7 @@
             getXmmc:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/selectProjectPlanIdAndName",
+                    url:"http://106.13.24.63:8088/weekReport/selectProjectPlanIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -715,7 +715,7 @@
             getZrr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/sys/user/selectUserByDepartment",
+                    url:"http://106.13.24.63:8088/sys/user/selectUserByDepartment",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -861,7 +861,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.24.63:8082/weekReport/deleteWeekReportById",
+                        url:"http://106.13.24.63:8088/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -887,7 +887,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.24.63:8082/weekReport/deleteWeekReportById",
+                        url:"http://106.13.24.63:8088/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -1013,7 +1013,7 @@
                         };
 
                         $.ajax({
-                            url:"http://106.13.24.63:8082/weekReport/createMoreWeekReport",
+                            url:"http://106.13.24.63:8088/weekReport/createMoreWeekReport",
                             data:JSON.stringify(objs),
                             type:"POST",
                             dataType:"json",
