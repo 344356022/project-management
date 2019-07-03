@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 日志 信息操作处理
@@ -55,10 +56,15 @@ public class JournalController
 	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
+		Pattern pattern = Pattern.compile("[0-9]*");
+		String userId ="";
+		if(pattern.matcher(authCode).matches()){
+			userId =authCode;
+		}else{
+			userId = LoginUtil.login(authCode);
+		}
 
-		String userId = LoginUtil.login(authCode);
-
-		//String userId =authCode;
+		//String
 		SysUser user = this.sysUserService.queryUserDetail(userId);
 		String userId1 =user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
