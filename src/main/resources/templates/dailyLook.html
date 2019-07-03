@@ -339,11 +339,8 @@
         },
         mounted:function(){
             var _this=this;
-            var code= getDingDing();
-            _this.getDailyList(code);
-
-            //上拉加载
-            _this.topLoad();
+           // var code= getDingDing();
+            _this.getDailyList(null);
         },
         methods: {
             //上拉刷新事件
@@ -396,7 +393,7 @@
                 var _this=this;
                 _this.searchParam.authCode=params;
                 $.ajax({
-                    url: "http://"+IP+":8082/journal/history",
+                    url: "http://"+IP+":8088/journal/history",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.searchParam,
                     type: "POST",
