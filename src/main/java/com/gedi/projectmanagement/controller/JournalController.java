@@ -55,8 +55,10 @@ public class JournalController
 	@PostMapping("/journal/list")
 	@ResponseBody
 	public HashMap list(String authCode, HttpServletRequest request) {
-		//String userId = LoginUtil.login(authCode);
-		String userId =authCode;
+
+		String userId = LoginUtil.login(authCode);
+
+		//String userId =authCode;
 		SysUser user = this.sysUserService.queryUserDetail(userId);
 		String userId1 =user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
@@ -378,11 +380,14 @@ public class JournalController
 	@PostMapping("/journal/lastReceiver")
 	@ResponseBody
 	public HashMap lastReceiver(String authCode, HttpServletRequest request) {
+
 		//String userId = LoginUtil.login(authCode);
-		//String userId=authCode;
-		HashMap resultMap = new HashMap();
 		HttpSession session = request.getSession();
 		String userId= (String)session.getAttribute("userj");
+
+		//String userId=authCode;
+		HashMap resultMap = new HashMap();
+
 
 		if(isEmpry(userId)  ){
 			resultMap.put("code",300);
