@@ -63,6 +63,10 @@
             background: #409EFF;
             font-size: 0.12rem;
         }
+        img{
+            width: 15px;
+            cursor:pointer;
+        }
     </style>
 </head>
 <body>
@@ -74,20 +78,22 @@
         <div class="header-title">项目双周计划</div>
         <div class="header-data">
             <el-date-picker
+                    :disabled="disabledInput"
                     v-model="params.startTime"
                     @change="startTimeChange"
                     type="date"
                     placeholder="选择开始日期">
             </el-date-picker>
             <el-date-picker
+                    :disabled="disabledInput"
                     v-model="params.endTime"
                     @change="endTimeChange"
                     type="date"
                     placeholder="选择结束日期">
             </el-date-picker>
             <div style="display:flex;justify-content:flex-end;">
-                <el-button type="primary" @click="save" class="addThisWeek" size="mini">保存</el-button>
-                <el-button type="primary" size="mini" class="addThisWeek" @click="addThisWeek">新增</el-button>
+                <el-button type="primary" @click="save" class="addThisWeek" :disabled="disabledInput" size="mini">保存</el-button>
+                <el-button type="primary" size="mini" class="addThisWeek" :disabled="disabledInput" @click="addThisWeek">新增</el-button>
 
             </div>
         </div>
@@ -122,7 +128,7 @@
                     min-width="120"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.pId" @change="xmmcChange" placeholder="请选择">
+                    <el-select v-model="scope.row.pId" @change="xmmcChange" placeholder="请选择" :disabled="disabledInput">
                         <el-option
                                 v-for="(item,index) in xmName"
                                 :key="item.pId"
@@ -140,7 +146,7 @@
                     min-width="120"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.tsId" @change="rwxChange" placeholder="请选择">
+                    <el-select v-model="scope.row.tsId" @change="rwxChange" placeholder="请选择" :disabled="disabledInput">
                         <el-option
                                 v-for="(item,index) in rwx"
                                 :key="item.tsId"
@@ -159,6 +165,7 @@
             >
                 <template slot-scope="scope">
                     <el-input
+                            :disabled="disabledInput"
                             @change="rwmsChange"
                             type="textarea"
                             autosize
@@ -175,7 +182,7 @@
                     min-width="80"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.userId" @change="fzrChange" placeholder="请选择">
+                    <el-select :disabled="disabledInput" v-model="scope.row.userId" @change="fzrChange" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in zrr"
                                 :key="item.userId"
@@ -202,7 +209,7 @@
                     min-width="80"
             >
                 <template slot-scope="scope">
-                    <el-input v-model="scope.row.wPlanProportion" @change="jhbfbChange" placeholder="计划完成百分比"></el-input>
+                    <el-input :disabled="disabledInput" v-model="scope.row.wPlanProportion" @change="jhbfbChange" placeholder="计划完成百分比"></el-input>
                 </template>
             </el-table-column>
             <el-table-column
@@ -212,7 +219,7 @@
                     min-width="80"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.wStatus" @change="statusChange" :disabled="scope.row.statusDisabled" placeholder="请选择">
+                    <el-select v-model="scope.row.wStatus" @change="statusChange" :disabled="scope.row.statusDisabled||disabledInput" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in wStatusList"
                                 :key="item.value"
@@ -223,24 +230,26 @@
                 </template>
             </el-table-column>
             <el-table-column
+
                     align="center"
                     label="备注\协调配合"
                     prop="wRemark"
                     min-width="150"
             >
                 <template slot-scope="scope">
-                    <el-input type="textarea" @change="bzChange"
+                    <el-input :disabled="disabledInput" type="textarea" @change="bzChange"
                               autosize v-model="scope.row.wRemark" placeholder="备注\协调配合"></el-input>
                 </template>
             </el-table-column>
             <el-table-column
+
                     align="center"
                     label="操作"
                     prop="wRemark"
                     min-width="50"
             >
                 <template slot-scope="scope">
-                    <img src="./imgs/shanchu.png" @click="delThisWeek(scope.row,scope)" style="width: 15px;cursor:pointer;"/>
+                    <img v-show="disabledInput" src="./imgs/shanchu.png" @click="delThisWeek(scope.row,scope)"/>
                 </template>
             </el-table-column>
         </el-table>
@@ -249,7 +258,7 @@
 
     <div class="tables1">
         <div style="display:flex;justify-content:flex-end;">
-            <el-button type="primary" size="mini" class="addThisWeek" @click="addNextWeek">新增</el-button>
+            <el-button  :disabled="disabledInput" type="primary" size="mini" class="addThisWeek" @click="addNextWeek">新增</el-button>
         </div>
 
         <el-table class="tables"
@@ -394,7 +403,7 @@
                     min-width="50"
             >
                 <template slot-scope="scope">
-                    <img src="./imgs/shanchu.png" @click="delNextWeek(scope.row,scope)" style="width: 15px;cursor:pointer;"/>
+                    <img v-show="disabledInput" src="./imgs/shanchu.png" @click="delNextWeek(scope.row,scope)"/>
                 </template>
             </el-table-column>
         </el-table>
@@ -410,7 +419,7 @@
     var nextWeek=[];//下周数据
     (function () {
         $.ajax({
-            url:"http://localhost:8082/weekReport/getTwelveDayDate",
+            url:"http://106.13.24.63:8082/weekReport/getTwelveDayDate",
             type:"GET",
             data:{},
             dataType:"json",
@@ -433,6 +442,8 @@
     var myHome = new Vue({
         el:"#idbody",
         data:{
+            disabledInput:false,
+
             //结束、开始时间
             params:{
                 startTime:"",
@@ -477,7 +488,7 @@
             //获取本周和下周时间范围
             var date=new Date();//当前时间
             _this.getMonRen(date);
-           _this.getDatas();
+            _this.getDatas();
         },
         created:function () {
             var _this=this;
@@ -582,11 +593,11 @@
                 _this.dubClick=1;
             },
 
-           /* //获取有关钉钉需要的值
+            //获取有关钉钉需要的值
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/queryEmterpriseMesg",
+                    url:"http://106.13.24.63:8082/weekReport/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -613,10 +624,10 @@
                     });
                 });
 
-            },*/
+            },
 
             /*获取已经保存过后的数据*/
-            getDatas:function () {
+            getDatas:function (code) {
                 var _this=this;
                 /* var objs={
                      authCode:code,
@@ -625,10 +636,11 @@
                 _this.tableData1=[];
 
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/selectWeekReportDetial",
+                    url:"http://106.13.24.63:8082/weekReport/selectWeekReportDetial",
                     type:"POST",
                     //data:{},
                     data:{
+                        'authCode':code,
                         'wStarTime':_this.params.startTime,
                         'wEndTime':_this.params.endTime,
                     },
@@ -637,6 +649,7 @@
                         //获取   用户的所有信息
 
                         _this.sysUsers=res.sysUser;
+
                         if(res.weekreports!=null){
                             for(var i=0;i<res.weekreports.length;i++){
                                 var items=res.weekreports[i];
@@ -674,7 +687,7 @@
             getRwx:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/queryTaskSubIdAndName",
+                    url:"http://106.13.24.63:8082/weekReport/queryTaskSubIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -688,7 +701,7 @@
             getXmmc:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/weekReport/selectProjectPlanIdAndName",
+                    url:"http://106.13.24.63:8082/weekReport/selectProjectPlanIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -702,7 +715,7 @@
             getZrr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/sys/user/selectUserByDepartment",
+                    url:"http://106.13.24.63:8082/sys/user/selectUserByDepartment",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -848,7 +861,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
+                        url:"http://106.13.24.63:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -874,7 +887,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
+                        url:"http://106.13.24.63:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -941,7 +954,7 @@
                     console.log(items)
                     if(_this.yanZhengTime(items.recordTimes).length<=0){
                         _this.$message({
-                            message:"请选择计划完成得时间",
+                            message:"请选择计划完成的时间",
                             type:"error",
                         });
                         flags=false;
@@ -1000,7 +1013,7 @@
                         };
 
                         $.ajax({
-                            url:"http://localhost:8082/weekReport/createMoreWeekReport",
+                            url:"http://106.13.24.63:8082/weekReport/createMoreWeekReport",
                             data:JSON.stringify(objs),
                             type:"POST",
                             dataType:"json",
@@ -1011,7 +1024,7 @@
                                     type:"success",
                                 });
                                 _this.flags=true;
-                                 _this.getDatas();
+                                _this.getDatas();
                             }
                         });
                     }else{
@@ -1029,7 +1042,14 @@
         },
         updated:function(){
             var _this=this;
-            console.log(_this.tableData);
+            _this.$nextTick(function(){
+                //权限设置
+                if(_this.sysUsers.isLeader==true||_this.sysUsers.isBoss==true||_this.sysUsers.isAdmin==true){
+                    _this.disabledInput=false;
+                }else{
+                    _this.disabledInput=true;
+                };
+            });
         },
     });
 </script>
