@@ -78,12 +78,11 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
+                weekreport1.setrFinish(0);
                 String sTime=weekreport.getwStartTime();
-                System.out.println(sTime+"----------中国标准时间sssss--------------");
                 List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
                 String endTime = tweleveDayDate.get(11);
-                System.out.println(startTime+"-------------开始时间与结束时间-------------"+endTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
                 weekreports1.add(weekreport1);
@@ -115,12 +114,11 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
+                weekreport1.setrFinish(0);
                 String sTime=weekreport.getwStartTime();
-                System.out.println(sTime+"----------中国标准时间sssss--------------");
                 List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
                 String endTime = tweleveDayDate.get(11);
-                System.out.println(startTime+"-------------开始时间与结束时间-------------"+endTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
                 weekreports1.add(weekreport1);
