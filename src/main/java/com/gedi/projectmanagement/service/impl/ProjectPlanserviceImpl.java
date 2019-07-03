@@ -44,7 +44,7 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
     @Autowired
     private JournalMapper journalMapper;
 
-    //查询所有用于列表展示
+    // 查询所有用于列表展示
     @Override
     public List<ProjectPlan> selectById() {
         List<ProjectPlan> projectPlans = projectPlanMapper.selectById();
@@ -88,7 +88,14 @@ public class ProjectPlanserviceImpl implements ProjectPlanService {
      */
     @Override
     public List<ProjectPlanList> selectProjectPlanListByPidAndpProjectPhaseId(String pId, Integer pProjectPhaseId) {
-        return projectPlanMapper.selectProjectPlanListByPidAndpProjectPhaseId(pId, pProjectPhaseId);
+        List<ProjectPlanList> projectPlanLists = projectPlanMapper.selectProjectPlanListByPidAndpProjectPhaseId(pId,
+                pProjectPhaseId);
+        for (ProjectPlanList projectPlanList : projectPlanLists) {
+            if (null != projectPlanList.getPercentage() && 100 == projectPlanList.getPercentage()) {
+                projectPlanList.setState(3);
+            }
+        }
+        return projectPlanLists;
     }
 
     /**

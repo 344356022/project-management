@@ -43,6 +43,9 @@ public class ActionItemServiceImpl implements ActionItemService {
         List<String> ids = new ArrayList<>();
 
         for (ActionItem actionItem : actionItems) {
+            if (null != actionItem.getaPercentage() && 100 == actionItem.getaPercentage()) {
+                actionItem.setaState(3);
+            }
             ids.add(actionItem.getaId());
             ProjectUserMedium userMedium = new ProjectUserMedium();
             userMedium.setId(UUIDUtil.getUUID2());
