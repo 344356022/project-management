@@ -58,15 +58,20 @@ public class WeekReportController {
         Map map=new HashMap();
         String timeStart = TimeChange.getTime(wStarTime);
         String timeEnd = TimeChange.getTime(wEndTime);
-        /*String userId = LoginUtil.login(authCode);*/
-        SysUser sysUser = sysUserService.queryUserDetail("144342212424232827");
-        System.out.println(sysUser+"-----------用户得所有全部信息---------------");
+        String userId = LoginUtil.login(authCode);
+        SysUser sysUser = sysUserService.queryUserDetail(userId);
         String department = sysUser.getDepartment();
-        System.out.println("所属的部门为"+department+"-------+++++++任务而台湾而TV++++++-------");
+        String name = sysUser.getName();
         HttpSession session = request.getSession();
         session.setAttribute("department",department);
-        if(sysUser!=null){
+        session.setAttribute("w_creater",name);
+        if(sysUser!=null && !department.equals("[116692111]")){
             List<Weekreport> weekreports = weekReportService.selectWeekReportDetial(department, timeStart, timeEnd);
+            map.put("weekreports",weekreports);
+            map.put("sysUser",sysUser);
+            return map;
+        }else if(sysUser!=null && department.equals("[116692111]")){
+            List<Weekreport> weekreports = weekReportService.selectWeekReportDetial("", timeStart, timeEnd);
             map.put("weekreports",weekreports);
             map.put("sysUser",sysUser);
             return map;
