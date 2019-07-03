@@ -245,8 +245,6 @@ public class JournalController
 
 		HttpSession session2 = request.getSession();
 		String userId= (String)session2.getAttribute("userj");
-		//String userId = authCode;
-		//String userId = LoginUtil.login(authCode);
 		if(isEmpry(userId)){
 			resultMap.put("code",300);
 			resultMap.put("msg","未传入用户信息，请重新登录！");
@@ -310,7 +308,7 @@ public class JournalController
 		map.put("userDepList",userDepList);
 
 		//判断是否是普通员工筛选都得
-		if(!StringUtils.isEmpty(sendUserId) &&  !user.getIsAdmin() && !user.getIsBoss() && !user.getIsLeader()){
+		if(!StringUtils.isEmpty(sendUserId) && !sendUserId.equals(userId)   &&  !user.getIsAdmin() && !user.getIsBoss() && !user.getIsLeader()){
 			resultMap.put("code",300);
 			resultMap.put("msg","无数据");
 			return resultMap;
