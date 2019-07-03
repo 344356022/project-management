@@ -312,8 +312,6 @@
         data:{
 
             //关于钉钉的一些配置
-            isDing:true,
-            IP:"106.13.24.63",
 
             //暂无数据文本是否显示
             zwsj:false,
@@ -363,13 +361,14 @@
                             domLoad: '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
                             domNoData: '<div class="dropload-noData">暂无数据</div>'
                         },
+
                         autoLoad:false,
                         distance:100,
                         loadDownFn: function (me) {
                             _this.searchParam.pageNum++;
                             $.ajax({
                                 type: 'POST',
-                                url:  'http://'+IP+':8088/journal/history',
+                                url:  'http://106.13.24.63:8088/journal/history',
                                 dataType: 'json',
                                 success: function (data) {
                                     _this.dailyList=data;
@@ -396,7 +395,7 @@
                 var _this=this;
                 _this.searchParam.authCode=params;
                 $.ajax({
-                    url: "http://"+IP+":8088/journal/history",
+                    url: "http://106.13.24.63:8088/journal/history",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.searchParam,
                     type: "POST",
