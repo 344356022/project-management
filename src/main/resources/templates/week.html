@@ -249,7 +249,7 @@
                     min-width="50"
             >
                 <template slot-scope="scope">
-                    <img v-show="disabledInput" src="./imgs/shanchu.png" @click="delThisWeek(scope.row,scope)"/>
+                    <img v-show="!disabledInput" src="./imgs/shanchu.png" @click="delThisWeek(scope.row,scope)"/>
                 </template>
             </el-table-column>
         </el-table>
@@ -403,7 +403,7 @@
                     min-width="50"
             >
                 <template slot-scope="scope">
-                    <img v-show="disabledInput" src="./imgs/shanchu.png" @click="delNextWeek(scope.row,scope)"/>
+                    <img v-show="!disabledInput" src="./imgs/shanchu.png" @click="delNextWeek(scope.row,scope)"/>
                 </template>
             </el-table-column>
         </el-table>
@@ -484,11 +484,11 @@
         },
         mounted:function(){
             var _this=this;
-            //_this.getDingDing();//获取临时授权码
+            _this.getDingDing();//获取临时授权码
             //获取本周和下周时间范围
             var date=new Date();//当前时间
             _this.getMonRen(date);
-            _this.getDatas();
+            //_this.getDatas();
         },
         created:function () {
             var _this=this;
@@ -1024,7 +1024,7 @@
                                     type:"success",
                                 });
                                 _this.flags=true;
-                                _this.getDatas();
+                                _this.getDingDing();
                             }
                         });
                     }else{
