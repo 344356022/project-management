@@ -1,9 +1,9 @@
 package com.gedi.projectmanagement.controller;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gedi.projectmanagement.config.AuthHelper;
+import com.gedi.projectmanagement.model.Weekreport;
 import com.gedi.projectmanagement.model.system.SysUser;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskSubClassService;
@@ -15,12 +15,18 @@ import com.gedi.projectmanagement.util.TimeChange;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import com.gedi.projectmanagement.vo.WeekRportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.HashMap;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: renpu
@@ -35,8 +41,6 @@ public class WeekReportController {
     @Autowired
     private WeekReportService weekReportService;
 
-    @Autowired
-    private SysUserService sysUserService;
 
     @Autowired
     private ProjectPlanService projectPlanService;
@@ -44,27 +48,31 @@ public class WeekReportController {
     @Autowired
     private TaskSubClassService taskSubClassService;
 
+    @Autowired
+    private SysUserService sysUserService;
 
 
     //查询双周计划表展示具体的内容以及完成的占比；
     @PostMapping("selectWeekReportDetial")
-    public CodeAndMsg selectWeekReportDetial(String wStarTime,String wEndTime,String authCode, HttpServletRequest request) {
-
+    public Map selectWeekReportDetial(String wStarTime, String wEndTime, String authCode, HttpServletRequest request) {
+        Map map=new HashMap();
         String timeStart = TimeChange.getTime(wStarTime);
         String timeEnd = TimeChange.getTime(wEndTime);
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
-        String userId = LoginUtil.login(authCode);
-        SysUser sysUser = sysUserService.queryUserDetail(userId);
+        /*String userId = LoginUtil.login(authCode);*/
+        SysUser sysUser = sysUserService.queryUserDetail("144342212424232827");
+        System.out.println(sysUser+"-----------用户得所有全部信息---------------");
         String department = sysUser.getDepartment();
+        System.out.println("所属的部门为"+department+"-------+++++++任务而台湾而TV++++++-------");
         HttpSession session = request.getSession();
         session.setAttribute("department",department);
         if(sysUser!=null){
-            return weekReportService.selectWeekReportDetial(department,timeStart,timeEnd);
+            List<Weekreport> weekreports = weekReportService.selectWeekReportDetial(department, timeStart, timeEnd);
+            map.put("weekreports",weekreports);
+            map.put("sysUser",sysUser);
+            return map;
         }else{
-            codeAndMsg.setResult(false);
-            codeAndMsg.setCode(200);
-            codeAndMsg.setMsg("用户不存在");
-            return codeAndMsg;
+            map.put("msg","用户不存在");
+            return map;
         }
 
     }
@@ -82,7 +90,7 @@ public class WeekReportController {
             JSONObject jsonObject = JSON.parseObject(weekreports);
             weekreports = jsonObject.getString("weekreports");
             List<WeekRportInfo> weekreportse = JSONArray.parseArray(weekreports, WeekRportInfo.class);
-            msg = this.addWeekReport(weekreportse);
+             msg = this.addWeekReport(weekreportse);
         }
         return msg;
 
@@ -131,13 +139,6 @@ public class WeekReportController {
         return weekReportService.updateActual(wId, wActualProportion);
     }
 
-
-    //根据部门以及等级的标识进行查询，分配具体的工作；
-    @GetMapping("selectDepartmentStaff")
-    public CodeAndMsg selectDepartmentStaff(HttpSession session) {
-        String department = (String)session.getAttribute("uDepartment");
-        return sysUserService.selectUserBySign(department);
-    }
 
 
     //查询全部任务子类

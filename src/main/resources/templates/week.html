@@ -410,7 +410,7 @@
     var nextWeek=[];//下周数据
     (function () {
         $.ajax({
-            url:"http://106.13.24.63:8082/weekReport/getTwelveDayDate",
+            url:"http://localhost:8082/weekReport/getTwelveDayDate",
             type:"GET",
             data:{},
             dataType:"json",
@@ -473,11 +473,11 @@
         },
         mounted:function(){
             var _this=this;
-            _this.getDingDing();//获取临时授权码
+            //_this.getDingDing();//获取临时授权码
             //获取本周和下周时间范围
             var date=new Date();//当前时间
             _this.getMonRen(date);
-           //_this.getDatas();
+           _this.getDatas();
         },
         created:function () {
             var _this=this;
@@ -582,11 +582,11 @@
                 _this.dubClick=1;
             },
 
-            //获取有关钉钉需要的值
+           /* //获取有关钉钉需要的值
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/queryEmterpriseMesg",
+                    url:"http://localhost:8082/weekReport/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -613,10 +613,10 @@
                     });
                 });
 
-            },
+            },*/
 
             /*获取已经保存过后的数据*/
-            getDatas:function (code) {
+            getDatas:function () {
                 var _this=this;
                 /* var objs={
                      authCode:code,
@@ -625,19 +625,21 @@
                 _this.tableData1=[];
 
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/selectWeekReportDetial",
+                    url:"http://localhost:8082/weekReport/selectWeekReportDetial",
                     type:"POST",
-                    //data:{'authCode':code},
+                    //data:{},
                     data:{
-                        'authCode':code,
                         'wStarTime':_this.params.startTime,
                         'wEndTime':_this.params.endTime,
                     },
                     dataType:"json",
                     success:function(res){
-                        if(res.data!=null){
-                            for(var i=0;i<res.data.length;i++){
-                                var items=res.data[i];
+                        //获取   用户的所有信息
+
+                        _this.sysUsers=res.sysUser;
+                        if(res.weekreports!=null){
+                            for(var i=0;i<res.weekreports.length;i++){
+                                var items=res.weekreports[i];
                                 for(var j=0;j<items.recordTimes.length;j++){
                                     var item= items.recordTimes[j];
                                     if(item.isSelect=="1"){
@@ -660,7 +662,8 @@
                                     _this.tableData1.push(items);
                                 };
                             };
-                        }
+                        };
+
                         _this.getRwx();
                         /* _this.rwx=res.data;
                          _this.getXmmc();*/
@@ -671,7 +674,7 @@
             getRwx:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/queryTaskSubIdAndName",
+                    url:"http://localhost:8082/weekReport/queryTaskSubIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -685,7 +688,7 @@
             getXmmc:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/weekReport/selectProjectPlanIdAndName",
+                    url:"http://localhost:8082/weekReport/selectProjectPlanIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -699,7 +702,7 @@
             getZrr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8082/sys/user/selectUserByDepartment",
+                    url:"http://localhost:8082/sys/user/selectUserByDepartment",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -736,6 +739,24 @@
                     };
                     thisWeeks.push(objs);
                 };
+                var years=_this.params.startTime.getFullYear();
+                var years1=_this.params.endTime.getFullYear();
+                var months=_this.params.startTime.getMonth()+1;
+                var months1=_this.params.endTime.getMonth()+1;
+                var days=_this.params.startTime.getDate();
+                var days1=_this.params.endTime.getDate();
+                if(months<10){
+                    months="0"+months;
+                };
+                if(months1<10){
+                    months1="0"+months1;
+                };
+                if(days<10){
+                    days="0"+days;
+                };
+                if(days1<10){
+                    days1="0"+days1;
+                };
                 var objs={
                     recordTimes:thisWeeks,
                     pId:"",
@@ -747,8 +768,8 @@
                     wStatus:"",
                     wRemark:"",
                     wType:"1",
-                    wStartTime:_this.params.startTime,
-                    wEndTime:_this.params.endTime,
+                    wStartTime:years+"-"+months+"-"+days,
+                    wEndTime:years1+"-"+months1+"-"+days1,
                 };
 
                 _this.tableData.push(objs);
@@ -775,6 +796,28 @@
                     };
                     nextWeeks.push(objs);
                 };
+
+
+                var years=_this.params.startTime.getFullYear();
+                var years1=_this.params.endTime.getFullYear();
+                var months=_this.params.startTime.getMonth()+1;
+                var months1=_this.params.endTime.getMonth()+1;
+                var days=_this.params.startTime.getDate();
+                var days1=_this.params.endTime.getDate();
+                if(months<10){
+                    months="0"+months;
+                };
+                if(months1<10){
+                    months1="0"+months1;
+                };
+                if(days<10){
+                    days="0"+days;
+                };
+                if(days1<10){
+                    days1="0"+days1;
+                };
+
+
                 var objs={
                     recordTimes:nextWeeks,
                     pId:"",
@@ -786,8 +829,8 @@
                     wWorkReport:"",
                     wRemark:"",
                     wType:"2",
-                    wStartTime:_this.params.startTime,
-                    wEndTime:_this.params.endTime,
+                    wStartTime:years+"-"+months+"-"+days,
+                    wEndTime:years1+"-"+months1+"-"+days1,
                 };
 
                 _this.tableData1.push(objs);
@@ -805,7 +848,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.24.63:8082/weekReport/deleteWeekReportById",
+                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -831,7 +874,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.24.63:8082/weekReport/deleteWeekReportById",
+                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -949,9 +992,7 @@
                         flags=true;
                     };
                 };
-                console.log(flags);
                 if(flags==true){
-                    console.log(_this.dubClick)
                     if(_this.dubClick==1){
                         _this.dubClick=2;
                         var objs={
@@ -959,7 +1000,7 @@
                         };
 
                         $.ajax({
-                            url:"http://106.13.24.63:8082/weekReport/createMoreWeekReport",
+                            url:"http://localhost:8082/weekReport/createMoreWeekReport",
                             data:JSON.stringify(objs),
                             type:"POST",
                             dataType:"json",
@@ -970,7 +1011,7 @@
                                     type:"success",
                                 });
                                 _this.flags=true;
-                                _this.getDingDing();
+                                 _this.getDatas();
                             }
                         });
                     }else{
@@ -988,6 +1029,7 @@
         },
         updated:function(){
             var _this=this;
+            console.log(_this.tableData);
         },
     });
 </script>

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -166,6 +167,31 @@ public class DetialDayDate {
             list.add(reviewTime.plusDays(i).toString());
         }
         return list;
+    }
+
+    //根据系统时间获取本周的周一所对应的具体日期，以及连续11天所对应的日期；
+    public static List<String> getTweleveDayDates(String startTime) {
+        List<String> list = new ArrayList<>();
+        LocalDate localDate = LocalDate.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate reviewTime = localDate.with(DayOfWeek.MONDAY);
+        for (int i = 0; i <= 11; i++) {
+            list.add(reviewTime.plusDays(i).toString());
+        }
+        return list;
+    }
+
+
+
+    public static String getTime(String praTime){
+        Date date = new Date(praTime);
+        String c=null;
+        try{
+            c = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            System.out.println(c);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return c;
     }
 
 

@@ -44,20 +44,11 @@ public class WeekReportServiceImpl implements WeekReportService {
     private SysUserMapper sysUserMapper;
 
     @Override
-    public CodeAndMsg selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime) {
-
-        CodeAndMsg codeAndMsg=new CodeAndMsg();
+    public List<Weekreport> selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime) {
         if(weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime).size()!=0&&weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime)!=null){
-            codeAndMsg.setCode(200);
-            codeAndMsg.setMsg("查询成功");
-            codeAndMsg.setResult(true);
-            codeAndMsg.setData(weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime));
-            return codeAndMsg;
+            return weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime);
         }else{
-            codeAndMsg.setCode(400);
-            codeAndMsg.setMsg("查询失败");
-            codeAndMsg.setResult(false);
-            return codeAndMsg;
+            return null;
         }
     }
 
@@ -87,15 +78,20 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
-                List<String> tweleveDayDate = DetialDayDate.getTweleveDayDate();
+                String sTime=weekreport.getwStartTime();
+                System.out.println(sTime+"----------中国标准时间sssss--------------");
+                List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
                 String endTime = tweleveDayDate.get(11);
+                System.out.println(startTime+"-------------开始时间与结束时间-------------"+endTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
                 weekreports1.add(weekreport1);
                  dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
-                    List<String> tweleveDayDate1 = DetialDayDate.getTweleveDayDate();
+                    recordTime.setTimeId(UUIDUtil.getUUID2());
+                    recordTime.setwId(weekreport1.getwId());
+                    List<String> tweleveDayDate1= DetialDayDate.getTweleveDayDates(sTime);
                     for (String s : tweleveDayDate1) {
                         String substring = s.substring(8,10);
                         if(substring.equals(recordTime.getName())){
@@ -103,8 +99,6 @@ public class WeekReportServiceImpl implements WeekReportService {
                             recordTime.setName(substring1);
                         }
                     }
-                    recordTime.setTimeId(UUIDUtil.getUUID2());
-                    recordTime.setwId(weekreport1.getwId());
                 }
                 recordTimeMapper.saveMoreDetialDayDate(dataList);
                 weekreportMapper.updateMoreWeekReport(weekreports1);
@@ -121,15 +115,20 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
-                List<String> tweleveDayDate = DetialDayDate.getTweleveDayDate();
+                String sTime=weekreport.getwStartTime();
+                System.out.println(sTime+"----------中国标准时间sssss--------------");
+                List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
                 String endTime = tweleveDayDate.get(11);
+                System.out.println(startTime+"-------------开始时间与结束时间-------------"+endTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
                 weekreports1.add(weekreport1);
                 dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
-                    List<String> tweleveDayDate1 = DetialDayDate.getTweleveDayDate();
+                    recordTime.setTimeId(UUIDUtil.getUUID2());
+                    recordTime.setwId(weekreport1.getwId());
+                    List<String> tweleveDayDate1= DetialDayDate.getTweleveDayDates(sTime);
                     for (String s : tweleveDayDate1) {
                         String substring = s.substring(8,10);
                         if(substring.equals(recordTime.getName())){
@@ -137,8 +136,6 @@ public class WeekReportServiceImpl implements WeekReportService {
                             recordTime.setName(substring1);
                         }
                     }
-                    recordTime.setTimeId(UUIDUtil.getUUID2());
-                    recordTime.setwId(weekreport1.getwId());
                 }
                 recordTimeMapper.saveMoreDetialDayDate(dataList);
             }
