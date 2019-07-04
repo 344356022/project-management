@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>预期计划</title>
+
+    <!--引入element_ui的样式-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./element_ui/iconfont/iconfont.css">
+    <link rel="stylesheet" href="./css/pages/week.css">
+
+    <!--引入jquery-->
+    <script src="./js/jquery-3.3.1.js" type="text/javascript"></script>
+
+    <!---引入钉钉官方的script--->
+    <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+    <script src="./element_ui/vue.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./element_ui/vuex.js" type="text/javascript"></script>
+    <script src="./element_ui/store.js" type="text/javascript"></script>
+    <script src="./element_ui/vue-resource.js" type="text/javascript"></script>
+    <script src="./element_ui/vue-router.js" type="text/javascript"></script>
+    <meta name="wpk-bid" content="dta_1_269856828">
+
+    <!--定义类样式--->
+    <style>
+        #idbody{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+        .tables1{
+            position: absolute;
+            top: 0.8rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: scroll;
+        }
+        .tables1 .cell>span{
+            font-size: 0.12rem;
+        }
+        .addThisWeek{
+            /* position: absolute;
+             top: 18px;
+             left: 148px;
+             z-index: 10;*/
+            margin:0.1rem 0;
+        }
+        .header{
+            position: relative;
+            width: 100%;
+        }
+        .header-data{
+            font-size: 0.12rem;
+        }
+        .header-data .el-date-editor.el-input, .el-date-editor.el-input__inner{
+            width:1.2rem;
+            height: 0.3rem !important;
+        }
+        .header-data input{
+            line-height: 0.3rem !important;
+        }
+        .header-title{
+            position: relative;
+            color:white;
+        }
+
+        .header-title>i{
+            position: absolute;
+            font-size: 0.16rem;
+        }
+        .el-icon-arrow-left{
+            top: 0.08rem;
+            left: 0.1rem;
+        }
+        .icon-rizhibaobiao{
+            top: 0.08rem;
+            right: 0.15rem;
+        }
+        .daily-title-name{
+            text-align: center;
+            padding: 0.08rem;
+            background: #409EFF;
+        }
+    </style>
+</head>
+<body>
+
+<!--给div标签定义一个id选择器-->
+<div id="idbody" v-loading="loading"
+     element-loading-text="拼命加载中"
+     element-loading-spinner="el-icon-loading"
+     element-loading-background="rgba(0, 0, 0, 0.6)">
+
+    <div class="header">
+        <div class="header-title">
+            <i @click="goBack" class="el-icon-arrow-left" title="返回"></i>
+            <div class="daily-title-name">预期计划</div>
+        </div>
+        <div class="header-data">
+            <el-date-picker
+                    v-model="params.startTime"
+                    type="date"
+                    placeholder="选择开始日期">
+            </el-date-picker>
+            <el-date-picker
+                    v-model="params.endTime"
+                    type="date"
+                    placeholder="选择结束日期">
+            </el-date-picker>
+            <el-button type="primary" @click="search" class="addThisWeek" size="mini">查询</el-button>
+        </div>
+    </div>
+    <div class="tables1">
+        <el-table class="tables"
+                  border
+                  :data="tableData">
+            <el-table-column
+                    align="center"
+                    label="计划时间"
+                    min-width="120"
+            >
+                <template slot-scope="scope">
+                    <ul>
+                        <li v-for="(items,index) in scope.row.recordTimes"  v-text="items.name" :class="{clickIndex:items.isSelect=='true'}"></li>
+                    </ul>
+                </template>
+            </el-table-column>
+
+
+
+            <el-table-column
+                    align="center"
+                    label="项目名称"
+                    prop="pId"
+                    min-width="120"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.pName"></span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    label="任务项"
+                    prop="tsId"
+                    min-width="120"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.tsName"></span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    label="工作任务描述"
+                    prop="wWorkReport"
+                    min-width="200"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.wWorkReport"></span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    label="责任人"
+                    prop="userId"
+                    min-width="100"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.name"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    label="实际完成率"
+                    prop="wActualProportion"
+                    min-width="80"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.wActualProportion"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    label="计划完成率"
+                    prop="wPlanProportion"
+                    min-width="80"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.wPlanProportion"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    label="状态"
+                    prop="wStatus"
+                    min-width="100"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.wStatus"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+
+                    align="center"
+                    label="备注\协调配合"
+                    prop="wRemark"
+                    min-width="150"
+            >
+                <template slot-scope="scope">
+                    <span v-text="scope.row.wRemark"></span>
+                </template>
+            </el-table-column>
+        </el-table>
+
+    </div>
+
+
+
+    </div>
+
+
+</div>
+</body>
+
+<script>
+
+
+
+
+    var myHome = new Vue({
+        el:"#idbody",
+        data:{
+            //加载按钮
+            loading:false,
+            //查询条件
+            params:{
+                startTime:"",
+                endTime:"",
+            },
+            //表格数据
+            tableData:[
+                {
+                    recordTimes:[
+                        {
+                            name:"01",
+                            isSelect:'false',
+                        },
+                        {
+                            name:"02",
+                            isSelect:'false',
+                        },
+                        {
+                            name:"03",
+                            isSelect:'false',
+                        },
+                        {
+                            name:"04",
+                            isSelect:'true',
+                        },
+                        {
+                            name:"05",
+                            isSelect:'true',
+                        },
+                        {
+                            name:"06",
+                            isSelect:'true',
+                        },
+                        {
+                            name:"07",
+                            isSelect:'false',
+                        }
+                    ],
+                    pName:"测试项目",
+                    tsName:"测试任务项",
+                    wWorkReport:"我是工作描述",
+                    name:"我是责任人",
+                    wActualProportion:"我是实际完成率",
+                    wPlanProportion:"我是计划完成率",
+                    wStatus:"我是状态",
+                    wRemark:"我是备注",
+                }
+            ],
+        },
+        mounted:function(){
+            var _this=this;
+
+        },
+        created:function () {
+            var _this=this;
+
+        },
+        methods:{
+            //返回按钮事件
+            goBack:function(){
+                var _this=this;
+                _this.loading=true;
+
+                setTimeout(function () {
+                    window.location.href="./week1.html";
+                });
+            },
+            //查询事件
+            search:function(){
+                var _this=this;
+                if(_this.params.endTime==""||_this.params.startTime==""){
+                    _this.$message({
+                        message:"请输入开始时间或者结束时间",
+                        type:"error",
+                    });
+                }else if(_this.params.endTime.getTime()<_this.params.startTime.getTime()&&_this.params.endTime!=""&&_this.params.startTime!=""){
+                    _this.$message({
+                        message:"结束时间不能小于开始时间",
+                        type:"error",
+                    });
+                }else{
+                    console.log(_this.params)
+                };
+
+            },
+
+        },
+        updated:function(){
+            var _this=this;
+
+        },
+    });
+</script>
+</html>

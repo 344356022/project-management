@@ -26,6 +26,13 @@
 
     <!--定义类样式--->
     <style>
+        #idbody{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
         .tables1{
             position: relative;
             overflow: auto;
@@ -57,11 +64,24 @@
         .header-title{
             position: relative;
             color:white;
-            width: 100%;
+        }
+
+        .header-title>i{
+            position: absolute;
+            font-size: 0.16rem;
+        }
+        .icon-jihua{
+            top: 0.08rem;
+            left: 0.1rem;
+        }
+        .icon-yuji{
+            top: 0.08rem;
+            right: 0.15rem;
+        }
+        .daily-title-name{
             text-align: center;
-            padding: 0.08rem 0;
+            padding: 0.08rem;
             background: #409EFF;
-            font-size: 0.12rem;
         }
         img{
             width: 15px;
@@ -72,10 +92,17 @@
 <body>
 
 <!--给div标签定义一个id选择器-->
-<div id="idbody">
+<div id="idbody" v-loading="loading"
+     element-loading-text="拼命加载中"
+     element-loading-spinner="el-icon-loading"
+     element-loading-background="rgba(0, 0, 0, 0.6)">
 
     <div class="header">
-        <div class="header-title">项目双周计划</div>
+        <div class="header-title">
+            <i @click="toWeekHistory" class="iconfont icon-jihua" title="历史计划"></i>
+            <div class="daily-title-name">项目双周计划</div>
+            <i @click="toWeekJihua" class="iconfont icon-yuji" title="预期计划"></i>
+        </div>
         <div class="header-data">
             <el-date-picker
                     :disabled="disabledInput"
@@ -442,6 +469,8 @@
     var myHome = new Vue({
         el:"#idbody",
         data:{
+            loading:false,
+
             disabledInput:false,
 
             //结束、开始时间
@@ -495,6 +524,25 @@
 
         },
         methods:{
+            //历史计划页面跳转
+            toWeekHistory:function(){
+                var _this=this;
+                _this.loading=true;
+
+                setTimeout(function () {
+                    window.location.href="./weekHistory.html";
+                });
+            },
+            //未来计划页面跳转
+            toWeekJihua:function(){
+                var _this=this;
+                _this.loading=true;
+
+                setTimeout(function () {
+                    window.location.href="./weekWill.html";
+                });
+            },
+
             //改变时间框
             endTimeChange:function(value){
                 var _this=this;
