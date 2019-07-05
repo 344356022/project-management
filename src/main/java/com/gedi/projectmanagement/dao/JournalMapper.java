@@ -71,6 +71,13 @@ public interface JournalMapper
 	List<HashMap<String, Object>> selectJournalResultList(HashMap map);
 
 	/**
+	 * 查询个人日志列表
+	 * @param map
+	 * @return
+	 */
+	List<HashMap<String, Object>> queryJournalResultList(HashMap map);
+
+	/**
 	 * 返回日报接收人列表
 	 * @return
 	 */
