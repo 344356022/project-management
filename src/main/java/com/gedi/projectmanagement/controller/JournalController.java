@@ -58,15 +58,15 @@ public class JournalController
 	public HashMap list(String authCode, HttpServletRequest request) {
 		Pattern pattern = Pattern.compile("[0-9]*");
 		String userId ="";
-		if(pattern.matcher(authCode).matches()){
+		/*if(pattern.matcher(authCode).matches()){
 			userId =authCode;
 		}else{
 			userId = LoginUtil.login(authCode);
-		}
+		}*/
 
 		//String
-		SysUser user = this.sysUserService.queryUserDetail(userId);
-		String userId1 =user.getUserId();//暂时写死后续会从session获取用户信息
+		SysUser user = this.sysUserService.queryUserDetail("0208286522656643");
+		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
 		HttpSession session = request.getSession();
 		session.setAttribute("userj",user.getUserId());
@@ -214,8 +214,8 @@ public class JournalController
 		while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
 			calendar.add(Calendar.DAY_OF_WEEK, -1);
 		}
-		Date[] dates = new Date[12];
-		for (int i = 0; i < 12; i++) {
+		Date[] dates = new Date[7];
+		for (int i = 0; i < 7; i++) {
 			dates[i] = calendar.getTime();
 			calendar.add(Calendar.DATE, 1);
 		}
@@ -573,4 +573,76 @@ public class JournalController
 		return projectPlanService.selectAllProject();
 	}
 
+	/*****************************************************************************/
+
+	/**
+	 * zhang xingya
+	 * 查询日志列表
+	 * 1：优先查询上周未完成的任务项，放在最前面
+	 * 2：本周的未完成的计划放在后面，按时间正序
+	 * @return HashMap
+	 */
+	@PostMapping("/journal/getDailyList")
+	@ResponseBody
+	public HashMap getDailyList(String authCode, HttpServletRequest request) {
+		HashMap resultMap = new HashMap();
+//		if(StringUtils.isEmpty(authCode)){
+//			resultMap.put("code",300);
+//			resultMap.put("msg","未传入用户信息，请重新登录！");
+//		}
+//		String userId = LoginUtil.login(authCode); //放到正式环境时放开
+		String userId ="0208286522656643";//暂时写死后续会从session获取用户信息
+		//String
+		SysUser user = this.sysUserService.queryUserDetail(userId);//当前登陆者
+		HttpSession session = request.getSession();
+		session.setAttribute("userj",user.getUserId());
+		session.setAttribute("udepartment",user.getDepartment());
+		HashMap map = new HashMap();
+		List<HashMap<String,Object>> list = null;
+		if(StringUtils.isNotEmpty(userId)){//判断是否传入用户id 有的话把userId放到map中
+			map.put("userId",userId);
+			//根据当前时间获取本周的周一到周五的时间
+			StringBuffer sb = new StringBuffer();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
+			for (Date date : getWeekDay()) {
+				sb.append("'"+dateFormat.format(date)+"',");
+			}
+			String mToFday = sb.toString().substring(0,sb.toString().length() - 1);
+			System.err.println("mToFday:"+mToFday);
+			map.put("weekDay",mToFday);
+			list = journalService.queryJournalResultList(map);//返回日报列表数据
+			System.err.println("list:"+list);
+			for(int i=0;i<list.size();i++){
+				HashMap<String,Object> item=list.get(i);
+				String ts_id=(String) item.get("ts_id");//获取双周计划里的数据，如果是通过日报中   “其他”反写的数据  ts_id是空的，就不显示该计划，日报需要重新按空的填写
+				if(StringUtils.isEmpty(ts_id)){
+					list.clear();
+					resultMap.put("code",300);
+					resultMap.put("msg","无数据");
+				}
+			}
+			if(list.size() > 0){//大于0表示有数据
+				resultMap.put("code",200);
+				resultMap.put("msg","成功");
+			}else{//无数据
+				resultMap.put("code",300);
+				resultMap.put("msg","无数据");
+			}
+			map.clear();//清空map
+			map.put("result",list);
+			//抄送人列表
+			List<HashMap<String,Object>> userList = journalService.selectUserList();
+
+			/*HashMap<String,Object>  userHashMap= new HashMap<String,Object>();
+			userHashMap.put("user_id",userId);
+			userHashMap.put("user_name",user.getName());
+			userList.remove(userHashMap);*/
+
+			map.put("userList",userList);
+
+
+		}
+		resultMap.put("data",map);
+		return resultMap;
+	}
 }
