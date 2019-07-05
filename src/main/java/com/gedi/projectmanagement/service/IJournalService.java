@@ -60,6 +60,13 @@ public interface IJournalService
 	 */
 	List<HashMap<String, Object>> selectJournalResultList(HashMap map);
 
+	/**
+	 * 获取当前登陆者的日报列表
+	 * @param map
+	 * @return
+	 */
+	List<HashMap<String, Object>> queryJournalResultList(HashMap map);
+
 	//日报返回日志接收人
     List<HashMap<String, Object>> selectUserList();
 
