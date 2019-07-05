@@ -45,6 +45,19 @@
         )ORDER BY r_finish
 
     </select>
+
+    <!-- 日报列表（上周未完成的+本周的）-->
+    <select id="queryJournalResultList"  parameterType="Map" resultType="Map">
+        SELECT w.w_id,p.p_id,w.ts_id,p.p_name,w.w_work_report,IFNULL(w.r_finish,0) AS r_finish,w.w_status
+        FROM weekreport w, project_plan p
+        WHERE w.p_id = p.p_id
+         AND w.user_id = #{userId}
+        AND w.w_id in (
+                SELECT w_id FROM `record_time` where detial_day_date in(#{weekDay})
+				UNION ALL
+				SELECT w_id FROM weekreport WHERE w_status = 0 and user_id = #{userId}
+        )ORDER BY w_start_time ASC,r_finish DESC
+    </select>
     <!-- 日志抄送人列表-->
     <select id="selectUserList"  resultType="Map">
       SELECT user_id,mobile,name,acatar from user where active is true
