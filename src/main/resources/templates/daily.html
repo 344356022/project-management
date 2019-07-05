@@ -207,7 +207,7 @@
         <div class="daily">
             <ul class="dailyList">
                 <!--有数据的情况-->
-                <li v-if="dailyList.length<=0?false:true" v-for="(items,index) in dailyList" style="margin-bottom: 0.2rem;">
+                <li v-for="(items,index) in dailyList" style="margin-bottom: 0.2rem;">
                     <!--日报列表标题-->
                     <span class="dailyList-title" v-text="index+1+'、'+items.w_work_report"></span>
                     <el-row class="xiangxi">
@@ -215,7 +215,7 @@
                             <span>项目名称：</span>
                             <span v-text="items.p_name"></span>
                         </el-col>
-                        <el-col :span="7">
+                        <el-col :span="8">
                             <div>
                                 <span>完成进度：</span>
                                 <el-input :disabled="items.w_status==3?true:false" class="wcjd" @change="changeWcjd" v-model="items.r_finish"></el-input>%
@@ -238,9 +238,15 @@
                         </el-col>
                     </el-row>
                 </li>
+            </ul>
 
+            <!--新增其他项目-->
+            <ul>
+                <li>
+                    <el-button @click="addDailyList" size="mini" type="primary">新增日报</el-button>
+                </li>
                 <!--没有数据的情况-->
-                <li v-if="!noDatas">
+                <li v-if="noDatas" style="margin-top: 0.1rem;">
                     <!--日报列表标题-->
                     <div  class="dailyList-title">
                         <el-input type="textarea"
@@ -248,7 +254,7 @@
                     </div>
                     <!--<span class="dailyList-title" v-text="'、'+items.w_work_report"></span>-->
                     <el-row class="xiangxi">
-                        <el-col :span="19">
+                        <el-col :span="16">
                             <span>项目名称：</span>
                             <el-select class="xmmc" v-model="noData.pId" placeholder="请选择">
                                 <el-option
@@ -259,7 +265,7 @@
                                 </el-option>
                             </el-select>
                         </el-col>
-                        <el-col :span="5">
+                        <el-col :span="8">
                             <div>
                                 <span>完成进度：</span>
                                 <el-input class="wcjd" v-model="noData.wActualProportion"></el-input>%
@@ -311,8 +317,8 @@
             </div>
 
             <span slot="footer" class="dialog-footer">
-                  <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-                  <el-button size="small" type="primary" @click="trueEvent">确 定</el-button>
+                  <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+                  <el-button size="mini" type="primary" @click="trueEvent">确 定</el-button>
                 </span>
         </el-dialog>
     </div>
@@ -327,8 +333,10 @@
     var myHome = new Vue({
         el:"#idbody",
         data:{
+            addDailyListNum:0,
+
             //关于钉钉的一些配置
-            isDing:true,
+            isDing:false,
             IP:"106.13.24.63",
             
             projectData:[],
@@ -369,11 +377,25 @@
 
         },
         methods:{
+            //新增日报
+            addDailyList:function(){
+                var _this=this;
+                _this.addDailyListNum++;
+                if(_this.addDailyListNum%2==0){
+                    _this.noDatas=false;
+                    _this.isHuiXianOrAdd=0;
+                }else{
+                    _this.noDatas=true;
+                    _this.isHuiXianOrAdd=1;
+                };
+                _this.getProjectName();
+            },
+
             getDingDing:function(){
                 var _this=this
                 if(_this.isDing){
                     $.ajax({
-                        url:"http://"+_this.IP+":8088/journal/queryEmterpriseMesg",
+                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         async:false,
@@ -397,12 +419,12 @@
                     _this.getDailyList("");
                 }
             },
-            
+
             //获取历史接收人
             getUserHistory:function(code){
                 var _this=this;
                 $.ajax({
-                    url:"http://"+_this.IP+":8088/journal/lastReceiver",
+                    url:"http://localhost:8082/journal/lastReceiver",
                     type:"POST",
                     dataType:"json",
                     async:false,
@@ -452,7 +474,8 @@
 
                 var _this=this;
                 $.ajax({
-                    url:"http://"+_this.IP+":8088/journal/list",
+                    // url:"http://localhost:8082/journal/list",
+                    url:"http://localhost:8082/journal/getDailyList",
                     type:"POST",
                     dataType:"json",
                     async:false,
@@ -466,29 +489,14 @@
                                 //文本域是否禁用
                                 /*items.disableds=false;*/
                             };
-                            var flag;
-                            for(var i=0;i<res.data.result.length;i++){
-                                var items=res.data.result[i];
-                                if(items.r_finish<100){
-                                    flag=true;
-                                    break;
-                                }else{
-                                    flag=false;
-                                };
-                            };
-                            _this.noDatas=flag;
-
                             _this.dailyList=res.data.result;
                             //接收人
                             _this.userList=res.data.userList;
                             _this.getUserHistory(code);
 
                         }else if(res.code == 300){
-                            _this.noDatas=false;
-                            _this.isHuiXianOrAdd=1;
                             //接收人
                             _this.userList=res.data.userList;
-                            _this.getProjectName();
                             _this.getUserHistory();
                         };
                     }
@@ -498,7 +506,7 @@
             getProjectName:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://"+_this.IP+":8088/journal/queryProjectNameandById",
+                    url:"http://localhost:8082/journal/queryProjectNameandById",
                     type:"GET",
                     dataType:"json",
                     data:{},
@@ -544,123 +552,126 @@
                 var oldArray=[];
                 var endArray=[];
                 var allGongShi=0;
-                if(_this.isHuiXianOrAdd==1){
-                    //提交    新增的数据
 
 
-                    var re =  /^[1-9]\d*$/;
-                    if(_this.noData.wWorkReport==""){
-                        _this.$message({
-                            message:"请输入工作内容",
-                            type:"error",
-                        });
-                    }else if(_this.noData.pId==""){
-                        _this.$message({
-                            message:"请选择项目名称",
-                            type:"error",
-                        });
-                    }else if (!re.test(_this.noData.wActualProportion)) {
-                        _this.$message({
-                            message:"项目的完成进度请输入正整数",
-                            type:"error",
-                        });
-                    }else if (Number(_this.noData.wActualProportion)>100){
-                        _this.$message({
-                            message:"项目的完成进度不能超过100并且不能小于原始数据",
-                            type:"error",
-                        });
-                    }else if (!re.test(Number(_this.noData.rGongshi))) {
-                        _this.$message({
-                            message:"请正确的输入项目工时",
-                            type:"error",
-                        });
-                    }else if(Number(_this.noData.rGongshi)>8){
-                        _this.$message({
-                            message:"输入的总工时数不能大于8",
-                            type:"error",
-                        });
-                    }else if(_this.noData.descText==""){
-                        _this.$message({
-                            message:"请输入完成情况描述",
-                            type:"error",
-                        });
-                    }else{
-                        if(_this.checkList.length<=0){
-                            _this.$message({
-                                message:"请选择日报接收人",
-                                type:"error",
-                            });
-                        }else{
-                            if(_this.dubClick==1){
-                                _this.dubClick=2;
-                                console.log(_this.dubClick)
-                                //循环重至接收人
-                                var newArray=[];
-                                //转化成字符串
-                                newArray=_this.checkList.join(',');//接收人的id
+                if(_this.isDing){
+                    $.ajax({
+                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
+                        type:"GET",
+                        data:{},
+                        dataType:"json",
+                        success:function(res){
+                            dd.ready(function() {
+                                dd.runtime.permission.requestAuthCode({
+                                    corpId:res.corpId, // 企业id
+                                    onSuccess: function (info) {
+                                        $.ajax({
+                                            // url:"http://localhost:8082/journal/list",
+                                            url:"http://localhost:8082/journal/getDailyList",
+                                            type:"POST",
+                                            dataType:"json",
+                                            //data:{},
+                                            data:{'authCode':'025525064321734942'},
+                                            success:function(res){
+                                                if(res.code == 200||res.code == 300){
+                                                    //得到旧的数据
+                                                    var oldDailyList=[];
 
-                                for(var i=0;i<_this.dailyList.length;i++){
-                                    var items=_this.dailyList[i];
-                                    items.deliver=newArray;
-                                };
+                                                    oldDailyList=res.data.result;
 
-                                _this.noData.deliver =newArray;
-                                $.ajax({
-                                    url:"http://"+_this.IP+":8088/journal/addRbOther",
-                                    type:"post",
-                                    cache:false,
-                                    //contentType:"application/json; charset=utf-8",
-                                    dataType:"json",
-                                    async:false,
-                                    data:_this.noData,
-                                    success:function(res){
-                                        if(res.code == 200){
-                                            _this.$message({
-                                                message:res.msg,
-                                                type:"success",
-                                            });
-                                            setTimeout(function(){
-                                                window.location.href="./dailyLook.html";
-                                            },1500);
-                                        }else{
-                                            _this.dubClick=1;
-                                        };
-                                    }
-                                });
 
-                            }else{
-                                _this.$message({
-                                    message:"请勿多次保存",
-                                    type:"warning",
-                                });
-                            };
-                        };
-                    };
-                }else{
-                    //提交   回显的数据
-                    var _this=this
-                    if(_this.isDing){
-                        $.ajax({
-                            url:"http://"+_this.IP+":8088/journal/queryEmterpriseMesg",
-                            type:"GET",
-                            data:{},
-                            dataType:"json",
-                            success:function(res){
-                                dd.ready(function() {
-                                    dd.runtime.permission.requestAuthCode({
-                                        corpId:res.corpId, // 企业id
-                                        onSuccess: function (info) {
-                                            $.ajax({
-                                                url:"http://"+_this.IP+":8088/journal/list",
-                                                type:"POST",
-                                                dataType:"json",
-                                                //data:{},
-                                                data:{'authCode':info.code},
-                                                success:function(res){
-                                                    if(res.code == 200){
-                                                        //得到旧的数据
-                                                        var oldDailyList=[];
-                                                        oldDailyList=res.data.result;
+                                                    //循环重至接收人
+                                                    var newArray=[];
+                                                    //转化成字符串
+                                                    newArray=_this.checkList.join(',');//接收人的id
+
+                                                    for(var i=0;i<_this.dailyList.length;i++){
+                                                        var items=_this.dailyList[i];
+                                                        items.deliver=newArray;
+                                                    };
+
+                                                    _this.noData.deliver =newArray;
+
+
+                                                    if(oldDailyList.length<=0){
+                                                        //没有日报列表
+                                                        if(_this.isHuiXianOrAdd==1){
+                                                            //提交    新增的数据
+                                                            var re =  /^[1-9]\d*$/;
+                                                            if(_this.noData.wWorkReport==""){
+                                                                _this.$message({
+                                                                    message:"请输入工作内容",
+                                                                    type:"error",
+                                                                });
+                                                            }else if(_this.noData.pId==""){
+                                                                _this.$message({
+                                                                    message:"请选择项目名称",
+                                                                    type:"error",
+                                                                });
+                                                            }else if (!re.test(_this.noData.wActualProportion)) {
+                                                                _this.$message({
+                                                                    message:"项目的完成进度请输入正整数",
+                                                                    type:"error",
+                                                                });
+                                                            }else if (Number(_this.noData.wActualProportion)>100){
+                                                                _this.$message({
+                                                                    message:"项目的完成进度不能超过100并且不能小于原始数据",
+                                                                    type:"error",
+                                                                });
+                                                            }else if (!re.test(Number(_this.noData.rGongshi))) {
+                                                                _this.$message({
+                                                                    message:"请正确的输入项目工时",
+                                                                    type:"error",
+                                                                });
+                                                            }else if(_this.noData.descText==""){
+                                                                _this.$message({
+                                                                    message:"请输入完成情况描述",
+                                                                    type:"error",
+                                                                });
+                                                            }else if(newArray.length<=0){
+                                                                _this.$message({
+                                                                    message:"请选择日志接收人",
+                                                                    type:"error",
+                                                                });
+                                                            }else{
+                                                                if(Number(_this.noData.rGongshi)>8){
+                                                                    _this.$message({
+                                                                        message:"输入的总工时数不能大于8",
+                                                                        type:"warning",
+                                                                    });
+                                                                };
+                                                                $.ajax({
+                                                                    url:"http://localhost:8082/journal/addRbOther",
+                                                                    type:"post",
+                                                                    cache:false,
+                                                                    //contentType:"application/json; charset=utf-8",
+                                                                    dataType:"json",
+                                                                    async:false,
+                                                                    data:_this.noData,
+                                                                    success:function(res){
+                                                                        if(res.code == 200){
+                                                                            _this.$message({
+                                                                                message:res.msg,
+                                                                                type:"success",
+                                                                            });
+                                                                            setTimeout(function(){
+                                                                                window.location.href="./dailyLook.html";
+                                                                            },1500);
+                                                                        }else{
+                                                                            _this.dubClick=1;
+                                                                        };
+                                                                    }
+                                                                });
+                                                            };
+                                                        }else{
+                                                            _this.$message({
+                                                                message:"请新增项目",
+                                                                type:"error",
+                                                            });
+                                                        };
+                                                    }else{
+                                                        //有日报列表
+
                                                         //得到新的数据
                                                         for(var i=0;i<_this.dailyList.length;i++){
                                                             var items=_this.dailyList[i];
@@ -719,98 +730,297 @@
                                                                     });
                                                                     flags=false;
                                                                     return;
-                                                                }else if(allGongShi>8){
-                                                                    _this.$message({
-                                                                        message:"输入的总工时数不能大于8",
-                                                                        type:"error",
-                                                                    });
-                                                                    flags=false;
-                                                                    return;
                                                                 }else{
                                                                     flags=true;
-
                                                                 };
                                                             };
                                                         };
-
+                                                        if(allGongShi>8){
+                                                            _this.$message({
+                                                                message:"输入的总工时数不能大于8",
+                                                                type:"warning",
+                                                            });
+                                                        };
                                                         if(flags==true){
-                                                            if(_this.checkList.length<=0){
-                                                                _this.$message({
-                                                                    message:"请选择日报接收人",
-                                                                    type:"error",
-                                                                });
-
-                                                            }else{
-                                                                if(_this.dubClick==1){
-                                                                    _this.dubClick=2;
-                                                                    console.log(_this.dubClick)
-                                                                    //循环重至接收人
-                                                                    var newArray=[];
-                                                                    //转化成字符串
-                                                                    newArray=_this.checkList.join(',');//接收人的id
-
-                                                                    for(var i=0;i<_this.dailyList.length;i++){
-                                                                        var items=_this.dailyList[i];
-                                                                        items.deliver=newArray;
-                                                                    };
-                                                                    $.ajax({
-                                                                        url:"http://"+_this.IP+":8088/journal/save",
-                                                                        type:"post",
-                                                                        cache:false,
-                                                                        contentType:"application/json; charset=utf-8",
-                                                                        dataType:"json",
-                                                                        async:false,
-                                                                        data:JSON.stringify({para: _this.dailyList}),
-                                                                        success:function(res){
-                                                                            if(res.code == 200){
-                                                                                _this.$message({
-                                                                                    message:res.msg,
-                                                                                    type:"success",
-                                                                                });
-
-                                                                                setTimeout(function(){
-                                                                                    window.location.href="./dailyLook.html";
-                                                                                },1500);
-                                                                            }else{
-                                                                                _this.dubClick=1;
-                                                                            };
-                                                                        }
-                                                                    });
-
-                                                                }else{
+                                                            //提交    新增的数据
+                                                            var re =  /^[1-9]\d*$/;
+                                                            if(_this.isHuiXianOrAdd==1){
+                                                                if(_this.noData.wWorkReport==""){
                                                                     _this.$message({
-                                                                        message:"请勿多次保存",
-                                                                        type:"warning",
+                                                                        message:"请输入工作内容",
+                                                                        type:"error",
                                                                     });
+                                                                }else if(_this.noData.pId==""){
+                                                                    _this.$message({
+                                                                        message:"请选择项目名称",
+                                                                        type:"error",
+                                                                    });
+                                                                }else if (!re.test(_this.noData.wActualProportion)) {
+                                                                    _this.$message({
+                                                                        message:"项目的完成进度请输入正整数",
+                                                                        type:"error",
+                                                                    });
+                                                                }else if (Number(_this.noData.wActualProportion)>100){
+                                                                    _this.$message({
+                                                                        message:"项目的完成进度不能超过100并且不能小于原始数据",
+                                                                        type:"error",
+                                                                    });
+                                                                }else if (!re.test(Number(_this.noData.rGongshi))) {
+                                                                    _this.$message({
+                                                                        message:"请正确的输入项目工时",
+                                                                        type:"error",
+                                                                    });
+                                                                }else if(_this.noData.descText==""){
+                                                                    _this.$message({
+                                                                        message:"请输入完成情况描述",
+                                                                        type:"error",
+                                                                    });
+                                                                }else{
+                                                                    if(Number(_this.noData.rGongshi)>8){
+                                                                        _this.$message({
+                                                                            message:"输入的总工时数不能大于8",
+                                                                            type:"warning",
+                                                                        });
+                                                                    };
+                                                                    if(_this.checkList.length<=0){
+                                                                        _this.$message({
+                                                                            message:"请选择日报接收人",
+                                                                            type:"error",
+                                                                        });
+                                                                    }else{
+                                                                        if(_this.dubClick==1){
+                                                                            _this.dubClick=2;
+                                                                            //循环重至接收人
+                                                                            var newArray=[];
+                                                                            //转化成字符串
+                                                                            newArray=_this.checkList.join(',');//接收人的id
+
+                                                                            for(var i=0;i<_this.dailyList.length;i++){
+                                                                                var items=_this.dailyList[i];
+                                                                                items.deliver=newArray;
+                                                                            };
+
+                                                                            //提交回显的数据
+                                                                            $.ajax({
+                                                                                url:"http://localhost:8082/journal/save",
+                                                                                type:"post",
+                                                                                cache:false,
+                                                                                contentType:"application/json; charset=utf-8",
+                                                                                dataType:"json",
+                                                                                async:false,
+                                                                                data:JSON.stringify({para: _this.dailyList}),
+                                                                                success:function(res){
+                                                                                    if(res.code == 200){
+                                                                                        //提交  新增的数据
+                                                                                        _this.noData.deliver =newArray;
+                                                                                        $.ajax({
+                                                                                            url:"http://localhost:8082/journal/addRbOther",
+                                                                                            type:"post",
+                                                                                            cache:false,
+                                                                                            //contentType:"application/json; charset=utf-8",
+                                                                                            dataType:"json",
+                                                                                            async:false,
+                                                                                            data:_this.noData,
+                                                                                            success:function(res){
+                                                                                                if(res.code == 200){
+                                                                                                    _this.$message({
+                                                                                                        message:res.msg,
+                                                                                                        type:"success",
+                                                                                                    });
+                                                                                                    setTimeout(function(){
+                                                                                                        window.location.href="./dailyLook.html";
+                                                                                                    },1500);
+                                                                                                }else{
+                                                                                                    _this.dubClick=1;
+                                                                                                };
+                                                                                            }
+                                                                                        });
+                                                                                    };
+                                                                                }
+                                                                            });
+                                                                        }else{
+                                                                            _this.$message({
+                                                                                message:"请勿多次保存",
+                                                                                type:"warning",
+                                                                            });
+                                                                        };
+                                                                    };
+                                                                };
+                                                            }else{
+                                                                if(_this.checkList.length<=0){
+                                                                    _this.$message({
+                                                                        message:"请选择日报接收人",
+                                                                        type:"error",
+                                                                    });
+                                                                }else{
+                                                                    if(_this.dubClick==1){
+                                                                        _this.dubClick=2;
+                                                                        //循环重至接收人
+                                                                        var newArray=[];
+                                                                        //转化成字符串
+                                                                        newArray=_this.checkList.join(',');//接收人的id
+
+                                                                        for(var i=0;i<_this.dailyList.length;i++){
+                                                                            var items=_this.dailyList[i];
+                                                                            items.deliver=newArray;
+                                                                        };
+
+                                                                        //提交回显的数据
+                                                                        $.ajax({
+                                                                            url:"http://localhost:8082/journal/save",
+                                                                            type:"post",
+                                                                            cache:false,
+                                                                            contentType:"application/json; charset=utf-8",
+                                                                            dataType:"json",
+                                                                            async:false,
+                                                                            data:JSON.stringify({para: _this.dailyList}),
+                                                                            success:function(res){
+                                                                                if(res.code == 200){
+                                                                                    _this.$message({
+                                                                                        message:res.msg,
+                                                                                        type:"success",
+                                                                                    });
+
+                                                                                    setTimeout(function(){
+                                                                                        window.location.href="./dailyLook.html";
+                                                                                    },1500);
+                                                                                }else{
+                                                                                    _this.dubClick=1;
+                                                                                };
+                                                                            }
+                                                                        });
+                                                                    }else{
+                                                                        _this.$message({
+                                                                            message:"请勿多次保存",
+                                                                            type:"warning",
+                                                                        });
+                                                                    };
                                                                 };
                                                             };
-
                                                         };
+                                                    };
 
+
+                                                };
+                                            }
+                                        });
+                                    },
+                                    onFail : function(err) {
+                                        alert('fail: ' + JSON.stringify(err));
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }else{
+                    //本地测试
+                    $.ajax({
+                        // url:"http://localhost:8082/journal/list",
+                        url:"http://localhost:8082/journal/getDailyList",
+                        type:"POST",
+                        dataType:"json",
+                        //data:{},
+                        data:{'authCode':'025525064321734942'},
+                        success:function(res){
+                            if(res.code == 200||res.code == 300){
+                                //得到旧的数据
+                                var oldDailyList=[];
+
+                                oldDailyList=res.data.result;
+
+
+                                //循环重至接收人
+                                var newArray=[];
+                                //转化成字符串
+                                newArray=_this.checkList.join(',');//接收人的id
+
+                                for(var i=0;i<_this.dailyList.length;i++){
+                                    var items=_this.dailyList[i];
+                                    items.deliver=newArray;
+                                };
+
+                                _this.noData.deliver =newArray;
+
+
+                                if(oldDailyList.length<=0){
+                                    //没有日报列表
+                                    if(_this.isHuiXianOrAdd==1){
+                                        //提交    新增的数据
+                                        var re =  /^[1-9]\d*$/;
+                                        if(_this.noData.wWorkReport==""){
+                                            _this.$message({
+                                                message:"请输入工作内容",
+                                                type:"error",
+                                            });
+                                        }else if(_this.noData.pId==""){
+                                            _this.$message({
+                                                message:"请选择项目名称",
+                                                type:"error",
+                                            });
+                                        }else if (!re.test(_this.noData.wActualProportion)) {
+                                            _this.$message({
+                                                message:"项目的完成进度请输入正整数",
+                                                type:"error",
+                                            });
+                                        }else if (Number(_this.noData.wActualProportion)>100){
+                                            _this.$message({
+                                                message:"项目的完成进度不能超过100并且不能小于原始数据",
+                                                type:"error",
+                                            });
+                                        }else if (!re.test(Number(_this.noData.rGongshi))) {
+                                            _this.$message({
+                                                message:"请正确的输入项目工时",
+                                                type:"error",
+                                            });
+                                        }else if(_this.noData.descText==""){
+                                            _this.$message({
+                                                message:"请输入完成情况描述",
+                                                type:"error",
+                                            });
+                                        }else if(newArray.length<=0){
+                                            _this.$message({
+                                                message:"请选择日志接收人",
+                                                type:"error",
+                                            });
+                                        }else{
+                                            if(Number(_this.noData.rGongshi)>8){
+                                                _this.$message({
+                                                    message:"输入的总工时数不能大于8",
+                                                    type:"warning",
+                                                });
+                                            };
+                                            $.ajax({
+                                                url:"http://localhost:8082/journal/addRbOther",
+                                                type:"post",
+                                                cache:false,
+                                                //contentType:"application/json; charset=utf-8",
+                                                dataType:"json",
+                                                async:false,
+                                                data:_this.noData,
+                                                success:function(res){
+                                                    if(res.code == 200){
+                                                        _this.$message({
+                                                            message:res.msg,
+                                                            type:"success",
+                                                        });
+                                                        setTimeout(function(){
+                                                            window.location.href="./dailyLook.html";
+                                                        },1500);
+                                                    }else{
+                                                        _this.dubClick=1;
                                                     };
                                                 }
                                             });
-                                        },
-                                        onFail : function(err) {
-                                            alert('fail: ' + JSON.stringify(err));
-                                        }
-                                    });
-                                });
-                            }
-                        });
-                    }else{
+                                        };
+                                    }else{
+                                        _this.$message({
+                                            message:"请新增项目",
+                                            type:"error",
+                                        });
+                                    };
+                                }else{
+                                    //有日报列表
 
-                        $.ajax({
-                            url:"http://"+_this.IP+":8088/journal/list",
-                            type:"POST",
-                            dataType:"json",
-                            //data:{},
-                            data:{'authCode':'025525064321734942'},
-                            success:function(res){
-                                if(res.code == 200){
-                                    //得到旧的数据
-                                    var oldDailyList=[];
-                                    oldDailyList=res.data.result;
                                     //得到新的数据
                                     for(var i=0;i<_this.dailyList.length;i++){
                                         var items=_this.dailyList[i];
@@ -869,85 +1079,183 @@
                                                 });
                                                 flags=false;
                                                 return;
-                                            }else if(allGongShi>8){
-                                                _this.$message({
-                                                    message:"输入的总工时数不能大于8",
-                                                    type:"error",
-                                                });
-                                                flags=false;
-                                                return;
                                             }else{
                                                 flags=true;
-
                                             };
                                         };
                                     };
-
+                                    if(allGongShi>8){
+                                        _this.$message({
+                                            message:"输入的总工时数不能大于8",
+                                            type:"warning",
+                                        });
+                                    };
                                     if(flags==true){
-                                        if(_this.checkList.length<=0){
-                                            _this.$message({
-                                                message:"请选择日报接收人",
-                                                type:"error",
-                                            });
-
-                                        }else{
-                                            if(_this.dubClick==1){
-                                                _this.dubClick=2;
-                                                console.log(_this.dubClick)
-                                                //循环重至接收人
-                                                var newArray=[];
-                                                //转化成字符串
-                                                newArray=_this.checkList.join(',');//接收人的id
-
-                                                for(var i=0;i<_this.dailyList.length;i++){
-                                                    var items=_this.dailyList[i];
-                                                    items.deliver=newArray;
-                                                };
-                                                $.ajax({
-                                                    url:"http://"+_this.IP+":8088/journal/save",
-                                                    type:"post",
-                                                    cache:false,
-                                                    contentType:"application/json; charset=utf-8",
-                                                    dataType:"json",
-                                                    async:false,
-                                                    data:JSON.stringify({para: _this.dailyList}),
-                                                    success:function(res){
-                                                        if(res.code == 200){
-                                                            _this.$message({
-                                                                message:res.msg,
-                                                                type:"success",
-                                                            });
-
-                                                            setTimeout(function(){
-                                                                window.location.href="./dailyLook.html";
-                                                            },1500);
-                                                        }else{
-                                                            _this.dubClick=1;
-                                                        };
-                                                    }
-                                                });
-
-                                            }else{
+                                        //提交    新增的数据
+                                        var re =  /^[1-9]\d*$/;
+                                        if(_this.isHuiXianOrAdd==1){
+                                            if(_this.noData.wWorkReport==""){
                                                 _this.$message({
-                                                    message:"请勿多次保存",
-                                                    type:"warning",
+                                                    message:"请输入工作内容",
+                                                    type:"error",
                                                 });
+                                            }else if(_this.noData.pId==""){
+                                                _this.$message({
+                                                    message:"请选择项目名称",
+                                                    type:"error",
+                                                });
+                                            }else if (!re.test(_this.noData.wActualProportion)) {
+                                                _this.$message({
+                                                    message:"项目的完成进度请输入正整数",
+                                                    type:"error",
+                                                });
+                                            }else if (Number(_this.noData.wActualProportion)>100){
+                                                _this.$message({
+                                                    message:"项目的完成进度不能超过100并且不能小于原始数据",
+                                                    type:"error",
+                                                });
+                                            }else if (!re.test(Number(_this.noData.rGongshi))) {
+                                                _this.$message({
+                                                    message:"请正确的输入项目工时",
+                                                    type:"error",
+                                                });
+                                            }else if(_this.noData.descText==""){
+                                                _this.$message({
+                                                    message:"请输入完成情况描述",
+                                                    type:"error",
+                                                });
+                                            }else{
+                                                if(Number(_this.noData.rGongshi)>8){
+                                                    _this.$message({
+                                                        message:"输入的总工时数不能大于8",
+                                                        type:"warning",
+                                                    });
+                                                };
+                                                if(_this.checkList.length<=0){
+                                                    _this.$message({
+                                                        message:"请选择日报接收人",
+                                                        type:"error",
+                                                    });
+                                                }else{
+                                                    if(_this.dubClick==1){
+                                                        _this.dubClick=2;
+                                                        //循环重至接收人
+                                                        var newArray=[];
+                                                        //转化成字符串
+                                                        newArray=_this.checkList.join(',');//接收人的id
+
+                                                        for(var i=0;i<_this.dailyList.length;i++){
+                                                            var items=_this.dailyList[i];
+                                                            items.deliver=newArray;
+                                                        };
+
+                                                        //提交回显的数据
+                                                        $.ajax({
+                                                            url:"http://localhost:8082/journal/save",
+                                                            type:"post",
+                                                            cache:false,
+                                                            contentType:"application/json; charset=utf-8",
+                                                            dataType:"json",
+                                                            async:false,
+                                                            data:JSON.stringify({para: _this.dailyList}),
+                                                            success:function(res){
+                                                                if(res.code == 200){
+                                                                    //提交  新增的数据
+                                                                    _this.noData.deliver =newArray;
+                                                                    $.ajax({
+                                                                        url:"http://localhost:8082/journal/addRbOther",
+                                                                        type:"post",
+                                                                        cache:false,
+                                                                        //contentType:"application/json; charset=utf-8",
+                                                                        dataType:"json",
+                                                                        async:false,
+                                                                        data:_this.noData,
+                                                                        success:function(res){
+                                                                            if(res.code == 200){
+                                                                                _this.$message({
+                                                                                    message:res.msg,
+                                                                                    type:"success",
+                                                                                });
+                                                                                setTimeout(function(){
+                                                                                    window.location.href="./dailyLook.html";
+                                                                                },1500);
+                                                                            }else{
+                                                                                _this.dubClick=1;
+                                                                            };
+                                                                        }
+                                                                    });
+                                                                };
+                                                            }
+                                                        });
+                                                    }else{
+                                                        _this.$message({
+                                                            message:"请勿多次保存",
+                                                            type:"warning",
+                                                        });
+                                                    };
+                                                };
+                                            };
+                                        }else{
+                                            if(_this.checkList.length<=0){
+                                                _this.$message({
+                                                    message:"请选择日报接收人",
+                                                    type:"error",
+                                                });
+                                            }else{
+                                                if(_this.dubClick==1){
+                                                    _this.dubClick=2;
+                                                    //循环重至接收人
+                                                    var newArray=[];
+                                                    //转化成字符串
+                                                    newArray=_this.checkList.join(',');//接收人的id
+
+                                                    for(var i=0;i<_this.dailyList.length;i++){
+                                                        var items=_this.dailyList[i];
+                                                        items.deliver=newArray;
+                                                    };
+
+                                                    //提交回显的数据
+                                                    $.ajax({
+                                                        url:"http://localhost:8082/journal/save",
+                                                        type:"post",
+                                                        cache:false,
+                                                        contentType:"application/json; charset=utf-8",
+                                                        dataType:"json",
+                                                        async:false,
+                                                        data:JSON.stringify({para: _this.dailyList}),
+                                                        success:function(res){
+                                                            if(res.code == 200){
+                                                                _this.$message({
+                                                                    message:res.msg,
+                                                                    type:"success",
+                                                                });
+
+                                                                setTimeout(function(){
+                                                                    window.location.href="./dailyLook.html";
+                                                                },1500);
+                                                            }else{
+                                                                _this.dubClick=1;
+                                                            };
+                                                        }
+                                                    });
+                                                }else{
+                                                    _this.$message({
+                                                        message:"请勿多次保存",
+                                                        type:"warning",
+                                                    });
+                                                };
                                             };
                                         };
-
                                     };
-
                                 };
-                            }
-                        });
-                    }
 
 
-
-
-
-
+                            };
+                        }
+                    });
                 };
+
+
             },
         },
         updated:function(){
