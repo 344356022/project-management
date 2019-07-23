@@ -38,4 +38,10 @@ public interface SysUserMapper extends GeneralMapper<SysUser> {
     //根据部门以及标签进行查询部门普通员工
     List<SysUser> selectUserByDepartment(String department);
 
+    //查询双周计划中的操作人
+    List<SysUser> queryCreater();
+
+    //查询全部的员工
+    List<SysUser> queryAllStaff();
+
 }
