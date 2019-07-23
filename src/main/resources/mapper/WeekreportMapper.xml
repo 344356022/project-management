@@ -15,7 +15,8 @@
         <result column="w_remark" property="wRemark" jdbcType="VARCHAR"/>
         <result column="r_finish" property="rFinish" jdbcType="VARCHAR"/>
         <result column="w_type" property="wType" jdbcType="INTEGER"/>
-        <result column="user_department" property="userDepartmet" jdbcType="VARCHAR"></result>
+        <result column="user_department" property="userDepartmet" jdbcType="VARCHAR"/>
+        <result column="w_creater" property="wCreater" jdbcType="VARCHAR"/>
         <collection property="projectPlans" javaType="java.util.List"
                     ofType="com.gedi.projectmanagement.model.ProjectPlan">
             <id column="p_id" property="pId" jdbcType="VARCHAR"/>
@@ -72,9 +73,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    w_id, p_id, w_start_time, w_end_time, a_id, w_work_report, user_id, w_actual_proportion, 
-    w_plan_proportion, w_status, w_remark
-  </sql>
+        w_id, p_id, w_start_time, w_end_time, a_id, w_work_report, user_id, w_actual_proportion,
+        w_plan_proportion, w_status, w_remark
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
@@ -82,19 +83,19 @@
         where w_id = #{wId,jdbcType=VARCHAR}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from weekreport
-    where w_id = #{wId,jdbcType=VARCHAR}
-  </delete>
+        delete from weekreport
+        where w_id = #{wId,jdbcType=VARCHAR}
+    </delete>
     <insert id="insert" parameterType="com.gedi.projectmanagement.model.Weekreport">
-    insert into weekreport (w_id, p_id, w_start_time, 
-      w_end_time, a_id, w_work_report, 
-      user_id, w_actual_proportion, w_plan_proportion, 
-      w_status, w_remark)
-    values (#{wId,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, #{wStartTime,jdbcType=DATE}, 
-      #{wEndTime,jdbcType=DATE}, #{aId,jdbcType=VARCHAR}, #{wWorkReport,jdbcType=VARCHAR}, 
-      #{userId,jdbcType=VARCHAR}, #{wActualProportion,jdbcType=INTEGER}, #{wPlanProportion,jdbcType=INTEGER}, 
-      #{wStatus,jdbcType=INTEGER}, #{wRemark,jdbcType=VARCHAR})
-  </insert>
+        insert into weekreport (w_id, p_id, w_start_time,
+        w_end_time, a_id, w_work_report,
+        user_id, w_actual_proportion, w_plan_proportion,
+        w_status, w_remark)
+        values (#{wId,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, #{wStartTime,jdbcType=DATE},
+        #{wEndTime,jdbcType=DATE}, #{aId,jdbcType=VARCHAR}, #{wWorkReport,jdbcType=VARCHAR},
+        #{userId,jdbcType=VARCHAR}, #{wActualProportion,jdbcType=INTEGER}, #{wPlanProportion,jdbcType=INTEGER},
+        #{wStatus,jdbcType=INTEGER}, #{wRemark,jdbcType=VARCHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.gedi.projectmanagement.model.Weekreport">
         insert into weekreport
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -206,19 +207,19 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="com.gedi.projectmanagement.model.Weekreport">
-    update weekreport
-    set p_id = #{pId,jdbcType=VARCHAR},
-      w_start_time = #{wStartTime,jdbcType=DATE},
-      w_end_time = #{wEndTime,jdbcType=DATE},
-      a_id = #{aId,jdbcType=VARCHAR},
-      w_work_report = #{wWorkReport,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=VARCHAR},
-      w_actual_proportion = #{wActualProportion,jdbcType=INTEGER},
-      w_plan_proportion = #{wPlanProportion,jdbcType=INTEGER},
-      w_status = #{wStatus,jdbcType=INTEGER},
-      w_remark = #{wRemark,jdbcType=VARCHAR}
-    where w_id = #{wId,jdbcType=VARCHAR}
-  </update>
+        update weekreport
+        set p_id = #{pId,jdbcType=VARCHAR},
+        w_start_time = #{wStartTime,jdbcType=DATE},
+        w_end_time = #{wEndTime,jdbcType=DATE},
+        a_id = #{aId,jdbcType=VARCHAR},
+        w_work_report = #{wWorkReport,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=VARCHAR},
+        w_actual_proportion = #{wActualProportion,jdbcType=INTEGER},
+        w_plan_proportion = #{wPlanProportion,jdbcType=INTEGER},
+        w_status = #{wStatus,jdbcType=INTEGER},
+        w_remark = #{wRemark,jdbcType=VARCHAR}
+        where w_id = #{wId,jdbcType=VARCHAR}
+    </update>
 
     <!--查询双周计划表里的详细内容进行展示-->
     <select id="selectWeekReportDetial" resultMap="BaseResultMap">
@@ -231,6 +232,8 @@
         w.w_remark,
         w.r_finish,
         w.w_type,
+        w.w_end_time,
+        w.w_start_time,
         pp.p_id,
         u.user_id,
         tu.ts_id,
@@ -245,15 +248,26 @@
         LEFT JOIN task_subclass tu ON w.ts_id = tu.ts_id
         LEFT JOIN record_time rt ON rt.w_id = w.w_id
         where 1=1
+        and w.w_type = 1 and w.w_actual_proportion != w.w_plan_proportion
         <if test="userDepartment!=null and userDepartment!=''">
             and w.user_department=#{userDepartment}
         </if>
         <if test="wStarTime!=null and wStarTime!=''">
-            and w.w_start_time=#{wStarTime}
+            and w.w_start_time <![CDATA[<=]]> #{wStarTime}
         </if>
         <if test="wEndTime!=null and wEndTime!=''">
-            and w.w_end_time=#{wEndTime}
+            and w.w_end_time <![CDATA[>=]]>  #{wEndTime}
         </if>
+        <if test="wCreater !=null and wCreater!=''">
+            and w.w_creater=#{wCreater}
+        </if>
+        <if test="wStatus !=null and wStatus!=''">
+            and w.w_status=#{wStatus}
+        </if>
+        <if test="pId !=null and pId!=''">
+            and pp.p_id=#{pId}
+        </if>
+
         ORDER BY
         rt.sorts
     </select>
@@ -261,56 +275,91 @@
 
     <!--批量添加双周计划表的-->
     <insert id="addWeekReport">
-        insert into weekreport (w_id,p_id,ts_id,w_work_report,user_id,
-        w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type,user_department,w_end_time,w_start_time)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.wId},#{item.pId},#{item.tsId},
-            #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},#{item.wStatus},
-            #{item.wRemark},#{item.wType},#{item.userDepartmet},#{item.wEndTime},#{item.wStartTime})
-        </foreach>
+
+        INSERT INTO weekreport (
+        w_id,
+        p_id,
+        ts_id,
+        w_work_report,
+        user_id,
+        w_actual_proportion,
+        w_plan_proportion,
+        w_status,
+        w_remark,
+        w_type,
+        user_department,
+        w_end_time,
+        w_start_time,
+        w_creater,
+        r_finish
+        )
+        VALUES
+        <foreach collection = "list" item = "item" separator="," >
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.wId},
+                #{item.pId},
+                #{item.tsId},
+                #{item.wWorkReport},
+                #{item.userId},
+                #{item.wActualProportion},
+                #{item.wPlanProportion},
+                #{item.wStatus},
+                #{item.wRemark},
+                #{item.wType},
+                #{item.userDepartmet},
+                #{item.wEndTime},
+                #{item.wStartTime},
+                #{item.wCreater},
+                #{item.rFinish}
+            </trim>
+        </foreach >
+
     </insert>
 
+    <!--批量修改-->
     <insert id="updateWeekReport">
         insert into weekreport (p_id,ts_id,w_work_report,user_id,
-        w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type)
+        w_actual_proportion,w_plan_proportion,w_status,w_remark,w_type,w_creater,r_finish)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.wId},#{item.pId},#{item.tsId},
             #{item.wWorkReport},#{item.userId},#{item.wActualProportion},#{item.wPlanProportion},
-            #{item.wStatus},#{item.wRemark},#{item.wType})
+            #{item.wStatus},#{item.wRemark},#{item.wType},#{item.wCreater},#{item.rFinish})
         </foreach>
     </insert>
 
     <!--根据双周计划表得id值进行修改为暂停-->
     <update id="updateWeekReportStop">
-    UPDATE weekreport SET w_status=2 where w_id=#{wId}
-  </update>
+        UPDATE weekreport SET w_status=2 where w_id=#{wId}
+    </update>
 
     <!--根据双周计划表得id值进行修改为进行中-->
     <update id="updateWeekReportAction">
-    UPDATE weekreport SET w_status=1 where w_id=#{wId}
-  </update>
+        UPDATE weekreport SET w_status=1 where w_id=#{wId}
+    </update>
 
     <!--根据双周计划表得id值查询到相应的计划占比值-->
     <select id="selectProjectById" resultMap="BaseResultMap">
-    SELECT w_plan_proportion,w_actual_proportion FROM weekreport WHERE w_id=#{wId}
-  </select>
+        SELECT w_plan_proportion,w_actual_proportion FROM weekreport WHERE w_id=#{wId}
+    </select>
 
     <!--根据日报中所填写的值，通过计算进行修改双周及计划表实际占比的数值 20190612 zpl 添加一个传入参数：rFinish 日报完成进度-->
     <update id="updateActual">
-    update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish},w_status=1  where w_id=#{wId}
-  </update>
+        update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish},w_status=1  where w_id=#{wId}
+    </update>
 
     <!--查询wId值是否存在-->
     <select id="selectByWeekReportId" resultMap="BaseResultMap">
-    SELECT w_id from weekreport where w_id=#{wId}
-  </select>
+        SELECT w_id from weekreport where w_id=#{wId}
+    </select>
 
     <!--更新双周计划信息-->
     <delete id="updateWeekReportMesg">
-    DELETE from weekreport where w_id=#{wId}
-  </delete>
+        DELETE from weekreport where w_id=#{wId}
+    </delete>
+   <!-- <update id="updateWeekReportMesg">
+        UPDATE weekreport set p_id='',ts_id='',w_work_report='',user_id='',w_actual_proportion=0,w_plan_proportion=0,w_status=0,w_remark='',w_type=0,w_start_time=NULL ,w_end_time=NULL ,user_department='',w_creater='',p_name=''  where w_id=#{wId}
+    </update>-->
 
     <!--批量修改书双周计划信息-->
     <update id="updateMoreWeekReport">
@@ -350,23 +399,87 @@
 
     </update>
 
-
     <delete id="deleteWeekReportById">
-    DELETE from weekreport where w_id=#{wId}
-  </delete>
+        DELETE from weekreport where w_id=#{wId}
+    </delete>
 
 
     <!--当实际占比于计划占比相等时修改状态为已完成的同时将实际占比的值更改-->
     <update id="updateActualAndStatus">
-     update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish},w_status=3 where w_id=#{wId}
-  </update>
+        update weekreport SET w_actual_proportion=#{valueZ},r_finish=#{rFinish},w_status=3 where w_id=#{wId}
+    </update>
 
-
+    <!--//供日计划自定义填写其他所调用的接口-->
     <insert id="dailyAddRecord">
-    insert into weekreport
-    (w_id,p_id,ts_id,user_id,w_actual_proportion,user_department,w_work_report,w_start_time,w_end_time,w_status)
-    values(#{wId},#{pId},#{tsId},#{userId},#{wActualProportion},#{userDepartmet},#{wWorkReport},#{wStartTime},#{wEndTime},#{wStatus})
-  </insert>
+
+        insert into weekreport
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wId != null">
+                w_id,
+            </if>
+            <if test="pId != null">
+                p_id,
+            </if>
+            <if test="tsId != null">
+                ts_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="wActualProportion != null">
+                w_actual_proportion,
+            </if>
+            <if test="userDepartmet != null">
+                user_department,
+            </if>
+            <if test="wWorkReport != null">
+                w_work_report,
+            </if>
+            <if test="wStartTime != null">
+                w_start_time,
+            </if>
+            <if test="wEndTime != null">
+                w_end_time,
+            </if>
+            <if test="wStatus != null">
+                w_status
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wId != null">
+                #{wId,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                #{pId,jdbcType=VARCHAR},
+            </if>
+            <if test="tsId != null">
+                #{tsId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="wActualProportion != null">
+                #{wActualProportion,jdbcType=INTEGER},
+            </if>
+            <if test="userDepartmet != null">
+                #{userDepartmet,jdbcType=VARCHAR},
+            </if>
+            <if test="wWorkReport != null">
+                #{wWorkReport,jdbcType=VARCHAR},
+            </if>
+            <if test="wStartTime != null">
+                #{wStartTime,jdbcType=INTEGER},
+            </if>
+            <if test="wEndTime != null">
+                #{wEndTime,jdbcType=INTEGER},
+            </if>
+            <if test="wStatus != null">
+                #{wStatus,jdbcType=INTEGER},
+            </if>
+
+        </trim>
+    </insert>
 
     <select id="selectBypId" resultType="com.gedi.projectmanagement.model.Weekreport" parameterType="String">
         SELECT
