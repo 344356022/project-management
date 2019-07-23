@@ -87,6 +87,17 @@
             width: 15px;
             cursor:pointer;
         }
+        .header-data{
+            color: #606266;
+            font-size: 0.12rem;
+        }
+        .header-data .el-select,.header-data .el-select>.el-input,.header-data .el-select>.el-input>input{
+            width: 0.8rem;
+            height: 0.3rem;
+        }
+        .header-data .el-select>.el-input>span,.header-data .el-select>.el-input i{
+            line-height: 0.3rem;
+        }
     </style>
 </head>
 <body>
@@ -99,25 +110,61 @@
 
     <div class="header">
         <div class="header-title">
-            <i @click="toWeekHistory" class="iconfont icon-jihua" title="历史计划"></i>
-            <div class="daily-title-name">项目双周计划</div>
-            <i @click="toWeekJihua" class="iconfont icon-yuji" title="预期计划"></i>
+            <!--<i @click="toWeekHistory" class="iconfont icon-jihua" title="历史计划"></i>-->
+            <div class="daily-title-name">项目周计划</div>
+            <!--<i @click="toWeekJihua" class="iconfont icon-yuji" title="预期计划"></i>-->
         </div>
-        <div class="header-data">
+        <div class="header-data"  v-if="!disabledInput">
             <el-date-picker
-                    :disabled="disabledInput"
                     v-model="params.startTime"
                     @change="startTimeChange"
                     type="date"
                     placeholder="选择开始日期">
             </el-date-picker>
             <el-date-picker
-                    :disabled="disabledInput"
                     v-model="params.endTime"
                     @change="endTimeChange"
                     type="date"
                     placeholder="选择结束日期">
             </el-date-picker>
+
+            <el-row style="width: 93%;margin: 0 auto;">
+                <el-col :span="12">
+                    <span>计划状态</span>
+                    <el-select v-model="params.wStatus" @change="jihuaChange">
+                        <el-option value="">请选择</el-option>
+                        <el-option v-for="(items,index) in wStatusList"
+                                   :key="items.value"
+                                   :label="items.name"
+                                   :value="items.value">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="12">
+                    <span>操作人</span>
+                    <el-select v-model="params.wCreater" @change="methodPeopleChange">
+                        <el-option value="">请选择</el-option>
+                        <el-option v-for="(items,index) in methodPeople" :key="items.userId" :value="items.name" :label="items.name"></el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+            <el-row style="width: 93%;margin: 0.1rem auto 0;">
+                <el-col :span="12">
+                    <span>项目名称</span>
+                    <el-select v-model="params.pId" @change="xmmcChanges">
+                        <el-option value="">请选择</el-option>
+                        <el-option
+                                v-for="(item,index) in xmName"
+                                :key="item.pId"
+                                :label="item.pName"
+                                :value="item.pId">
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+
+
+
             <div style="display:flex;justify-content:flex-end;">
                 <el-button type="primary" @click="save" class="addThisWeek" :disabled="disabledInput" size="mini">保存</el-button>
                 <el-button type="primary" size="mini" class="addThisWeek" :disabled="disabledInput" @click="addThisWeek">新增</el-button>
@@ -312,7 +359,7 @@
                     min-width="120"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.pId" @change="xmmcChange" placeholder="请选择">
+                    <el-select :disabled="disabledInput" v-model="scope.row.pId" @change="xmmcChange" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in xmName"
                                 :key="item.pId"
@@ -330,7 +377,7 @@
                     min-width="120"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.tsId" @change="rwxChange" placeholder="请选择">
+                    <el-select :disabled="disabledInput" v-model="scope.row.tsId" @change="rwxChange" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in rwx"
                                 :key="item.tsId"
@@ -347,7 +394,7 @@
                     min-width="200"
                     prop="wWorkReport" >
                 <template slot-scope="scope">
-                    <el-input
+                    <el-input :disabled="disabledInput"
                             @change="rwmsChange"
                             type="textarea"
                             autosize
@@ -364,7 +411,7 @@
                     min-width="80"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.userId"  @change="fzrChange" placeholder="请选择">
+                    <el-select :disabled="disabledInput" v-model="scope.row.userId"  @change="fzrChange" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in zrr"
                                 :key="item.userId"
@@ -392,7 +439,7 @@
                     min-width="80"
             >
                 <template slot-scope="scope">
-                    <el-input v-model="scope.row.wPlanProportion" @change="jhbfbChange" placeholder="计划完成百分比"></el-input>
+                    <el-input :disabled="disabledInput" v-model="scope.row.wPlanProportion" @change="jhbfbChange" placeholder="计划完成百分比"></el-input>
                 </template>
             </el-table-column>
             <el-table-column
@@ -402,7 +449,7 @@
                     min-width="80"
             >
                 <template slot-scope="scope">
-                    <el-select v-model="scope.row.wStatus" :disabled="scope.row.statusDisabled" @change="statusChange" placeholder="请选择">
+                    <el-select  v-model="scope.row.wStatus" :disabled="scope.row.statusDisabled" @change="statusChange" placeholder="请选择">
                         <el-option
                                 v-for="(item,index) in wStatusList"
                                 :key="item.value"
@@ -419,7 +466,7 @@
                     min-width="150"
             >
                 <template slot-scope="scope">
-                    <el-input type="textarea"
+                    <el-input :disabled="disabledInput" type="textarea"
                               @change="bzChange"
                               autosize v-model="scope.row.wRemark" placeholder="备注\协调配合"></el-input>
                 </template>
@@ -446,7 +493,7 @@
     var nextWeek=[];//下周数据
     (function () {
         $.ajax({
-            url:"http://106.13.24.63:8088/weekReport/getTwelveDayDate",
+            url:"http://localhost:8082/weekReport/getTwelveDayDate",
             type:"GET",
             data:{},
             dataType:"json",
@@ -475,9 +522,13 @@
 
             //结束、开始时间
             params:{
-                startTime:"",
-                endTime:"",
+                startTime:"",//开始时间
+                endTime:"",//结束时间
+                wStatus:"",//计划状态
+                wCreater:"",//操作人
+                pId:"",//项目名称
             },
+
             thisWeekMonth:[],//本周带月份的日期
             nextWeekMonth:[],//下周带月份的数据
             code:"",
@@ -507,17 +558,19 @@
                 }
             ],
 
+            methodPeople:[],
+
             flags:true,
 
             dubClick:1,//禁止双击保存
         },
         mounted:function(){
             var _this=this;
-            _this.getDingDing();//获取临时授权码
+            //_this.getDingDing();//获取临时授权码
             //获取本周和下周时间范围
             var date=new Date();//当前时间
             _this.getMonRen(date);
-            //_this.getDatas();
+            _this.getDatas();
         },
         created:function () {
             var _this=this;
@@ -547,11 +600,33 @@
             endTimeChange:function(value){
                 var _this=this;
                 _this.getMonRen(value);
+                _this.getDatas();
+                //_this.getDingDing();
             },
             //改变时间框
             startTimeChange:function(value){
                 var _this=this;
                 _this.getMonRen(value);
+                //_this.getDingDing();
+                _this.getDatas();
+            },
+            //计划状态
+            jihuaChange:function(){
+                var _this=this;
+                //_this.getDingDing();
+                _this.getDatas();
+            },
+            //计划状态
+            methodPeopleChange:function(){
+                var _this=this;
+                //_this.getDingDing();
+                _this.getDatas();
+            },
+            //计划状态
+            xmmcChanges:function(){
+                var _this=this;
+                //_this.getDingDing();
+                _this.getDatas();
             },
 
             //获取默认开始时间和结束时间
@@ -633,7 +708,7 @@
             statusChange:function () {
                 var _this=this;
                 _this.dubClick=1;
-                
+
             },
             //备注、协调配合
             bzChange:function(){
@@ -641,11 +716,11 @@
                 _this.dubClick=1;
             },
 
-            //获取有关钉钉需要的值
+            /*//获取有关钉钉需要的值
             getDingDing:function () {
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8088/weekReport/queryEmterpriseMesg",
+                    url:"http://localhost:8082/weekReport/queryEmterpriseMesg",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -672,32 +747,38 @@
                     });
                 });
 
-            },
+            },*/
 
             /*获取已经保存过后的数据*/
-            getDatas:function (code) {
+            getDatas:function () {
                 var _this=this;
                 /* var objs={
                      authCode:code,
                  }*/
+
+                _this.loading=true;
+
                 _this.tableData=[];
                 _this.tableData1=[];
 
                 $.ajax({
-                    url:"http://106.13.24.63:8088/weekReport/selectWeekReportDetial",
+                    url:"http://localhost:8082/weekReport/selectWeekReportDetial",
                     type:"POST",
                     //data:{},
                     data:{
-                        'authCode':code,
+                        //'authCode':code,
                         'wStarTime':_this.params.startTime,
                         'wEndTime':_this.params.endTime,
+                        'wStatus': Number(_this.params.wStatus),//计划状态
+                        'wCreater':_this.params.wCreater,//操作人
+                        'pId':_this.params.pId,//项目名称
                     },
                     dataType:"json",
                     success:function(res){
                         //获取   用户的所有信息
 
                         _this.sysUsers=res.sysUser;
-
+                        _this.methodPeople=res.sysUsers;
                         if(res.weekreports!=null){
                             for(var i=0;i<res.weekreports.length;i++){
                                 var items=res.weekreports[i];
@@ -726,6 +807,8 @@
                         };
 
                         _this.getRwx();
+
+                        _this.loading=false;
                         /* _this.rwx=res.data;
                          _this.getXmmc();*/
                     }
@@ -735,7 +818,7 @@
             getRwx:function(data){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8088/weekReport/queryTaskSubIdAndName",
+                    url:"http://localhost:8082/weekReport/queryTaskSubIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -749,7 +832,7 @@
             getXmmc:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8088/weekReport/selectProjectPlanIdAndName",
+                    url:"http://localhost:8082/weekReport/selectProjectPlanIdAndName",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -763,7 +846,7 @@
             getZrr:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://106.13.24.63:8088/sys/user/selectUserByDepartment",
+                    url:"http://localhost:8082/sys/user/selectUserByDepartment",
                     type:"GET",
                     data:{},
                     dataType:"json",
@@ -826,6 +909,7 @@
                     wActualProportion:"",
                     wPlanProportion:"100",
                     wWorkReport:"",
+                    rFinish:"",
                     wStatus:"",
                     wRemark:"",
                     wType:"1",
@@ -887,6 +971,7 @@
                     wActualProportion:"",
                     wPlanProportion:"100",
                     wStatus:"",
+                    rFinish:"",
                     wWorkReport:"",
                     wRemark:"",
                     wType:"2",
@@ -909,7 +994,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.24.63:8088/weekReport/deleteWeekReportById",
+                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -935,7 +1020,7 @@
                         wId:params.wId,
                     };
                     $.ajax({
-                        url:"http://106.13.24.63:8088/weekReport/deleteWeekReportById",
+                        url:"http://localhost:8082/weekReport/deleteWeekReportById",
                         data:objs,
                         type:"POST",
                         dataType:"json",
@@ -1061,7 +1146,7 @@
                         };
 
                         $.ajax({
-                            url:"http://106.13.24.63:8088/weekReport/createMoreWeekReport",
+                            url:"http://localhost:8082/weekReport/createMoreWeekReport",
                             data:JSON.stringify(objs),
                             type:"POST",
                             dataType:"json",
@@ -1072,7 +1157,8 @@
                                     type:"success",
                                 });
                                 _this.flags=true;
-                                _this.getDingDing();
+                                //_this.getDingDing();
+                                _this.getDatas();
                             }
                         });
                     }else{
@@ -1091,6 +1177,7 @@
         updated:function(){
             var _this=this;
             _this.$nextTick(function(){
+                console.log(_this.sysUsers)
                 //权限设置
                 if(_this.sysUsers.isLeader==true||_this.sysUsers.isBoss==true||_this.sysUsers.isAdmin==true){
                     _this.disabledInput=false;

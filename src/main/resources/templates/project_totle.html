@@ -307,19 +307,19 @@
             },
             mounted:function(){
                 var _this=this;
-                _this.getListMessage();
-                //_this.getDingDing();//获取临时授权码
+                //_this.getListMessage();
+                _this.getDingDing();//获取临时授权码
             },
             methods:{
                 nianDu:function(){
                     var _this=this;
 
                 },
-                /*//获取有关钉钉需要的值
+                //获取有关钉钉需要的值
                 getDingDing:function () {
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/projectPlan/queryEmterpriseMesg",
+                        url:"http://106.13.24.63:8082/projectPlan/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -346,18 +346,14 @@
                         });
                     });
 
-                },*/
-
-
-
-
+                },
 
                 //查询
                 searchs:function(){
                     var _this=this;
 
                     $.ajax({
-                        url:"http://localhost:8082/projectPlan/projectBypName",
+                        url:"http://106.13.24.63:8082/projectPlan/projectBypName",
                         async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                         data:_this.params,
                         type:"POST",
@@ -373,7 +369,7 @@
                 timeChange:function(){
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/projectPlan/projectBypName",
+                        url:"http://106.13.24.63:8082/projectPlan/projectBypName",
                         async:true, // 请求是否异步,默认为异步,这也是ajax重要特性
                         data:_this.params,
                         type:"POST",
@@ -392,9 +388,9 @@
                     var _this=this;
                     var str="";
                     if (nums ==1){
-                        str = "未开始";
-                    } else if (nums ==2){
                         str = "进行中";
+                    } else if (nums ==2){
+                        str = "暂停";
                     }else if (nums ==3){
                         str = "已完成";
                     };
@@ -418,12 +414,12 @@
                 },
 
                 //获取列表信息
-                getListMessage:function(){
+                getListMessage:function(code){
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/projectPlan/listAll",
-                        //data:{'authCode':code},
-                        data:{},
+                        url:"http://106.13.24.63:8082/projectPlan/listAll",
+                        data:{'authCode':code},
+                        //data:{},
                         type:"POST",
                         dataType:"json",
                         success:function(res){
@@ -438,35 +434,35 @@
                     var _this=this;
 
                     //权限  设置  点击列表不让下钻
-                    if(_this.loginUser.isAdmin==true||_this.loginUser.isBoss==true||_this.loginUser.isLeader==true){
-                        _this.shows=false;
+                    // if(_this.loginUser.isAdmin==true||_this.loginUser.isBoss==true||_this.loginUser.isLeader==true){
+                    _this.shows=false;
 
-                        if(items.pProjectPhaseId=="需求分析"){
-                            items.pProjectPhaseId="1";
-                        }else if(items.pProjectPhaseId=="数据处理"){
-                            items.pProjectPhaseId="2";
-                        }else if(items.pProjectPhaseId=="系统开发"){
-                            items.pProjectPhaseId="3";
-                        };
-                        _this.activeName2=items.pProjectPhaseId;
-
-                        _this.pid=items.pId;
-                        _this.pName=items.pName;
-                        _this.getProject(items);
-
-                    }else{
-                        _this.$message({
-                            message:"您没有查看详情的权限",
-                            type:"warning",
-                        });
+                    if(items.pProjectPhaseId=="需求分析"){
+                        items.pProjectPhaseId="1";
+                    }else if(items.pProjectPhaseId=="数据处理"){
+                        items.pProjectPhaseId="2";
+                    }else if(items.pProjectPhaseId=="系统开发"){
+                        items.pProjectPhaseId="3";
                     };
+                    _this.activeName2=items.pProjectPhaseId;
+
+                    _this.pid=items.pId;
+                    _this.pName=items.pName;
+                    _this.getProject(items);
+
+                    // }else{
+                    //     _this.$message({
+                    //         message:"您没有查看详情的权限",
+                    //         type:"warning",
+                    //     });
+                    // };
                 },
 
                 /*获取项目总体计划清单明细*/
                 getProject:function(params){
                     var _this=this;
                     $.ajax({
-                        url:"http://localhost:8082/projectPlan/projectPlanList",
+                        url:"http://106.13.24.63:8082/projectPlan/projectPlanList",
                         data:{
                             pId:params.pId,
                             pProjectPhaseId:params.pProjectPhaseId,

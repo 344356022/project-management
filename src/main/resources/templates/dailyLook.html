@@ -256,7 +256,7 @@
     <div class="daily-title">
         <i @click="editDaily" class="el-icon-arrow-left" title="返回"></i>
         <div class="daily-title-name">历史日报</div>
-        <i @click="rzbDaily" class="iconfont icon-rizhibaobiao" title="写日报"></i>
+        <!--<i @click="rzbDaily" class="iconfont icon-ribaotongji" title="写日报報表"></i>-->
     </div>
     <div class="daily-content">
         <!--查询单选按钮-->
@@ -368,7 +368,7 @@
                             _this.searchParam.pageNum++;
                             $.ajax({
                                 type: 'POST',
-                                url:  'http://106.13.24.63:8088/journal/history',
+                                url:  'http://106.13.24.63:8082/journal/history',
                                 dataType: 'json',
                                 success: function (data) {
                                     _this.dailyList=data;
@@ -395,7 +395,7 @@
                 var _this=this;
                 _this.searchParam.authCode=params;
                 $.ajax({
-                    url: "http://106.13.24.63:8088/journal/history",
+                    url: "http://106.13.24.63:8082/journal/history",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.searchParam,
                     type: "POST",

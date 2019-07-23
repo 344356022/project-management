@@ -156,6 +156,10 @@
             width: 1.5rem;
             margin-left:0.04rem;
         }
+
+        .cell>.el-date-editor.el-input, .el-date-editor.el-input__inner{
+            width:100%;
+        }
     </style>
 </head>
 <body>
@@ -216,8 +220,8 @@
                 <span><strong>总体完成进度：</strong><strong><strong v-text="items.pProgress"></strong><strong>%</strong></strong></span>
 
                 <div class="methods">
-                    <i class="iconfont icon-bianji" @click="projectEdit(items,$event)"></i>
-                    <i class="iconfont icon-shanchu-copy" @click="projectDel(items,$event)"></i>
+                    <i class="iconfont icon-bianji" style="font-size: 0.12rem;" @click="projectEdit(items,$event)"></i>
+                    <i class="iconfont icon-shanchu" @click="projectDel(items,$event)"></i>
                 </div>
             </div>
 
@@ -238,19 +242,27 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="开始时间" prop="pStartTime" label-width="0.7rem">
-                                <el-input v-model="forms.pStartTime" placeholder="2018-09-18"></el-input>
+                                <el-date-picker
+                                        v-model="forms.pStartTime"
+                                        type="date"
+                                        placeholder="2019-07-09">
+                                </el-date-picker>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="结束时间" prop="pEndTime" label-width="0.7rem">
-                                <el-input v-model="forms.pEndTime" placeholder="2018-09-18"></el-input>
+                                <el-date-picker
+                                        v-model="forms.pEndTime"
+                                        type="date"
+                                        placeholder="2019-07-09">
+                                </el-date-picker>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="项目阶段" prop="pProjectPhaseId" label-width="0.7rem">
-                                <el-select :disabled="pProjectPhaseIdDisabled" v-model="forms.pProjectPhaseId"
+                                <el-select v-model="forms.pProjectPhaseId"
                                            placeholder="请选择项目阶段">
                                     <el-option
                                             v-for="(item,index) in productJieDuan"
@@ -327,7 +339,11 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.apsTime" placeholder="2018-09-21"></el-input>
+                        <el-date-picker
+                                v-model="scope.row.apsTime"
+                                type="date"
+                                placeholder="2019-07-09" :picker-options="apsPicker" @change="apsTimeChange(scope.row.apsTime)">
+                        </el-date-picker>
                     </template>
                 </el-table-column>
 
@@ -337,7 +353,11 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.apeTime" placeholder="2018-09-21"></el-input>
+                        <el-date-picker
+                                v-model="scope.row.apeTime"
+                                type="date"
+                                placeholder="2019-07-09" :picker-options="apePicker" @change="apeTimeChange(scope.row.apeTime)">
+                        </el-date-picker>
                     </template>
                 </el-table-column>
 
@@ -347,7 +367,11 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.aasTime" placeholder="2018-09-21"></el-input>
+                        <el-date-picker
+                                v-model="scope.row.aasTime"
+                                type="date"
+                                placeholder="2019-07-09">
+                        </el-date-picker>
                     </template>
                 </el-table-column>
 
@@ -357,7 +381,11 @@
                         prop="index"
                 >
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.aaeTime" placeholder="2018-09-21"></el-input>
+                        <el-date-picker
+                                v-model="scope.row.aaeTime"
+                                type="date"
+                                placeholder="2019-07-09">
+                        </el-date-picker>
                     </template>
                 </el-table-column>
 
@@ -463,8 +491,13 @@
     var myHome = new Vue({
         el: "#idbody",
         data: {
+            //计划开始时间  禁用范围
+            apsPicker:{},
+            //计划完成时间   禁用范围
+            apePicker:{},
+
             //编辑的时候项目阶段  禁用
-            pProjectPhaseIdDisabled:false,
+            // pProjectPhaseIdDisabled:false,
 
             isEditOrAdd:0,
             //弹框  title
@@ -492,10 +525,10 @@
                     {required: true, message: '请输入项目名称', trigger: 'change'}
                 ],
                 pStartTime: [
-                    {validator: validatePass2, trigger: 'blur'},
+                    {required: true, message: '请选择开始时间', trigger: 'change'}
                 ],
                 pEndTime: [
-                    {validator: validatePass2, trigger: 'blur'},
+                    {required: true, message: '请选择结束时间', trigger: 'change'}
                 ],
                 pProjectPhaseId: [
                     {required: true, message: '请选择项目阶段', trigger: 'change'}
@@ -542,11 +575,11 @@
             /*状态*/
             stateList: [
                 {
-                    name: "未开始",
+                    name: "进行中",
                     id: 1,
                 },
                 {
-                    name: "进行中",
+                    name: "暂停",
                     id: 2,
                 },
                 {
@@ -579,10 +612,30 @@
         },
         mounted: function () {
             var _this = this;
-            //_this.getDingDing();
-            _this.getListMessage();
+            _this.getDingDing();
+            //_this.getListMessage();
         },
         methods: {
+            //计划开始时间
+            apsTimeChange:function(times){
+                var _this=this;
+                _this.apsPicker={};
+                _this.apePicker={
+                    disabledDate:function(time) {
+                        return time.getTime() < times.getTime();
+                    }
+                }
+            },
+            //计划结束时间
+            apeTimeChange:function(times){
+                var _this=this;
+                _this.apePicker={};
+                _this.apsPicker={
+                    disabledDate:function(time) {
+                        return time.getTime() > times.getTime();
+                    }
+                }
+            },
             //项目删除
             projectDel:function(params,event){
                 var _this=this;
@@ -597,7 +650,7 @@
                         pId:params.pId,
                     };
                     $.ajax({
-                        url: "http://localhost:8082/projectPlan/deleteProjectBypId",
+                        url: "http://106.13.24.63:8082/projectPlan/deleteProjectBypId",
                         async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                         data: objs,
                         type: "POST",
@@ -609,8 +662,8 @@
                                     message:"删除成功",
                                     type:"success",
                                 });
-
-                                _this.getListMessage();
+                                //_this.getListMessage();
+                                _this.getDingDing();
                             }else{
                                 _this.$message({
                                     message:"删除失败",
@@ -630,22 +683,26 @@
             projectEdit:function(objs,event){
                 var _this=this;
                 event.cancelBubble = true;//组织事件冒泡
-
-                // _this.$refs.form.resetFields();
-
-                _this.pProjectPhaseIdDisabled=true;
-
                 _this.diaLogTitle="编辑项目计划";
                 _this.isEditOrAdd=1;
                 _this.dialogVisible=true;
+                //
+                // _this.pProjectPhaseIdDisabled=true;
+                var startTime=objs.pStartTime;
+                var endTime=objs.pEndTime;
+
+                startTime=new Date(startTime.substr(0,4),Number(startTime.substr(5,2))-1,startTime.substr(8,2),0,0,0);
+                endTime=new Date(endTime.substr(0,4),Number(endTime.substr(5,2))-1,endTime.substr(8,2),0,0,0);
                 _this.forms={
                     pId: objs.pId,
                     pName: objs.pName,//项目名称
-                    pStartTime: objs.pStartTime,//项目计划开始时间
-                    pEndTime:  objs.pEndTime,//项目计划结束时间
+                    pStartTime: startTime,//项目计划开始时间
+                    pEndTime:  endTime,//项目计划结束时间
                     pProjectPhaseId: objs.pProjectPhaseId,//项目阶段ID
                     pProgress: objs.pProgress,//项目总体完成进度
                 };
+
+                _this.$refs.form.clearValidate();//清空之前的校验
 
             },
 
@@ -656,25 +713,40 @@
                 this.$refs[formName].validate((valid) => {
                     if(valid) {
                         if(_this.jiXianClick1==1){
+                           /* console.log(_this.forms.pStartTime,_this.forms.pStartTime.getDate())*/
+                            // if(_this.forms.pStartTime!=""){
+                            //     _this.forms.pStartTime=new Date(_this.forms.pStartTime.getFullYear(),_this.forms.pStartTime.getMonth(),_this.forms.pStartTime.getDate()+1,24,60,60);
+                            // };
+                            // if(_this.forms.pEndTime!=""){
+                            //     _this.forms.pEndTime=new Date(_this.forms.pEndTime.getFullYear(),_this.forms.pEndTime.getMonth(),_this.forms.pEndTime.getDate()+1,24,60,60);
+                            // };
                             _this.jiXianClick1=2;
 
                             if(_this.isEditOrAdd==1){
                                 //编辑事件
                                 //添加事件
                                 $.ajax({
-                                    url: "http://localhost:8082/projectPlan/updateProjectBypId",
+                                    url: "http://106.13.24.63:8082/projectPlan/updateProjectBypId",
                                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
-                                    data: JSON.stringify({
-                                        pId: _this.forms.pId,
-                                        pName: _this.forms.pName,
-                                        pStartTime: _this.forms.pStartTime,
-                                        pEndTime: _this.forms.pEndTime,
-                                        pProjectPhaseId: _this.forms.pProjectPhaseId,
-                                        pProgress: _this.forms.pProgress
-                                    }),
+                                    // data: JSON.stringify({
+                                    //     pId: _this.forms.pId,
+                                    //     pName: _this.forms.pName,
+                                    //     pStartTime: new Date(_this.forms.pStartTime.getFullYear(),_this.forms.pStartTime.getMonth(),_this.forms.pStartTime.getDate()+1,0,0,0),
+                                    //     pEndTime: new Date(_this.forms.pEndTime.getFullYear(),_this.forms.pEndTime.getMonth(),_this.forms.pEndTime.getDate()+1,0,0,0),
+                                    //     pProjectPhaseId: _this.forms.pProjectPhaseId,
+                                    //     pProgress: _this.forms.pProgress
+                                    // }),
+                                    data: {
+                                        'pId': _this.forms.pId,
+                                        'pName': _this.forms.pName,
+                                        'pStartTime': _this.forms.pStartTime,
+                                        'pEndTime': _this.forms.pEndTime,
+                                        'pProjectPhaseId': _this.forms.pProjectPhaseId,
+                                        'pProgress': _this.forms.pProgress
+                                    },
                                     type: "POST",
                                     dataType: "JSON",
-                                    contentType: "application/json;charset=utf-8",
+                                    //contentType: "application/json;charset=utf-8",
                                     success: function (res) {
                                         //console.log(res);
                                         if (res.code == 200) {
@@ -685,29 +757,32 @@
                                         };
                                         _this.jiXianClick1=1;
 
+                                    },
+                                    error:function(res){
+                                        _this.jiXianClick1=1;
                                     }
                                 });
                             }else{
                                 //添加事件
                                 $.ajax({
-                                    url: "http://localhost:8082/MaintenanceProject/addProject",
+                                    url: "http://106.13.24.63:8082/MaintenanceProject/addProject",
                                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
-                                    data: JSON.stringify({
-                                        pId: _this.forms.pId,
-                                        pName: _this.forms.pName,
-                                        pStartTime: _this.forms.pStartTime,
-                                        pEndTime: _this.forms.pEndTime,
-                                        pProjectPhaseId: _this.forms.pProjectPhaseId,
-                                        pProgress: _this.forms.pProgress
-                                    }),
+                                    data: {
+                                        'pName': _this.forms.pName,
+                                        'pStartTime': _this.forms.pStartTime,
+                                        'pEndTime': _this.forms.pEndTime,
+                                        'pProjectPhaseId': _this.forms.pProjectPhaseId,
+                                        'pProgress': _this.forms.pProgress
+                                    },
                                     type: "POST",
                                     dataType: "JSON",
-                                    contentType: "application/json;charset=utf-8",
+                                    // contentType: "application/json;charset=utf-8",
                                     success: function (res) {
                                         //console.log(res);
                                         if (res.code == 200) {
                                             _this.dialogVisible = false;
-                                            _this.getListMessage(false);
+                                            //_this.getListMessage();
+                                            _this.getDingDing();
                                         } else {
                                             _this.dialogVisible = true;
                                         };
@@ -722,6 +797,9 @@
                                             createTime: "",//项目创建时间
                                             creater: "",//项目创建人
                                         };
+                                    },
+                                    error:function(res){
+                                        _this.jiXianClick1=1;
                                     }
                                 });
                             };
@@ -732,6 +810,8 @@
                             });
 
                         };
+
+
                     }else{
                         return false;
                     };
@@ -740,11 +820,11 @@
 
             },
 
-           /*//获取有关钉钉需要的值
+           //获取有关钉钉需要的值
             getDingDing: function () {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/MaintenanceProject/queryEmterpriseMesg",
+                    url: "http://106.13.24.63:8082/MaintenanceProject/queryEmterpriseMesg",
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -762,7 +842,7 @@
                         corpId: _config.corpId, // 企业id
                         onSuccess: function (info) {
                             _this.code = info.code;
-                           _this.getListMessage(info.code);//回显保存的数据
+                           _this.getSearchData(info.code);//回显保存的数据
                         },
                         onFail: function (err) {
                             alert('fail: ' + JSON.stringify(err));
@@ -770,14 +850,14 @@
                     });
                 });
 
-            },*/
+            },
 
             //查询
             //获取查询的数据
             getSearchData: function (bool) {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/projectPlan/projectBypName",
+                    url: "http://106.13.24.63:8082/projectPlan/projectBypName",
                     async: true, // 请求是否异步,默认为异步,这也是ajax重要特性
                     data: _this.params,
                     type: "POST",
@@ -786,8 +866,6 @@
                         if (res.code == 200) {
                             if (bool == true) {
                             };
-
-
                             _this.listMessage = res.data;
                             _this.searchTiaoJian = "";
                         }
@@ -836,12 +914,12 @@
             },
 
             //获取列表信息
-            getListMessage: function () {
+            getListMessage: function (code) {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/projectPlan/listAll",
-                    //data: {'authCode':code},
-                    data: {},
+                    url: "http://106.13.24.63:8082/projectPlan/listAll",
+                    data: {'authCode':code},
+                    //data: {},
                     type: "POST",
                     dataType: "json",
                     success: function (res) {
@@ -856,8 +934,8 @@
 
                 var _this = this;
                 $.ajax({
-                    // url: "http://localhost:8082/user/selectAllUser",
-                    url:"http://localhost:8082/sys/user/selectUserByTabFlag",
+                    // url: "http://106.13.24.63:8082/user/selectAllUser",
+                    url:"http://106.13.24.63:8082/sys/user/selectUserByTabFlag",
                     data: {pProjectPhaseId:_this.activeName2},
                     type: "GET",
                     dataType: "json",
@@ -892,7 +970,7 @@
             getProject: function (params) {
                 var _this = this;
                 $.ajax({
-                    url: "http://localhost:8082/projectPlan/projectPlanList",
+                    url: "http://106.13.24.63:8082/projectPlan/projectPlanList",
                     data: {
                         pId: params.pId,
                         pProjectPhaseId: params.pProjectPhaseId,
@@ -935,12 +1013,14 @@
             /*新增项目列表事件*/
             addList: function () {
                 var _this = this;
-                //_this.$refs.form.resetFields();
                 _this.isEditOrAdd=0;
                 _this.jiXianClick1=1;
                 _this.isClickBtnColor1 = "#409EFF";
+                _this.diaLogTitle="新增项目计划";
                 _this.dialogVisible = true;
-                _this.pProjectPhaseIdDisabled=false;
+
+
+                // _this.pProjectPhaseIdDisabled=false;
                 _this.forms= {
                     pId: "",
                     pName: "",//项目名称
@@ -951,6 +1031,8 @@
                     createTime: "",//项目创建时间
                     creater: "",//项目创建人
                 };
+
+                _this.$refs.form.clearValidate();//清空之前的校验
             },
             /*提交事件*/
             //计划开始时间验证
@@ -975,106 +1057,105 @@
 
 
                 var flags=false;
-                for(var i=0;i<_this.tableData.length;i++){
-                    var items=_this.tableData[i];
-                    if(items.apsTime==""){
-                        _this.$message({
-                            message:"请输入计划开始时间",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(!_this.yzTime(items.apsTime)){
-                        _this.$message({
-                            message:"请正确的计划开始时间格式",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(items.apeTime==""){
-                        _this.$message({
-                            message:"请输入计划完成时间",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(!_this.yzTime(items.apeTime)){
-                        _this.$message({
-                            message:"请正确的计划完成时间格式",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(items.aasTime==""){
-                        _this.$message({
-                            message:"请输入实际开始时间",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(!_this.yzTime(items.aasTime)){
-                        _this.$message({
-                            message:"请正确的实际开始时间格式",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(items.aaeTime==""){
-                        _this.$message({
-                            message:"请输入实际完成时间",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(!_this.yzTime(items.aaeTime)){
-                        _this.$message({
-                            message:"请正确的实际完成时间格式",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(items.userId==null){
-                        _this.$message({
-                            message:"请选择负责人",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(items.percentage==null){
-                        _this.$message({
-                            message:"请输入完成百分比",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(!_this.yzBfb(items.percentage)){
-                        _this.$message({
-                            message:"请输入正确格式得百分比",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(items.state==null){
-                        _this.$message({
-                            message:"请选择状态",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else if(items.isResult==null){
-                        _this.$message({
-                            message:"请选择是否提交",
-                            type:"error",
-                        });
-                        flags=false;
-                        return;
-                    }else{
-                        flags=true;
-                    };
-                };
-                console.log(_this.jiXianClick)
-                if(flags==true){
-                    console.log(_this.jiXianClick)
+                // for(var i=0;i<_this.tableData.length;i++){
+                //     var items=_this.tableData[i];
+                //     if(items.apsTime==""){
+                //         _this.$message({
+                //             message:"请输入计划开始时间",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(!_this.yzTime(items.apsTime)){
+                //         _this.$message({
+                //             message:"请正确的计划开始时间格式",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(items.apeTime==""){
+                //         _this.$message({
+                //             message:"请输入计划完成时间",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(!_this.yzTime(items.apeTime)){
+                //         _this.$message({
+                //             message:"请正确的计划完成时间格式",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(items.aasTime==""){
+                //         _this.$message({
+                //             message:"请输入实际开始时间",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(!_this.yzTime(items.aasTime)){
+                //         _this.$message({
+                //             message:"请正确的实际开始时间格式",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(items.aaeTime==""){
+                //         _this.$message({
+                //             message:"请输入实际完成时间",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(!_this.yzTime(items.aaeTime)){
+                //         _this.$message({
+                //             message:"请正确的实际完成时间格式",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(items.userId==null){
+                //         _this.$message({
+                //             message:"请选择负责人",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(items.percentage==null){
+                //         _this.$message({
+                //             message:"请输入完成百分比",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(!_this.yzBfb(items.percentage)){
+                //         _this.$message({
+                //             message:"请输入正确格式得百分比",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(items.state==null){
+                //         _this.$message({
+                //             message:"请选择状态",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else if(items.isResult==null){
+                //         _this.$message({
+                //             message:"请选择是否提交",
+                //             type:"error",
+                //         });
+                //         flags=false;
+                //         return;
+                //     }else{
+                //         flags=true;
+                //     };
+                // };
+                // console.log(_this.jiXianClick)
+                // if(flags==true){
                     if (_this.jiXianClick == 1) {
                         _this.jiXianClick=2;
                         _this.isClickBtnColor = "#409EFF";
@@ -1104,12 +1185,10 @@
                         };
                         var urls = "";
                         if (_this.showEditOrSubmit == 1) {
-                            urls = "http://localhost:8082/MaintenanceProject/addProjectList";
+                            urls = "http://106.13.24.63:8082/MaintenanceProject/addProjectList";
                         } else {
-                            urls = "http://localhost:8082/actionItem/updateActionItemList";
-                        }
-                        ;
-
+                            urls = "http://106.13.24.63:8082/actionItem/updateActionItemList";
+                        };
                         $.ajax({
                             url: urls,
                             data: JSON.stringify(objs),
@@ -1134,7 +1213,7 @@
                             type:"warning",
                         });
                     }
-                };
+                // };
 
             }
         },
