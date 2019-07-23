@@ -112,11 +112,11 @@ public class WeekReportServiceImpl implements WeekReportService {
                 //根据前端传来的开始时间阶段的值例：“2019-07-15”,计算出连续12天的具体每天对应的日期，获取下标为零所对应的值
                 List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
-//                String endTime = tweleveDayDate.get(11);
-                String sendTime = weekreport.getwEndTime();
+               String endTime = tweleveDayDate.get(11);
+                //String sendTime = weekreport.getwEndTime();
 
                 //根据前端传送过来的结束时间例：“2019-07-26”，计算出第七天的所对应的具体日期
-                String endTime = DetialDayDate.getSevenDay(sendTime);
+                //String endTime = DetialDayDate.getSevenDay(sendTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
                 weekreport1.setwCreater(wCreater);
@@ -155,9 +155,9 @@ public class WeekReportServiceImpl implements WeekReportService {
                 String sTime=weekreport.getwStartTime();
                 List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
-                //String endTime = tweleveDayDate.get(11);
-                String sendTime = weekreport.getwEndTime();
-                String endTime = DetialDayDate.getSevenDay(sendTime);
+                String endTime = tweleveDayDate.get(11);
+                //String sendTime = weekreport.getwEndTime();
+                //String endTime = DetialDayDate.getSevenDay(sendTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
                 weekreport1.setwCreater(wCreater);
