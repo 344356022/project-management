@@ -68,4 +68,8 @@ public interface SysUserService {
      * 执行同步获取管理员列表
      */
     void doSynchAdminTask() throws Exception;
+
+
+    //查询双周计划中的操作人
+    List<SysUser> queryCreater();
 }
