@@ -44,9 +44,9 @@ public class WeekReportServiceImpl implements WeekReportService {
     private SysUserMapper sysUserMapper;
 
     @Override
-    public List<Weekreport> selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime) {
-        if(weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime).size()!=0&&weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime)!=null){
-            return weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime);
+    public List<Weekreport> selectWeekReportDetial(String userDepartment,String wStarTime,String wEndTime,String wCreater, Integer wStatus, String pId) {
+        if(weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime,wCreater,wStatus,pId).size()!=0&&weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime,wCreater,wStatus,pId)!=null){
+            return weekreportMapper.selectWeekReportDetial(userDepartment,wStarTime,wEndTime,wCreater,wStatus,pId);
         }else{
             return null;
         }
@@ -55,19 +55,45 @@ public class WeekReportServiceImpl implements WeekReportService {
 
     @Override
     public String addWeekReport(List<WeekRportInfo> weekreports) {
+
+        //创建时间集合
         List<RecordTime> dataList=null;
+
+        //创建周计划集合
         List<Weekreport> weekreports1=new ArrayList<>();
+
+        //spring框架获取session的方式
         ServletRequestAttributes rr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = rr.getRequest();
         HttpSession session = request.getSession();
+
+        //从sesson里获取当前登陆用户的部门标识
         String uDepartment = (String)session.getAttribute("department");
+
+        //从session里获取当前
+        String wCreater=(String)session.getAttribute("w_creater");
+
+        //遍历从前端传来的数据进行赋值到实体进行操作库表
         for (WeekRportInfo weekreport : weekreports) {
+
+            //判断此数据是否已经在库表存在
             if(weekreport.getwId()!=null){
+
+                //创建周计划的对象
                 Weekreport weekreport1=new Weekreport();
+
+                //获取数据在库表的唯一主键值
                 String wId =weekreport.getwId();
+
+                //根据唯一的主键值删除对应的时间
                 recordTimeMapper.deleteDayDate(wId);
+
+                //根据相应的主键值，清空所有数据
                 weekreportMapper.updateWeekReportMesg(wId);
+
+                //将数据进行存储到对象里
                 weekreport1.setwId(wId);
+                weekreport1.setrFinish(weekreport.getrFinish());
                 weekreport1.setpId(weekreport.getpId());
                 weekreport1.setUserId(weekreport.getUserId());
                 weekreport1.setTsId(weekreport.getTsId());
@@ -78,13 +104,22 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
-                weekreport1.setrFinish(0);
+                //weekreport1.setrFinish(0);
+                weekreport1.setwActualProportion(0);
+                weekreport1.setrFinish(weekreport.getrFinish());
                 String sTime=weekreport.getwStartTime();
+
+                //根据前端传来的开始时间阶段的值例：“2019-07-15”,计算出连续12天的具体每天对应的日期，获取下标为零所对应的值
                 List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
-                String endTime = tweleveDayDate.get(11);
+//                String endTime = tweleveDayDate.get(11);
+                String sendTime = weekreport.getwEndTime();
+
+                //根据前端传送过来的结束时间例：“2019-07-26”，计算出第七天的所对应的具体日期
+                String endTime = DetialDayDate.getSevenDay(sendTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
+                weekreport1.setwCreater(wCreater);
                 weekreports1.add(weekreport1);
                  dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -114,13 +149,18 @@ public class WeekReportServiceImpl implements WeekReportService {
                 weekreport1.setwType(weekreport.getwType());
                 weekreport1.setwWorkReport(weekreport.getwWorkReport());
                 weekreport1.setUserDepartmet(uDepartment);
-                weekreport1.setrFinish(0);
+                //weekreport1.setrFinish(0);
+                weekreport1.setwActualProportion(0);
+                weekreport1.setrFinish(weekreport.getrFinish());
                 String sTime=weekreport.getwStartTime();
                 List<String> tweleveDayDate= DetialDayDate.getTweleveDayDates(sTime);
                 String startTime = tweleveDayDate.get(0);
-                String endTime = tweleveDayDate.get(11);
+                //String endTime = tweleveDayDate.get(11);
+                String sendTime = weekreport.getwEndTime();
+                String endTime = DetialDayDate.getSevenDay(sendTime);
                 weekreport1.setwEndTime(endTime);
                 weekreport1.setwStartTime(startTime);
+                weekreport1.setwCreater(wCreater);
                 weekreports1.add(weekreport1);
                 dataList = weekreport.getRecordTimes();
                 for (RecordTime recordTime : dataList) {
@@ -140,8 +180,8 @@ public class WeekReportServiceImpl implements WeekReportService {
 
         }
         weekreportMapper.addWeekReport(weekreports1);
-            return "success";
 
+            return "success";
     }
 
     @Override
