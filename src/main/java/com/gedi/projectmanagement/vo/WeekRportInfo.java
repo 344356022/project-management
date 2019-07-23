@@ -32,6 +32,8 @@ public class WeekRportInfo {
 
     private Integer wType;
 
+    private Integer rFinish;
+
     private String wStartTime;
 
     private String wEndTime;
@@ -41,7 +43,7 @@ public class WeekRportInfo {
     public WeekRportInfo(){}
 
 
-    public WeekRportInfo(String wId, String wWorkReport, Integer wActualProportion, Integer wPlanProportion, String wRemark, String pId, String userId, String tsId, Integer wStatus, Integer wType, String wStartTime, String wEndTime, List<RecordTime> recordTimes) {
+    public WeekRportInfo(String wId, String wWorkReport, Integer wActualProportion, Integer wPlanProportion, String wRemark, String pId, String userId, String tsId, Integer wStatus, Integer wType, String wStartTime, String wEndTime, List<RecordTime> recordTimes,Integer rFinish) {
         this.wId = wId;
         this.wWorkReport = wWorkReport;
         this.wActualProportion = wActualProportion;
@@ -55,6 +57,15 @@ public class WeekRportInfo {
         this.wStartTime = wStartTime;
         this.wEndTime = wEndTime;
         this.recordTimes = recordTimes;
+        this.rFinish=rFinish;
+    }
+
+    public Integer getrFinish() {
+        return rFinish;
+    }
+
+    public void setrFinish(Integer rFinish) {
+        this.rFinish = rFinish;
     }
 
     public String getwStartTime() {
@@ -174,6 +185,9 @@ public class WeekRportInfo {
                 ", tsId='" + tsId + '\'' +
                 ", wStatus=" + wStatus +
                 ", wType=" + wType +
+                ", rFinish=" + rFinish +
+                ", wStartTime='" + wStartTime + '\'' +
+                ", wEndTime='" + wEndTime + '\'' +
                 ", recordTimes=" + recordTimes +
                 '}';
     }
