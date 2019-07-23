@@ -61,10 +61,14 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public CodeAndMsg selectUserBySign(String department) {
         List<SysUser> userList = this.sysUserMapper.selectUserBySign(department);
+        List<SysUser> sysUsers = this.sysUserMapper.queryAllStaff();
 
-        if (userList.size() != 0 && userList != null) {
+
+        if (userList.size() != 0 && userList != null&&!department.equals("[116692111]")) {
             return CodeAndMsgUtil.setOK("查询成功", userList);
-        } else {
+        } else if(userList.size() != 0 && userList != null&&department.equals("[116692111]")) {
+            return CodeAndMsgUtil.setOK("查询成功", sysUsers);
+        }else{
             return CodeAndMsgUtil.setERROR("查询失败", null);
         }
     }
@@ -247,6 +251,17 @@ public class SysUserServiceImpl implements SysUserService {
         } catch (ApiException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<SysUser> queryCreater() {
+        List<SysUser> sysUsers = this.sysUserMapper.queryCreater();
+        if(sysUsers.size() != 0 && sysUsers != null){
+            return sysUsers;
+        }else{
+            return null;
+        }
+
     }
 
 
