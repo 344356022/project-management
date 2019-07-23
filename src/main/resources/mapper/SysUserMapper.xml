@@ -72,4 +72,25 @@
         select * from user where user_id=#{userId}
     </select>
 
+    <select id="queryCreater" resultMap="BaseResultMap">
+       SELECT
+	      user_id,
+	      name
+        FROM
+            USER
+        WHERE
+            department IN (
+                '[117572421]',
+                '[117443437]',
+                '[119455108]'
+            )
+        AND is_leader = 1
+        OR sys_level = 1
+    </select>
+
+
+    <select id="queryAllStaff" resultMap="BaseResultMap">
+        SELECT user_id,name  from  user
+    </select>
+
 </mapper>
