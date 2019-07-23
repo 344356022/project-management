@@ -114,6 +114,14 @@ public interface JournalMapper
 	 */
 	public List<HashMap<String, Object>> queryAllDaily(HashMap map);
 
+	/**
+	 * 管理員或者領導或者老闆查看所有的日誌
+	 * 包括自己的
+	 * @param map
+	 * @return
+	 */
+	public List<HashMap<String, Object>> queryTeamDaily(HashMap map);
+
 
 	List<Journal> selectBypId(String pId);
 
