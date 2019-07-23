@@ -38,12 +38,12 @@
             position: absolute;
             font-size: 0.16rem;
         }
-        .icon-lishijilu{
+        .icon-ribaotongji{
             top: 0.08rem;
             left: 0.1rem;
             font-size: 0.18rem;
         }
-        .icon-rizhibaobiao{
+        .icon-baobiao{
             top: 0.08rem;
             right: 0.15rem;
         }
@@ -198,9 +198,9 @@
      element-loading-spinner="el-icon-loading"
      element-loading-background="rgba(0, 0, 0, 0.6)">
     <div class="daily-title">
-        <i class="iconfont icon-lishijilu" @click="historyMethods" title="历史日报"></i>
+        <i class="iconfont icon-ribaotongji" @click="historyMethods" title="历史日报"></i>
         <div class="daily-title-name">写日报</div>
-        <i class="iconfont icon-rizhibaobiao" title="日报报表"></i>
+        <!--<i class="iconfont icon-baobiao" title="日报报表"></i>-->
     </div>
     <div class="dailyContent">
         <!--日报完成度没有达到100%的列表-->
@@ -336,9 +336,9 @@
             addDailyListNum:0,
 
             //关于钉钉的一些配置
-            isDing:false,
+            isDing:true,
             IP:"106.13.24.63",
-            
+
             projectData:[],
             //确认提交的是否是回显的数据还是新增的数据
             isHuiXianOrAdd:0,
@@ -395,7 +395,7 @@
                 var _this=this
                 if(_this.isDing){
                     $.ajax({
-                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
+                        url:"http://106.13.24.63:8082/journal/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         async:false,
@@ -424,7 +424,7 @@
             getUserHistory:function(code){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/journal/lastReceiver",
+                    url:"http://106.13.24.63:8082/journal/lastReceiver",
                     type:"POST",
                     dataType:"json",
                     async:false,
@@ -474,8 +474,8 @@
 
                 var _this=this;
                 $.ajax({
-                    // url:"http://localhost:8082/journal/list",
-                    url:"http://localhost:8082/journal/getDailyList",
+                    // url:"http://106.13.24.63:8082/journal/list",
+                    url:"http://106.13.24.63:8082/journal/getDailyList",
                     type:"POST",
                     dataType:"json",
                     async:false,
@@ -506,7 +506,7 @@
             getProjectName:function(){
                 var _this=this;
                 $.ajax({
-                    url:"http://localhost:8082/journal/queryProjectNameandById",
+                    url:"http://106.13.24.63:8082/journal/queryProjectNameandById",
                     type:"GET",
                     dataType:"json",
                     data:{},
@@ -556,7 +556,7 @@
 
                 if(_this.isDing){
                     $.ajax({
-                        url:"http://localhost:8082/journal/queryEmterpriseMesg",
+                        url:"http://106.13.24.63:8082/journal/queryEmterpriseMesg",
                         type:"GET",
                         data:{},
                         dataType:"json",
@@ -566,12 +566,12 @@
                                     corpId:res.corpId, // 企业id
                                     onSuccess: function (info) {
                                         $.ajax({
-                                            // url:"http://localhost:8082/journal/list",
-                                            url:"http://localhost:8082/journal/getDailyList",
+                                            // url:"http://106.13.24.63:8082/journal/list",
+                                            url:"http://106.13.24.63:8082/journal/getDailyList",
                                             type:"POST",
                                             dataType:"json",
                                             //data:{},
-                                            data:{'authCode':'025525064321734942'},
+                                            data:{'authCode':info.code},
                                             success:function(res){
                                                 if(res.code == 200||res.code == 300){
                                                     //得到旧的数据
@@ -634,14 +634,17 @@
                                                                     type:"error",
                                                                 });
                                                             }else{
-                                                                if(Number(_this.noData.rGongshi)>8){
-                                                                    _this.$message({
-                                                                        message:"输入的总工时数不能大于8",
-                                                                        type:"warning",
-                                                                    });
-                                                                };
+                                                                setTimeout(function(){
+                                                                    if(Number(_this.noData.rGongshi)>8){
+                                                                        _this.$message({
+                                                                            message:"输入的总工时数不能大于8",
+                                                                            type:"warning",
+                                                                        });
+                                                                    };
+                                                                },1500);
+
                                                                 $.ajax({
-                                                                    url:"http://localhost:8082/journal/addRbOther",
+                                                                    url:"http://106.13.24.63:8082/journal/addRbOther",
                                                                     type:"post",
                                                                     cache:false,
                                                                     //contentType:"application/json; charset=utf-8",
@@ -735,12 +738,14 @@
                                                                 };
                                                             };
                                                         };
-                                                        if(allGongShi>8){
-                                                            _this.$message({
-                                                                message:"输入的总工时数不能大于8",
-                                                                type:"warning",
-                                                            });
-                                                        };
+                                                        setTimeout(function(){
+                                                            if(allGongShi>8){
+                                                                _this.$message({
+                                                                    message:"输入的总工时数不能大于8",
+                                                                    type:"warning",
+                                                                });
+                                                            };
+                                                        },1500);
                                                         if(flags==true){
                                                             //提交    新增的数据
                                                             var re =  /^[1-9]\d*$/;
@@ -776,12 +781,14 @@
                                                                         type:"error",
                                                                     });
                                                                 }else{
-                                                                    if(Number(_this.noData.rGongshi)>8){
-                                                                        _this.$message({
-                                                                            message:"输入的总工时数不能大于8",
-                                                                            type:"warning",
-                                                                        });
-                                                                    };
+                                                                    setTimeout(function(){
+                                                                        if(Number(_this.noData.rGongshi)>8){
+                                                                            _this.$message({
+                                                                                message:"输入的总工时数不能大于8",
+                                                                                type:"warning",
+                                                                            });
+                                                                        };
+                                                                    },1500);
                                                                     if(_this.checkList.length<=0){
                                                                         _this.$message({
                                                                             message:"请选择日报接收人",
@@ -802,7 +809,7 @@
 
                                                                             //提交回显的数据
                                                                             $.ajax({
-                                                                                url:"http://localhost:8082/journal/save",
+                                                                                url:"http://106.13.24.63:8082/journal/save",
                                                                                 type:"post",
                                                                                 cache:false,
                                                                                 contentType:"application/json; charset=utf-8",
@@ -814,7 +821,7 @@
                                                                                         //提交  新增的数据
                                                                                         _this.noData.deliver =newArray;
                                                                                         $.ajax({
-                                                                                            url:"http://localhost:8082/journal/addRbOther",
+                                                                                            url:"http://106.13.24.63:8082/journal/addRbOther",
                                                                                             type:"post",
                                                                                             cache:false,
                                                                                             //contentType:"application/json; charset=utf-8",
@@ -867,7 +874,7 @@
 
                                                                         //提交回显的数据
                                                                         $.ajax({
-                                                                            url:"http://localhost:8082/journal/save",
+                                                                            url:"http://106.13.24.63:8082/journal/save",
                                                                             type:"post",
                                                                             cache:false,
                                                                             contentType:"application/json; charset=utf-8",
@@ -915,8 +922,8 @@
                 }else{
                     //本地测试
                     $.ajax({
-                        // url:"http://localhost:8082/journal/list",
-                        url:"http://localhost:8082/journal/getDailyList",
+                        // url:"http://106.13.24.63:8082/journal/list",
+                        url:"http://106.13.24.63:8082/journal/getDailyList",
                         type:"POST",
                         dataType:"json",
                         //data:{},
@@ -983,14 +990,16 @@
                                                 type:"error",
                                             });
                                         }else{
-                                            if(Number(_this.noData.rGongshi)>8){
-                                                _this.$message({
-                                                    message:"输入的总工时数不能大于8",
-                                                    type:"warning",
-                                                });
-                                            };
+                                            setTimeout(function(){
+                                                if(Number(_this.noData.rGongshi)>8){
+                                                    _this.$message({
+                                                        message:"输入的总工时数不能大于8",
+                                                        type:"warning",
+                                                    });
+                                                };
+                                            },1500);
                                             $.ajax({
-                                                url:"http://localhost:8082/journal/addRbOther",
+                                                url:"http://106.13.24.63:8082/journal/addRbOther",
                                                 type:"post",
                                                 cache:false,
                                                 //contentType:"application/json; charset=utf-8",
@@ -1084,12 +1093,15 @@
                                             };
                                         };
                                     };
-                                    if(allGongShi>8){
-                                        _this.$message({
-                                            message:"输入的总工时数不能大于8",
-                                            type:"warning",
-                                        });
+                                    if(Number(_this.noData.rGongshi)>8){
+                                        if(allGongShi>8){
+                                            _this.$message({
+                                                message:"输入的总工时数不能大于8",
+                                                type:"warning",
+                                            });
+                                        };
                                     };
+
                                     if(flags==true){
                                         //提交    新增的数据
                                         var re =  /^[1-9]\d*$/;
@@ -1125,12 +1137,15 @@
                                                     type:"error",
                                                 });
                                             }else{
-                                                if(Number(_this.noData.rGongshi)>8){
-                                                    _this.$message({
-                                                        message:"输入的总工时数不能大于8",
-                                                        type:"warning",
-                                                    });
+                                                if(allGongShi>8){
+                                                    if(Number(_this.noData.rGongshi)>8){
+                                                        _this.$message({
+                                                            message:"输入的总工时数不能大于8",
+                                                            type:"warning",
+                                                        });
+                                                    };
                                                 };
+
                                                 if(_this.checkList.length<=0){
                                                     _this.$message({
                                                         message:"请选择日报接收人",
@@ -1151,7 +1166,7 @@
 
                                                         //提交回显的数据
                                                         $.ajax({
-                                                            url:"http://localhost:8082/journal/save",
+                                                            url:"http://106.13.24.63:8082/journal/save",
                                                             type:"post",
                                                             cache:false,
                                                             contentType:"application/json; charset=utf-8",
@@ -1163,7 +1178,7 @@
                                                                     //提交  新增的数据
                                                                     _this.noData.deliver =newArray;
                                                                     $.ajax({
-                                                                        url:"http://localhost:8082/journal/addRbOther",
+                                                                        url:"http://106.13.24.63:8082/journal/addRbOther",
                                                                         type:"post",
                                                                         cache:false,
                                                                         //contentType:"application/json; charset=utf-8",
@@ -1216,7 +1231,7 @@
 
                                                     //提交回显的数据
                                                     $.ajax({
-                                                        url:"http://localhost:8082/journal/save",
+                                                        url:"http://106.13.24.63:8082/journal/save",
                                                         type:"post",
                                                         cache:false,
                                                         contentType:"application/json; charset=utf-8",
