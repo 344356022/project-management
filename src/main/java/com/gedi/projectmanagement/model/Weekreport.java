@@ -43,6 +43,16 @@ public class Weekreport {
 
     private Integer wType;
 
+    private String wCreater;
+
+    public String getwCreater() {
+        return wCreater;
+    }
+
+    public void setwCreater(String wCreater) {
+        this.wCreater = wCreater;
+    }
+
     public String getUserDepartmet() {
         return userDepartmet;
     }
@@ -238,7 +248,7 @@ public class Weekreport {
     }
 
 
-    public Weekreport(String wId, String pId, String wStartTime, String wEndTime, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark, String userDepartmet, Integer rFinish, Integer wType) {
+    public Weekreport(String wId, String pId, String wStartTime, String wEndTime, String tsId, String wWorkReport, String userId, Integer wActualProportion, Integer wPlanProportion, Integer wStatus, String wRemark, String userDepartmet, Integer rFinish, Integer wType,String wCreater) {
         this.wId = wId;
         this.pId = pId;
         this.wStartTime = wStartTime;
@@ -253,6 +263,7 @@ public class Weekreport {
         this.userDepartmet = userDepartmet;
         this.rFinish = rFinish;
         this.wType = wType;
+        this.wCreater=wCreater;
     }
 
     @Override
@@ -260,8 +271,8 @@ public class Weekreport {
         return "Weekreport{" +
                 "wId='" + wId + '\'' +
                 ", pId='" + pId + '\'' +
-                ", wStartTime=" + wStartTime +
-                ", wEndTime=" + wEndTime +
+                ", wStartTime='" + wStartTime + '\'' +
+                ", wEndTime='" + wEndTime + '\'' +
                 ", tsId='" + tsId + '\'' +
                 ", wWorkReport='" + wWorkReport + '\'' +
                 ", userId='" + userId + '\'' +
@@ -272,6 +283,7 @@ public class Weekreport {
                 ", userDepartmet='" + userDepartmet + '\'' +
                 ", rFinish=" + rFinish +
                 ", wType=" + wType +
+                ", wCreater='" + wCreater + '\'' +
                 '}';
     }
 }
