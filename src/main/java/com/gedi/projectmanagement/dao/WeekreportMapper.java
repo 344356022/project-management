@@ -22,7 +22,7 @@ public interface WeekreportMapper {
 
     //展示双周计划表得所有具体内容
     List<Weekreport> selectWeekReportDetial(@Param("userDepartment") String userDepartment,
-                                            @Param("wStarTime") String wStarTime, @Param("wEndTime") String wEndTime);
+                                            @Param("wStarTime") String wStarTime, @Param("wEndTime") String wEndTime,@Param("wCreater") String wCreater,@Param("wStatus") Integer wStatus,@Param("pId") String pId );
 
     //批量添加双周计划表的
     void addWeekReport(@Param("list") List<Weekreport> weekreports);
