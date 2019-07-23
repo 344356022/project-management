@@ -93,16 +93,16 @@ public class JournalServiceImpl implements  IJournalService
 		String type = (String) map.get("type");
 		//如果是管理员或者老板或者主管
 		if(user.getIsAdmin() || user.getIsBoss() || user.getIsLeader()){
+			return this.journalMapper.queryTeamDaily(map);
+		}else { //说明是员工
+			//return journalMapper.selectJournalHistory(map);
 			if("2".equals(type)){//只查询自己的
-
 				return journalMapper.selectJournalHistory(map);
 			}else if ("3".equals(type)){//查询我的团队人员的
 				return this.journalMapper.querySelfTeamDaily(map);
 			}else { //查询全部
 				return this.journalMapper.queryAllDaily(map);
 			}
-		}else { //说明是员工
-			return journalMapper.selectJournalHistory(map);
 		}
 	}
 
