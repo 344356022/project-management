@@ -244,6 +244,9 @@
             <if test="projectPlan.annualTime != null and projectPlan.annualTime != ''">
                 annual_time = #{projectPlan.annualTime},
             </if>
+            <if test="projectPlan.pProjectPhaseId != null and projectPlan.pProjectPhaseId != ''">
+                p_project_phase_id = #{projectPlan.pProjectPhaseId},
+            </if>
         </set>
         where p_id = #{projectPlan.pId}
     </update>
