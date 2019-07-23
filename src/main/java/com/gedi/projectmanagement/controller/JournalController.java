@@ -58,14 +58,14 @@ public class JournalController
 	public HashMap list(String authCode, HttpServletRequest request) {
 		Pattern pattern = Pattern.compile("[0-9]*");
 		String userId ="";
-		/*if(pattern.matcher(authCode).matches()){
+		if(pattern.matcher(authCode).matches()){
 			userId =authCode;
 		}else{
 			userId = LoginUtil.login(authCode);
-		}*/
+		}
 
 		//String
-		SysUser user = this.sysUserService.queryUserDetail("0208286522656643");
+		SysUser user = this.sysUserService.queryUserDetail(userId);
 		String userId1 = user.getUserId();//暂时写死后续会从session获取用户信息
 		HashMap resultMap = new HashMap();
 		HttpSession session = request.getSession();
@@ -586,13 +586,12 @@ public class JournalController
 	@ResponseBody
 	public HashMap getDailyList(String authCode, HttpServletRequest request) {
 		HashMap resultMap = new HashMap();
-//		if(StringUtils.isEmpty(authCode)){
-//			resultMap.put("code",300);
-//			resultMap.put("msg","未传入用户信息，请重新登录！");
-//		}
-//		String userId = LoginUtil.login(authCode); //放到正式环境时放开
-		String userId ="0208286522656643";//暂时写死后续会从session获取用户信息
-		//String
+		if(StringUtils.isEmpty(authCode)){
+			resultMap.put("code",300);
+			resultMap.put("msg","未传入用户信息，请重新登录！");
+		}
+		String userId = LoginUtil.login(authCode); //放到正式环境时放开
+		//String userId ="025525064321734942";//暂时写死后续会从session获取用户信息
 		SysUser user = this.sysUserService.queryUserDetail(userId);//当前登陆者
 		HttpSession session = request.getSession();
 		session.setAttribute("userj",user.getUserId());

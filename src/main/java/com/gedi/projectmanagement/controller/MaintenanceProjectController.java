@@ -8,6 +8,8 @@ import com.gedi.projectmanagement.model.ActionItem;
 import com.gedi.projectmanagement.model.ProjectPlan;
 import com.gedi.projectmanagement.service.ProjectPlanService;
 import com.gedi.projectmanagement.service.TaskClassService;
+import com.gedi.projectmanagement.util.TimeChange;
+import com.gedi.projectmanagement.util.UUIDUtil;
 import com.gedi.projectmanagement.vo.CodeAndMsg;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +36,21 @@ public class MaintenanceProjectController {
     private TaskClassService taskClassService;
 
     /**
-     * @param projectPlan
+     * @param
      * @return
      * @Description : 添加新的项目总计划
      */
     @PostMapping("/addProject")
-    public CodeAndMsg addProject1(@RequestBody ProjectPlan projectPlan, HttpServletRequest request) {
+    public CodeAndMsg addProject1(String pName,String pStartTime,String pEndTime,Integer pProjectPhaseId,Integer pProgress, HttpServletRequest request) {
+
+       ProjectPlan projectPlan=new ProjectPlan();
+       projectPlan.setpName(pName);
+       String startTime = TimeChange.getTime(pStartTime);
+       String endTime = TimeChange.getTime(pEndTime);
+       projectPlan.setpStartTime(startTime);
+       projectPlan.setpEndTime(endTime);
+       projectPlan.setpProjectPhaseId(pProjectPhaseId);
+       projectPlan.setpProgress(pProgress);
         CodeAndMsg msg = new CodeAndMsg();
         if (null == projectPlan) {
             msg.setCode(400);

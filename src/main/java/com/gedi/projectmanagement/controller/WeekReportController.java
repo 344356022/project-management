@@ -54,26 +54,32 @@ public class WeekReportController {
 
     //查询双周计划表展示具体的内容以及完成的占比；
     @PostMapping("selectWeekReportDetial")
-    public Map selectWeekReportDetial(String wStarTime, String wEndTime, String authCode, HttpServletRequest request) {
+    public Map selectWeekReportDetial(String wStarTime, String wEndTime, String authCode, HttpServletRequest request,String wCreater, Integer wStatus, String pId) {
         Map map=new HashMap();
         String timeStart = TimeChange.getTime(wStarTime);
         String timeEnd = TimeChange.getTime(wEndTime);
-        String userId = LoginUtil.login(authCode);
-        SysUser sysUser = sysUserService.queryUserDetail(userId);
+        //String userId = LoginUtil.login(authCode);
+        SysUser sysUser = sysUserService.queryUserDetail("0208286522656643");
         String department = sysUser.getDepartment();
         String name = sysUser.getName();
         HttpSession session = request.getSession();
         session.setAttribute("department",department);
         session.setAttribute("w_creater",name);
+
         if(sysUser!=null && !department.equals("[116692111]")){
-            List<Weekreport> weekreports = weekReportService.selectWeekReportDetial(department, timeStart, timeEnd);
+            //weekReportService.selectWeekReportDetial(String wStarTime, String wEndTime, String authCode,String wCreater,String wType,String pId);
+            List<Weekreport> weekreports = weekReportService.selectWeekReportDetial(department, timeStart, timeEnd,wCreater,wStatus,pId);
+            List<SysUser> sysUsers = sysUserService.queryCreater();
             map.put("weekreports",weekreports);
             map.put("sysUser",sysUser);
+            map.put("sysUsers",sysUsers);
             return map;
         }else if(sysUser!=null && department.equals("[116692111]")){
-            List<Weekreport> weekreports = weekReportService.selectWeekReportDetial("", timeStart, timeEnd);
+            List<Weekreport> weekreports = weekReportService.selectWeekReportDetial("", timeStart, timeEnd,wCreater,wStatus,pId);
+            List<SysUser> sysUsers = sysUserService.queryCreater();
             map.put("weekreports",weekreports);
             map.put("sysUser",sysUser);
+            map.put("sysUsers",sysUsers);
             return map;
         }else{
             map.put("msg","用户不存在");
@@ -142,6 +148,7 @@ public class WeekReportController {
     //根据日报员工手写的百分比进行与实际进行核算比例
     @PatchMapping("updateWeekReportActualProportion")
     public CodeAndMsg selectProjectById(String wId, int wActualProportion) {
+
         return weekReportService.updateActual(wId, wActualProportion);
     }
 
