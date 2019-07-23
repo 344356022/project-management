@@ -1,5 +1,8 @@
 package com.gedi.projectmanagement.util;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -180,7 +183,16 @@ public class DetialDayDate {
         return list;
     }
 
-
+    //根据系统时间获取本周的周一所对应的具体日期，以及连续7天所对应的日期；
+    public static List<String> getSevenDayDates(String startTime) {
+        List<String> list = new ArrayList<>();
+        LocalDate localDate = LocalDate.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate reviewTime = localDate.with(DayOfWeek.MONDAY);
+        for (int i = 0; i <= 7; i++) {
+            list.add(reviewTime.plusDays(i).toString());
+        }
+        return list;
+    }
 
     public static String getTime(String praTime){
         Date date = new Date(praTime);
@@ -192,6 +204,21 @@ public class DetialDayDate {
             e.printStackTrace();
         }
         return c;
+    }
+
+
+    public static String getSevenDay(String endTime){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = null;
+        try {
+            parse = simpleDateFormat.parse(endTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DateTime dateTime = DateUtil.offsetDay(parse, +7);
+        String format = simpleDateFormat.format(dateTime);
+        return format;
+
     }
 
 
